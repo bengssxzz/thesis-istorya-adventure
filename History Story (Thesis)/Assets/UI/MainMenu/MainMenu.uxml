@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MainMenu/MainMenu.uss?fileID=7433441132597879392&amp;guid=211965eabe4a8ed4e8a97033bed723f2&amp;type=3#MainMenu" />
+    <ui:VisualElement style="justify-content: space-between; height: 100%; width: 100%;">
+        <ui:VisualElement style="height: 55%;">
+            <ui:Label text="Istorya&#10;Adventure" display-tooltip-when-elided="true" name="Title" style="font-size: 162px; -unity-font-style: bold; -unity-text-align: middle-center; width: 100%; height: 100%; letter-spacing: 19px; -unity-font: url(&apos;project://database/Assets/Fonts/typo-grotesk-rounded-demo.otf?fileID=12800000&amp;guid=c3cb23489c6d0dc45bb911cbf46fb803&amp;type=3#typo-grotesk-rounded-demo&apos;); -unity-font-definition: none; word-spacing: 0; -unity-paragraph-spacing: -15px; -unity-text-outline-width: 0;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="height: 80%; align-items: center; justify-content: center;">
+            <ui:Button text="New Game" display-tooltip-when-elided="true" name="Start" class="menu-button" />
+            <ui:Button text="Journal" display-tooltip-when-elided="true" name="Journal" class="menu-button" />
+            <ui:Button text="Options" display-tooltip-when-elided="true" name="Option" class="menu-button" />
+            <ui:Button text="Exit" display-tooltip-when-elided="true" name="Exit" class="menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

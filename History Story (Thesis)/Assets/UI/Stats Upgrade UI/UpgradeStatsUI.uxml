@@ -1,0 +1,44 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Stats%20Upgrade%20UI/UpgradeUI.uss?fileID=7433441132597879392&amp;guid=a92d212420f38ad4aa8e74b277b681b0&amp;type=3#UpgradeUI" />
+    <ui:VisualElement name="BackGround" style="width: 100%; height: 100%; align-items: center; justify-content: center; background-color: rgba(31, 31, 31, 0.77);">
+        <ui:VisualElement name="UpgradeStatsPanel" style="width: 75%; height: 90%; align-items: center; background-color: rgb(248, 223, 172); border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; justify-content: center;">
+            <ui:VisualElement style="width: 100%; height: 80px; align-items: center; justify-content: center; margin-bottom: 15px; margin-top: 15px;">
+                <ui:Label text="99" display-tooltip-when-elided="true" name="UpgradePoint" style="color: rgb(0, 0, 0); -unity-text-align: upper-center; font-size: 35px; -unity-font-definition: none; -unity-font: url(&apos;project://database/Assets/Fonts/typo-grotesk-rounded-demo.otf?fileID=12800000&amp;guid=c3cb23489c6d0dc45bb911cbf46fb803&amp;type=3#typo-grotesk-rounded-demo&apos;); -unity-font-style: bold;" />
+                <ui:Label text="Remaining Points" display-tooltip-when-elided="true" style="-unity-font: url(&apos;project://database/Assets/Fonts/typo-grotesk-rounded-demo.otf?fileID=12800000&amp;guid=c3cb23489c6d0dc45bb911cbf46fb803&amp;type=3#typo-grotesk-rounded-demo&apos;); -unity-font-definition: none; color: rgb(0, 0, 0); font-size: 20px;" />
+            </ui:VisualElement>
+            <ui:VisualElement class="stats_label" style="align-items: center; width: 100%; height: 100%; padding-top: 15px; padding-bottom: 45px;">
+                <ui:VisualElement name="HealthStats" class="stats-container">
+                    <ui:Label text="HEALTH" display-tooltip-when-elided="true" class="stats-label" />
+                    <ui:ProgressBar value="0.5" name="HealthStatsProgressBar" high-value="1" class="stats-progressbar" style="width: 40%;" />
+                    <ui:Label text="999" display-tooltip-when-elided="true" name="HealthCount" class="stats-label stats-count" style="width: 50px;" />
+                    <ui:Button text="+" display-tooltip-when-elided="true" name="HealthUpgradeButton" />
+                </ui:VisualElement>
+                <ui:VisualElement name="ManaStats" class="stats-container" style="flex-direction: row; align-items: center; width: 100%; height: auto;">
+                    <ui:Label text="MANA" display-tooltip-when-elided="true" class="stats-label" />
+                    <ui:ProgressBar value="0.5" name="ManaStatsProgressBar" high-value="1" class="stats-progressbar" style="width: 40%;" />
+                    <ui:Label text="999" display-tooltip-when-elided="true" name="ManaCount" class="stats-label stats-count" style="color: rgb(0, 0, 0); -unity-text-align: upper-left; width: 50px;" />
+                    <ui:Button text="+" display-tooltip-when-elided="true" name="ManaUpgradeButton" />
+                </ui:VisualElement>
+                <ui:VisualElement name="DefenceStats" class="stats-container" style="flex-direction: row; align-items: center; width: 100%; height: auto;">
+                    <ui:Label text="DEFENCE" display-tooltip-when-elided="true" class="stats-label" />
+                    <ui:ProgressBar value="0.5" name="DefenceStatsProgressBar" high-value="1" class="stats-progressbar" style="width: 40%;" />
+                    <ui:Label text="999" display-tooltip-when-elided="true" name="DefenceCount" class="stats-label stats-count" style="color: rgb(0, 0, 0); -unity-text-align: upper-left; width: 50px;" />
+                    <ui:Button text="+" display-tooltip-when-elided="true" name="DefenceUpgradeButton" />
+                </ui:VisualElement>
+                <ui:VisualElement name="DamageStats" class="stats-container" style="flex-direction: row; align-items: center; width: 100%; height: auto;">
+                    <ui:Label text="DAMAGE" display-tooltip-when-elided="true" class="stats-label" />
+                    <ui:ProgressBar value="0.5" name="DamageStatsProgressBar" high-value="1" class="stats-progressbar" style="width: 40%;" />
+                    <ui:Label text="999" display-tooltip-when-elided="true" name="DamageCount" class="stats-label stats-count" style="color: rgb(0, 0, 0); -unity-text-align: upper-left; width: 50px;" />
+                    <ui:Button text="+" display-tooltip-when-elided="true" name="DamageUpgradeButton" />
+                </ui:VisualElement>
+                <ui:VisualElement name="CoolDownReductionStats" class="stats-container" style="flex-direction: row; align-items: center; width: 100%; height: auto;">
+                    <ui:Label text="COOLDOWN REDUCTION" display-tooltip-when-elided="true" class="stats-label" style="white-space: normal; -unity-paragraph-spacing: 0; word-spacing: 50px; width: 120px;" />
+                    <ui:ProgressBar value="0.5" name="CoolDownStatsProgressBar" high-value="1" class="stats-progressbar" style="width: 40%;" />
+                    <ui:Label text="999" display-tooltip-when-elided="true" name="CoolDownCount" class="stats-label stats-count" style="color: rgb(0, 0, 0); -unity-text-align: upper-left; width: 50px;" />
+                    <ui:Button text="+" display-tooltip-when-elided="true" name="CoolDownUpgradeButton" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Button text="Confirm" display-tooltip-when-elided="true" name="ConfirmButton" style="-unity-font-definition: none; -unity-font: url(&apos;project://database/Assets/Fonts/typo-grotesk-rounded-demo.otf?fileID=12800000&amp;guid=c3cb23489c6d0dc45bb911cbf46fb803&amp;type=3#typo-grotesk-rounded-demo&apos;); font-size: 30px; align-items: center; position: absolute; left: auto; bottom: -20px; width: auto; padding-top: 1px; padding-left: 10px; padding-right: 10px; background-color: rgb(165, 200, 107); justify-content: flex-start; transition-property: all; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
