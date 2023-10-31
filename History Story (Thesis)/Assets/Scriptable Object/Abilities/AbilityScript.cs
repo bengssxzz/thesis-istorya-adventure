@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AbilityScript : ScriptableObject
 {
+    public int ID => GetInstanceID();
     public Sprite skillIcon;
     public string abilityName;
     public float manaCost = 0.5f;
@@ -32,18 +33,6 @@ public class AbilityScript : ScriptableObject
     }
 
     public IEnumerator StartCoolDown(){
-        // var _timer = 0.0;
-
-        // while (_timer < 2.0)
-        // {
-        //     _timer += Time.deltaTime;
-        //     Debug.Log(_timer + " time");
-        //     yield return new WaitForEndOfFrame();
-        // }
-
-        // Debug.Log("DONEEEEEEE");
-
-
         isActivate = true;
         yield return new WaitForSeconds(cooldownTime);
         isActivate = false;
