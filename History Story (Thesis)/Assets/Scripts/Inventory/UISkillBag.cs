@@ -10,11 +10,13 @@ public class UISkillBag : MonoBehaviour
     [SerializeField] private RectTransform contentPanel;
     [SerializeField] private MouseFollower mouseFollower;
 
-    public event Action<int> OnDescriptionRequest, OnItemActionRequest, OnStartDragging;
-    public event Action<int, int> OnSwapItem;
+    public event Action<int> OnDescriptionRequest, OnItemActionRequest;
+    //public event Action<int, int> OnSwapItem;
+    public event Action<object, int, int> OnSwapItem;
+    public event Action<object, int> OnStartDragging;
+    //public event Action<object> OnStartDraggingItem, OnEndDraggingItem;
 
-    private List<UISkillItem> listOfSkillItem = new List<UISkillItem>();
-    private List<UISkillItem> listOfUsedSkillItem = new List<UISkillItem>();
+    private List<UISkillItem> listOfItemSlot = new List<UISkillItem>();
 
     private int currentDragIndex = -1;
 
@@ -36,7 +38,7 @@ public class UISkillBag : MonoBehaviour
         {
             var slot = Instantiate(prefabSkillItem);
             slot.transform.SetParent(contentPanel);
-            listOfSkillItem.Add(slot);
+            listOfItemSlot.Add(slot);
 
             slot.OnSkillBeginDrag += HandleBeginDrag;
             slot.OnSkillDroppedOn += HandleSwap;
@@ -46,53 +48,33 @@ public class UISkillBag : MonoBehaviour
         }
         DeselectAllItems();
     }
-
-    public void ResetAllItems()
-    {
-        foreach (var item in listOfSkillItem) //Remove all item in inventory first
-        {
-            item.ResetData();
-            item.Deselect();
-        }
-
-
-    }
-
     public void UpdateData(int index, Sprite sprite)
     {
         //If the item is in the list
-        if(listOfSkillItem.Count > index)
+        if(listOfItemSlot.Count > index)
         {
-            listOfSkillItem[index].SetData(sprite);
+            listOfItemSlot[index].SetData(sprite);
         }
     }
-
-    private void DeselectAllItems()
-    {
-        foreach (UISkillItem item in listOfSkillItem)
-        {
-            item.Deselect();
-        }
-    }
+    
 
     private void HandleSkillSelection(UISkillItem item)
     {
-        int index = listOfSkillItem.IndexOf(item);
+        int index = listOfItemSlot.IndexOf(item);
         if(index == -1) { return; }
 
         OnDescriptionRequest?.Invoke(index);
         DeselectAllItems();
         item.Select();
     }
-
     private void HandleBeginDrag(UISkillItem item)
     {
-        int index = listOfSkillItem.IndexOf(item);
+        int index = listOfItemSlot.IndexOf(item);
         if(index == -1) { return; }
 
         currentDragIndex = index;
         HandleSkillSelection(item);
-        OnStartDragging?.Invoke(index);
+        OnStartDragging?.Invoke(this, index);
     }
     private void HandleEndDrag(UISkillItem item)
     {
@@ -101,45 +83,59 @@ public class UISkillBag : MonoBehaviour
     }
     private void HandleSwap(UISkillItem item)
     {
-        int index = listOfSkillItem.IndexOf(item);
+        int index = listOfItemSlot.IndexOf(item);
         if(index == -1) { return; }
 
-        OnSwapItem?.Invoke(currentDragIndex, index);
-
+        //OnSwapItem?.Invoke(currentDragIndex, index);
+        OnSwapItem?.Invoke(this, currentDragIndex, index);
     }
-
-
 
     public void CreateDraggedItem(Sprite sprite)
     {
         mouseFollower.Toggle(true);
         mouseFollower.SetData(sprite);
     }
+    private void DeselectAllItems()
+    {
+        foreach (UISkillItem item in listOfItemSlot)
+        {
+            item.Deselect();
+        }
+    }
     public void ResetDraggedItem()
     {
         mouseFollower.Toggle(false);
         currentDragIndex = -1;
     }
-    
-    public void VisibilityToggle()
+    public void ResetAllItems()
     {
-        bool toggle = !gameObject.activeInHierarchy;
-
-        gameObject.SetActive(toggle);
-
-        if (gameObject.activeInHierarchy)
-            Show();
-        else
-            Hide();
+        foreach (var item in listOfItemSlot) //Remove all item in inventory first
+        {
+            item.ResetData();
+            item.Deselect();
+        }
     }
+
+
+    //public void VisibilityToggle()
+    //{
+    //    bool toggle = !gameObject.activeInHierarchy;
+
+    //    gameObject.SetActive(toggle);
+
+    //    if (gameObject.activeInHierarchy)
+    //        Show();
+    //    else
+    //        Hide();
+    //}
     public void Show()
     {
-        //gameObject.SetActive(true);
+        gameObject.SetActive(true);
         DeselectAllItems();
     }
     public void Hide()
     {
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
         ResetDraggedItem();
         
     }

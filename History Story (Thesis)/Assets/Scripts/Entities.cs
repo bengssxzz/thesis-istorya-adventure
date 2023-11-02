@@ -17,7 +17,7 @@ public class Entities : MonoBehaviour, IDamageable
     private EntityStatistics myStats;
     public EntityStatistics GetEntityStats { get { return myStats; } }
 
-    protected AbilityHolder abilityHolder;
+    public AbilityHolder abilityHolder;
 
     private float _manaGenerateTime;
 

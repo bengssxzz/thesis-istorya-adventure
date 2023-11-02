@@ -10,6 +10,11 @@ public class AbilityHolder
     private Entities entity;
 
     private AbilityScript[] listOfAbilities;
+    public AbilityScript[] ListOfAbilities
+    {
+        get { return listOfAbilities; }
+        set { listOfAbilities = value; }
+    }
 
     public AbilityHolder(Entities _entity)
     {
@@ -31,7 +36,7 @@ public class AbilityHolder
         }
 
     }
-    private bool CanUseMana(float manaCost) //Check if there's enough mana
+    private bool CheckMana(float manaCost) //Check if there's enough mana
     {
         if (entity.GetEntityStats.GetCurrentMana >= manaCost)
         {
@@ -55,7 +60,7 @@ public class AbilityHolder
 
             if (!ability.IsActivate)
             {
-                if (CanUseMana(ability.manaCost))
+                if (CheckMana(ability.manaCost))
                 {
                     //If have enough mana, Use ability
                     entity.StartCoroutine(listOfAbilities[index].Trigger(entity.gameObject)); //Trigger the ability

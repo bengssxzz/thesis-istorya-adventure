@@ -6,14 +6,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UISkillItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
+public class UISkillItem : Slot
 {
-    [SerializeField] private Image skillImage;
     [SerializeField] private GameObject selectedSkill;
 
     public event Action<UISkillItem> OnSkillClicked, OnSkillDroppedOn, OnSkillBeginDrag, OnSkillEndDrag, OnRightMouseBtnClick;
 
-    private bool isEmpty = true;
 
 
 
@@ -32,20 +30,7 @@ public class UISkillItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         selectedSkill.SetActive(false);
     }
 
-    public void ResetData() //Reset item
-    {
-        skillImage.gameObject.SetActive(false);
-        isEmpty = true;
-    }
-
-    public void SetData(Sprite sprite)
-    {
-        skillImage.gameObject.SetActive(true);
-        skillImage.sprite = sprite;
-        isEmpty = false;
-    }
-
-    public void OnPointerClick(PointerEventData pointerData)
+    public override void OnPointerClick(PointerEventData pointerData)
     {
         if (pointerData.button == PointerEventData.InputButton.Right)
         {
@@ -56,8 +41,7 @@ public class UISkillItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
             OnSkillClicked?.Invoke(this);
         }
     }
-
-    public void OnBeginDrag(PointerEventData eventData)
+    public override void OnBeginDrag(PointerEventData eventData)
     {
         if (isEmpty)
         {
@@ -65,18 +49,15 @@ public class UISkillItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         }
         OnSkillBeginDrag?.Invoke(this);
     }
-
-    public void OnEndDrag(PointerEventData eventData)
+    public override void OnEndDrag(PointerEventData eventData)
     {
         OnSkillEndDrag?.Invoke(this);
     }
-
-    public void OnDrop(PointerEventData eventData)
+    public override void OnDrop(PointerEventData eventData)
     {
         OnSkillDroppedOn?.Invoke(this);
     }
-
-    public void OnDrag(PointerEventData eventData)
+    public override void OnDrag(PointerEventData eventData)
     {
         //"IDragHandler" is need to work the interface of "IBeginHandler" 
     }

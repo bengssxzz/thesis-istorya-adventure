@@ -3,15 +3,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-
-
-public class UISkillSlot : MonoBehaviour, IDropHandler
+public class UISkillSlot : Slot
 {
-    public event Action<UISkillItem> onDropItem;
+    public event Action<UISkillSlot> OnSkillClicked, OnSkillDroppedOn, OnSkillBeginDrag, OnSkillEndDrag;
+    
 
-    public void OnDrop(PointerEventData eventData)
+
+    public override void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("OnDrop");
+        if (isEmpty) { return; }
+
+        OnSkillClicked?.Invoke(this);
     }
+    public override void OnBeginDrag(PointerEventData eventData)
+    {
+        if (isEmpty) { return; }
+
+        OnSkillBeginDrag?.Invoke(this);
+    }
+    public override void OnDrag(PointerEventData eventData)
+    {
+        //"IDragHandler" is need to work the interface of "IBeginHandler" 
+    }
+    public override void OnEndDrag(PointerEventData eventData)
+    {
+        OnSkillEndDrag?.Invoke(this);
+    }
+    public override void OnDrop(PointerEventData eventData)
+    {
+        OnSkillDroppedOn?.Invoke(this);
+    }
+
+
+
+
+
+
+
+
+
+
 }

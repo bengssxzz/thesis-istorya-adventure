@@ -21,6 +21,11 @@ public class InventorySO : ScriptableObject
         }
     }
 
+    public InventorySkillItem GetItemAt(int itemIndex)
+    {
+        return inventorySkillItems[itemIndex];
+    }
+
     public void AddItem(AbilityScript abilityScript)
     {
         for (int i = 0; i < inventorySkillItems.Count; i++)
@@ -34,6 +39,32 @@ public class InventorySO : ScriptableObject
                 return;
             }
         }
+        InformAboutChange();
+    }
+    public void AddItemAt(int index, AbilityScript abilityScript)
+    {
+        if(inventorySkillItems.Count > index)
+        {
+            inventorySkillItems[index] = new InventorySkillItem
+            {
+                abilityItem = abilityScript
+            };
+        }
+        InformAboutChange();
+    }
+
+    public void RemoveItemAt(int index)
+    {
+        inventorySkillItems[index] = InventorySkillItem.GetEmptyItem();
+        InformAboutChange();
+    }
+
+    public void SwapItem(int itemIndex1, int itemIndex2)
+    {
+        InventorySkillItem item1 = inventorySkillItems[itemIndex1]; //Save the 1st item
+        inventorySkillItems[itemIndex1] = inventorySkillItems[itemIndex2];
+        inventorySkillItems[itemIndex2] = item1;
+        InformAboutChange();
     }
 
     public Dictionary<int, InventorySkillItem> GetCurrentInventoryState()
@@ -49,34 +80,23 @@ public class InventorySO : ScriptableObject
         return returnValue;
     }
 
-    public void SwapItem(int itemIndex1, int itemIndex2)
-    {
-        InventorySkillItem item1 = inventorySkillItems[itemIndex1]; //Save the 1st item
-        inventorySkillItems[itemIndex1] = inventorySkillItems[itemIndex2];
-        inventorySkillItems[itemIndex2] = item1;
-        InformAboutChange();
-    }
 
     private void InformAboutChange()
     {
         OnInventoryUpdated?.Invoke(GetCurrentInventoryState());
     }
 
-    public InventorySkillItem GetItemAt(int itemIndex)
-    {
-        return inventorySkillItems[itemIndex];
-    }
+    
 }
 
-[System.Serializable]
-public struct InventorySkillItem
-{
-    public AbilityScript abilityItem;
+//[System.Serializable]
+//public struct InventorySkillItem
+//{
+//    public AbilityScript abilityItem;
+//    public bool isEmpty => abilityItem == null;
 
-    public bool isEmpty => abilityItem == null;
-
-    public static InventorySkillItem GetEmptyItem() => new InventorySkillItem
-    {
-        abilityItem = null
-    };
-}
+//    public static InventorySkillItem GetEmptyItem() => new InventorySkillItem
+//    {
+//        abilityItem = null
+//    };
+//}
