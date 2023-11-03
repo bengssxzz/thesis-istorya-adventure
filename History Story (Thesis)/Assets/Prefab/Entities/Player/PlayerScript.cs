@@ -88,6 +88,6 @@ public class PlayerScript : Entities
 
     protected override void MovementBehaviour()
     {
-        rb.velocity = move_dir.normalized * GetEntityStats.GetCurrentMoveSpeed * Time.deltaTime;
+        rb.velocity = move_dir.normalized * GetEntityStats.currentMoveSpeed * Time.deltaTime;
     }
 }

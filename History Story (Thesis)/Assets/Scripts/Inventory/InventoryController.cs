@@ -36,7 +36,7 @@ public class InventoryController : MonoBehaviour
         UpdateSkillBagUI();
     }
 
-    private void PrepareInventoryData()
+    private void PrepareInventoryData() //Prepare the data of the inventory
     {
         //Inventory
         inventoryData.Initialize();
@@ -65,11 +65,10 @@ public class InventoryController : MonoBehaviour
         equippedSkillUI.OnSwapItem += HandleSwappingItem;
         equippedSkillUI.OnStartDragging += HandleDragging;
     }
-    private void PrepareAbilityData()
+    private void PrepareAbilityData() //Prepare the data of the equipped abilities
     {
         for (int i = 0; i < entity.abilityHolder.ListOfAbilities.Length; i++)
         {
-            Debug.Log(entity.abilityHolder.ListOfAbilities.Length);
             AbilityScript ability = entity.abilityHolder.ListOfAbilities[i];
             listOfEquippedAbility.Add(new InventorySkillItem { abilityItem = ability });
         }
@@ -93,7 +92,7 @@ public class InventoryController : MonoBehaviour
 
     
 
-    private void UpdatePlayerAbilityEquipped()
+    private void UpdatePlayerAbilityEquipped() //Update the abilities of the player
     {
         List<AbilityScript> abilities = new List<AbilityScript>();
         foreach (var item in listOfEquippedAbility)
@@ -104,7 +103,7 @@ public class InventoryController : MonoBehaviour
 
         //entity.abilityHolder.ListOfAbilities = listOfEquippedAbility.ToArray();
     }
-    private void UpdateSkillBagUI()
+    private void UpdateSkillBagUI() //Update the UI of the equipped skill panel
     {
         equippedSkillUI.ResetAllSkillSlots();
         for (int i = 0; i < listOfEquippedAbility.Count; i++)
@@ -120,7 +119,7 @@ public class InventoryController : MonoBehaviour
             //equippedSkillUI.UpdateData(i, abilityData.skillIcon);
         }
     }
-    private void UpdateInventoryUI(Dictionary<int, InventorySkillItem> inventoryState)
+    private void UpdateInventoryUI(Dictionary<int, InventorySkillItem> inventoryState) //Update the UI of the inventory panel
     {
         inventoryUI.ResetAllItems();
         foreach (var item in inventoryState)
@@ -129,21 +128,20 @@ public class InventoryController : MonoBehaviour
         }
     }
     
-    private void AddEquippedItemAt(int index, AbilityScript ability)
+    private void AddEquippedItemAt(int index, AbilityScript ability) //Add ability item at (index) in listOfEquippedAbility
     {
-        print(index + " <<<HAWHDA");
         listOfEquippedAbility[index] = new InventorySkillItem { abilityItem = ability };
         UpdateSkillBagUI();
         //listOfEquippedAbility[index] = ability;
     }
-    private void RemoveEquippedSkillAt(int index)
+    private void RemoveEquippedSkillAt(int index) //Remove ability item at (index) in listOfEquippedAbility
     {
         listOfEquippedAbility[index] = InventorySkillItem.GetEmptyItem();
         UpdateSkillBagUI();
     }
 
 
-    private void HandleDragging(object scriptItem, int itemIndex)
+    private void HandleDragging(object scriptItem, int itemIndex) //Create the visual of the dragging slot
     {
         var script = scriptItem.GetType();
         if (script.IsClass)
@@ -167,40 +165,35 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    private void HandleSwapItem(int itemIndex1, int itemIndex2)
-    {
-        //Detect if the dropped item is from EquippedBagSkill
+
+    //private void HandleSwapItem(int itemIndex1, int itemIndex2)
+    //{
+    //    //Detect if the dropped item is from EquippedBagSkill
 
 
-        inventoryData.SwapItem(itemIndex1, itemIndex2);
-    }
-    private void HandleEquipSwapItem(int skillIndex1, int skillIndex2)
-    {
-        //Detect if the dropped item is from UISkillBag
+    //    inventoryData.SwapItem(itemIndex1, itemIndex2);
+    //}
+    //private void HandleEquipSwapItem(int skillIndex1, int skillIndex2)
+    //{
+    //    //Detect if the dropped item is from UISkillBag
 
 
-        var item1 = listOfEquippedAbility[skillIndex1]; //Save the 1st item
-        listOfEquippedAbility[skillIndex1] = listOfEquippedAbility[skillIndex2];
-        listOfEquippedAbility[skillIndex2] = item1;
-        UpdateSkillBagUI();
-    }
+    //    var item1 = listOfEquippedAbility[skillIndex1]; //Save the 1st item
+    //    listOfEquippedAbility[skillIndex1] = listOfEquippedAbility[skillIndex2];
+    //    listOfEquippedAbility[skillIndex2] = item1;
+    //    UpdateSkillBagUI();
+    //}
 
     //Combined 
-    private void HandleSwappingItem(object scriptItem, int itemIndex1, int itemIndex2)
+    private void HandleSwappingItem(object scriptItem, int itemIndex1, int itemIndex2) //Swap the data of inventory and equipped abilities
     {
         if (!scriptItem.GetType().IsClass) { return; }
-
-        //lastDraggingItem = scriptItem;
 
         var _firstItem = firstDraggingItem.GetType();
         var _secondItem = scriptItem.GetType();
 
-        Debug.Log("First Drag Item " + firstDraggingItem.ToString());
-        Debug.Log("Second Drag Item " + _secondItem.FullName);
-
         if(_firstItem == _secondItem)
         {
-            Debug.Log("Bool 1st: " + (_firstItem == typeof(UISkillBag)) + ":: 2nd: " + (_secondItem == typeof(UISkillBag)));
             if((_firstItem == typeof(UISkillBag)) && (_secondItem == typeof(UISkillBag)))
             {
                 inventoryData.SwapItem(itemIndex1, itemIndex2);
@@ -215,7 +208,6 @@ public class InventoryController : MonoBehaviour
         }
         else
         {
-            Debug.Log("1st: " + firstDraggedItemIndex + " 2nd: " + itemIndex2);
             if(_firstItem == typeof(UISkillBag))
             {
                 //If the 1st dragged slot is from the UISkillBag
@@ -289,24 +281,14 @@ public class InventoryController : MonoBehaviour
                     inventoryUI.UpdateData(item.Key, item.Value.abilityItem.skillIcon);
                 }
 
-                inventoryUI.Show();
                 UpdateSkillBagUI();
+                inventoryUI.Show();
             }
             else
             {
                 UpdatePlayerAbilityEquipped();
                 inventoryUI.Hide();
             }
-
-
-            //inventoryUI.VisibilityToggle();
-            //if (inventoryUI.isActiveAndEnabled)
-            //{
-            //    foreach (var item in inventoryData.GetCurrentInventoryState())
-            //    {
-            //        inventoryUI.UpdateData(item.Key, item.Value.abilityItem.skillIcon);
-            //    }
-            //}
         }
     }
 

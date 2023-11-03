@@ -14,15 +14,15 @@ public class MoveSpeedAbility : AbilityScript
         _entity = entity.GetComponent<Entities>();
 
         //Save normal speed
-        normalSpeed = _entity.GetEntityStats.GetCurrentMoveSpeed;
+        normalSpeed = _entity.GetEntityStats.currentMoveSpeed;
 
         //Activate movement speed
-        _entity.GetEntityStats.ModifiedMoveSpeed = normalSpeed + addMoveSpeed;
+        _entity.GetEntityStats.ModifiedMoveSpeed(normalSpeed + addMoveSpeed);
     }
 
     protected override void Deactivate(GameObject entity)
     {
         //Back to normal speed
-        _entity.GetEntityStats.ModifiedMoveSpeed = normalSpeed;
+        _entity.GetEntityStats.ModifiedMoveSpeed(normalSpeed);
     }
 }

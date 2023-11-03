@@ -77,15 +77,15 @@ public class Entities : MonoBehaviour, IDamageable
     }
     public virtual void TakeDamage(float damage) // Entity take damage behaviour
     {
-        if(myStats.GetCurrentHealth > 0)
+        if(myStats.currentHealth > 0)
         {
             // Take damage if the health is more than zero
             Debug.Log("Ouch! " + damage.ToString());
 
-            myStats.GetCurrentHealth -= Mathf.RoundToInt(damage);
-            OnHealthChanged?.Invoke(myStats.GetCurrentHealth / myStats.GetMaxHealth);
+            myStats.currentHealth -= Mathf.RoundToInt(damage);
+            OnHealthChanged?.Invoke(myStats.currentHealth / myStats.currentHealth);
 
-            if (myStats.GetCurrentHealth <= 0)
+            if (myStats.currentHealth <= 0)
             {
                 // Do this is the health is zero
                 Death(); 
@@ -98,20 +98,20 @@ public class Entities : MonoBehaviour, IDamageable
     }
     public void GenerateHealth(float amount)
     {
-        myStats.GetCurrentHealth -= Mathf.RoundToInt(amount);
-        OnHealthChanged?.Invoke(myStats.GetCurrentHealth / myStats.GetMaxHealth);
+        myStats.currentHealth -= Mathf.RoundToInt(amount);
+        OnHealthChanged?.Invoke(myStats.currentHealth / myStats.currentHealth);
     }
    
     private void ManaGenerate(){
         //If current mana is not max, then generate mana
-        if(myStats.GetCurrentMana < myStats.GetMaxMana)
+        if(myStats.currentMana < myStats.maxMana)
         {
             if (Time.time > _manaGenerateTime)
             {
-                _manaGenerateTime = Time.time + 1 / myStats.manaGenerateTime;
+                _manaGenerateTime = Time.time + 1 / myStats.manaRegenSpeed;
                 
-                myStats.GetCurrentMana += myStats.manaGenerateAmount;
-                OnManaChanged?.Invoke(myStats.GetCurrentMana/myStats.GetMaxMana);
+                myStats.currentMana += myStats.manaAmountRegen;
+                OnManaChanged?.Invoke(myStats.currentMana / myStats.maxMana);
             }
 
         }

@@ -12,20 +12,24 @@ public enum GameDifficulties{
 }
 public class GameManager : MonoBehaviour
 {
-    public static GameManager iGameManager;
+    public static GameManager instance;
 
     private GameDifficulties gameDifficult;
     public GameDifficulties SetDifficulties{
         set{gameDifficult = value;}
     }
-    [SerializeField] private UpgradeStatsUI upgradeStatsUI;
+
+    [SerializeField] private UpgradeStatsSystem upgradeStatsUI;
+
+    private bool isPause = false;
+    public bool IsPause { get { return isPause; } }
 
     void Awake()
     {
         //Instance
-        if (iGameManager == null)
+        if (instance == null)
         {
-            iGameManager = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else { DestroyImmediate(gameObject); }
@@ -42,6 +46,20 @@ public class GameManager : MonoBehaviour
 
     public void ChangeScene(int index){
         SceneManager.LoadScene(index);
+    }
+
+    public void Pause(bool pause)
+    {
+        if (pause)
+        {
+            Time.timeScale = 0;
+            isPause = true;
+        }
+        else
+        {
+            Time.timeScale = 1;
+            isPause = false;
+        }
     }
 
     void SaveGame(){

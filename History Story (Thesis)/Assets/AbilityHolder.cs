@@ -38,10 +38,10 @@ public class AbilityHolder
     }
     private bool CheckMana(float manaCost) //Check if there's enough mana
     {
-        if (entity.GetEntityStats.GetCurrentMana >= manaCost)
+        if (entity.GetEntityStats.currentMana >= manaCost)
         {
-            entity.GetEntityStats.GetCurrentMana -= manaCost;
-            entity.OnManaChanged?.Invoke(entity.GetEntityStats.GetCurrentMana / entity.GetEntityStats.GetMaxMana);
+            entity.GetEntityStats.currentMana -= manaCost;
+            entity.OnManaChanged?.Invoke(entity.GetEntityStats.currentMana / entity.GetEntityStats.maxMana);
             return true;
         }
         return false;

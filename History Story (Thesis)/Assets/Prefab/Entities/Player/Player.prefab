@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 3998716329059780026}
   - component: {fileID: 3998716329059780021}
   - component: {fileID: 6090721113678562371}
+  - component: {fileID: 2466266433387443976}
+  - component: {fileID: 2055140318358690957}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -254,8 +256,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8788c5f42cbdf545a04b8e6d12b0721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_health: 100
-  movement_speed: 50
+  entityStatsSO: {fileID: 0}
+  holder: {fileID: 0}
+  canFire: 1
 --- !u!114 &6090721113678562371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,8 +273,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holder: {fileID: 3998716328705905447}
   bulletPrefab: {fileID: 0}
+  bulletDamage: 10
   bulletSpeed: 10
   fireRate: 0
+--- !u!114 &2466266433387443976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998716329059780016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9decfd4c4b68f2f488db71b8e92e7e8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 1
+  myEnemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  raycastCanSee:
+    serializedVersion: 2
+    m_Bits: 2176
+  detectRadius: 1.75
+--- !u!114 &2055140318358690957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998716329059780016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f6072a54e8e8c4692413ca5e1688a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryUI: {fileID: 0}
+  equippedSkillUI: {fileID: 0}
+  inventoryData: {fileID: 11400000, guid: e028797fed48b8440bad9ac931e4cf2a, type: 2}
+  initialItems:
+  - abilityItem: {fileID: 11400000, guid: ce2131ab500c5ad4798dd53e06246972, type: 2}
+  - abilityItem: {fileID: 0}
+  - abilityItem: {fileID: 11400000, guid: 928b829db78e82949a65bf54f2b1945d, type: 2}
+  listOfEquippedAbility: []
 --- !u!1 &3998716330306596576
 GameObject:
   m_ObjectHideFlags: 0

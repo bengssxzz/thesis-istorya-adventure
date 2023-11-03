@@ -68,7 +68,7 @@ public class Enemy : Entities
             return;
         }
         targetInRange = false;
-        rb.velocity = move_dir.normalized * GetEntityStats.GetCurrentMoveSpeed * Time.deltaTime;
+        rb.velocity = move_dir.normalized * GetEntityStats.currentMoveSpeed * Time.deltaTime;
     }
 
     protected virtual void FleeToMyEnemy()
@@ -80,7 +80,7 @@ public class Enemy : Entities
         move_dir = targetEnemy.position - transform.position;
         if (Vector2.Distance(transform.position, targetEnemy.position) < FleeDistance)
         {
-            rb.velocity = (move_dir.normalized * -GetEntityStats.GetCurrentMoveSpeed) * Time.deltaTime;
+            rb.velocity = (move_dir.normalized * -GetEntityStats.currentMoveSpeed) * Time.deltaTime;
         }
         
     }

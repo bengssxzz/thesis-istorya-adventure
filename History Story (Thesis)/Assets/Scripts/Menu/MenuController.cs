@@ -31,8 +31,8 @@ public class MenuController : MonoBehaviour
     }
     
     public void SetDifficulties(int difficultIndex){
-        GameManager.iGameManager.SetDifficulties = (GameDifficulties)difficultIndex;
-        GameManager.iGameManager.ChangeScene(1);
+        GameManager.instance.SetDifficulties = (GameDifficulties)difficultIndex;
+        GameManager.instance.ChangeScene(1);
     }
     public void MenuStateChange(int index){
         foreach (var menu in menus)

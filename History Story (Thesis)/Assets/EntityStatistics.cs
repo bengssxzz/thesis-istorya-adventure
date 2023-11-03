@@ -4,55 +4,61 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
+
+public enum Stats
+{
+    Health,
+    Mana,
+    Defence,
+    MoveSpeed,
+    AttackSpeed,
+    CriticalChance,
+    CriticalDamage,
+    Dodging,
+    AttackField,
+    LifeSteal,
+    ManaRegenAmount,
+    ManaRegenTime
+}
+public enum CategoryStats
+{
+    MainStats,
+    Speed,
+    Luck,
+    Sight,
+    Regeneration
+}
+
 [System.Serializable]
 public class EntityStatistics
 {
-    //Health stats
-    [SerializeField] private int maxHealth;
-    private int currentHealth;
-    public int UpgradeHealth { set { maxHealth += value; } }
-    public int GetMaxHealth { get { return maxHealth; } }
-    public int GetCurrentHealth
-    {
-        get { return currentHealth; }
-        set
-        {
-            currentHealth = Mathf.Clamp(value, 0, maxHealth);
-        }
-    }
+    //Main Stats
+    public float maxHealth { get; private set; }
+    public float currentHealth { get; set; }
+    public float maxMana { get; private set; }
+    public float currentMana { get; set; }
+    public int defence { get; private set; }
 
-    //Mana stats
-    [SerializeField] private float maxMana;
-    private float currentMana;
-    public int UpgradeMana { set { maxMana += value; } }
-    public float GetMaxMana { get { return maxMana; } }
-    public float GetCurrentMana
-    {
-        get { return currentMana; }
-        set
-        {
-            currentMana = Mathf.Clamp(value, 0, maxMana);
-        }
-    }
+    //About Speed
+    public float maxMoveSpeed { get; private set; }
+    public float currentMoveSpeed { get; set; }
+    public float maxAttackSpeed { get; private set; }
 
-    //Move speed stats
-    [SerializeField] private float maxMoveSpeed;
-    private float currentMoveSpeed;
-    public float GetMaxMoveSpeed { get { return maxMoveSpeed; } }
-    public float GetCurrentMoveSpeed { get { return currentMoveSpeed; } }
-    public float ModifiedMoveSpeed { set { currentMoveSpeed = value; } }
+    //Luck
+    public int criticalDamage { get; private set; }
+    public int dodgeChance { get; private set; }
 
 
-    public float manaGenerateAmount;
-    public int UpgradeManaGenerateAmount { set { manaGenerateAmount += value; } }
-    public float manaGenerateTime;
-    public int UpgradeManaGenerateTime { set { manaGenerateTime += value; } }
-    public float defence;
-    public int UpgradeDefence { set { defence += value; } }
-    public float baseDamage;
-    public int UpgradeBaseDamage { set { baseDamage += value; } }
-    public float cooldownReduction;
-    public int UpgradeCooldownReduction{ set { cooldownReduction += value; } }
+    //Sight
+    public int criticalChance { get; private set; }
+    public int attackField { get; private set; }
+
+    //Regeneration
+    public int lifeSteal { get; private set; }
+    public int manaAmountRegen { get; private set; }
+    public float manaRegenSpeed { get; private set; }
+
+
 
     public EntityStatistics(EntityStatsSO entityStatsSO){
         maxHealth = entityStatsSO.maxHealth;
@@ -62,11 +68,92 @@ public class EntityStatistics
         maxMoveSpeed = entityStatsSO.maxMoveSpeed;
         currentMoveSpeed = maxMoveSpeed;
 
-        manaGenerateAmount = entityStatsSO.manaGenerateAmount;
-        manaGenerateTime = entityStatsSO.manaGenerateTime;
-        defence = entityStatsSO.defence;
-        baseDamage = entityStatsSO.baseDamage;
-        cooldownReduction = entityStatsSO.cooldownReduction;
+        //manaGenerateAmount = entityStatsSO.manaGenerateAmount;
+        //manaGenerateTime = entityStatsSO.manaGenerateTime;
+        //defence = entityStatsSO.defence;
+        //baseDamage = entityStatsSO.baseDamage;
+        //cooldownReduction = entityStatsSO.cooldownReduction;
 
     }
+
+    public void ModifiedMoveSpeed(float amount)
+    {
+        currentMoveSpeed = amount;
+    }
+    public void UpgradeCategoryStats(CategoryStats categoryStats)
+    {
+        switch (categoryStats)
+        {
+            case CategoryStats.MainStats:
+                maxHealth += 10;
+                maxMana += 10;
+                defence += 2;
+                break;
+            case CategoryStats.Speed:
+                maxMoveSpeed += 2;
+                maxAttackSpeed += 2;
+                break;
+            case CategoryStats.Luck:
+                criticalDamage += 2;
+                dodgeChance += 10;
+                break;
+            case CategoryStats.Sight:
+                criticalChance += 10;
+                attackField += 5;
+                break;
+            case CategoryStats.Regeneration:
+                lifeSteal += 5;
+                manaAmountRegen += 10;
+                manaRegenSpeed -= 0.2f;
+                break;
+            default:
+                Debug.LogWarning("Upgrade stats is undefined");
+                break;
+        }
+    }
+
+
+
+    public void UpgradeMaxHealth(int amount)
+    {
+        maxHealth += amount;
+        currentHealth = maxHealth;
+    }
+    public void UpgradeMaxMana(int amount)
+    {
+        maxMana += amount;
+        currentMana = maxMana;
+    }
+    public void UpgradeDefence(int amount)
+    {
+        defence += amount;
+    }
+    public void UpgradeLuck(int amount)
+    {
+
+    }
+    public void UpgradeMoveSpeed(int amount)
+    {
+
+    }
+    public void UpgradeAttackSpeed(int amount)
+    {
+
+    }
+    public void UpgradeSight(int amount)
+    {
+
+    }
+    public void UpgradeGenerate(int amount)
+    {
+
+    }
+    public void UpgradeSkillCooldown(int amount)
+    {
+
+    }
+
+
+
+
 }
