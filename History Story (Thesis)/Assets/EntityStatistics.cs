@@ -43,6 +43,7 @@ public class EntityStatistics
     public float maxMoveSpeed { get; private set; }
     public float currentMoveSpeed { get; set; }
     public float maxAttackSpeed { get; private set; }
+    public float currentAttackSpeed { get; set; }
 
     //Luck
     public int criticalDamage { get; private set; }
@@ -55,8 +56,8 @@ public class EntityStatistics
 
     //Regeneration
     public int lifeSteal { get; private set; }
-    public int manaAmountRegen { get; private set; }
-    public float manaRegenSpeed { get; private set; }
+    public float manaAmountRegen { get; private set; }
+    public float manaRegenSpeed { get; private set; } //0.5 lowest
 
 
 
@@ -96,8 +97,8 @@ public class EntityStatistics
                 break;
             case CategoryStats.Regeneration:
                 lifeSteal += 5;
-                manaAmountRegen += 10;
-                manaRegenSpeed -= 0.02f;
+                manaAmountRegen += 1.25f;
+                manaRegenSpeed += 0.02f;
                 break;
             default:
                 Debug.LogWarning("Upgrade stats is undefined");

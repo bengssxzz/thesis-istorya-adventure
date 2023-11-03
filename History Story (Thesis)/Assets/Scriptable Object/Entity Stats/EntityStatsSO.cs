@@ -6,14 +6,19 @@ using UnityEngine;
 public class EntityStatsSO : ScriptableObject
 {
     public int defaultLevel = 1;
-    public int maxHealth = 100;
-    public float maxMana = 100;
-    public float maxMoveSpeed = 50;
-    public float manaGenerateAmount = 5;
-    public float manaGenerateTime = 2;
-    public float defence;
-    public float baseDamage = 10;
-    public float cooldownReduction;
+    public int maxHealth= 100;
+    public int maxMana= 100;
+    public int defence= 1;
+    public float maxMoveSpeed= 30;
+    public float attackSpeed = 1;
+    public float criticalChance = 0;
+    public int criticalDamage= 0;
+    public float dodgingChance = 0;
+    public float attackField = 0;
+    public float lifeSteal = 0;
+    public float manaRegenAmount = 0;
+    public float manaRegenTime = 0.15f;
 
     public AbilityScript[] defaultAbilities;
+
 }

@@ -5,11 +5,14 @@ using Unity.Mathematics;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using ThesisLibrary;
 
 public class Entities : MonoBehaviour, IDamageable
 {
     public Action<float> OnHealthChanged;
     public Action<float> OnManaChanged;
+
+    protected Timer timer = new Timer();
 
     [SerializeField] private EntityStatsSO entityStatsSO;
     public EntityStatsSO GetEntityStatsSO { get { return entityStatsSO; } }
@@ -17,8 +20,8 @@ public class Entities : MonoBehaviour, IDamageable
     private LevelSystem levelSystem;
     public LevelSystem GetLevelSystem { get { return levelSystem; } }
 
-    private EntityStatistics myStats;
-    public EntityStatistics GetEntityStats { get { return myStats; } }
+    private EntityStatistics entityStats;
+    public EntityStatistics GetEntityStats { get { return entityStats; } }
 
     public AbilityHolder abilityHolder;
 
@@ -41,7 +44,7 @@ public class Entities : MonoBehaviour, IDamageable
     private void Awake()
     {
         levelSystem = new LevelSystem(entityStatsSO);
-        myStats = new EntityStatistics(entityStatsSO);
+        entityStats = new EntityStatistics(entityStatsSO);
         abilityHolder = new AbilityHolder(this);
     }
 
@@ -83,15 +86,15 @@ public class Entities : MonoBehaviour, IDamageable
     }
     public virtual void TakeDamage(float damage) // Entity take damage behaviour
     {
-        if(myStats.currentHealth > 0)
+        if(entityStats.currentHealth > 0)
         {
             // Take damage if the health is more than zero
             Debug.Log("Ouch! " + damage.ToString());
 
-            myStats.currentHealth -= Mathf.RoundToInt(damage);
-            OnHealthChanged?.Invoke(myStats.currentHealth / myStats.currentHealth);
+            entityStats.currentHealth -= Mathf.RoundToInt(damage);
+            OnHealthChanged?.Invoke(entityStats.currentHealth / entityStats.currentHealth);
 
-            if (myStats.currentHealth <= 0)
+            if (entityStats.currentHealth <= 0)
             {
                 // Do this is the health is zero
                 Death(); 
@@ -104,21 +107,28 @@ public class Entities : MonoBehaviour, IDamageable
     }
     public void GenerateHealth(float amount)
     {
-        myStats.currentHealth -= Mathf.RoundToInt(amount);
-        OnHealthChanged?.Invoke(myStats.currentHealth / myStats.currentHealth);
+        entityStats.currentHealth -= Mathf.RoundToInt(amount);
+        OnHealthChanged?.Invoke(entityStats.currentHealth / entityStats.currentHealth);
     }
    
     private void ManaGenerate(){
         //If current mana is not max, then generate mana
-        if(myStats.currentMana < myStats.maxMana)
+
+        if(entityStats.currentMana < entityStats.maxMana)
         {
-            if (Time.time > _manaGenerateTime)
+            if (timer.TimerNode(entityStats.manaRegenSpeed)) //Timer node
             {
-                _manaGenerateTime = Time.time + 1 / myStats.manaRegenSpeed;
-                
-                myStats.currentMana += myStats.manaAmountRegen;
-                OnManaChanged?.Invoke(myStats.currentMana / myStats.maxMana);
+                entityStats.currentMana += entityStats.manaAmountRegen;
+                OnManaChanged?.Invoke(entityStats.currentMana / entityStats.maxMana);
+                Debug.Log("Generate Mana");
             }
+            //if (Time.time > _manaGenerateTime)
+            //{
+            //    _manaGenerateTime = Time.time + 1 / entityStats.manaRegenSpeed;
+                
+            //    entityStats.currentMana += entityStats.manaAmountRegen;
+            //    OnManaChanged?.Invoke(entityStats.currentMana / entityStats.maxMana);
+            //}
 
         }
     }

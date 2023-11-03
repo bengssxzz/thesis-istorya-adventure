@@ -12,14 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23bd5ac5d328a5049ab990c2c52f291f, type: 3}
   m_Name: Player Stats
   m_EditorClassIdentifier: 
+  defaultLevel: 1
   maxHealth: 200
   maxMana: 100
-  maxMoveSpeed: 50
-  manaGenerateAmount: 2
-  manaGenerateTime: 2
   defence: 0
-  baseDamage: 10
-  cooldownReduction: 0
+  maxMoveSpeed: 50
+  attackSpeed: 1
+  criticalChance: 0
+  criticalDamage: 0
+  dodgingChance: 0
+  attackField: 0
+  lifeSteal: 0
+  manaRegenAmount: 5
+  manaRegenTime: 1
   defaultAbilities:
   - {fileID: 11400000, guid: ce2131ab500c5ad4798dd53e06246972, type: 2}
   - {fileID: 0}

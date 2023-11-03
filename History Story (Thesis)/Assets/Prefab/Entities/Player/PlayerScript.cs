@@ -18,7 +18,7 @@ public class PlayerScript : Entities
     private bool facingLeft = false;
 
     
-    private TriggerFire testFiring = new TriggerFire();
+    
 
 
 
@@ -78,7 +78,7 @@ public class PlayerScript : Entities
 
         if (canFire)
         {
-            if (canSeeEnemy && testFiring.isFiring(holderData.GetFireRate))
+            if (canSeeEnemy && timer.TimerNode(GetEntityStats.currentAttackSpeed))
             {
                 Create.CreateProjectile(holderData.GetProjectilePrefab, holder.position, holder.rotation, holderData.GetProjectileSpeed, holderData.GetProjectileDamage, LayerMask.GetMask("Enemy"));
             }
