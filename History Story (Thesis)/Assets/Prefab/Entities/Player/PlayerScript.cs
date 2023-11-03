@@ -90,4 +90,10 @@ public class PlayerScript : Entities
     {
         rb.velocity = move_dir.normalized * GetEntityStats.currentMoveSpeed * Time.deltaTime;
     }
+
+    public void AddExperience(int amount)
+    {
+        int newValue = amount * GetLevelSystem.GetLevel();
+        GetLevelSystem.AddExperience(newValue);
+    }
 }

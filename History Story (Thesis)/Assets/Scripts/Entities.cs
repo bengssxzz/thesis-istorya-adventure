@@ -14,6 +14,9 @@ public class Entities : MonoBehaviour, IDamageable
     [SerializeField] private EntityStatsSO entityStatsSO;
     public EntityStatsSO GetEntityStatsSO { get { return entityStatsSO; } }
 
+    private LevelSystem levelSystem;
+    public LevelSystem GetLevelSystem { get { return levelSystem; } }
+
     private EntityStatistics myStats;
     public EntityStatistics GetEntityStats { get { return myStats; } }
 
@@ -35,12 +38,15 @@ public class Entities : MonoBehaviour, IDamageable
         set{_canMove = value;}
     }
 
+    private void Awake()
+    {
+        levelSystem = new LevelSystem(entityStatsSO);
+        myStats = new EntityStatistics(entityStatsSO);
+        abilityHolder = new AbilityHolder(this);
+    }
 
     protected virtual void Start()
     {
-        myStats = new EntityStatistics(entityStatsSO);
-        abilityHolder = new AbilityHolder(this);
-
         abilityHolder.OnChangeListAbilities(entityStatsSO.defaultAbilities);
     }
 

@@ -67,13 +67,6 @@ public class EntityStatistics
         currentMana = maxMana;
         maxMoveSpeed = entityStatsSO.maxMoveSpeed;
         currentMoveSpeed = maxMoveSpeed;
-
-        //manaGenerateAmount = entityStatsSO.manaGenerateAmount;
-        //manaGenerateTime = entityStatsSO.manaGenerateTime;
-        //defence = entityStatsSO.defence;
-        //baseDamage = entityStatsSO.baseDamage;
-        //cooldownReduction = entityStatsSO.cooldownReduction;
-
     }
 
     public void ModifiedMoveSpeed(float amount)
@@ -104,7 +97,7 @@ public class EntityStatistics
             case CategoryStats.Regeneration:
                 lifeSteal += 5;
                 manaAmountRegen += 10;
-                manaRegenSpeed -= 0.2f;
+                manaRegenSpeed -= 0.02f;
                 break;
             default:
                 Debug.LogWarning("Upgrade stats is undefined");

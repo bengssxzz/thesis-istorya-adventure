@@ -5,14 +5,11 @@ using UnityEngine;
 
 public class EquippedBagSkill : MonoBehaviour
 {
-    //[SerializeField] private List<UISkillSlot> listOfAbilitySlot = new List<UISkillSlot>();
     [SerializeField] private List<Slot> listOfAbilitySlot = new List<Slot>();
 
     public event Action<int> OnDescriptionRequest, OnItemActionRequest;
-    //public event Action<int, int> OnSwapItem;
     public event Action<object, int, int> OnSwapItem;
     public event Action<object, int> OnStartDragging;
-    //public event Action<object> OnStartDraggingItem, OnEndDraggingItem;
 
     private int currentlyDraggedSkill = -1;
 
@@ -32,14 +29,13 @@ public class EquippedBagSkill : MonoBehaviour
 
     private void HandleSkillSelection(UISkillSlot slotAbilityItem)
     {
-        Debug.Log(slotAbilityItem.name);
+        //Debug.Log(slotAbilityItem.name);
     }
     private void HandleBeginDrag(UISkillSlot slotAbilityItem)
     {
         int index = listOfAbilitySlot.IndexOf(slotAbilityItem);
         if (index == -1) { return; }
 
-        Debug.Log("On Start Drag: " + index);
         currentlyDraggedSkill = index;
         OnStartDragging?.Invoke(this, index);
     }
@@ -53,8 +49,6 @@ public class EquippedBagSkill : MonoBehaviour
         int index = listOfAbilitySlot.IndexOf(slotAbilityItem);
         if (index == -1) { return; }
 
-        Debug.Log("On End Drag: " + index);
-        //OnSwapItem?.Invoke(currentlyDraggedSkill, index);
         OnSwapItem?.Invoke(this, currentlyDraggedSkill, index);
 
     }

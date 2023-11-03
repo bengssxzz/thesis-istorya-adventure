@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class UpgradeStatsSystem : MonoBehaviour
 {
@@ -11,23 +13,22 @@ public class UpgradeStatsSystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pointsTxt;
     [SerializeField] private UpgradableStats prefebUpgradeStats;
     [SerializeField] private Transform content;
+    [SerializeField] private Button confirmBtn;
 
     private List<UpgradableStats> listOfUpgradables = new List<UpgradableStats>();
 
-    private int points;
+    private int points = 0;
 
     private void Start()
     {
         entity = GameObject.FindGameObjectWithTag("Player").GetComponent<Entities>();
-
-        //Try
-        SetPoints(5);
 
         Initialize();
     }
 
     private void Initialize()
     {
+        confirmBtn.onClick.AddListener(ConfirmBtn);
         int enumLength = Enum.GetNames(typeof(CategoryStats)).Length;
 
         for (int i = 0; i < enumLength; i++)
@@ -41,6 +42,17 @@ public class UpgradeStatsSystem : MonoBehaviour
             listOfUpgradables.Add(newUpgradable);
         }
     }
+
+    private void ConfirmBtn()
+    {
+        Hide();
+    }
+
+    public void AddPoints() //Add points when leveling up
+    {
+        SetPoints(5);
+    }
+
     public void SetPoints(int amount)
     {
         points = Mathf.Clamp(points + amount, 0, 99);
@@ -69,7 +81,7 @@ public class UpgradeStatsSystem : MonoBehaviour
         if(entity == null && points <= 0) 
         { return; }
 
-        points -= 1;
+        points--;
         
         UpdateUIVisuals();
         entity.GetEntityStats.UpgradeCategoryStats(category);
@@ -78,10 +90,13 @@ public class UpgradeStatsSystem : MonoBehaviour
     public void Show()
     {
         gameObject.SetActive(true);
+        UpdateUIVisuals();
+        GameManager.instance.Pause(true);
     }
     public void Hide()
     {
         gameObject.SetActive(false);
+        GameManager.instance.Pause(false);
     }
     public void ToggleVisible()
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Entity Stats", menuName = "New Entity Stats")]
 public class EntityStatsSO : ScriptableObject
 {
+    public int defaultLevel = 1;
     public int maxHealth = 100;
     public float maxMana = 100;
     public float maxMoveSpeed = 50;
