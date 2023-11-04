@@ -67,10 +67,17 @@ public class InventoryController : MonoBehaviour
     }
     private void PrepareAbilityData() //Prepare the data of the equipped abilities
     {
-        for (int i = 0; i < entity.abilityHolder.ListOfAbilities.Length; i++)
+        //Create empty list of abilities
+        for (int i = 0; i < 4; i++)
+        {
+            listOfEquippedAbility.Add(InventorySkillItem.GetEmptyItem());
+        }
+
+        for (int i = 0; i < entity.abilityHolder.ListOfAbilities?.Length; i++)
         {
             AbilityScript ability = entity.abilityHolder.ListOfAbilities[i];
-            listOfEquippedAbility.Add(new InventorySkillItem { abilityItem = ability });
+            listOfEquippedAbility[i] = new InventorySkillItem { abilityItem = ability };
+            //listOfEquippedAbility.Add(new InventorySkillItem { abilityItem = ability });
         }
 
         //foreach (var item in entity.abilityHolder.ListOfAbilities)
