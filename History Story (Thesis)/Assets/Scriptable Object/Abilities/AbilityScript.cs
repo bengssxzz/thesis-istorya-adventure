@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,6 +12,8 @@ public class AbilityScript : ScriptableObject
     public float manaCost = 0.5f;
     public float cooldownTime;
     public float activeTime;
+
+    public event Action OnAbilityUsed;
 
     private bool isActivate = false;
     public bool IsActivate { get { return isActivate; } }
@@ -42,7 +45,8 @@ public class AbilityScript : ScriptableObject
     {
         if (!isActivate)
         {
-            //isActivate = true;
+            OnAbilityUsed?.Invoke();
+
             Activate(entity);
             Debug.Log("Activating");
             yield return new WaitForSeconds(activeTime);

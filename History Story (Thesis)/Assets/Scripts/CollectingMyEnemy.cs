@@ -16,6 +16,19 @@ public class CollectingMyEnemy : MonoBehaviour
     private List<Transform> nearestEnemyISee;
     private Collider2D[] nearestObstacleISee;
 
+
+
+    private void Update()
+    {
+        //ScanEnemies();
+        IcanSeeEnemy();
+    }
+
+    private void IcanSeeObstacle()
+    {
+
+    }
+
     public Transform getNearestEnemy
     {
         get 
@@ -33,19 +46,10 @@ public class CollectingMyEnemy : MonoBehaviour
             }
         }
     }
-
-
-    private void Update()
+    public bool IsHasEnemyNearby()
     {
-        //ScanEnemies();
-        IcanSeeEnemy();
+        return nearestEnemyISee.Count > 0;
     }
-
-    private void IcanSeeObstacle()
-    {
-
-    }
-
     private void IcanSeeEnemy()
     {
         nearestEnemyISee = new List<Transform>();

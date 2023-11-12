@@ -15,12 +15,10 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField] private UpgradeStatsSystem upgradeSystemUI;
 
-    private void Awake()
-    {
-        entity = GameObject.FindGameObjectWithTag("Player").GetComponent<Entities>();
-    }
     private void Start()
     {
+        entity = GameObject.FindGameObjectWithTag("Player").GetComponent<Entities>();
+
         ExpBarToggle();
         UpdateLevelText();
         entity.GetLevelSystem.OnChangedExperience += ChangedExperience;
@@ -41,11 +39,14 @@ public class PlayerUI : MonoBehaviour
         playerUIExpBar.value = (float)exp / expToNextLvl;
     }
 
+    
+
     private void ChangedLevel()
     {
+        //upgradeSystemUI.Show();
         upgradeSystemUI.AddPoints();
-        upgradeSystemUI.Show();
         UpdateLevelText();
+        UIManager.instance.SetGUIState(UIManager.GUIState.Upgradable);
     }
     private void ExpBarToggle()
     {
@@ -57,5 +58,14 @@ public class PlayerUI : MonoBehaviour
         {
             expBarVisual.SetActive(true);
         }
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }

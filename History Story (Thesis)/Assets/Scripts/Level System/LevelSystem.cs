@@ -21,7 +21,15 @@ public class LevelSystem
 
     private void UpdateExpToLVL()
     {
-        targetExperience = level * 100;
+        /* Next target is 100 * level
+         * then add 25% of max target exp (exp. 100 maxExp = 25)
+         * Next target will be 100 + 25% max target (100+25) = 125
+         */
+        int TARGET = 100 * level;
+        float previousTargetRate = (float)targetExperience * 0.25f;
+        int newTargetExp = Mathf.RoundToInt(TARGET + previousTargetRate);
+
+        targetExperience = newTargetExp;
     }
 
     public int GetLevel()

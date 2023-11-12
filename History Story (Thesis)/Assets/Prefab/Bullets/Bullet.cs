@@ -9,11 +9,7 @@ public class Bullet : MonoBehaviour
     const float BULLET_LIFETIME = 8f;
 
     //Bullet Damage
-    private float _bulletDamage;
-    public float bulletDamage
-    {
-        set { _bulletDamage = value; }
-    }
+    private float bulletDamage;
 
     //Bullet Speed
     private float _bulletSpeed;
@@ -29,27 +25,29 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private LayerMask _whatToHit;
     private LayerMask temp_WhatToHit;
-    public LayerMask whatToHit
-    {
-        get { return _whatToHit; }
-        set
-        {
-            temp_WhatToHit += value;
-        }
-    }
+    //public LayerMask whatToHit
+    //{
+    //    get { return _whatToHit; }
+    //    set
+    //    {
+    //        temp_WhatToHit += value;
+    //    }
+    //}
 
     
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        whatToHit = _whatToHit;
+        //temp_WhatToHit = _whatToHit;
+        //whatToHit = _whatToHit;
     }
 
     private void OnEnable()
     {
         //Whenever this object enable in hierarchy
         //whatToHit = _whatToHit;
+        temp_WhatToHit = _whatToHit;
         StartCoroutine(BulletLifeTime()); //Start the timer for the lifetime of the bullet
     }
     private void OnDisable()
@@ -74,8 +72,8 @@ public class Bullet : MonoBehaviour
                 
                 var direction = (raycast.transform.position - transform.position).normalized;
 
-                entityDamageable.KnockBack(direction * 10f);
-                entityDamageable.TakeDamage(10);
+                //entityDamageable.KnockBack(direction * 10f);
+                entityDamageable.TakeDamage(bulletDamage);
             }
 
             //Debug.Log("I Hit, " + raycast.name);
@@ -84,29 +82,32 @@ public class Bullet : MonoBehaviour
 
     }
 
+    public void SetLayerMask(params LayerMask[] addMask)
+    {
+        temp_WhatToHit = _whatToHit;
+        foreach (LayerMask item in addMask)
+        {
+            temp_WhatToHit += item;
+        }
+    }
+    public void SetActive()
+    {
+        gameObject.SetActive(true);
+    }
+    public void SetDamage(float damage)
+    {
+        bulletDamage = damage;
+    }
     private void BulletHitBehaviour()
     {
         gameObject.SetActive(false);
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        var damagable = collision.GetComponent<IDamageable>();
-
-        if(damagable != null)
-        {
-            damagable.TakeDamage(_bulletDamage);
-        }
-    }
-
 
     IEnumerator BulletLifeTime()
     {
         yield return new WaitForSeconds(BULLET_LIFETIME);
         BulletHitBehaviour();
     }
-
-
 
     private void OnDrawGizmos()
     {

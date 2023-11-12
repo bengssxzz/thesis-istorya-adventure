@@ -25,8 +25,6 @@ public class Entities : MonoBehaviour, IDamageable
 
     public AbilityHolder abilityHolder;
 
-    private float _manaGenerateTime;
-
     //Entity direction
     protected Vector2 move_dir;
     public Vector2 getMoveDir
@@ -41,7 +39,7 @@ public class Entities : MonoBehaviour, IDamageable
         set{_canMove = value;}
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         levelSystem = new LevelSystem(entityStatsSO);
         entityStats = new EntityStatistics(entityStatsSO);
@@ -50,7 +48,7 @@ public class Entities : MonoBehaviour, IDamageable
 
     protected virtual void Start()
     {
-        abilityHolder.OnChangeListAbilities(entityStatsSO.defaultAbilities);
+        //abilityHolder.OnChangeListAbilities(entityStatsSO.defaultAbilities);
     }
 
     protected virtual void Update()
@@ -89,14 +87,14 @@ public class Entities : MonoBehaviour, IDamageable
         if(entityStats.currentHealth > 0)
         {
             // Take damage if the health is more than zero
-            Debug.Log("Ouch! " + damage.ToString());
-
-            entityStats.currentHealth -= Mathf.RoundToInt(damage);
+            TakeDamageBehaviour(damage);
+            entityStats.currentHealth = Mathf.Clamp(entityStats.currentHealth - damage, 0, entityStats.maxHealth);
+            //entityStats.currentHealth -= Mathf.RoundToInt(damage);
             OnHealthChanged?.Invoke(entityStats.currentHealth / entityStats.currentHealth);
 
-            if (entityStats.currentHealth <= 0)
+            if (entityStats.currentHealth <= 0.001)
             {
-                // Do this is the health is zero
+                // Do this if the health is zero
                 Death(); 
             }
         }
@@ -105,9 +103,15 @@ public class Entities : MonoBehaviour, IDamageable
             Death();
         }
     }
+    public virtual void TakeDamageBehaviour(float damage)
+    {
+        //Behaviour of the entity when taking damage
+        Debug.Log("Ouch! " + damage.ToString());
+    }
     public void GenerateHealth(float amount)
     {
-        entityStats.currentHealth -= Mathf.RoundToInt(amount);
+        var addHealth = Mathf.RoundToInt(amount);
+        entityStats.currentHealth = Mathf.Clamp(entityStats.currentHealth + addHealth, 0, entityStats.maxHealth); 
         OnHealthChanged?.Invoke(entityStats.currentHealth / entityStats.currentHealth);
     }
    
@@ -118,18 +122,10 @@ public class Entities : MonoBehaviour, IDamageable
         {
             if (timer.TimerNode(entityStats.manaRegenSpeed)) //Timer node
             {
-                entityStats.currentMana += entityStats.manaAmountRegen;
+                entityStats.currentMana = Mathf.Clamp(entityStats.currentMana + entityStats.manaAmountRegen, 0, entityStats.maxMana);
                 OnManaChanged?.Invoke(entityStats.currentMana / entityStats.maxMana);
-                Debug.Log("Generate Mana");
+                //Debug.Log("Current mana: " + entityStats.currentMana + " Regen mana amount: " + entityStats.manaAmountRegen);
             }
-            //if (Time.time > _manaGenerateTime)
-            //{
-            //    _manaGenerateTime = Time.time + 1 / entityStats.manaRegenSpeed;
-                
-            //    entityStats.currentMana += entityStats.manaAmountRegen;
-            //    OnManaChanged?.Invoke(entityStats.currentMana / entityStats.maxMana);
-            //}
-
         }
     }
 

@@ -1,30 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 
 
-
+public enum TagPooling
+{
+    Enemy,
+    Bullet,
+    Clone,
+    Collectibles
+}
 
 public class ObjectPooling : MonoBehaviour
 {
-    public enum TagPooling
-    {
-        Enemy,
-        Bullet,
-        Clone
-    }
-    [System.Serializable] public class PoolLayer
-    {
-        public TagPooling tagLayer;
-        public Transform poolContainer;
-    }
-    
-
-
     public static ObjectPooling instance;
-    public PoolLayer[] poolLayer;
 
-    private Dictionary<string, GameObject> poolObjects = new Dictionary<string, GameObject>();
+    private Dictionary<string, List<GameObject>> poolObjects = new Dictionary<string, List<GameObject>>();
 
     private void Awake()
     {
@@ -32,39 +25,56 @@ public class ObjectPooling : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else { DestroyImmediate(gameObject); }
 
     }
 
-    public GameObject CreateObject(TagPooling tagLayer, GameObject prefabObject)
+    public GameObject GetObjectInPool(string objectTag, GameObject prefabObject)
     {
-        foreach (var item in poolLayer)
+        if (poolObjects.ContainsKey(objectTag))
         {
-            if (item.tagLayer == tagLayer)
+            // when tag is exist
+            foreach (var item in poolObjects[objectTag])
             {
-                //Get object in this layer tag
-                foreach (Transform itemTag in item.poolContainer)
+                if (prefabObject.name == item.name && !item.activeInHierarchy)
                 {
-                    if (!itemTag.gameObject.activeInHierarchy && itemTag.name == prefabObject.name)
-                    {
-                        itemTag.gameObject.SetActive(true);
-                        return itemTag.gameObject;
-                    }
+                    // return when found one
+                    item.SetActive(true);
+                    return item;
                 }
-
-                var newObject = Instantiate(prefabObject);
-                newObject.transform.SetParent(item.poolContainer);
-                newObject.name = prefabObject.name;
-                
-                return newObject;
             }
-            else { Debug.LogWarning("Tag layer is missing"); }
+            // create a new object when no found
+            return CreateObject(objectTag, prefabObject);
+        }
+        else
+        {
+            // create a new object and a tag in dictionary
+            return CreateObject(objectTag, prefabObject);
         }
 
-        return null;
+        
     }
 
+    public GameObject CreateObject(string tagLayer, GameObject prefabObject)
+    {
+        GameObject newObject = Instantiate(prefabObject);
+        newObject.transform.SetParent(gameObject.transform);
+        newObject.name = prefabObject.name;
 
+        if (poolObjects.ContainsKey(tagLayer))
+        {
+            //If tag layer is exist then add object to a dictionary list
+            poolObjects[tagLayer].Add(newObject);
+        }
+        else
+        {
+            //Otherwise create a new tag
+            poolObjects.Add(tagLayer, new List<GameObject>() { newObject });
+        }
+        
+
+        return newObject;
+    }
+    
 }

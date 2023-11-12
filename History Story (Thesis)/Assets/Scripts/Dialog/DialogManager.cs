@@ -8,70 +8,127 @@ public class DialogManager : MonoBehaviour
 {
     public static DialogManager instance;
 
-    [SerializeField] private DialogUI dialogUI;
-    [SerializeField] private float writeTextSpeed = 0.01f;
     private Story currentStory;
 
-    private bool dialogIsPlaying = false;
+    public event Action OnFinishedDialog;
+    public event Action<string> OnChangeText, OnChangeName;
+    public event Action<Sprite> OnChangeSprite;
+
+    public float writeTextSpeed { get; private set; } = 0.003f;
+    public bool dialogIsPlaying { get; private set; } = false;
+    public bool canContinueToNextLine { get; private set; } = false;
+
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ContinueStory();
-        }
-    }
 
-    public void EnterDialogMode(TextAsset inkJSON)
+    public bool SetContinueToNextLine(bool value) => canContinueToNextLine = value;
+    public void EnterDialogMode(TextAsset inkJSON, string path)
     {
         currentStory = new Story(inkJSON.text);
         dialogIsPlaying = true;
-        dialogUI.Show();
-
-        ContinueStory();
+        HandleChangePath(path);
     }
 
     private void ExitDialogMode()
     {
         dialogIsPlaying = false;
-        dialogUI.Hide();
+        UIManager.instance.SetUIState = UIManager.GUIState.InGame;
     }
 
-    private void ContinueStory()
+    public void ContinueStory()
     {
         if (currentStory.canContinue)
         {
             //The Inky is not yet finish
             string dialogLine = currentStory.Continue();
-            //dialogUI.SetDialogText(dialogLine);
-            dialogUI.ResetText();
-            StartCoroutine(WriteTextEffect(dialogLine));
+            HandleInkTags(currentStory.currentTags);
+            OnChangeText?.Invoke(dialogLine);
         }
         else
         {
             //When the inky JSON is done picking line
+            OnFinishedDialog?.Invoke();
             ExitDialogMode();
         }
     }
+    //public void ContinueStory(string path)
+    //{
+    //    if (currentStory.canContinue)
+    //    {
+    //        //The Inky is not yet finish
+    //        string dialogLine = HandleChangePath(path);
+    //        HandleInkTags(currentStory.currentTags);
+    //        OnChangeText?.Invoke(dialogLine);
+    //    }
+    //    else
+    //    {
+    //        //When the inky JSON is done picking line
+    //        OnFinishedDialog?.Invoke();
+    //        ExitDialogMode();
+    //    }
+    //}
 
-    private IEnumerator WriteTextEffect(string textLine)
+    private void HandleInkTags(List<string> currentTags)
     {
-        for (int i = 0; i < textLine.Length; i++)
+        foreach (var tag in currentTags)
         {
-            dialogUI.WriteTextEffect(textLine[i]);
-            yield return new WaitForSeconds(writeTextSpeed);
+            string[] splitTag = tag.Split(":");
+            if(splitTag.Length != 2)
+            {
+                Debug.LogError("Tag is not appropriately parsed: " + tag);
+            }
+            string tagKey = splitTag[0].Trim();
+            string tagValue = splitTag[1].Trim();
+
+            switch (tagKey)
+            {
+                case "speaker":
+                    OnChangeName?.Invoke(tagValue);
+                    break;
+                default:
+                    break;
+            }
         }
+
+       
     }
+
+    private void HandleChangePath(string path)
+    {
+        if(path == null)
+        {
+            Debug.LogError("Path string dialog is missing");
+            return;
+        }
+
+        currentStory.ChoosePathString(path);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

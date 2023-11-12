@@ -44,7 +44,8 @@ public class EnemyRange : Enemy
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    Create.CreateProjectile(holderData.GetProjectilePrefab, holder.position, holder.rotation, holderData.GetProjectileSpeed, holderData.GetProjectileDamage, LayerMask.GetMask("Player"));
+                    Create.CreateProjectile("enemy_bullet", holderData.GetProjectilePrefab, holder.position, holder.rotation,
+                        holderData.GetProjectileSpeed, holderData.GetProjectileDamage, LayerMask.GetMask("Player"));
                     yield return new WaitForSeconds(holderData.GetFireRate);
                 }
                 holderData.StopAimingStatus = false;

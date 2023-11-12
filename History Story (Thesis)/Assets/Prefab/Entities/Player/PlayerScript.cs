@@ -2,24 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ThesisLibrary;
+using UnityEngine.InputSystem;
 
 public class PlayerScript : Entities
 {
+    [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Transform holder;
 
     [SerializeField] private bool canFire = true;
 
+    //private PlayerInputs playerInput = new PlayerInputs();
 
     private Rigidbody2D rb;
     private CollectingMyEnemy collectedEnemy;
-    private SpriteRenderer sprite;
     private WeaponHolder holderData;
 
     private bool facingLeft = false;
 
     
     
-
+    
 
 
     // Start is called before the first frame update
@@ -28,7 +30,6 @@ public class PlayerScript : Entities
         base.Start();
         
         rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
         collectedEnemy = GetComponent<CollectingMyEnemy>();
         holderData = GetComponent<WeaponHolder>();
     }
@@ -38,17 +39,17 @@ public class PlayerScript : Entities
     {
         base.Update();
         
-        move_dir.x = Input.GetAxisRaw("Horizontal");
-        move_dir.y = Input.GetAxisRaw("Vertical");
+        //move_dir.x = Input.GetAxisRaw("Horizontal");
+        //move_dir.y = Input.GetAxisRaw("Vertical");
 
 
         WeaponFiring();
 
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            abilityHolder.UseAbility(0);
-        }
+        //if (Input.GetKeyDown(KeyCode.LeftShift))
+        //{
+        //    abilityHolder.UseAbility(0);
+        //}
     }
 
     protected override void FixedUpdate()
@@ -74,13 +75,14 @@ public class PlayerScript : Entities
     private void WeaponFiring()
     {
         //Trigger autofire
-        var canSeeEnemy = collectedEnemy.getNearestEnemy != null;
+        var canSeeEnemy = collectedEnemy?.getNearestEnemy != null;
 
         if (canFire)
         {
             if (canSeeEnemy && timer.TimerNode(GetEntityStats.currentAttackSpeed))
             {
-                Create.CreateProjectile(holderData.GetProjectilePrefab, holder.position, holder.rotation, holderData.GetProjectileSpeed, holderData.GetProjectileDamage, LayerMask.GetMask("Enemy"));
+                Create.CreateProjectile("player_bullet", holderData.GetProjectilePrefab, holder.position, holder.rotation,
+                    holderData.GetProjectileSpeed, GetEntityStats.damage, LayerMask.GetMask("Enemy"));
             }
         }
         
@@ -93,7 +95,33 @@ public class PlayerScript : Entities
 
     public void AddExperience(int amount)
     {
-        int newValue = amount * GetLevelSystem.GetLevel();
-        GetLevelSystem.AddExperience(newValue);
+        GetLevelSystem.AddExperience(amount);
+    }
+
+    public void OnMove(InputValue value) => move_dir = value.Get<Vector2>();
+
+    public void OnSkill0()
+    {
+        abilityHolder.UseAbility(0);
+    }
+
+    public void OnSkill1()
+    {
+        abilityHolder.UseAbility(1);
+    }
+
+    public void OnSkill2()
+    {
+        abilityHolder.UseAbility(2);
+    }
+
+    public void OnSkill3()
+    {
+        abilityHolder.UseAbility(3);
+    }
+
+    public void OnPause()
+    {
+        Debug.Log("Pause");
     }
 }
