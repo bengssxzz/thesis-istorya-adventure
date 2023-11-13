@@ -35,6 +35,7 @@ public class DialogManager : MonoBehaviour
     public bool SetContinueToNextLine(bool value) => canContinueToNextLine = value;
     public void EnterDialogMode(TextAsset inkJSON, string path)
     {
+        GameManager.instance.IsPlayerCanMove(false);
         currentStory = new Story(inkJSON.text);
         dialogIsPlaying = true;
         HandleChangePath(path);
@@ -42,6 +43,7 @@ public class DialogManager : MonoBehaviour
 
     private void ExitDialogMode()
     {
+        GameManager.instance.IsPlayerCanMove(true);
         dialogIsPlaying = false;
         UIManager.instance.SetUIState = UIManager.GUIState.InGame;
     }

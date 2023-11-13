@@ -28,13 +28,13 @@ public class DodgeAbility : AbilityScript
 
 
 
-        _entity.canMove = false;
+        _entity.IsCanMove = false;
 
         rb.AddForce(previousDir * dodgePower * Time.fixedDeltaTime, ForceMode2D.Impulse);
     }
 
     protected override void Deactivate(GameObject entity)
     {
-        _entity.canMove = true;
+        _entity.IsCanMove = true;
     }
 }

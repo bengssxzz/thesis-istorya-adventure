@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 
@@ -14,6 +15,10 @@ public enum GameDifficulties
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
+
+
+    [HideInInspector] public PlayableDirector currentDirector { get; private set; }
+
 
     private GameDifficulties gameDifficulties = GameDifficulties.Easy;
 
@@ -29,6 +34,20 @@ public class LevelManager : MonoBehaviour
         {
             DestroyImmediate(gameObject);
         }
+    }
+
+
+    public void SetDirector(PlayableDirector director)
+    {
+        currentDirector = director;
+    }
+    public void PlayDirector()
+    {
+        currentDirector.Play();
+    }
+    public void PauseDirector()
+    {
+        currentDirector.Pause();
     }
 
 

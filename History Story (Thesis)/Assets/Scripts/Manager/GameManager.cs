@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     private PlayerScript entity;
+    private bool playerCanMove = true;
 
     public GameDifficulties gameDifficulties { get; private set; }
 
@@ -32,6 +33,8 @@ public class GameManager : MonoBehaviour
     }
 
     public PlayerScript GetPlayer() { return entity; }
+    public void IsPlayerCanMove(bool value) => playerCanMove = value;
+    public bool IsPlayerCanMove() { return playerCanMove; }
 
     public void SetPauseValue(bool pause)
     {

@@ -34,7 +34,7 @@ public class Entities : MonoBehaviour, IDamageable
     
     //Effects
     private bool _canMove = true;
-    public bool canMove
+    public bool IsCanMove
     {
         set{_canMove = value;}
     }
