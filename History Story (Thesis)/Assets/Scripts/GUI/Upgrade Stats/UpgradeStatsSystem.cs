@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class UpgradeStatsSystem : MonoBehaviour
+public class UpgradeStatsSystem : UIPages
 {
     private Entities entity;
 
@@ -18,12 +18,6 @@ public class UpgradeStatsSystem : MonoBehaviour
     private List<UpgradableStats> listOfUpgradables = new List<UpgradableStats>();
 
     private int points = 0;
-
-    private void OnEnable()
-    {
-        UpdateUIVisuals();
-    }
-
 
     private void Start()
     {
@@ -95,17 +89,14 @@ public class UpgradeStatsSystem : MonoBehaviour
         entity.GetEntityStats.UpgradeCategoryStats(category);
     }
 
-    public void Show()
+    public override void ShowBehavior()
     {
-        //UIController.instance.SetGUIState(UIController.GUIState.Upgradable);
-        gameObject.SetActive(true);
         UpdateUIVisuals();
         GameManager.instance.SetPauseValue(true);
     }
-    public void Hide()
+
+    public override void HideBehavior()
     {
-        //UIController.instance.SetGUIState(UIController.GUIState.InGame);
-        gameObject.SetActive(false);
         GameManager.instance.SetPauseValue(false);
     }
 }

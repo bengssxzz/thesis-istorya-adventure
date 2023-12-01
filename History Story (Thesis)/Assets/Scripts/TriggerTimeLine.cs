@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 
-public class TriggerTimeLine : MonoBehaviour
+public class TriggerTimeLine : MonoBehaviour, IInteractable
 {
     public enum TriggerState
     {
@@ -65,14 +65,18 @@ public class TriggerTimeLine : MonoBehaviour
                 break;
 
             case TriggerState.PlayerTrigger:
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    PlayDirectorTimeline();
-                }
                 break;
 
             default:
                 break;
+        }
+    }
+    public void Intereractable()
+    {
+        Debug.Log("In");
+        if (triggerState == TriggerState.PlayerTrigger)
+        {
+            PlayDirectorTimeline();
         }
     }
 
@@ -113,5 +117,5 @@ public class TriggerTimeLine : MonoBehaviour
         }
     }
 
-
+    
 }

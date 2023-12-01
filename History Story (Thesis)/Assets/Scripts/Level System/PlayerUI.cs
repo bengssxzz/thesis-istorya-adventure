@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PlayerUI : MonoBehaviour
+public class PlayerUI : UIPages
 {
     [SerializeField] private Entities entity;
 
@@ -19,35 +19,22 @@ public class PlayerUI : MonoBehaviour
     {
         entity = GameObject.FindGameObjectWithTag("Player").GetComponent<Entities>();
 
-        ExpBarToggle();
-        UpdateLevelText();
-        entity.GetLevelSystem.OnChangedExperience += ChangedExperience;
-        entity.GetLevelSystem.OnChangedLevel += ChangedLevel;
+        //ExpBarToggle();
+        //UpdateLevelText();
+        //entity.GetLevelSystem.OnChangedExperience += ChangedExperience;
+        //entity.GetLevelSystem.OnChangedLevel += ChangedLevel;
     }
     private void Update()
     {
         ExpBarToggle();
     }
 
-    private void UpdateLevelText()
-    {
-        levelTxt.text = "Lvl " + entity.GetLevelSystem.GetLevel();
-    }
 
     private void ChangedExperience(int exp, int expToNextLvl)
     {
         playerUIExpBar.value = (float)exp / expToNextLvl;
     }
 
-    
-
-    private void ChangedLevel()
-    {
-        //upgradeSystemUI.Show();
-        upgradeSystemUI.AddPoints();
-        UpdateLevelText();
-        UIManager.instance.SetGUIState(UIManager.GUIState.Upgradable);
-    }
     private void ExpBarToggle()
     {
         if (upgradeSystemUI.isActiveAndEnabled)
@@ -60,12 +47,11 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
-    public void Show()
+    public override void ShowBehavior()
     {
-        gameObject.SetActive(true);
     }
-    public void Hide()
+
+    public override void HideBehavior()
     {
-        gameObject.SetActive(false);
     }
 }

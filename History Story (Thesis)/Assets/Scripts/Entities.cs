@@ -7,6 +7,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using ThesisLibrary;
 
+[RequireComponent(typeof(AbilityController))]
 public class Entities : MonoBehaviour, IDamageable
 {
     public Action<float> OnHealthChanged;
@@ -16,9 +17,6 @@ public class Entities : MonoBehaviour, IDamageable
 
     [SerializeField] private EntityStatsSO entityStatsSO;
     public EntityStatsSO GetEntityStatsSO { get { return entityStatsSO; } }
-
-    private LevelSystem levelSystem;
-    public LevelSystem GetLevelSystem { get { return levelSystem; } }
 
     private EntityStatistics entityStats;
     public EntityStatistics GetEntityStats { get { return entityStats; } }
@@ -41,7 +39,6 @@ public class Entities : MonoBehaviour, IDamageable
 
     protected virtual void Awake()
     {
-        levelSystem = new LevelSystem(entityStatsSO);
         entityStats = new EntityStatistics(entityStatsSO);
         abilityHolder = new AbilityHolder(this);
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -27,13 +28,15 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Transform PlayerGUI;
 
-    private MobileUITouchController touchController;
-    private UISkillBag skillBag;
-    private UpgradeStatsSystem upgradeStats;
-    private PlayerUI playerUI;
-    private DialogUI dialogUI;
-    private QuestionaireUI QandAUI;
+    public MobileUITouchController touchController { get; private set; }
+    public AbilityInventory abilityInventory { get; private set; }
+    public UpgradeStatsSystem upgradeStats{ get; private set; }
+    public PlayerUI playerUI{ get; private set; }
+    public DialogUI dialogUI{ get; private set; }
+    public QuestionaireUI QandAUI{ get; private set; }
 
+
+    private List<UIPages> pages = new List<UIPages>();
 
     private GUIState uiState = GUIState.InGame;
     public GUIState SetUIState 
@@ -60,37 +63,24 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        foreach (Transform uiItem in PlayerGUI.transform)
-        {
-            uiItem.gameObject.SetActive(true);
-        }
 
-        touchController = GetComponentInChildren<MobileUITouchController>();
-        skillBag = GetComponentInChildren<UISkillBag>();
-        upgradeStats = GetComponentInChildren<UpgradeStatsSystem>();
-        playerUI = GetComponentInChildren<PlayerUI>();
-        dialogUI = GetComponentInChildren<DialogUI>();
-        QandAUI = GetComponentInChildren<QuestionaireUI>();
+        touchController = GetComponentInChildren<MobileUITouchController>(true);
+        abilityInventory = GetComponentInChildren<AbilityInventory>(true);
+        upgradeStats = GetComponentInChildren<UpgradeStatsSystem>(true);
+        playerUI = GetComponentInChildren<PlayerUI>(true);
+        dialogUI = GetComponentInChildren<DialogUI>(true);
+        QandAUI = GetComponentInChildren<QuestionaireUI>(true);
 
-
+        pages = transform.GetComponentsInChildren<UIPages>(true).ToList();
     }
 
     private void Start()
     {
-        //Initialize();
+        HideAllUI();
         ChangeGUIState(uiState);
     }
 
-    private void Initialize()
-    {
-        touchController.Show();
-        skillBag.Show();
-        upgradeStats.Show();
-        playerUI.Show();
-        dialogUI.Show();
-    }
-
-    public void SetGUIState(GUIState state)
+    public void SetGUIState(GUIState state = GUIState.InGame)
     {
         SetUIState = state;
     }
@@ -105,20 +95,20 @@ public class UIManager : MonoBehaviour
                 HideAllUI();
                 break;
             case GUIState.InGame:
-                touchController.Show();
-                playerUI.Show();
+                touchController.UIEnabled();
+                playerUI.UIEnabled();
                 break;
             case GUIState.Inventory:
-                skillBag.Show();
+                abilityInventory.UIEnabled();
                 break;
             case GUIState.Upgradable:
-                upgradeStats.Show();
+                upgradeStats.UIEnabled();
                 break;
             case GUIState.DialogMode:
-                dialogUI.Show();
+                dialogUI.UIEnabled();
                 break;
             case GUIState.QandA:
-                QandAUI.Show();
+                QandAUI.UIEnabled();
                 break;
             
         }
@@ -126,11 +116,9 @@ public class UIManager : MonoBehaviour
 
     private void HideAllUI()
     {
-        touchController.Hide();
-        skillBag.Hide();
-        upgradeStats.Hide();
-        playerUI.Hide();
-        dialogUI.Hide();
-        QandAUI.Hide();
+        foreach (var page in pages)
+        {
+            page.UIDisabled();
+        }
     }
 }

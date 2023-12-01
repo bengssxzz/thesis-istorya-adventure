@@ -75,10 +75,10 @@ public class InventoryController : MonoBehaviour
             listOfEquippedAbility.Add(InventorySkillItem.GetEmptyItem());
         }
 
-        Debug.Log("Equiped Count: " + entity.abilityHolder.GetListOfAbilities().Count);
-        for (int i = 0; i < entity.abilityHolder.GetListOfAbilities()?.Count; i++)
+        Debug.Log("Equiped Count: " + entity.abilityHolder.GetListOfCurrentAbilities().Count);
+        for (int i = 0; i < entity.abilityHolder.GetListOfCurrentAbilities()?.Count; i++)
         {
-            AbilityScript ability = entity.abilityHolder.GetListOfAbilities()[i];
+            AbilityScript ability = entity.abilityHolder.GetListOfCurrentAbilities()[i];
             listOfEquippedAbility[i] = new InventorySkillItem { abilityItem = ability };
         }
     }
@@ -103,7 +103,7 @@ public class InventoryController : MonoBehaviour
             var abilityData = listOfEquippedAbility[i];
             if (abilityData.isEmpty)
                 continue;
-            equippedSkillUI.UpdateData(i, abilityData.abilityItem.skillIcon);
+            equippedSkillUI.UpdateData(i, abilityData.abilityItem.abilityIcon);
         }
     }
     private void UpdateInventoryUI(Dictionary<int, InventorySkillItem> inventoryState) //Update the UI of the inventory panel
@@ -111,7 +111,7 @@ public class InventoryController : MonoBehaviour
         inventoryUI.ResetAllItems();
         foreach (var item in inventoryState)
         {
-            inventoryUI.UpdateData(item.Key, item.Value.abilityItem.skillIcon);
+            inventoryUI.UpdateData(item.Key, item.Value.abilityItem.abilityIcon);
         }
     }
     
@@ -141,7 +141,7 @@ public class InventoryController : MonoBehaviour
                 InventorySkillItem item = inventoryData.GetItemAt(itemIndex);
                 if (item.isEmpty) { return; }
 
-                inventoryUI.CreateDraggedItem(item.abilityItem.skillIcon);
+                inventoryUI.CreateDraggedItem(item.abilityItem.abilityIcon);
 
             }
             else if (script == typeof(EquippedBagSkill))
@@ -253,7 +253,7 @@ public class InventoryController : MonoBehaviour
 
                 foreach (var item in inventoryData.GetCurrentInventoryState())
                 {
-                    inventoryUI.UpdateData(item.Key, item.Value.abilityItem.skillIcon);
+                    inventoryUI.UpdateData(item.Key, item.Value.abilityItem.abilityIcon);
                 }
 
             }

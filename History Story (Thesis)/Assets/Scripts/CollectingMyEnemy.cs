@@ -55,6 +55,7 @@ public class CollectingMyEnemy : MonoBehaviour
         nearestEnemyISee = new List<Transform>();
         Collider2D[] area = Physics2D.OverlapCircleAll(transform.position, detectRadius, myEnemyLayer);
 
+        //Fix the array, closest to farthest 
         var fixArrayEnemy = area.OrderBy(enemy => Vector2.Distance(enemy.transform.position, transform.position));
         if (area.Length > 0)
         {

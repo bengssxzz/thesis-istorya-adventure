@@ -9,7 +9,8 @@ public class AbilityHolder
 {
     private Entities entity;
 
-    private List<AbilityScript> listOfAbilities = new List<AbilityScript>();
+    private List<AbilityScript> listOfUnlockedAbilities = new List<AbilityScript>(); 
+    private List<AbilityScript> currentAbilities = new List<AbilityScript>();
 
     public AbilityHolder(Entities _entity)
     {
@@ -17,16 +18,16 @@ public class AbilityHolder
         SetChangeListAbilities(_entity.GetEntityStatsSO.abilities);
     }
 
-    public List<AbilityScript> GetListOfAbilities()
+    public List<AbilityScript> GetListOfCurrentAbilities()
     {
-        return listOfAbilities;
+        return currentAbilities;
     }
 
     private void ResetAbilitiesOnStart() //Reset each abilities
     {
-        if (listOfAbilities.Count > 0)
+        if (currentAbilities.Count > 0)
         {
-            foreach (var ability in listOfAbilities)
+            foreach (var ability in currentAbilities)
             {
                 if (ability == null)
                 {
@@ -37,38 +38,22 @@ public class AbilityHolder
         }
 
     }
-    private bool CheckMana(float manaCost) //Check if there's enough mana
-    {
-        if (entity.GetEntityStats.currentMana >= manaCost)
-        {
-            entity.GetEntityStats.currentMana = Mathf.Clamp(entity.GetEntityStats.currentMana - manaCost, 0, entity.GetEntityStats.maxMana);
-            //entity.GetEntityStats.currentMana -= manaCost;
-            entity.OnManaChanged?.Invoke(entity.GetEntityStats.currentMana / entity.GetEntityStats.maxMana);
-            return true;
-        }
-        return false;
-    }
-    
+
     public void SetChangeListAbilities(List<AbilityScript> newList) //Onchange event list of abilities
     {
-        listOfAbilities = newList;
+        currentAbilities = newList;
         ResetAbilitiesOnStart();
     }
     public void UseAbility(int index) //Use index ablity in array
     {
         try
         {
-            var ability = listOfAbilities[index];
+            var ability = currentAbilities[index];
 
-            if (!ability.IsActivate)
+            if (!ability.OnCoolDown)
             {
-                if (CheckMana(ability.manaCost))
-                {
-                    //If have enough mana, Use ability
-                    entity.StartCoroutine(listOfAbilities[index].Trigger(entity.gameObject)); //Trigger the ability
-                    entity.StartCoroutine(listOfAbilities[index].StartCoolDown()); //Start the cooldown
-                    Debug.Log("Still running");
-                }
+                entity.StartCoroutine(currentAbilities[index].TriggerAbility(entity)); //Trigger the ability
+                Debug.Log("Still running");
             }
         }
         catch (Exception)

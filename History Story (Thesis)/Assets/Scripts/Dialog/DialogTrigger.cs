@@ -5,8 +5,120 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public class DialogTrigger : MonoBehaviour
+public class DialogTrigger : MonoBehaviour, IInteractable
 {
+    //[SerializeField] private TextAsset inkyJSON;
+    //[SerializeField] private string choosePathString;
+
+    //[SerializeField] private UnityEvent OnFinishedDialog;
+
+    //private bool onTriggerEventDialog = false;
+    //private bool alreadyTrigger = false;
+    ////private bool canTalk = false;
+    //private bool isTalking = false;
+
+    ////Testing
+    //private bool doneForNow = false;
+
+
+    //public void Intereractable()
+    //{
+    //    Debug.Log("I can now be interacted: " + gameObject.name);
+    //    if (isTalking || doneForNow == false)
+    //    {
+    //        if (!DialogManager.instance.dialogIsPlaying)
+    //        {
+    //            if (inkyJSON == null)
+    //            {
+    //                Debug.LogError(gameObject.name + " has no inky JSON file");
+    //                return;
+    //            }
+    //            Debug.Log("First");
+    //            StartConversation();
+    //        }
+    //        else if (DialogManager.instance.canContinueToNextLine)
+    //        {
+    //            Debug.Log("Second");
+    //            DialogManager.instance.ContinueStory();
+
+    //        }
+    //    }
+
+    //}
+    //private void StartConversation()
+    //{
+    //    isTalking = true;
+
+    //    DialogManager.instance.OnFinishedDialog += FinishedDialog;
+    //    UIManager.instance.SetUIState = UIManager.GUIState.DialogMode;
+    //    DialogManager.instance.EnterDialogMode(inkyJSON, choosePathString);
+    //    DialogManager.instance.ContinueStory();
+    //}
+
+    //public void OnEventStartConversation(string pathString)
+    //{
+    //    //Testing
+    //    GameManager.instance.GetPlayer().nearestObject = this;
+
+    //    isTalking = true;
+    //    onTriggerEventDialog = true;
+
+    //    if (onTriggerEventDialog && LevelManager.instance.currentDirector != null)
+    //        LevelManager.instance.PauseDirector();
+
+    //    DialogManager.instance.OnFinishedDialog += FinishedDialog;
+    //    UIManager.instance.SetUIState = UIManager.GUIState.DialogMode;
+    //    DialogManager.instance.EnterDialogMode(inkyJSON, pathString);
+    //    DialogManager.instance.ContinueStory();
+    //}
+
+    //private void FinishedDialog()
+    //{
+    //    GameManager.instance.GetPlayer().nearestObject = null;
+    //    isTalking = false;
+
+    //    if (alreadyTrigger == false && onTriggerEventDialog == false)
+    //    {
+    //        Debug.Log("Removing");
+    //        OnFinishedDialog?.Invoke();
+    //        alreadyTrigger = true;
+    //    }
+
+    //    if (onTriggerEventDialog && LevelManager.instance.currentDirector != null)
+    //    {
+    //        LevelManager.instance.PlayDirector();
+    //        onTriggerEventDialog = false;
+    //    }
+
+
+
+    //    DialogManager.instance.OnFinishedDialog -= FinishedDialog;
+    //    Debug.Log("Im Done Playing");
+    //    doneForNow = true;
+    //}
+
+    ////private void OnTriggerEnter2D(Collider2D collision)
+    ////{
+    ////    if (collision.CompareTag("Player"))
+    ////    {
+    ////        canTalk = true;
+    ////    }
+    ////}
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Player"))
+    //    {
+    //        doneForNow = false;
+    //    }
+    //}
+
+
+
+
+
+
+
+
     [SerializeField] private TextAsset inkyJSON;
     [SerializeField] private string choosePathString;
 
@@ -16,6 +128,7 @@ public class DialogTrigger : MonoBehaviour
     private bool alreadyTrigger = false;
     private bool canTalk = false;
     private bool isTalking = false;
+
 
     //private void OnEnable()
     //{
@@ -30,6 +143,8 @@ public class DialogTrigger : MonoBehaviour
     //{
     //    DialogManager.instance.OnFinishedDialog += FinishedDialog;
     //}
+
+
 
     private void Update()
     {
@@ -60,6 +175,10 @@ public class DialogTrigger : MonoBehaviour
         }
 
     }
+    public void Intereractable()
+    {
+        
+    }
 
     private void StartConversation()
     {
@@ -78,7 +197,7 @@ public class DialogTrigger : MonoBehaviour
 
         if (onTriggerEventDialog && LevelManager.instance.currentDirector != null)
             LevelManager.instance.PauseDirector();
-        
+
         DialogManager.instance.OnFinishedDialog += FinishedDialog;
         UIManager.instance.SetUIState = UIManager.GUIState.DialogMode;
         DialogManager.instance.EnterDialogMode(inkyJSON, pathString);
@@ -89,7 +208,7 @@ public class DialogTrigger : MonoBehaviour
     {
         isTalking = false;
 
-        if(onTriggerEventDialog && LevelManager.instance.currentDirector != null)
+        if (onTriggerEventDialog && LevelManager.instance.currentDirector != null)
         {
             LevelManager.instance.PlayDirector();
             onTriggerEventDialog = false;
@@ -121,5 +240,10 @@ public class DialogTrigger : MonoBehaviour
         {
             canTalk = false;
         }
+    }
+
+    public void Up_Interactable()
+    {
+        throw new NotImplementedException();
     }
 }

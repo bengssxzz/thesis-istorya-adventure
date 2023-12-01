@@ -17,10 +17,10 @@ public class ExpPoints : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerScript playerScript = other.GetComponent<PlayerScript>();
-            playerScript.AddExperience(expPoints);
             gameObject.SetActive(false);
-            Debug.Log($"Points: {expPoints} == Current: {playerScript.GetLevelSystem.GetCurrentExp()}  Target: {playerScript.GetLevelSystem.GetTargetExp()}");
+            //PlayerScript playerScript = other.GetComponent<PlayerScript>();
+            //playerScript.AddExperience(expPoints);
+            //Debug.Log($"Points: {expPoints} == Current: {playerScript.GetLevelSystem.GetCurrentExp()}  Target: {playerScript.GetLevelSystem.GetTargetExp()}");
         }
     }
 

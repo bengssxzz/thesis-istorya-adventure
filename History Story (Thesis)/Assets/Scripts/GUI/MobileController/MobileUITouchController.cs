@@ -1,76 +1,67 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class MobileUITouchController : MonoBehaviour
+public class MobileUITouchController : UIPages
 {
     private PlayerScript entity;
-    private List<TouchSkillUI> listOfTouchSkillUI = new List<TouchSkillUI>();
+
+    private AbilityScript[] currentAbility;
+
+    private TouchSkillUI[] listOfTouchHolderUI;
+    //private List<TouchSkillUI> listOfTouchHolderUI = new List<TouchSkillUI>();
 
 
-    private void OnEnable()
-    {
-        Show();
-    }
-    private void OnDisable()
-    {
-        Hide();
-    }
-
-
-    private void Start()
+    private void Awake()
     {
         entity = GameManager.instance.GetPlayer();
-
-        foreach (var item in transform.GetComponentsInChildren<TouchSkillUI>())
-        {
-            listOfTouchSkillUI.Add(item);
-        }
-        
+        currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
+        listOfTouchHolderUI = transform.GetComponentsInChildren<TouchSkillUI>(true);
     }
 
-    private void UpdateUIData()
+    public override void ShowBehavior()
     {
-        UpdateSkills();
-        foreach (var item in listOfTouchSkillUI)
+        currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
+
+        //Subscribe new abilities event function
+        for (int i = 0; i < listOfTouchHolderUI.Length; i++)
         {
-            if (item.IsHasAbility())
-            {
-                item.AddSubscriber();
-            }
-            continue;
+            if(currentAbility[i] == null) {
+                listOfTouchHolderUI[i].ResetDataHolder();
+                continue; }
+
+            currentAbility[i].OnAbilityTimeLapse += listOfTouchHolderUI[i].AbilityCooldown;
         }
+        UpdateHolderVisual();
     }
-    private void UpdateSkills()
+    public override void HideBehavior()
     {
-        for (int i = 0; i < listOfTouchSkillUI.Count; i++)
+        //Unsubscribe abilities event function
+        for (int i = 0; i < listOfTouchHolderUI.Length; i++)
         {
-            var item = listOfTouchSkillUI[i];
-            if(entity.abilityHolder.GetListOfAbilities()[i] == null)
-            {
-                item.SetNoSkill();
-                continue;
-            }
-            item.UpdateSkillUIButton(entity.abilityHolder.GetListOfAbilities()[i]);
+            if (currentAbility[i] == null) { continue; }
+
+            currentAbility[i].OnAbilityTimeLapse -= listOfTouchHolderUI[i].AbilityCooldown;
         }
     }
 
-
-    public void Show()
+    private void UpdateHolderVisual()
     {
-        gameObject.SetActive(true);
-        UpdateUIData();
-    }
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-        foreach (var item in listOfTouchSkillUI)
+        //Reseting the data of the UI
+        foreach (var holder in listOfTouchHolderUI)
         {
-            if (item.IsHasAbility())
-            {
-                item.RemoveSubscriber();
-            }
-            continue;
+            holder.ResetDataHolder();
+        }
+
+        //Update the visual of the holder UI
+        for (int i = 0; i < listOfTouchHolderUI.Length; i++)
+        {
+            if(currentAbility[i] == null) { continue; }
+
+            listOfTouchHolderUI[i].SetDataHolder(currentAbility[i]);
         }
     }
+
 }

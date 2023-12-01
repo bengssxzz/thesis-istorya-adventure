@@ -5,21 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class DialogUI : MonoBehaviour
+public class DialogUI : UIPages
 {
     [SerializeField] private Image characterImage;
     [SerializeField] private TextMeshProUGUI characterNameTxt, dialogTxt;
 
     private Coroutine currentCoroutine;
 
-    private void OnEnable()
-    {
-        SubscripteEvent();
-    }
-    private void OnDisable()
-    {
-        UnsubscripteEvent();
-    }
 
     private void Awake()
     {
@@ -80,16 +72,13 @@ public class DialogUI : MonoBehaviour
         DialogManager.instance.SetContinueToNextLine(true);
     }
 
-
-
-    public void Show()
+    public override void ShowBehavior()
     {
-        gameObject.SetActive(true);
-    }
-    public void Hide()
-    {
-        gameObject.SetActive(false);
+        SubscripteEvent();
     }
 
-    
+    public override void HideBehavior()
+    {
+        UnsubscripteEvent();
+    }
 }

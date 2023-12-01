@@ -6,21 +6,27 @@ using UnityEngine;
 
 public class AbilityScript : ScriptableObject
 {
-    public int ID => GetInstanceID();
-    public Sprite skillIcon;
+    public Action<bool, float> OnAbilityTimeLapse;
+
+    [Header("Ability Info")]
+    public Sprite abilityIcon;
     public string abilityName;
-    public float manaCost = 0.5f;
+
+    [Header("Ability Timer")]
     public float cooldownTime;
     public float activeTime;
 
-    public event Action OnAbilityUsed;
+    [Header("Ability Stats")]
+    //Stats of this ability
 
-    private bool isActivate = false;
-    public bool IsActivate { get { return isActivate; } }
 
+    private bool isOnCoolDown = false;
+    public bool OnCoolDown { get => isOnCoolDown; }
+
+ 
 
     public void Reset(){
-        isActivate = false;
+        isOnCoolDown = false;
     }
 
     protected virtual void Activate(GameObject entity) {
@@ -30,31 +36,48 @@ public class AbilityScript : ScriptableObject
         //Deactivate this ability
     }
 
-    public virtual IEnumerator Passive(GameObject entity){
-        //Passive
-        yield return new WaitForSeconds(0);
-    }
-
-    public IEnumerator StartCoolDown(){
-        isActivate = true;
-        yield return new WaitForSeconds(cooldownTime);
-        isActivate = false;
-    }
-
-    public virtual IEnumerator Trigger(GameObject entity)
+    public IEnumerator TriggerAbility(MonoBehaviour mono)
     {
-        if (!isActivate)
+        GameObject entityObject = mono.gameObject;
+        if (!isOnCoolDown)
         {
-            OnAbilityUsed?.Invoke();
-
-            Activate(entity);
-            Debug.Log("Activating");
-            yield return new WaitForSeconds(activeTime);
-            Debug.Log("DeActivating");
-            Deactivate(entity);
-            //yield return new WaitForSeconds(cooldownTime);
-            //isActivate = false;
+            mono.StartCoroutine(CooldownTimer(cooldownTime));
+            mono.StartCoroutine(ActiveTimer(activeTime, entityObject));
         }
-        
+
+        yield return null;
+    }
+
+    //Cooldown timer
+    private IEnumerator CooldownTimer(float _cooldownTime)
+    {
+        float startTime = Time.time;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < _cooldownTime)
+        {
+            elapsedTime = Time.time - startTime; // start at zero pataas until reach the cooldown time
+
+            // Invoke the remaining time
+            OnAbilityTimeLapse?.Invoke(isOnCoolDown, _cooldownTime - elapsedTime);
+
+            isOnCoolDown = true;
+            yield return null;
+        }
+
+        // Cooldown finished, do any final actions here
+        isOnCoolDown = false;
+        OnAbilityTimeLapse?.Invoke(isOnCoolDown, 0f);
+    }
+
+    //Activation of the ability
+    private IEnumerator ActiveTimer(float activateTime, GameObject entity)
+    {
+        Activate(entity);  // Initial activation
+
+        // Wait for the specified activation time
+        yield return new WaitForSeconds(activateTime);
+
+        Deactivate(entity);  // Deactivation after the specified time
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ThesisLibrary;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class PlayerScript : Entities
 {
@@ -10,6 +11,10 @@ public class PlayerScript : Entities
     [SerializeField] private Transform holder;
 
     [SerializeField] private bool canFire = true;
+
+    [SerializeField] private bool canInteract = false;
+    [SerializeField] private float interactRadius = 0.5f;
+
 
     private PlayerInputs playerInput;
     private InputAction move;
@@ -19,6 +24,10 @@ public class PlayerScript : Entities
     private WeaponHolder holderData;
 
     private bool facingLeft = false;
+
+
+    //Testing
+    public IInteractable nearestObject;
 
 
     protected override void Awake()
@@ -43,30 +52,35 @@ public class PlayerScript : Entities
 
     private void ButtonInputEvent_Subscribe()
     {
-        playerInput.Player.Skill0.started += Skill0Trigger;
-        playerInput.Player.Skill1.started += Skill1Trigger;
-        playerInput.Player.Skill2.started += Skill2Trigger;
-        playerInput.Player.Skill3.started += Skill3Trigger;
-        playerInput.Player.Interact.started += InteractTrigger;
+        playerInput.Player.SkillBag.started += AbilityInventoryController;
+        playerInput.Player.Skill0.canceled += Skill0Trigger;
+        playerInput.Player.Skill1.canceled += Skill1Trigger;
+        playerInput.Player.Skill2.canceled += Skill2Trigger;
+        playerInput.Player.Skill3.canceled += Skill3Trigger;
+
+        playerInput.Player.Interact.canceled += InteractTrigger;
     }
+
+
     private void ButtonInputEvent_Unsubscribe()
     {
-        playerInput.Player.Skill0.started -= Skill0Trigger;
-        playerInput.Player.Skill1.started -= Skill1Trigger;
-        playerInput.Player.Skill2.started -= Skill2Trigger;
-        playerInput.Player.Skill3.started -= Skill3Trigger;
-        playerInput.Player.Interact.started -= InteractTrigger;
+        playerInput.Player.Skill0.canceled -= Skill0Trigger;
+        playerInput.Player.Skill1.canceled -= Skill1Trigger;
+        playerInput.Player.Skill2.canceled -= Skill2Trigger;
+        playerInput.Player.Skill3.canceled -= Skill3Trigger;
+
+        playerInput.Player.Interact.canceled -= InteractTrigger;
     }
 
-    
 
-   
+
+
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        
+
         rb = GetComponent<Rigidbody2D>();
         collectedEnemy = GetComponent<CollectingMyEnemy>();
         holderData = GetComponent<WeaponHolder>();
@@ -76,7 +90,7 @@ public class PlayerScript : Entities
     protected override void Update()
     {
         base.Update();
-        
+
         //move_dir.x = Input.GetAxisRaw("Horizontal");
         //move_dir.y = Input.GetAxisRaw("Vertical");
 
@@ -94,7 +108,7 @@ public class PlayerScript : Entities
     {
         base.FixedUpdate();
 
-        if(rb.velocity.x > 0 && facingLeft)
+        if (rb.velocity.x > 0 && facingLeft)
         {
             PlayerFlip();
         }
@@ -130,20 +144,41 @@ public class PlayerScript : Entities
                     holderData.GetProjectileSpeed, GetEntityStats.damage, LayerMask.GetMask("Enemy"));
             }
         }
-        
-    }
 
-    
-
-    public void AddExperience(int amount)
-    {
-        GetLevelSystem.AddExperience(amount);
     }
 
 
     private void InteractTrigger(InputAction.CallbackContext obj)
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
+        Debug.Log("Player");
+
+        //Get all the object inside the radius
+        Collider2D[] interactable = Physics2D.OverlapCircleAll(transform.position, interactRadius);
+
+        // Find objects with the "IInteractable" script in the array
+        IInteractable[] dialogTriggers = interactable.Select(collider => collider.GetComponent<IInteractable>()).Where(dialogTrigger => dialogTrigger != null).ToArray();
+
+        // Sort the array based on distance to the current position
+        dialogTriggers = dialogTriggers.OrderBy(dialogTrigger => Vector2.Distance(transform.position, ((MonoBehaviour)dialogTrigger).transform.position)).ToArray();
+        nearestObject = dialogTriggers.FirstOrDefault();
+
+
+        //Call the Interactable function of the object closest.
+        nearestObject?.Intereractable();
+    }
+
+
+
+    private void AbilityInventoryController(InputAction.CallbackContext obj)
+    {
+        //Toggle
+        var uiState = UIManager.instance.SetUIState;
+        if (uiState == UIManager.GUIState.InGame)
+            UIManager.instance.SetGUIState(UIManager.GUIState.Inventory);
+        else if (uiState == UIManager.GUIState.Inventory)
+            UIManager.instance.SetGUIState(UIManager.GUIState.InGame);
+
     }
     private void Skill0Trigger(InputAction.CallbackContext obj)
     {
@@ -162,11 +197,16 @@ public class PlayerScript : Entities
         abilityHolder.UseAbility(3);
     }
 
-    
 
-    
 
-    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, interactRadius);
+    }
+
+
+
 
     //public void OnMove(InputValue value) => move_dir = value.Get<Vector2>();
 

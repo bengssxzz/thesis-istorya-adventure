@@ -113,7 +113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.16765788}
+  m_AnchoredPosition: {x: 0, y: -0.219}
   m_SizeDelta: {x: 0.462, y: 0.13668425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &409225896
@@ -922,6 +922,7 @@ GameObject:
   - component: {fileID: 2466266433387443976}
   - component: {fileID: 2055140318358690957}
   - component: {fileID: 3998716330146362510}
+  - component: {fileID: 2638638130850252143}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1027,7 +1028,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3998716329059780016}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1052,6 +1053,8 @@ MonoBehaviour:
   sprite: {fileID: 5114552363974273661}
   holder: {fileID: 3998716328705905447}
   canFire: 1
+  canInteract: 0
+  interactRadius: 0.5
 --- !u!114 &6090721113678562371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1096,7 +1099,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3998716329059780016}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35f6072a54e8e8c4692413ca5e1688a8, type: 3}
   m_Name: 
@@ -1116,7 +1119,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3998716329059780016}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -1139,6 +1142,20 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2638638130850252143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998716329059780016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8684fbcd547a91846bfdb0d41b6d1b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listOfUnlockedAbilities: []
+  currentAbilities: []
 --- !u!1 &3998716330306596576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1365,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5030405148243461200}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0

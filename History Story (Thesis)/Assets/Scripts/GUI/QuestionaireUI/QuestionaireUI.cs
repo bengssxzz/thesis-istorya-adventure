@@ -6,29 +6,19 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 
-public class QuestionaireUI : MonoBehaviour
+public class QuestionaireUI : UIPages
 {
     [SerializeField] private TextMeshProUGUI questionText;
     [SerializeField] private GameObject correctPanel;
     [SerializeField] private GameObject wrongPanel;
+
+    [SerializeField] private UpgradeStatsSystem upgradeSystemUI;
 
     private QandAChoicesBtnUI[] buttonChoices;
     
 
     private int questionIndex;
     private int pointsToGive = 0;
-
-
-    private void OnEnable()
-    {
-        SubscribeBtn();
-    }
-
-    private void OnDisable()
-    {
-        UnsubscribeBtn();
-        ResetStatusPanel();
-    }
 
     private void Awake()
     {
@@ -65,7 +55,11 @@ public class QuestionaireUI : MonoBehaviour
         var panel = checkedStatus ? correctPanel : wrongPanel; //If the answer is correct select the correct panel, otherwise select wrong panel
         panel.SetActive(true); //Activate the panel
         yield return new WaitForSeconds(1f);
-        Hide(); //Then hide it after some seconds
+        UIEnabled(); //Then hide it after some seconds
+
+        //TESTING UPGRADE
+        if (checkedStatus) { CorrectUpgrade(); }
+
     }
 
     private void ResetStatusPanel()
@@ -110,16 +104,21 @@ public class QuestionaireUI : MonoBehaviour
         return newChoices.ToArray();
     }
 
-
-
-
-
-
-    public void Show()
+    private void CorrectUpgrade()
     {
-        gameObject.SetActive(true);
+        upgradeSystemUI.AddPoints();
+        UIManager.instance.SetGUIState(UIManager.GUIState.Upgradable);
+    }
+
+    public override void ShowBehavior()
+    {
+        SubscribeBtn();
         UpdateQuestion();
     }
 
-    public void Hide() => gameObject.SetActive(false);
+    public override void HideBehavior()
+    {
+        UnsubscribeBtn();
+        ResetStatusPanel();
+    }
 }
