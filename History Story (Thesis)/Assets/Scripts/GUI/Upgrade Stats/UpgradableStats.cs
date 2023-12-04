@@ -43,7 +43,7 @@ public class UpgradableStats : MonoBehaviour
             case CategoryStats.Speed:
                 return "Speed";
 
-            case CategoryStats.Luck:
+            case CategoryStats.Accuracy:
                 return "Luck";
 
             case CategoryStats.Sight:

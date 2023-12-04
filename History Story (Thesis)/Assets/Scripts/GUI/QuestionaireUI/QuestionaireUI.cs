@@ -47,7 +47,6 @@ public class QuestionaireUI : UIPages
     {
         var checkedAnswer = QuestionsManager.instance.CheckAnswer(questionIndex, selectedAnswer);
         StartCoroutine(CheckStatus(checkedAnswer));
-        //Debug.Log("Checked: " + checkedAnswer);
     }
 
     private IEnumerator CheckStatus(bool checkedStatus)
@@ -55,10 +54,14 @@ public class QuestionaireUI : UIPages
         var panel = checkedStatus ? correctPanel : wrongPanel; //If the answer is correct select the correct panel, otherwise select wrong panel
         panel.SetActive(true); //Activate the panel
         yield return new WaitForSeconds(1f);
-        UIEnabled(); //Then hide it after some seconds
 
         //TESTING UPGRADE
-        if (checkedStatus) { CorrectUpgrade(); }
+        if (checkedStatus) { 
+            CorrectUpgrade(); 
+        } 
+        else{
+            UIManager.instance.SetGUIState(UIManager.GUIState.InGame);
+        }
 
     }
 

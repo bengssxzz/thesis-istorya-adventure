@@ -15,12 +15,12 @@ public class ExpPoints : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        var entity = other.GetComponent<Entities>();
+
+        if (entity != null)
         {
             gameObject.SetActive(false);
-            //PlayerScript playerScript = other.GetComponent<PlayerScript>();
-            //playerScript.AddExperience(expPoints);
-            //Debug.Log($"Points: {expPoints} == Current: {playerScript.GetLevelSystem.GetCurrentExp()}  Target: {playerScript.GetLevelSystem.GetTargetExp()}");
+            other.GetComponent<Entities>().GetEntityStats.SetCurrentHealth(5);
         }
     }
 

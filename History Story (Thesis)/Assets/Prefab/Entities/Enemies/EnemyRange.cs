@@ -26,11 +26,11 @@ public class EnemyRange : Enemy
         base.Update();
     }
 
-    protected override void ChaseMyEnemy()
+    protected override void MovementBehaviour()
     {
         if (!isAttacking)
         {
-            base.ChaseMyEnemy();
+            base.MovementBehaviour();
         }
     }
 
@@ -51,11 +51,11 @@ public class EnemyRange : Enemy
                 holderData.StopAimingStatus = false;
                 isAttacking = false;
             }
-            
+
         }
 
         yield return new WaitForSeconds(1);
-        
+
         StartCoroutine(RapidFire());
 
     }

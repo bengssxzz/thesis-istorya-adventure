@@ -13,8 +13,7 @@ public class CollectingMyEnemy : MonoBehaviour
 
     //private Transform firstNearestEnemy;
 
-    private List<Transform> nearestEnemyISee;
-    private Collider2D[] nearestObstacleISee;
+    private List<Transform> nearestEnemyISee = new List<Transform>();
 
 
 
@@ -22,11 +21,6 @@ public class CollectingMyEnemy : MonoBehaviour
     {
         //ScanEnemies();
         IcanSeeEnemy();
-    }
-
-    private void IcanSeeObstacle()
-    {
-
     }
 
     public Transform getNearestEnemy
@@ -77,8 +71,8 @@ public class CollectingMyEnemy : MonoBehaviour
             }
         }
     }
-
-    private void OnDrawGizmos()
+    protected virtual
+        void OnDrawGizmosSelected()
     {
         if (!showGizmos) {
             return;
@@ -86,6 +80,5 @@ public class CollectingMyEnemy : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectRadius);
-
     }
 }

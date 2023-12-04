@@ -7,44 +7,24 @@ using TMPro;
 
 public class PlayerUI : UIPages
 {
-    [SerializeField] private Entities entity;
+    private Entities entity;
 
-    [SerializeField] private GameObject expBarVisual;
-    [SerializeField] private TextMeshProUGUI levelTxt;
-    [SerializeField] private Slider playerUIExpBar;
-
-    [SerializeField] private UpgradeStatsSystem upgradeSystemUI;
+    [SerializeField] private Slider healthBar;
+    
 
     private void Start()
     {
-        entity = GameObject.FindGameObjectWithTag("Player").GetComponent<Entities>();
+        entity = GameManager.instance.GetPlayer();
 
-        //ExpBarToggle();
-        //UpdateLevelText();
-        //entity.GetLevelSystem.OnChangedExperience += ChangedExperience;
-        //entity.GetLevelSystem.OnChangedLevel += ChangedLevel;
-    }
-    private void Update()
-    {
-        ExpBarToggle();
+        entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;
+        //entity.OnHealthChanged += ChangeHealth;
     }
 
-
-    private void ChangedExperience(int exp, int expToNextLvl)
+    public void ChangeHealth(float currentHealth, float maxHealth)
     {
-        playerUIExpBar.value = (float)exp / expToNextLvl;
-    }
+        float value = currentHealth / maxHealth;
 
-    private void ExpBarToggle()
-    {
-        if (upgradeSystemUI.isActiveAndEnabled)
-        {
-            expBarVisual.SetActive(false);
-        }
-        else
-        {
-            expBarVisual.SetActive(true);
-        }
+        healthBar.value = value;
     }
 
     public override void ShowBehavior()

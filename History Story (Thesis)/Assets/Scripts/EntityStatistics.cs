@@ -24,7 +24,7 @@ public enum CategoryStats
 {
     MainStats,
     Speed,
-    Luck,
+    Accuracy,
     Sight,
     Regeneration
 }
@@ -32,9 +32,12 @@ public enum CategoryStats
 [System.Serializable]
 public class EntityStatistics
 {
+    public Action<float, float> OnCurrentHealthChange;
+
+
     //Main Stats
     public float maxHealth { get; private set; }
-    public float currentHealth { get; set; }
+    public float currentHealth { get; private set; }
     public float maxMana { get; private set; }
     public float currentMana { get; set; }
     public float damage { get; private set; }
@@ -46,7 +49,7 @@ public class EntityStatistics
     public float maxAttackSpeed { get; private set; }
     public float currentAttackSpeed { get; set; }
 
-    //Luck
+    //Accuracy
     public int criticalDamage { get; private set; }
     public float dodgeChance { get; private set; }
 
@@ -56,9 +59,7 @@ public class EntityStatistics
     public float attackField { get; private set; }
 
     //Regeneration
-    public float lifeSteal { get; private set; }
-    public float manaAmountRegen { get; private set; }
-    public float manaRegenSpeed { get; private set; } //0.5 lowest
+    public float lifeSteal { get; private set; } //Every kill absorb health
 
 
 
@@ -82,8 +83,6 @@ public class EntityStatistics
         attackField += entityStatsSO.attackField;
 
         lifeSteal += entityStatsSO.lifeSteal;
-        manaAmountRegen += entityStatsSO.manaRegenAmount;
-        manaRegenSpeed += entityStatsSO.manaRegenTime;
 
 
 
@@ -93,6 +92,13 @@ public class EntityStatistics
     {
         currentMoveSpeed = amount;
     }
+
+    public void SetCurrentHealth(float amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        OnCurrentHealthChange.Invoke(currentHealth, maxHealth);
+    }
+
     public void UpgradeCategoryStats(CategoryStats categoryStats)
     {
         switch (categoryStats)
@@ -106,7 +112,7 @@ public class EntityStatistics
                 maxMoveSpeed += 0.5f;
                 maxAttackSpeed += 0.01f;
                 break;
-            case CategoryStats.Luck:
+            case CategoryStats.Accuracy:
                 criticalDamage += 2;
                 dodgeChance += 0.02f;
                 break;
@@ -115,9 +121,7 @@ public class EntityStatistics
                 attackField += 0.05f;
                 break;
             case CategoryStats.Regeneration:
-                lifeSteal += 5;
-                manaAmountRegen += 0.15f;
-                manaRegenSpeed += 0.02f;
+                lifeSteal += 2.5f;
                 break;
             default:
                 Debug.LogWarning("Upgrade stats is undefined");

@@ -7,12 +7,10 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using ThesisLibrary;
 
+[RequireComponent(typeof(CollectingMyEnemy))]
 [RequireComponent(typeof(AbilityController))]
 public class Entities : MonoBehaviour, IDamageable
 {
-    public Action<float> OnHealthChanged;
-    public Action<float> OnManaChanged;
-
     protected Timer timer = new Timer();
 
     [SerializeField] private EntityStatsSO entityStatsSO;
@@ -50,7 +48,7 @@ public class Entities : MonoBehaviour, IDamageable
 
     protected virtual void Update()
     {
-        ManaGenerate();
+        
     }
 
     protected virtual void FixedUpdate()
@@ -85,9 +83,8 @@ public class Entities : MonoBehaviour, IDamageable
         {
             // Take damage if the health is more than zero
             TakeDamageBehaviour(damage);
-            entityStats.currentHealth = Mathf.Clamp(entityStats.currentHealth - damage, 0, entityStats.maxHealth);
-            //entityStats.currentHealth -= Mathf.RoundToInt(damage);
-            OnHealthChanged?.Invoke(entityStats.currentHealth / entityStats.currentHealth);
+            
+            entityStats.SetCurrentHealth(-damage);
 
             if (entityStats.currentHealth <= 0.001)
             {
@@ -105,28 +102,12 @@ public class Entities : MonoBehaviour, IDamageable
         //Behaviour of the entity when taking damage
         Debug.Log("Ouch! " + damage.ToString());
     }
-    public void GenerateHealth(float amount)
+    public void GenerateHealth(float healthAmount)
     {
-        var addHealth = Mathf.RoundToInt(amount);
-        entityStats.currentHealth = Mathf.Clamp(entityStats.currentHealth + addHealth, 0, entityStats.maxHealth); 
-        OnHealthChanged?.Invoke(entityStats.currentHealth / entityStats.currentHealth);
+        var addHealth = Mathf.RoundToInt(healthAmount);
+        entityStats.SetCurrentHealth(healthAmount);
     }
    
-    private void ManaGenerate(){
-        //If current mana is not max, then generate mana
-
-        if(entityStats.currentMana < entityStats.maxMana)
-        {
-            if (timer.TimerNode(entityStats.manaRegenSpeed)) //Timer node
-            {
-                entityStats.currentMana = Mathf.Clamp(entityStats.currentMana + entityStats.manaAmountRegen, 0, entityStats.maxMana);
-                OnManaChanged?.Invoke(entityStats.currentMana / entityStats.maxMana);
-                //Debug.Log("Current mana: " + entityStats.currentMana + " Regen mana amount: " + entityStats.manaAmountRegen);
-            }
-        }
-    }
-
-    
     protected virtual void Death() // Entity death behaviour
     {
         Debug.Log("Im dead " + gameObject.name);

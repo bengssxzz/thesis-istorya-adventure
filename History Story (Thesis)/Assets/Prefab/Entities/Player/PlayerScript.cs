@@ -7,6 +7,7 @@ using System.Linq;
 
 public class PlayerScript : Entities
 {
+    [SerializeField] private bool inDebugMode = false;
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Transform holder;
 
@@ -198,9 +199,10 @@ public class PlayerScript : Entities
     }
 
 
-
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
+        if (!inDebugMode) { return; }
+
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, interactRadius);
     }
