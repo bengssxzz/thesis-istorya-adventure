@@ -70,10 +70,10 @@ public class WeaponHolder : MonoBehaviour
     {
         Quaternion q;
 
-        if (collectedEnemy.getNearestEnemy != null)
+        if (collectedEnemy.GetNearestEnemy != null)
         {
             //Direct rotation toward to the enemy position
-            dir = collectedEnemy.getNearestEnemy.position - holder.position;
+            dir = collectedEnemy.GetNearestEnemy.position - holder.position;
 
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             q = Quaternion.AngleAxis(angle, Vector3.forward);

@@ -5,14 +5,6 @@ using System.Linq;
 using System;
 
 
-public enum TagPooling
-{
-    Enemy,
-    Bullet,
-    Clone,
-    Collectibles
-}
-
 public class ObjectPooling : MonoBehaviour
 {
     public static ObjectPooling instance;
@@ -56,21 +48,21 @@ public class ObjectPooling : MonoBehaviour
         
     }
 
-    public GameObject CreateObject(string tagLayer, GameObject prefabObject)
+    public GameObject CreateObject(string objectTag, GameObject prefabObject)
     {
         GameObject newObject = Instantiate(prefabObject);
         newObject.transform.SetParent(gameObject.transform);
         newObject.name = prefabObject.name;
 
-        if (poolObjects.ContainsKey(tagLayer))
+        if (poolObjects.ContainsKey(objectTag))
         {
             //If tag layer is exist then add object to a dictionary list
-            poolObjects[tagLayer].Add(newObject);
+            poolObjects[objectTag].Add(newObject);
         }
         else
         {
             //Otherwise create a new tag
-            poolObjects.Add(tagLayer, new List<GameObject>() { newObject });
+            poolObjects.Add(objectTag, new List<GameObject>() { newObject });
         }
         
 

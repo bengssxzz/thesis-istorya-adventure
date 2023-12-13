@@ -152,8 +152,6 @@ public class AbilityInventory : UIPages
         //Handle Swaping abilities and use abilities
         if (!scriptItem.GetType().IsClass || firstDragScript == null) { return; }
 
-        Debug.Log("1st: " + firstDragScript.GetType() + " 2nd: " + scriptItem.GetType());
-
         if ((firstDragScript.GetType() == typeof(SlotAbilityHolder)) && (scriptItem.GetType() == typeof(SlotAbilityHolder)))
         {
             //Swapping abilities in slot holder

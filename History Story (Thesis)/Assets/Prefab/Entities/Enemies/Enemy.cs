@@ -20,49 +20,13 @@ public class Enemy : Entities
         [Range(0.0f, 100.0f)] public float dropChance;
     }
 
-    private Rigidbody2D rb;
-    protected CollectingMyEnemy myEnemies;
-
-    [SerializeField] protected bool showGizmos = false;
     private Transform targetEnemy;
 
     [SerializeField] private List<Loot> listOfDropLoot;
 
-    protected bool targetInRange = false;
-
     public float stopDistance;
     public float FleeDistance;
 
-    //////test
-    //public float obstacleDetectRadius = 0.2f;
-    //public LayerMask obstacles;
-    //public float rotationStep = 5f; // The angle by which to rotate the raycast each step
-    //public float maxRotationAngle = 180f; // The maximum angle to rotate the raycast
-
-
-
-
-    //private Vector2[] detectorDir;
-
-    //public float obstacleDetectRadius = 0.2f;
-    //public LayerMask obstacles;
-
-    //public float lengthRaycast = 1;
-    //public int raycastCount = 8;
-
-    //public float[] obstacle, interest;
-    //public float[] contextVector;
-    //public Vector2 res;
-    //private Vector3 avoidanceForce = Vector2.zero;
-    //public LayerMask obstacleIsee;
-
-
-    protected override void Awake()
-    {
-        base.Awake();
-        rb = GetComponent<Rigidbody2D>();
-        myEnemies = GetComponent<CollectingMyEnemy>();
-    }
 
     protected override void Start()
     {
@@ -94,33 +58,33 @@ public class Enemy : Entities
 
     protected virtual void ChaseMyEnemy()
     {
-        targetEnemy = myEnemies.getNearestEnemy;
+        //targetEnemy = collectedEnemy.GetNearestEnemy;
 
-        if (targetEnemy == null) { return; }
+        //if (targetEnemy == null) { return; }
 
-        move_dir = targetEnemy.position - transform.position;
-        if (Vector2.Distance(transform.position, targetEnemy.position) < stopDistance)
-        {
-            targetInRange = true;
-            rb.velocity = Vector2.zero;
-            return;
-        }
-        targetInRange = false;
-        rb.velocity = move_dir.normalized * GetEntityStats.currentMoveSpeed * Time.deltaTime;
+        //move_dir = targetEnemy.position - transform.position;
+        //if (Vector2.Distance(transform.position, targetEnemy.position) < stopDistance)
+        //{
+        //    targetInRange = true;
+        //    rb.velocity = Vector2.zero;
+        //    return;
+        //}
+        //targetInRange = false;
+        //rb.velocity = move_dir.normalized * GetEntityStats.currentMoveSpeed * Time.deltaTime;
 
     }
 
     protected virtual void FleeToMyEnemy()
     {
-        targetEnemy = myEnemies.getNearestEnemy;
+        //targetEnemy = collectedEnemy.GetNearestEnemy;
 
-        if (targetEnemy == null) { return; }
+        //if (targetEnemy == null) { return; }
 
-        move_dir = targetEnemy.position - transform.position;
-        if (Vector2.Distance(transform.position, targetEnemy.position) < FleeDistance)
-        {
-            rb.velocity = (move_dir.normalized * -GetEntityStats.currentMoveSpeed) * Time.deltaTime;
-        }
+        //move_dir = targetEnemy.position - transform.position;
+        //if (Vector2.Distance(transform.position, targetEnemy.position) < FleeDistance)
+        //{
+        //    rb.velocity = (move_dir.normalized * -GetEntityStats.currentMoveSpeed) * Time.deltaTime;
+        //}
 
     }
 
@@ -129,15 +93,16 @@ public class Enemy : Entities
         //Attack
     }
 
-    protected override void Death()
+
+    protected override void DeathBehaviour(Entities sourceDamage)
     {
         LootDrop();
-        base.Death();
+        base.DeathBehaviour(sourceDamage);
     }
 
-    private void LootDrop()
+    private void LootDrop() //Loot to drop
     {
-        Debug.Log("DO THIS");
+        Debug.Log("Loot Dropped");
         foreach (var itemLoot in listOfDropLoot)
         {
             float dropRate = UnityEngine.Random.Range(0.0f, 100.0f);
@@ -189,9 +154,10 @@ public class Enemy : Entities
 
 
 
+
     private void OnDrawGizmos()
     {
-        if (!showGizmos)
+        if (debugMode == false)
         {
             return;
         }

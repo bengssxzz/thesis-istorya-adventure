@@ -8,6 +8,7 @@ public class CollectingMyEnemy : MonoBehaviour
 {
     [SerializeField] private bool showGizmos = false;
 
+    [Header("Detect")]
     [SerializeField] private LayerMask myEnemyLayer, raycastCanSee;
     [SerializeField] private float detectRadius = 0.5f;
 
@@ -15,16 +16,7 @@ public class CollectingMyEnemy : MonoBehaviour
 
     private List<Transform> nearestEnemyISee = new List<Transform>();
 
-
-
-    private void Update()
-    {
-        //ScanEnemies();
-        IcanSeeEnemy();
-    }
-
-    public Transform getNearestEnemy
-    {
+    public Transform GetNearestEnemy{ 
         get 
         {
             //return firstNearestEnemy;
@@ -40,10 +32,14 @@ public class CollectingMyEnemy : MonoBehaviour
             }
         }
     }
-    public bool IsHasEnemyNearby()
+    public bool HasEnemyNearby { get => nearestEnemyISee.Count > 0; }
+
+
+    private void Start()
     {
-        return nearestEnemyISee.Count > 0;
+        StartCoroutine("ScanEnemyInArea", 0.2f);
     }
+
     private void IcanSeeEnemy()
     {
         nearestEnemyISee = new List<Transform>();
@@ -71,8 +67,16 @@ public class CollectingMyEnemy : MonoBehaviour
             }
         }
     }
-    protected virtual
-        void OnDrawGizmosSelected()
+    private IEnumerator ScanEnemyInArea(float executeTime)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(executeTime);
+            IcanSeeEnemy();
+        }
+    }
+
+    protected virtual void OnDrawGizmosSelected()
     {
         if (!showGizmos) {
             return;

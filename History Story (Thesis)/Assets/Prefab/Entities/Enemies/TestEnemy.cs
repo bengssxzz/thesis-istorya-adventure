@@ -205,7 +205,7 @@ public class TestEnemy : MonoBehaviour
 
         // Modify the following line to use a path-following approach
         // Instead of directly seeking the player, make the enemy follow waypoints
-        outputDirection += ((Vector2)myEnemy.getNearestEnemy.position - (Vector2)transform.position).normalized * 0.3f;
+        outputDirection += ((Vector2)myEnemy.GetNearestEnemy.position - (Vector2)transform.position).normalized * 0.3f;
 
         outputDirection.Normalize();
         return outputDirection;
@@ -219,7 +219,7 @@ public class TestEnemy : MonoBehaviour
     {
         float[] interest = new float[raycastCount];
 
-        Vector2 directionToTarget = (myEnemy.getNearestEnemy.position - transform.position);
+        Vector2 directionToTarget = (myEnemy.GetNearestEnemy.position - transform.position);
         for (int i = 0; i < interest.Length; i++)
         {
             float result = Vector2.Dot(directionToTarget.normalized, detectorDir[i]);

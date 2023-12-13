@@ -17,8 +17,12 @@ public class MobileUITouchController : UIPages
     private void Awake()
     {
         entity = GameManager.instance.GetPlayer();
-        currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
         listOfTouchHolderUI = transform.GetComponentsInChildren<TouchSkillUI>(true);
+    }
+
+    private void Start()
+    {
+        currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
     }
 
     public override void ShowBehavior()
