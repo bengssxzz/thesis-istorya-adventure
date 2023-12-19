@@ -81,9 +81,9 @@ public class WeaponHolder : MonoBehaviour
         }
         else
         {
-            if (myEntity.getMoveDir != Vector2.zero)
+            if (myEntity.GetMoveDirection != Vector2.zero)
             {
-                dir = myEntity.getMoveDir;
+                dir = myEntity.GetMoveDirection;
                 //Direct rotation toward to the direction movement
                 angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                 q = Quaternion.AngleAxis(angle, Vector3.forward);

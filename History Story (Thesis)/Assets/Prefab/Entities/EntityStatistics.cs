@@ -32,6 +32,8 @@ public enum CategoryStats
 [System.Serializable]
 public class EntityStatistics
 {
+    private Entities entity;
+
     public Action<float, float> OnCurrentHealthChange;
 
 
@@ -55,12 +57,7 @@ public class EntityStatistics
     //Sight
     public float criticalChance { get; private set; }
 
-    public bool canRangedAttack { get; private set; }
-    public float rangedAttackField { get; private set; }
-    public bool canMeleeAttack { get; private set; }
-    public float meleeAttackField { get; private set; }
-   
-    
+
 
 
     //Regeneration
@@ -68,7 +65,7 @@ public class EntityStatistics
 
 
 
-    public EntityStatistics(EntityStatsSO entityStatsSO){
+    public EntityStatistics(EntityStatsSO entityStatsSO, Entities entity){
         maxHealth = entityStatsSO.maxHealth;
         currentHealth = maxHealth;
 
@@ -85,11 +82,7 @@ public class EntityStatistics
 
         criticalChance = entityStatsSO.criticalChance;
 
-        canRangedAttack = entityStatsSO.canRangedAttack;
-        rangedAttackField = entityStatsSO.rangedAttackField;
 
-        canMeleeAttack = entityStatsSO.canMeleeAttack;
-        meleeAttackField = entityStatsSO.meleeAttackField;
 
         lifeSteal = entityStatsSO.lifeSteal;
 
@@ -126,7 +119,6 @@ public class EntityStatistics
                 break;
             case CategoryStats.Sight:
                 criticalChance += 0.002f;
-                rangedAttackField += 0.005f;
                 break;
             case CategoryStats.Regeneration:
                 lifeSteal += 1.5f;

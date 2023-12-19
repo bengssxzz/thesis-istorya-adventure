@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using ThesisLibrary;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class AttackController : DetectMyEnemies
 {
     private Entities entity;
@@ -11,22 +15,31 @@ public class AttackController : DetectMyEnemies
     [SerializeField] private Transform attackHolder;
     [SerializeField] private string projectileTag;
 
+    public Transform EnemyInsideArea;
+    public bool EnableAttacking { get; set; }
+    [Space(20)]
     [Header("Ranged Attack Type")]
+    [SerializeField] private bool canRangeAttack = true;
     [SerializeField] private List<Projectile> projectileShot = new List<Projectile>();
+    [SerializeField][Range(0f, 50f)] private float rangedAttackDistance;
     [SerializeField] private float inBetweenTime = 0.1f;
     [SerializeField] private bool canMoveOnShoot = false;
-
     private bool readyRangedAttack = true;
-    //I am planning to add an angle attack type, kung 360deg shot ba? or 90deg shot
 
+    [Space(10)]
     [Header("Melee Attack Type")]
+    [SerializeField] private bool canMeleeAttack = true;
+    [SerializeField] [Range(0f, 50f)] private float meleeAttackDistance;
+    [SerializeField] [Range(0, 360)] private float viewAngle;
     [SerializeField] private float intervalTime = 0.3f;
     [SerializeField] private int slashCount = 1;
+    [SerializeField] private float knockBackPower = 15f;
     private bool readyMeleeAttack = true;
 
+   
 
-    [Space]
-    private float rangedAttackField, meleeAttackField;
+    //[Space]
+    //private float rangedAttackField, meleeAttackField;
 
     private bool stopAiming = false;
     private Vector3 dir;
@@ -43,8 +56,8 @@ public class AttackController : DetectMyEnemies
     {
         base.Start();
 
-        rangedAttackField = entity.GetEntityStats.rangedAttackField;
-        meleeAttackField = entity.GetEntityStats.meleeAttackField;
+        //rangedAttackField = entity.GetEntityStats.rangedAttackField;
+        //meleeAttackField = entity.GetEntityStats.meleeAttackField;
     }
 
 
@@ -54,34 +67,39 @@ public class AttackController : DetectMyEnemies
 
         if (detectRadius <= -1)
         {
-            detectRadius = entity.GetEntityStats.rangedAttackField;
+            detectRadius = rangedAttackDistance;
         }
 
-        if (nearestEnemy != null)
+        if (GetNearestEnemy != null)
         {
+            if(!EnableAttacking) { return; } //To stop the attack
 
-            if (entity.GetEntityStats.canRangedAttack && distanceToNearestEnemy <= rangedAttackField && distanceToNearestEnemy > meleeAttackField)
+            if (canRangeAttack && distanceToNearestEnemy <= rangedAttackDistance && distanceToNearestEnemy > meleeAttackDistance)
             {
                 //RangedAttackBehaviour();
+                EnemyInsideArea = GetNearestEnemy;
                 StartCoroutine(RangedAttack(entity.GetEntityStats.currentAttackSpeed));
-            }else if (entity.GetEntityStats.canMeleeAttack && distanceToNearestEnemy <= meleeAttackField)
+            }else if (canMeleeAttack && distanceToNearestEnemy <= meleeAttackDistance)
             {
-                MeleeAttackBehaviour();
+                StartCoroutine(MeleeAttack(intervalTime));
             }
+
+            EnemyInsideArea = null;
+
         }
     }
 
 
-    private void Aiming()
+    private void Aiming() //Controll the aiming of the entity toward to nearest enemy
     {
         Quaternion q;
 
         if (stopAiming) { return; }
 
-            if (nearestEnemy != null)
+        if (GetNearestEnemy != null)
         {
             //Direct rotation toward to the enemy position
-            dir = nearestEnemy.position - attackHolder.position;
+            dir = GetNearestEnemy.position - attackHolder.position;
 
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             q = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -89,9 +107,9 @@ public class AttackController : DetectMyEnemies
         }
         else
         {
-            if (entity.getMoveDir != Vector2.zero)
+            if (entity.GetMoveDirection != Vector2.zero)
             {
-                dir = entity.getMoveDir;
+                dir = entity.GetMoveDirection;
                 //Direct rotation toward to the direction movement
                 angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                 q = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -108,9 +126,9 @@ public class AttackController : DetectMyEnemies
         }
         attackHolder.localScale = new Vector3(1 * transform.localScale.x, Scale.y, 1);
     }
+    private Vector2 GetDirectionTowardsEnemy() => (GetNearestEnemy.position - attackHolder.position).normalized;
 
-
-    private IEnumerator RangedAttack(float attackSpeed)
+    private IEnumerator RangedAttack(float attackSpeed) //Handle the range attack
     {
         if (readyRangedAttack)
         {
@@ -126,14 +144,9 @@ public class AttackController : DetectMyEnemies
                 //Create new projectile
                 GameObject newProjectile = ObjectPooling.instance.GetObjectInPool(projectileTag, projectile.gameObject);
                 var projectileScript = newProjectile.GetComponent<Projectile>();
-                projectileScript.InitializeProjectile(entity, rangedAttackField, myEnemyLayer);
+                projectileScript.InitializeProjectile(entity, GetDirectionTowardsEnemy(), rangedAttackDistance, myEnemyLayer);
                 projectileScript.transform.position = attackHolder.position;
                 projectileScript.transform.rotation = attackHolder.localRotation;
-                //var bullet = Create.CreateProjectile("player_bullet", projectile.gameObject, attackHolder.position, attackHolder.rotation,
-                //50, 10, LayerMask.GetMask("Enemy"));
-
-                //var bullet_script = bullet.GetComponent<Bullet>();
-                //bullet_script.SetDistanceLimit(transform.position, rangedAttackField);
 
                 if (projectileShot.Count > 1)
                 {
@@ -146,33 +159,113 @@ public class AttackController : DetectMyEnemies
             readyRangedAttack = true;
         }
     }
-
-
-    private void MeleeAttackBehaviour()
+    private IEnumerator MeleeAttack(float meleeAttackSpeed) //Handle the melee attack
     {
-        Debug.Log("Melee Attack");
+        if (readyMeleeAttack)
+        {
+            readyMeleeAttack = false;
+
+            Collider2D[] enemies = GetEnemyInsideMeleeAngle().ToArray();
+
+            foreach (var enemy in enemies)
+            {
+                var damageable = enemy.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    Debug.Log("Taking malee damage");
+                    damageable.TakeDamage(entity.GetEntityStats.damage, entity);
+                    StartCoroutine(damageable.KnockBack(gameObject.transform, knockBackPower));
+                    
+                }
+
+            }
+
+            yield return new WaitForSeconds(meleeAttackSpeed);
+            readyMeleeAttack = true;
+
+        }
+        
+    }
+
+    private List<Collider2D> GetEnemyInsideMeleeAngle() //Get the enemy inside the angle of the melee attack
+    {
+        List<Collider2D> enemyInsideAngle = new List<Collider2D>();
+
+        Collider2D[] enemyInsideArea = Physics2D.OverlapCircleAll(transform.position, meleeAttackDistance, myEnemyLayer);
+
+        if(enemyInsideArea.Length > 0)
+        {
+            foreach (var item in enemyInsideArea)
+            {
+                Vector2 dir = (item.transform.position - transform.position).normalized;
+
+                if(Vector2.Angle(attackHolder.transform.right, dir) < viewAngle / 2)
+                {
+                    enemyInsideAngle.Add(item);
+                }
+            }
+        }
+
+        return enemyInsideAngle;
     }
 
 
+    private Vector2 DirFromAngle(float eulerY, float angleInDegree)
+    {
+        angleInDegree += eulerY;
 
+        return new Vector2(Mathf.Sin(angleInDegree * Mathf.Deg2Rad), Mathf.Cos(angleInDegree * Mathf.Deg2Rad));
+
+    }
 
     protected override void OnDrawGizmosSelected()
     {
+        //base.OnDrawGizmosSelected();
+        if (!debugMode) { return; }
+
         base.OnDrawGizmosSelected();
-        if (!debugMode || entity == null) { return; }
 
-        if (entity.GetEntityStats.canMeleeAttack)
+#if UNITY_EDITOR
+        if (canRangeAttack)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, entity.GetEntityStats.meleeAttackField);
+            Handles.color = Color.white;
+            Handles.DrawWireDisc(transform.position, transform.forward, rangedAttackDistance);
         }
 
-        if (entity.GetEntityStats.canRangedAttack)
+        if (canMeleeAttack)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, entity.GetEntityStats.rangedAttackField);
+            Handles.color = Color.white;
+            Handles.DrawWireDisc(transform.position, transform.forward, meleeAttackDistance);
+            Vector3 angle1 = DirFromAngle(-attackHolder.eulerAngles.z + 90, -viewAngle / 2);
+            Vector3 angle2 = DirFromAngle(-attackHolder.eulerAngles.z + 90, viewAngle / 2);
+            Handles.DrawLine(transform.position, transform.position + angle1 * meleeAttackDistance);
+            Handles.DrawLine(transform.position, transform.position + angle2 * meleeAttackDistance);
         }
+#endif
+
+
 
     }
+
+//    private void OnDrawGizmos()
+//    {
+//        if (!debugMode) { return; }
+
+////#if UNITY_EDITOR
+////        Gizmos.color = Color.white;
+////        Handles.DrawWireDisc(transform.position, transform.forward, meleeAttackField);
+////        //Handles.DrawWireArc(transform.position, transform.forward, attackHolder.eulerAngles * 90, viewAngle, viewRadius);
+
+////        Vector3 angle1 = DirFromAngle(-attackHolder.eulerAngles.z + 90, -viewAngle / 2);
+////        Vector3 angle2 = DirFromAngle(-attackHolder.eulerAngles.z + 90, viewAngle / 2);
+
+////        Gizmos.color = Color.white;
+////        Handles.DrawLine(transform.position, transform.position + angle1 * meleeAttackField);
+////        Handles.DrawLine(transform.position, transform.position + angle2 * meleeAttackField);
+
+////#endif
+//    }
+
+    
 
 }

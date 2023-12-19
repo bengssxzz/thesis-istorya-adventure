@@ -16,19 +16,19 @@ public class DetectMyEnemies : MonoBehaviour
     private LayerMask raycastCanSee => myEnemyLayer + obstacleLayer;//Combined layer
 
 
-    protected Transform nearestEnemy; //Nearest enemy
+    public Transform GetNearestEnemy { get; protected set; } //Nearest enemy
     protected float distanceToNearestEnemy; //Get the distance between gameobject to nearest enemy
     protected bool HasEnemyNearby; //Has enemy around
 
 
     protected virtual void Start()
     {
-        StartCoroutine("ScanEnemyInArea", 0.2f);
+        StartCoroutine(ScanEnemyInArea(0.2f));
     }
 
     private void ScanNearestEnemies()
     {
-        nearestEnemy = null;
+        GetNearestEnemy = null;
         Collider2D[] circleArea = Physics2D.OverlapCircleAll(transform.position, detectRadius, myEnemyLayer);
 
         //Sort the array to nearest to farthest
@@ -51,7 +51,7 @@ public class DetectMyEnemies : MonoBehaviour
                 if (hit.collider != null && (myEnemyLayer & (1 << hit.collider.gameObject.layer)) != 0)
                 {
                     //I see my enemy without obtacle blocking
-                    nearestEnemy = myEnemy.transform;
+                    GetNearestEnemy = myEnemy.transform;
 
                     distanceToNearestEnemy = Vector2.Distance(hit.point, transform.position);
 

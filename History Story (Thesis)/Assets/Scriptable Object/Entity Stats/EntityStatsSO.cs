@@ -12,12 +12,6 @@ public class EntityStatsSO : ScriptableObject
     public int maxMana = 100;
     public float lifeSteal = 0;
 
-    [Header("Field")]
-    public bool canMeleeAttack = true;
-    public float meleeAttackField = 0;
-    public bool canRangedAttack = true;
-    public float rangedAttackField = 0;
-
     [Header("Damage")]
     public float damage = 10;
     [Tooltip("Critical Damage in percentage")]

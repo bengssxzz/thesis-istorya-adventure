@@ -12,10 +12,10 @@ public class AbilityHolder
     private List<AbilityScript> listOfUnlockedAbilities = new List<AbilityScript>(); 
     private List<AbilityScript> currentAbilities = new List<AbilityScript>();
 
-    public AbilityHolder(Entities _entity)
+    public AbilityHolder(Entities _entity, List<AbilityScript> abilityScripts)
     {
         entity = _entity;
-        SetChangeListAbilities(_entity.GetEntityStatsSO.abilities);
+        SetChangeListAbilities(abilityScripts);
     }
 
     public List<AbilityScript> GetListOfCurrentAbilities()

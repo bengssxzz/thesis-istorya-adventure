@@ -17,8 +17,6 @@ public class PlayerScript : Entities
     private PlayerInputs playerInput;
     private InputAction move;
 
-    private WeaponHolder holderData;
-
     //Testing
     public IInteractable nearestObject;
 
@@ -30,15 +28,19 @@ public class PlayerScript : Entities
         playerInput = new PlayerInputs();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         ButtonInputEvent_Subscribe();
         move = playerInput.Player.Move;
 
         playerInput.Player.Enable();
     }
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         ButtonInputEvent_Unsubscribe();
         playerInput.Player.Disable();
     }
@@ -63,52 +65,22 @@ public class PlayerScript : Entities
         playerInput.Player.Interact.canceled -= InteractTrigger;
     }
 
-
-    // Start is called before the first frame update
-    protected override void Start()
-    {
-        base.Start();
-
-        
-        holderData = GetComponent<WeaponHolder>();
-    }
-
     protected override void MovementBehaviour()
     {
-        if (GameManager.instance.IsPlayerCanMove() == false) { return; }
-
-        move_dir = move.ReadValue<Vector2>().normalized;
-        rb.velocity = move_dir.normalized * GetEntityStats.currentMoveSpeed * Time.deltaTime;
+        GetMoveDirection = move.ReadValue<Vector2>().normalized;
+        rb.velocity = GetMoveDirection * GetEntityStats.currentMoveSpeed * Time.deltaTime;
     }
 
-    //protected override void AttackBehaviour(float damage, float attackSpeed)
-    //{
-    //    base.AttackBehaviour(damage, attackSpeed);
-
-    //    //Trigger autofire
-    //    var canSeeEnemy = collectedEnemy?.GetNearestEnemy != null;
-
+    protected override void KillerReward(Entities killerEntity, Entities victimEntity) //When I killed the enemy
+    {
         
+        GenerateHealth(GetEntityStats.lifeSteal);
 
-    //    if (canSeeEnemy && timer.TimerNode(GetEntityStats.currentAttackSpeed))
-    //    {
-    //        if (Vector2.Distance(transform.position, collectedEnemy.GetNearestEnemy.position) > GetEntityStats.rangedAttackField) { return; }
-
-    //        //Creating bullet
-    //        var bullet = Create.CreateProjectile("player_bullet", holderData.GetProjectilePrefab, holder.position, holder.rotation,
-    //            holderData.GetProjectileSpeed, GetEntityStats.damage, LayerMask.GetMask("Enemy"));
-
-    //        var bullet_script = bullet.GetComponent<Bullet>();
-    //        bullet_script.SetDistanceLimit(transform.position, GetEntityStats.rangedAttackField);
-    //    }
-    //}
-
+        //TODO: Invoke some achievement
+    }
 
     private void InteractTrigger(InputAction.CallbackContext obj)
     {
-        //throw new System.NotImplementedException();
-        Debug.Log("Player");
-
         //Get all the object inside the radius
         Collider2D[] interactable = Physics2D.OverlapCircleAll(transform.position, interactRadius);
 
@@ -141,14 +113,19 @@ public class PlayerScript : Entities
     private void Skill3Trigger(InputAction.CallbackContext obj) => abilityHolder.UseAbility(3);
 
 
+
+
+
+
+
+
     private void OnDrawGizmosSelected()
     {
         if (debugMode == false) { return; }
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, interactRadius);
-
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, GetEntityStats.rangedAttackField);
     }
+
+    
 }

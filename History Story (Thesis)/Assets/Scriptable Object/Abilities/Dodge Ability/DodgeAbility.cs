@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Dodge", menuName = "Abilities/Dodge")]
 public class DodgeAbility : AbilityScript
 {
-    private Entities _entity;
+    private Entities entity;
     private Rigidbody2D rb;
 
     private Vector2 previousDir;
@@ -15,26 +15,25 @@ public class DodgeAbility : AbilityScript
     {
         var weaponDir = entity.GetComponent<WeaponHolder>();
         rb = entity.GetComponent<Rigidbody2D>();
-        _entity = entity.GetComponent<Entities>();
+        this.entity = entity.GetComponent<Entities>();
 
         if (previousDir == Vector2.zero)
         {
             previousDir = Vector2.left;
         }
-        if (_entity.getMoveDir != Vector2.zero)
+        if (this.entity.GetMoveDirection != Vector2.zero)
         {
-            previousDir = _entity.getMoveDir;
+            previousDir = this.entity.GetMoveDirection;
         }
 
 
-
-        _entity.IsCanMove = false;
+        this.entity.IsCanMove = false;
 
         rb.AddForce(previousDir * dodgePower * Time.fixedDeltaTime, ForceMode2D.Impulse);
     }
 
     protected override void Deactivate(GameObject entity)
     {
-        _entity.IsCanMove = true;
+        this.entity.IsCanMove = true;
     }
 }

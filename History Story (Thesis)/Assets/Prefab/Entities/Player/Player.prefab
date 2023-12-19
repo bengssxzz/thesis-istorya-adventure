@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3998716328705905447}
+  - component: {fileID: 5878510811827714937}
   m_Layer: 0
   m_Name: Weapon Holder
   m_TagString: Untagged
@@ -32,6 +33,17 @@ Transform:
   m_Father: {fileID: 3998716329059780022}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &5878510811827714937
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998716328705905440}
+  m_Enabled: 1
+  m_SortingLayerID: -1014085095
+  m_SortingLayer: 2
+  m_SortingOrder: 0
 --- !u!1 &3998716328777059886
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
+  ignoreObstacle: 0
   detectRadius: -1
   myEnemyLayer:
     serializedVersion: 2
@@ -440,8 +453,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1014085095
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -735800173, guid: e1e204c0325d8444d828a22ba41ea442, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -11,36 +11,23 @@ public class Entities : MonoBehaviour, IDamageable
 
     public event Action<bool> OnAttackInRange;
 
-    protected Rigidbody2D rb;
-    protected AttackController attackController;
-
-    protected Timer timer = new Timer();
-
+    [SerializeField] private EntityStatsSO entityStatsSO;
     [SerializeField] private SpriteRenderer entitySpriteRenderer;
     private bool facingLeft = false;
 
-    [SerializeField] private bool canAttack = true;
+    protected Rigidbody2D rb;
+    protected AttackController attackController;
 
-    [SerializeField] private EntityStatsSO entityStatsSO;
-    
+
+    [SerializeField] private bool _canAttack = true;
+    public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
+
     public AbilityHolder abilityHolder { get; set; }
-    public EntityStatsSO GetEntityStatsSO { get => entityStatsSO; }
     public EntityStatistics GetEntityStats { get; private set; }
+    public Vector2 GetMoveDirection { get; protected set; }
+    public bool IsCanMove { get; set; } = true;
 
 
-    protected bool targetInRange = false;
-
-
-    //Entity direction
-    protected Vector2 move_dir;
-    public Vector2 getMoveDir  { get => move_dir.normalized; }
-    
-    //Effects
-    private bool _canMove = true;
-    public bool IsCanMove
-    {
-        set{_canMove = value;}
-    }
 
 
     protected virtual void Awake()
@@ -48,22 +35,27 @@ public class Entities : MonoBehaviour, IDamageable
         rb = GetComponent<Rigidbody2D>();
         attackController = GetComponent<AttackController>();
         
-        GetEntityStats = new EntityStatistics(entityStatsSO);
-        abilityHolder = new AbilityHolder(this);
+        GetEntityStats = new EntityStatistics(entityStatsSO, this);
+        abilityHolder = new AbilityHolder(this, entityStatsSO.abilities);
     }
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
-        GetEntityStats = new EntityStatistics(entityStatsSO);
-        abilityHolder = new AbilityHolder(this);
+        GetEntityStats = new EntityStatistics(entityStatsSO, this);
+        abilityHolder = new AbilityHolder(this, entityStatsSO.abilities);
+    }
+    protected virtual void OnDisable()
+    {
+        
     }
     protected virtual void Start()
     {
+        attackController.EnableAttacking = _canAttack;
         //abilityHolder.OnChangeListAbilities(entityStatsSO.defaultAbilities);
     }
     protected virtual void Update()
     {
+        attackController.EnableAttacking = _canAttack;
         FlipEntity();
-        //AttackBehaviour(GetEntityStats.damage, GetEntityStats.currentAttackSpeed);
     }
     protected virtual void FixedUpdate()
     {
@@ -88,96 +80,126 @@ public class Entities : MonoBehaviour, IDamageable
     }
     private void Movement() //Movement handler
     {
-        if(!_canMove){ //If can move is false, the code will not run
-            return;
-        } 
+        if(IsCanMove == false){ return; } //If can move is false, the code will not run
+
+        //TODO: Move animation
+
         MovementBehaviour();
     }
     protected virtual void MovementBehaviour(){
         //Movement behaviour
     }
 
-    private bool DodgeBehaviour() //Dodging the damage
-    {
-        var dodgeChance = GetEntityStats.dodgeChance * 100;
-        var randomNumb = UnityEngine.Random.Range(0f, 100f);
-
-        if(dodgeChance >= randomNumb)
-        {
-            //Dodge
-            Debug.Log("Dodging the damage");
-            return true;
-        }
-
-        //No Dodge
-        return false;
-    }
-
-    public void KnockBack(Vector2 knockBackForce)
-    {
-        // Knockback when hit
-        Rigidbody2D temp_rb = gameObject.GetComponent<Rigidbody2D>();
-
-        temp_rb.AddForce(knockBackForce, ForceMode2D.Impulse);   
-    }
     public void GenerateHealth(float healthAmount)// Generating health
     {
-        var addHealth = Mathf.RoundToInt(healthAmount);
         GetEntityStats.SetCurrentHealth(healthAmount);
     }
 
-    public virtual void TakeDamage(Entities sourceDamage, bool isCriticalDamage, float damage) // Take damage with damage dealer and critical hit
+    public IEnumerator KnockBack(Transform damagePosition, float knockBackPower) //Knockback
     {
-        if (isCriticalDamage)
-            Debug.Log("I recieved Critical Damage");
+        Debug.Log("KNOCKING BACK");
+        IsCanMove = false;
+        Vector2 knockDirection = (transform.position - damagePosition.position).normalized;
+        Vector2 calculatedKnock = knockDirection * knockBackPower * rb.mass;
+        rb.AddForce(calculatedKnock, ForceMode2D.Impulse);
 
-        TakeDamage(sourceDamage, damage);
+        yield return new WaitForSeconds(0.1f);
+        rb.velocity = Vector2.zero;
+        IsCanMove = true;
     }
-    public virtual void TakeDamage(Entities sourceDamage, float damage) // Take damage with damage dealer
+    public void TakeDamage(float damage, Entities sourceDamage = null, bool canDodge = false, bool canCritical = true) //Taking damage
     {
-        if (GetEntityStats.currentHealth > 0)
-        {
-            // Take damage if the health is more than zero
-            TakeDamageBehaviour(damage);
+        float computedDamage = 0;
 
-            if (GetEntityStats.currentHealth <= 0)
+        //Dodge
+        if(canDodge == true) 
+            if (ThesisUtility.RandomGetChanceBool(GetEntityStats.dodgeChance)) { return; } //if dodge is true, dont take damage
+
+        //Critical Computation
+        if (canCritical == true) 
+        {
+            bool isCritical;
+
+            if (sourceDamage != null)
             {
-                // Do this if the health is zero
-                DeathBehaviour(sourceDamage); 
+                //Critical damage if the sourceDamage is not null
+
+                isCritical = ThesisUtility.RandomGetChanceBool(sourceDamage.GetEntityStats.criticalChance);
+                if (isCritical)
+                {
+                    float criticalDamage = damage * sourceDamage.GetEntityStats.criticalDamage;
+                    damage += criticalDamage;
+                }
             }
+            else
+            {
+                //Critical damage if the sourceDamage is null
+
+                isCritical = ThesisUtility.RandomGetChanceBool(0.5f); //Critical chance is 50%
+                if (isCritical)
+                {
+                    float criticalDamage = damage * ThesisUtility.RandomGetFloat(0.01f ,0.6f); //Min critical damage is 1% and Max critical damage is 60%
+                    damage += criticalDamage;
+                }
+            }
+           
         }
-        else
+
+        //Compute the total damage
+        //Formula: Damage - defense %
+        computedDamage = (damage - (damage * GetEntityStats.defence)) * -1;
+
+        GetEntityStats.SetCurrentHealth(computedDamage);
+
+        if(debugMode)
+            Debug.Log(String.Format("{3} Taking Damage || Original: {0};  Defense: {1}; Computed: {2};", damage, GetEntityStats.defence, computedDamage, this.name));
+
+        if (GetEntityStats.currentHealth <= 0)
         {
-            DeathBehaviour(sourceDamage);
+            Died(sourceDamage);
+            return;
         }
+
+        //Do this behaviour if the entity is not yet died
+        TakingDamageBehaviour();
     }
-    public virtual void TakeDamageBehaviour(float damage, bool canDodgeDamage = true)//Take damage behaviour
+    protected virtual void TakingDamageBehaviour() //Do this behaviour when taking damage
     {
-        //Behaviour of the entity when taking damage
+        //Taking damage behaviour
+    }
 
-        if (canDodgeDamage && DodgeBehaviour()) { return; } //if dodge is true, dont take damage
+    protected virtual void KillerReward(Entities killerEntity, Entities victimEntity)
+    {
+        //Debug.Log("Victim: " + victimEntity.name + " :: Killer: " + killerEntity.name);
+    }
 
-        var computedDamage = damage - (damage * GetEntityStats.defence);
-
-
-        GetEntityStats.SetCurrentHealth(-computedDamage);
-        Debug.Log("Ouch! " + damage.ToString());
-
-        if(GetEntityStats.currentHealth <= 0)
+    private void Died(Entities sourceDamage) // Entity died
+    {
+        if (sourceDamage != null)
         {
-            DeathBehaviour();
+            if(debugMode)
+                Debug.Log(String.Format("Died|| Victim Name: {0}, Killer Name: {1}", this.name, sourceDamage.name));
+            
+            sourceDamage.KillerReward(sourceDamage, this);
         }
-    }
-    
-    protected virtual void DeathBehaviour(Entities sourceDamage) // Entity death behaviour with damage dealer
-    {
-        Debug.Log("Im dead " + gameObject.name + ": " + sourceDamage.gameObject.name + " killed me!!");
+        
         DeathBehaviour();
     }
     protected virtual void DeathBehaviour() // Entity death behaviour
     {
-        Debug.Log("I died ");
         gameObject.SetActive(false);
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

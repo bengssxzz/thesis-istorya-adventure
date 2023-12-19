@@ -2,174 +2,274 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
-
-public class Enemy : Entities
+public class Enemy : AIEntity
 {
-    [System.Serializable]
-    private class Loot
-    {
-        [Tooltip("Loot prefab to be dropped when entity died")]
-        public GameObject lootPrefab;
-        [Tooltip("Check if you want to randomize the amount to drop, else fix amount loot drop and the minAmount will no longer use")]
-        public bool randomAmountDrop = false;
-
-        [Range(1, 100)] public int minAmount = 1, maxAmount = 1;
-
-        [Tooltip("Drop loot chance")]
-        [Range(0.0f, 100.0f)] public float dropChance;
-    }
-
-    private Transform targetEnemy;
-
-    [SerializeField] private List<Loot> listOfDropLoot;
-
-    public float stopDistance;
-    public float FleeDistance;
-
-
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-
-        if (targetInRange)
-        {
-            Attack();
-        }
-
-    }
-
-
-    protected virtual void DetectRangeBehaviour()
-    {
-
-    }
-
-    protected override void MovementBehaviour()
-    {
-        ChaseMyEnemy();
-        FleeToMyEnemy();
-    }
-
-    protected virtual void ChaseMyEnemy()
-    {
-        //targetEnemy = collectedEnemy.GetNearestEnemy;
-
-        //if (targetEnemy == null) { return; }
-
-        //move_dir = targetEnemy.position - transform.position;
-        //if (Vector2.Distance(transform.position, targetEnemy.position) < stopDistance)
-        //{
-        //    targetInRange = true;
-        //    rb.velocity = Vector2.zero;
-        //    return;
-        //}
-        //targetInRange = false;
-        //rb.velocity = move_dir.normalized * GetEntityStats.currentMoveSpeed * Time.deltaTime;
-
-    }
-
-    protected virtual void FleeToMyEnemy()
-    {
-        //targetEnemy = collectedEnemy.GetNearestEnemy;
-
-        //if (targetEnemy == null) { return; }
-
-        //move_dir = targetEnemy.position - transform.position;
-        //if (Vector2.Distance(transform.position, targetEnemy.position) < FleeDistance)
-        //{
-        //    rb.velocity = (move_dir.normalized * -GetEntityStats.currentMoveSpeed) * Time.deltaTime;
-        //}
-
-    }
-
-    protected virtual void Attack()
-    {
-        //Attack
-    }
-
-
-    protected override void DeathBehaviour(Entities sourceDamage)
-    {
-        LootDrop();
-        base.DeathBehaviour(sourceDamage);
-    }
-
-    private void LootDrop() //Loot to drop
-    {
-        Debug.Log("Loot Dropped");
-        foreach (var itemLoot in listOfDropLoot)
-        {
-            float dropRate = UnityEngine.Random.Range(0.0f, 100.0f);
-            float lootRate = itemLoot.dropChance;
-
-            /* Example:
-             * when dropRate = 9.0f
-             * when lootRate = 10.0f
-             * Drop a loot if lootRate is greater then equal to dropRate
-             * Otherwise don't drop
-             */
-            if (lootRate >= dropRate)
-            {
-                //Drop
-                var loots = AmountLootItems(itemLoot);
-
-                if (loots.Length > 0)
-                {
-                    foreach (var item in loots)
-                    {
-                        float x = UnityEngine.Random.Range(-1f, 1f);
-                        float y = UnityEngine.Random.Range(-1f, 1f);
-                        Vector2 randomDirection = new Vector2(x, y).normalized;
-
-                        const float addForce = 50f;
-
-                        item.transform.position = transform.position;
-                        Rigidbody2D rb = item.GetComponent<Rigidbody2D>();
-                        rb.drag = 5;
-                        rb.AddForce(randomDirection * addForce * Time.deltaTime, ForceMode2D.Impulse);
-                    }
-                }
-            }
-        }
-    }
-    private GameObject[] AmountLootItems(Loot itemLoot)
-    {
-        int amount = itemLoot.randomAmountDrop ? UnityEngine.Random.Range(itemLoot.minAmount, itemLoot.maxAmount) : itemLoot.maxAmount;
-        List<GameObject> dropList = new List<GameObject>();
-
-        for (int i = 0; i < amount; i++)
-        {
-            GameObject _loot = ObjectPooling.instance.GetObjectInPool("loot", itemLoot.lootPrefab);
-            dropList.Add(_loot);
-        }
-
-        return dropList.ToArray();
-    }
 
 
 
 
-    private void OnDrawGizmos()
-    {
-        if (debugMode == false)
-        {
-            return;
-        }
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, stopDistance);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, FleeDistance);
 
 
-    }
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //[System.Serializable] private class Loot
+    //{
+    //    [Tooltip("Loot prefab to be dropped when entity died")]
+    //    public GameObject lootPrefab;
+    //    [Tooltip("Check if you want to randomize the amount to drop, else fix amount loot drop and the minAmount will no longer use")]
+    //    public bool randomAmountDrop = false;
+
+    //    [Range(1, 100)] public int minAmount = 1, maxAmount = 1;
+
+    //    [Tooltip("Drop loot chance")]
+    //    [Range(0.0f, 100.0f)] public float dropChance;
+    //}
+
+    //protected enum State
+    //{
+    //    Idle,
+    //    Seek,
+    //    Flee,
+    //    Range_Attack,
+    //    Melee_Attack
+    //}
+
+    //private State state = State.Idle;
+
+    //private Transform targetEnemy;
+    //private AIPath aiPath;
+
+    //[SerializeField] private List<Loot> listOfDropLoot;
+
+    //public float stopDistance;
+    //public float FleeDistance;
+
+
+    //protected override void Awake()
+    //{
+    //    base.Awake();
+    //    aiPath = GetComponent<AIPath>();
+    //}
+    //protected override void Start()
+    //{
+    //    base.Start();
+    //}
+
+    //protected override void Update()
+    //{
+    //    base.Update();
+
+    //    if (targetInRange)
+    //    {
+    //        Attack();
+    //    }
+
+    //    StateController();
+    //}
+
+
+    //protected virtual void DetectRangeBehaviour()
+    //{
+
+    //}
+
+    //protected override void MovementBehaviour()
+    //{
+    //    //ChaseMyEnemy();
+    //    //FleeToMyEnemy();
+    //}
+
+    //protected virtual void StateController()
+    //{
+    //    targetEnemy = attackController.GetNearestEnemy;
+
+    //    if(attackController.GetNearestEnemy == null || aiPath.desiredVelocity == null) {
+    //        aiPath.canMove = false;
+    //        return; 
+    //    }
+
+
+    //    switch (state)
+    //    {
+    //        case State.Idle:
+    //            if (Vector2.Distance(transform.position, targetEnemy.position) > stopDistance)
+    //            {
+    //                Debug.Log("Seeking");
+    //                state = State.Seek;
+    //            }
+    //            else
+    //            {
+    //                aiPath.canMove = false;
+    //            }
+
+
+
+    //            break;
+    //        case State.Seek:
+    //            aiPath.canMove = true;
+
+    //            if (Vector2.Distance(transform.position, targetEnemy.position) < stopDistance) 
+    //            {
+    //                Debug.Log("Idle");
+    //                state = State.Idle;
+    //            }
+
+    //            break;
+    //        case State.Flee:
+    //            break;
+    //        case State.Range_Attack:
+    //            break;
+    //        case State.Melee_Attack:
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
+
+
+    //protected virtual void ChaseMyEnemy()
+    //{
+    //    //targetEnemy = collectedEnemy.GetNearestEnemy;
+
+    //    //if (targetEnemy == null) { return; }
+
+    //    //move_dir = targetEnemy.position - transform.position;
+    //    //if (Vector2.Distance(transform.position, targetEnemy.position) < stopDistance)
+    //    //{
+    //    //    targetInRange = true;
+    //    //    rb.velocity = Vector2.zero;
+    //    //    return;
+    //    //}
+    //    //targetInRange = false;
+    //    //rb.velocity = move_dir.normalized * GetEntityStats.currentMoveSpeed * Time.deltaTime;
+    //    aiPath.destination = attackController.GetNearestEnemy.position;
+    //}
+
+    //protected virtual void FleeToMyEnemy()
+    //{
+    //    //targetEnemy = collectedEnemy.GetNearestEnemy;
+
+    //    //if (targetEnemy == null) { return; }
+
+    //    //move_dir = targetEnemy.position - transform.position;
+    //    //if (Vector2.Distance(transform.position, targetEnemy.position) < FleeDistance)
+    //    //{
+    //    //    rb.velocity = (move_dir.normalized * -GetEntityStats.currentMoveSpeed) * Time.deltaTime;
+    //    //}
+
+    //}
+
+    //protected virtual void Attack()
+    //{
+    //    //Attack
+    //}
+
+
+    //protected override void DeathBehaviour()
+    //{
+    //    base.DeathBehaviour();
+
+    //    LootDrop();
+    //}
+
+    //private void LootDrop() //Loot to drop
+    //{
+    //    //Debug.Log("Loot Dropped");
+    //    foreach (var itemLoot in listOfDropLoot)
+    //    {
+    //        float dropRate = UnityEngine.Random.Range(0.0f, 100.0f);
+    //        float lootRate = itemLoot.dropChance;
+
+    //        /* Example:
+    //         * when dropRate = 9.0f
+    //         * when lootRate = 10.0f
+    //         * Drop a loot if lootRate is greater then equal to dropRate
+    //         * Otherwise don't drop
+    //         */
+    //        if (lootRate >= dropRate)
+    //        {
+    //            //Drop
+    //            var loots = AmountLootItems(itemLoot);
+
+    //            if (loots.Length > 0)
+    //            {
+    //                foreach (var item in loots)
+    //                {
+    //                    float x = UnityEngine.Random.Range(-1f, 1f);
+    //                    float y = UnityEngine.Random.Range(-1f, 1f);
+    //                    Vector2 randomDirection = new Vector2(x, y).normalized;
+
+    //                    const float addForce = 50f;
+
+    //                    item.transform.position = transform.position;
+    //                    Rigidbody2D rb = item.GetComponent<Rigidbody2D>();
+    //                    rb.drag = 5;
+    //                    rb.AddForce(randomDirection * addForce * Time.deltaTime, ForceMode2D.Impulse);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+    //private GameObject[] AmountLootItems(Loot itemLoot)
+    //{
+    //    int amount = itemLoot.randomAmountDrop ? UnityEngine.Random.Range(itemLoot.minAmount, itemLoot.maxAmount) : itemLoot.maxAmount;
+    //    List<GameObject> dropList = new List<GameObject>();
+
+    //    for (int i = 0; i < amount; i++)
+    //    {
+    //        GameObject _loot = ObjectPooling.instance.GetObjectInPool("loot", itemLoot.lootPrefab);
+    //        dropList.Add(_loot);
+    //    }
+
+    //    return dropList.ToArray();
+    //}
+
+
+
+
+    //private void OnDrawGizmosSelected()
+    //{
+    //    if (debugMode == false)
+    //    {
+    //        return;
+    //    }
+
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(transform.position, stopDistance);
+
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, FleeDistance);
+
+
+    //}
 
 
 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void KnockBack(Vector2 knockBackForce);
-    void TakeDamage(Entities sourceDamage, float damage);
-    void TakeDamage(Entities sourceDamage, bool critical, float damage);
+    public IEnumerator KnockBack(Transform damagePosition, float knockBackPower);
+    public void TakeDamage(float damage, Entities sourceDamage = null, bool canDodge = false, bool canCritical = true);
 }
