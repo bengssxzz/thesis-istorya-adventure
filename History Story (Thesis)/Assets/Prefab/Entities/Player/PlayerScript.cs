@@ -14,7 +14,7 @@ public class PlayerScript : Entities
     [SerializeField] private float interactRadius = 0.5f;
 
 
-    private PlayerInputs playerInput;
+    //private PlayerInputs playerInput;
     private InputAction move;
 
     //Testing
@@ -25,7 +25,7 @@ public class PlayerScript : Entities
     {
         base.Awake();
 
-        playerInput = new PlayerInputs();
+        //playerInput = new PlayerInputs();
     }
 
     protected override void OnEnable()
@@ -33,36 +33,68 @@ public class PlayerScript : Entities
         base.OnEnable();
 
         ButtonInputEvent_Subscribe();
-        move = playerInput.Player.Move;
+        
 
-        playerInput.Player.Enable();
+        //playerInput.Player.Enable();
+        //InputManager.instance.PlayerActionInputs.Player.Enable();
+        //move = playerInput.Player.Move;
+        move = InputManager.instance.PlayerActionInputs.Player.Move;
     }
     protected override void OnDisable()
     {
         base.OnDisable();
 
         ButtonInputEvent_Unsubscribe();
-        playerInput.Player.Disable();
+
+        //playerInput.Player.Disable();
+        //InputManager.instance.PlayerActionInputs.Player.Disable();
+
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
     }
 
     private void ButtonInputEvent_Subscribe()
     {
-        playerInput.Player.SkillBag.started += AbilityInventoryController;
-        playerInput.Player.Skill0.canceled += Skill0Trigger;
-        playerInput.Player.Skill1.canceled += Skill1Trigger;
-        playerInput.Player.Skill2.canceled += Skill2Trigger;
-        playerInput.Player.Skill3.canceled += Skill3Trigger;
+        InputManager.instance.PlayerActionInputs.Player.SkillBag.started += AbilityInventoryController;
 
-        playerInput.Player.Interact.canceled += InteractTrigger;
+        InputManager.instance.PlayerActionInputs.Player.Skill0.canceled += Skill0Trigger;
+        InputManager.instance.PlayerActionInputs.Player.Skill1.canceled += Skill1Trigger;
+        InputManager.instance.PlayerActionInputs.Player.Skill2.canceled += Skill2Trigger;
+        InputManager.instance.PlayerActionInputs.Player.Skill3.canceled += Skill3Trigger;
+
+        InputManager.instance.PlayerActionInputs.Player.Interact.started += InteractTrigger;
+
+
+        //playerInput.Player.SkillBag.started += AbilityInventoryController;
+        //playerInput.Player.Skill0.canceled += Skill0Trigger;
+        //playerInput.Player.Skill1.canceled += Skill1Trigger;
+        //playerInput.Player.Skill2.canceled += Skill2Trigger;
+        //playerInput.Player.Skill3.canceled += Skill3Trigger;
+
+        //playerInput.Player.Interact.started += InteractTrigger;
     }
     private void ButtonInputEvent_Unsubscribe()
     {
-        playerInput.Player.Skill0.canceled -= Skill0Trigger;
-        playerInput.Player.Skill1.canceled -= Skill1Trigger;
-        playerInput.Player.Skill2.canceled -= Skill2Trigger;
-        playerInput.Player.Skill3.canceled -= Skill3Trigger;
+        InputManager.instance.PlayerActionInputs.Player.SkillBag.started -= AbilityInventoryController;
 
-        playerInput.Player.Interact.canceled -= InteractTrigger;
+        InputManager.instance.PlayerActionInputs.Player.Skill0.canceled -= Skill0Trigger;
+        InputManager.instance.PlayerActionInputs.Player.Skill1.canceled -= Skill1Trigger;
+        InputManager.instance.PlayerActionInputs.Player.Skill2.canceled -= Skill2Trigger;
+        InputManager.instance.PlayerActionInputs.Player.Skill3.canceled -= Skill3Trigger;
+
+        InputManager.instance.PlayerActionInputs.Player.Interact.started -= InteractTrigger;
+
+        //playerInput.Player.SkillBag.started -= AbilityInventoryController;
+        //playerInput.Player.Skill0.canceled -= Skill0Trigger;
+        //playerInput.Player.Skill1.canceled -= Skill1Trigger;
+        //playerInput.Player.Skill2.canceled -= Skill2Trigger;
+        //playerInput.Player.Skill3.canceled -= Skill3Trigger;
+
+        //playerInput.Player.Interact.started -= InteractTrigger;
     }
 
     protected override void MovementBehaviour()
@@ -79,7 +111,8 @@ public class PlayerScript : Entities
         //TODO: Invoke some achievement
     }
 
-    private void InteractTrigger(InputAction.CallbackContext obj)
+
+    private void InteractTrigger(InputAction.CallbackContext obj) //Trigger the interactable object
     {
         //Get all the object inside the radius
         Collider2D[] interactable = Physics2D.OverlapCircleAll(transform.position, interactRadius);
@@ -95,9 +128,7 @@ public class PlayerScript : Entities
         //Call the Interactable function of the object closest.
         nearestObject?.Intereractable();
     }
-
-
-    private void AbilityInventoryController(InputAction.CallbackContext obj)
+    private void AbilityInventoryController(InputAction.CallbackContext obj) //Show/Hide ability inventory
     {
         //Toggle
         var uiState = UIManager.instance.SetUIState;
@@ -107,10 +138,11 @@ public class PlayerScript : Entities
             UIManager.instance.SetGUIState(UIManager.GUIState.InGame);
 
     }
-    private void Skill0Trigger(InputAction.CallbackContext obj) => abilityHolder.UseAbility(0);
-    private void Skill1Trigger(InputAction.CallbackContext obj) => abilityHolder.UseAbility(1);
-    private void Skill2Trigger(InputAction.CallbackContext obj) => abilityHolder.UseAbility(2);
-    private void Skill3Trigger(InputAction.CallbackContext obj) => abilityHolder.UseAbility(3);
+
+    private void Skill0Trigger(InputAction.CallbackContext obj) => Ability_Controller.UseAbility(0);
+    private void Skill1Trigger(InputAction.CallbackContext obj) => Ability_Controller.UseAbility(1);
+    private void Skill2Trigger(InputAction.CallbackContext obj) => Ability_Controller.UseAbility(2);
+    private void Skill3Trigger(InputAction.CallbackContext obj) => Ability_Controller.UseAbility(3);
 
 
 

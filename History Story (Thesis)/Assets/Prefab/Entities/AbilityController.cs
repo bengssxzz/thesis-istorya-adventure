@@ -9,7 +9,7 @@ public class AbilityController : MonoBehaviour
     private Entities entity;
 
     [SerializeField] private List<AbilityScript> listOfUnlockedAbilities = new List<AbilityScript>();
-    [SerializeField] private List<AbilityScript> currentAbilities = new List<AbilityScript>();
+    private List<AbilityScript> currentAbilities = new List<AbilityScript>();
     public List<AbilityScript> ListOfCurrentAbilities {get => currentAbilities; 
         set 
         {
@@ -18,9 +18,19 @@ public class AbilityController : MonoBehaviour
         } 
     }
 
-    private void Awake()
+
+    public void InitializedComponent(Entities entity, List<AbilityScript> newListOfAbility)
     {
-        entity = GetComponent<Entities>();    
+        this.entity = entity;
+        ListOfCurrentAbilities = newListOfAbility;
+
+        foreach (AbilityScript ability in newListOfAbility)
+        {
+            if (listOfUnlockedAbilities.Contains(ability) || ability == null)
+                continue;
+
+            listOfUnlockedAbilities.Add(ability);
+        }
     }
 
     private void ResetAbilitiesOnStart() //Reset each abilities
@@ -39,6 +49,23 @@ public class AbilityController : MonoBehaviour
 
     }
 
+    //Get all the list of unlocked abilities
+    public List<AbilityScript> GetListOfUnlockedAbilities() { return listOfUnlockedAbilities; }
+
+    //Unlock a new ability
+    public void UnlockNewAbility(AbilityScript newAbility)
+    {
+        if (listOfUnlockedAbilities.Contains(newAbility))
+        {
+            //If the new ability is already existed 
+            Debug.LogWarning(String.Format("This {0} is already unlocked", newAbility.abilityName));
+            return;
+        }
+        listOfUnlockedAbilities.Add(newAbility);
+
+        //ListOfCurrentAbilities.Add(newAbility);
+    }
+
     public void UseAbility(int index) //Use index ablity in array
     {
         try
@@ -47,8 +74,8 @@ public class AbilityController : MonoBehaviour
 
             if (!ability.OnCoolDown)
             {
-                StartCoroutine(currentAbilities[index].TriggerAbility(this)); //Trigger the ability
-                Debug.Log("Still running");
+                currentAbilities[index].TriggerAbility(entity);
+                //StartCoroutine(currentAbilities[index].TriggerAbility(this)); //Trigger the ability
             }
         }
         catch (Exception)

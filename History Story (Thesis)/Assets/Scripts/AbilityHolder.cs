@@ -9,7 +9,10 @@ public class AbilityHolder
 {
     private Entities entity;
 
-    private List<AbilityScript> listOfUnlockedAbilities = new List<AbilityScript>(); 
+    [SerializeField] private List<AbilityScript> listOfUnlockedAbilities = new List<AbilityScript>();
+    public List<AbilityScript> ListOfUnlockedAbilities { get; set; } = new List<AbilityScript>();
+
+
     private List<AbilityScript> currentAbilities = new List<AbilityScript>();
 
     public AbilityHolder(Entities _entity, List<AbilityScript> abilityScripts)
@@ -52,7 +55,8 @@ public class AbilityHolder
 
             if (!ability.OnCoolDown)
             {
-                entity.StartCoroutine(currentAbilities[index].TriggerAbility(entity)); //Trigger the ability
+                //entity.StartCoroutine(currentAbilities[index].TriggerAbility(entity)); //Trigger the ability
+                currentAbilities[index].TriggerAbility(entity);
                 Debug.Log("Still running");
             }
         }

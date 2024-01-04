@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 //public enum GUIState
@@ -49,6 +50,8 @@ public class UIManager : MonoBehaviour
         } 
     }
 
+ 
+
 
     public static UIManager instance;
 
@@ -72,6 +75,12 @@ public class UIManager : MonoBehaviour
         QandAUI = GetComponentInChildren<QuestionaireUI>(true);
 
         pages = transform.GetComponentsInChildren<UIPages>(true).ToList();
+
+    }
+
+    private void Action_started(InputAction.CallbackContext obj)
+    {
+        throw new System.NotImplementedException();
     }
 
     private void Start()
@@ -96,6 +105,7 @@ public class UIManager : MonoBehaviour
                 break;
             case GUIState.InGame:
                 touchController.UIEnabled();
+                InputManager.instance.ChangeActionMap(InputManager.instance.PlayerActionInputs.Player);
                 playerUI.UIEnabled();
                 break;
             case GUIState.Inventory:
@@ -106,6 +116,7 @@ public class UIManager : MonoBehaviour
                 break;
             case GUIState.DialogMode:
                 dialogUI.UIEnabled();
+                InputManager.instance.ChangeActionMap(InputManager.instance.PlayerActionInputs.DialogUI);
                 break;
             case GUIState.QandA:
                 QandAUI.UIEnabled();

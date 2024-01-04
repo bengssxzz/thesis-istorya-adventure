@@ -805,6 +805,43 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "DialogUI",
+            "id": "556a5ac7-c52c-4fa6-be34-f9961f2c90be",
+            "actions": [
+                {
+                    "name": "Skip",
+                    "type": "Button",
+                    "id": "448ed544-b33c-4268-9485-96cb8c8edce4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Continue",
+                    "type": "Button",
+                    "id": "605e98d4-2766-4953-8d55-e0a42c0a3d13",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6374c3d0-d771-4ec4-ba1d-8eeaf5fa9137",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Continue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

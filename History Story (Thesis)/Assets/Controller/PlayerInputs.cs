@@ -827,6 +827,43 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""DialogUI"",
+            ""id"": ""556a5ac7-c52c-4fa6-be34-f9961f2c90be"",
+            ""actions"": [
+                {
+                    ""name"": ""Skip"",
+                    ""type"": ""Button"",
+                    ""id"": ""448ed544-b33c-4268-9485-96cb8c8edce4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Continue"",
+                    ""type"": ""Button"",
+                    ""id"": ""605e98d4-2766-4953-8d55-e0a42c0a3d13"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6374c3d0-d771-4ec4-ba1d-8eeaf5fa9137"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -914,6 +951,10 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // DialogUI
+        m_DialogUI = asset.FindActionMap("DialogUI", throwIfNotFound: true);
+        m_DialogUI_Skip = m_DialogUI.FindAction("Skip", throwIfNotFound: true);
+        m_DialogUI_Continue = m_DialogUI.FindAction("Continue", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1163,6 +1204,47 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // DialogUI
+    private readonly InputActionMap m_DialogUI;
+    private IDialogUIActions m_DialogUIActionsCallbackInterface;
+    private readonly InputAction m_DialogUI_Skip;
+    private readonly InputAction m_DialogUI_Continue;
+    public struct DialogUIActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public DialogUIActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Skip => m_Wrapper.m_DialogUI_Skip;
+        public InputAction @Continue => m_Wrapper.m_DialogUI_Continue;
+        public InputActionMap Get() { return m_Wrapper.m_DialogUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DialogUIActions set) { return set.Get(); }
+        public void SetCallbacks(IDialogUIActions instance)
+        {
+            if (m_Wrapper.m_DialogUIActionsCallbackInterface != null)
+            {
+                @Skip.started -= m_Wrapper.m_DialogUIActionsCallbackInterface.OnSkip;
+                @Skip.performed -= m_Wrapper.m_DialogUIActionsCallbackInterface.OnSkip;
+                @Skip.canceled -= m_Wrapper.m_DialogUIActionsCallbackInterface.OnSkip;
+                @Continue.started -= m_Wrapper.m_DialogUIActionsCallbackInterface.OnContinue;
+                @Continue.performed -= m_Wrapper.m_DialogUIActionsCallbackInterface.OnContinue;
+                @Continue.canceled -= m_Wrapper.m_DialogUIActionsCallbackInterface.OnContinue;
+            }
+            m_Wrapper.m_DialogUIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Skip.started += instance.OnSkip;
+                @Skip.performed += instance.OnSkip;
+                @Skip.canceled += instance.OnSkip;
+                @Continue.started += instance.OnContinue;
+                @Continue.performed += instance.OnContinue;
+                @Continue.canceled += instance.OnContinue;
+            }
+        }
+    }
+    public DialogUIActions @DialogUI => new DialogUIActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1231,5 +1313,10 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IDialogUIActions
+    {
+        void OnSkip(InputAction.CallbackContext context);
+        void OnContinue(InputAction.CallbackContext context);
     }
 }

@@ -54,15 +54,15 @@ public class AIEntity : Entities
     {
         base.Start();
 
-        aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.deltaTime;
     }
     protected override void Update()
     {
-        targetEntity = attackController.GetNearestEnemy;
+        targetEntity = Attack_Controller.GetNearestEnemy;
 
         base.Update();
 
         //StartCoroutine(FleeTryer());
+        SeekBehaviour();
         FleeBehaviour();
 
     }
@@ -80,7 +80,19 @@ public class AIEntity : Entities
 
     private void SeekBehaviour()
     {
-        aiPath.destination = targetEntity.position;
+        var distance = Vector2.Distance(transform.position, targetEntity.position);
+        if (distance >  stopDistance && distance > fleeDistance)
+        {
+            aiPath.canMove = true;
+            aiPath.destination = targetEntity.position;
+            aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime;
+            //Debug.Log($"Current Speeed: {GetEntityStats.currentMoveSpeed} || Deltatime: {Time.deltaTime} || Total: {GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime}");
+
+        }
+        else
+        {
+            aiPath.canMove = false;
+        }
     }
     private void FleeBehaviour()
     {
@@ -88,6 +100,7 @@ public class AIEntity : Entities
         {
             //TODO: Flee
             Debug.Log("Flee");
+            aiPath.canMove = true;
 
             FleePath fleePath = FleePath.Construct(transform.position, targetEntity.position, 450);
             fleePath.aimStrength = 0.8f;
@@ -95,28 +108,6 @@ public class AIEntity : Entities
 
 
             seek.StartPath(fleePath, OnPathComplete);
-        }
-    }
-    IEnumerator FleeTryer()
-    {
-        if (doFlee)
-        {
-            doFlee = false;
-            yield return new WaitForSeconds(1f);
-
-            if (Vector2.Distance(transform.position, targetEntity.position) < fleeDistance)
-            {
-                //TODO: Flee
-                Debug.Log("Flee");
-
-                FleePath fleePath = FleePath.Construct(transform.position, targetEntity.position, 400);
-                fleePath.aimStrength = 0.5f;
-                fleePath.spread = 400;
-
-                seek.StartPath(fleePath, OnPathComplete);
-            }
-
-            doFlee = true;
         }
     }
 
@@ -131,6 +122,19 @@ public class AIEntity : Entities
         LootDrop();
     }
 
+    private GameObject[] AmountItemDropLoot(Loot itemLoot)
+    {
+        int amount = itemLoot.randomAmountDrop ? ThesisUtility.RandomGetAmount(itemLoot.minAmount, itemLoot.maxAmount) : itemLoot.maxAmount;
+        List<GameObject> dropList = new List<GameObject>();
+
+        for (int i = 0; i < amount; i++)
+        {
+            GameObject _loot = ObjectPooling.instance.GetObjectInPool("loot", itemLoot.lootPrefab);
+            dropList.Add(_loot);
+        }
+
+        return dropList.ToArray();
+    }
     private void LootDrop() //Loot to drop
     {
         foreach (var itemLoot in listOfDropLoot)
@@ -162,19 +166,6 @@ public class AIEntity : Entities
                 }
             }
         }
-    }
-    private GameObject[] AmountItemDropLoot(Loot itemLoot)
-    {
-        int amount = itemLoot.randomAmountDrop ? ThesisUtility.RandomGetAmount(itemLoot.minAmount, itemLoot.maxAmount) : itemLoot.maxAmount;
-        List<GameObject> dropList = new List<GameObject>();
-
-        for (int i = 0; i < amount; i++)
-        {
-            GameObject _loot = ObjectPooling.instance.GetObjectInPool("loot", itemLoot.lootPrefab);
-            dropList.Add(_loot);
-        }
-
-        return dropList.ToArray();
     }
 
 

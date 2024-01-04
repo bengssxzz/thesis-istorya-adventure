@@ -13,11 +13,11 @@ public class GameManager : MonoBehaviour
     private PlayerScript entity;
     private bool playerCanMove = true;
 
-    public GameDifficulties gameDifficulties { get; private set; }
+    [SerializeField] private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
 
+    public List<AbilityScript> GetAllListOfAbility => listOfAllAbilities;
 
-    private bool isPause = false;
-    public bool IsPause { get { return isPause; } }
+    public bool IsPause { get; set; } = false;
 
     void Awake()
     {
@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
         }
         else { DestroyImmediate(gameObject); }
 
-        gameDifficulties = LevelManager.instance.GetGameDifficulties();
         entity = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerScript>();
     }
 
@@ -41,12 +40,12 @@ public class GameManager : MonoBehaviour
         if (pause == true)
         {
             Time.timeScale = 0;
-            isPause = true;
+            IsPause = true;
         }
         else
         {
             Time.timeScale = 1;
-            isPause = false;
+            IsPause = false;
         }
     }
 

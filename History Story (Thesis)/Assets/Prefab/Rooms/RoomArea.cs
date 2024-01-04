@@ -14,6 +14,7 @@ public class RoomArea : MonoBehaviour
     }
     private void Start()
     {
+        roomCamera.Follow = GameManager.instance.GetPlayer().transform;
         roomCamera.gameObject.SetActive(false);
     }
 

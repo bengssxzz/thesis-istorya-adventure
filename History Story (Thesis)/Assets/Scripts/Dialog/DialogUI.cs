@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.InputSystem;
 
 public class DialogUI : UIPages
 {
@@ -12,23 +13,35 @@ public class DialogUI : UIPages
 
     private Coroutine currentCoroutine;
 
+    public InputActionReference continueAction;
 
     private void Awake()
     {
-        SubscripteEvent();
+        SubscribeEvent();
     }
 
-    private void SubscripteEvent()
+    private void SubscribeEvent()
     {
         DialogManager.instance.OnChangeText += ChangeDialogText;
         DialogManager.instance.OnChangeName += ChangeCharacterName;
         DialogManager.instance.OnChangeSprite += ChangeCharacterImage;
+
+        //InputManager.instance.PlayerActionInputs.DialogUI.Continue.started += ContinueDialog;
+        continueAction.action.started += ContinueDialog;
     }
-    private void UnsubscripteEvent()
+    private void UnsubscribeEvent()
     {
         DialogManager.instance.OnChangeText -= ChangeDialogText;
         DialogManager.instance.OnChangeName -= ChangeCharacterName;
         DialogManager.instance.OnChangeSprite -= ChangeCharacterImage;
+
+        //InputManager.instance.PlayerActionInputs.DialogUI.Continue.started -= ContinueDialog;
+
+    }
+
+    private void ContinueDialog(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Dialog Continue");
     }
 
     private void ChangeCharacterName(string dialogLineName)
@@ -74,11 +87,11 @@ public class DialogUI : UIPages
 
     public override void ShowBehavior()
     {
-        SubscripteEvent();
+        SubscribeEvent();
     }
 
     public override void HideBehavior()
     {
-        UnsubscripteEvent();
+        UnsubscribeEvent();
     }
 }

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ThesisLibrary;
 
-public class ExpPoints : MonoBehaviour
+public class ExpPoints : PickableObject
 {
     private int expPoints;
 
@@ -13,17 +14,12 @@ public class ExpPoints : MonoBehaviour
 
     private void RandomPoints() => expPoints = Random.Range(10, 30);
 
-    void OnTriggerEnter2D(Collider2D other)
+
+    protected override void PickUpLogic(Entities entity)
     {
-        var entity = other.GetComponent<Entities>();
+        gameObject.SetActive(false);
+        entity.GetEntityStats.SetCurrentHealth(5);
 
-        if (entity != null)
-        {
-            gameObject.SetActive(false);
-            other.GetComponent<Entities>().GetEntityStats.SetCurrentHealth(5);
-        }
+        Debug.Log("I picked up this " + gameObject.name);
     }
-
-    
-
 }

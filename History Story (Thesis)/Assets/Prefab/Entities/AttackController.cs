@@ -94,7 +94,7 @@ public class AttackController : DetectMyEnemies
     {
         Quaternion q;
 
-        if (stopAiming) { return; }
+        if (stopAiming || attackHolder == null) { return; }
 
         if (GetNearestEnemy != null)
         {
