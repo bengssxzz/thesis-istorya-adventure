@@ -39,10 +39,10 @@ public class AbilityInventory : UIPages
 
     private void Awake()
     {
-        entity = GameManager.instance.GetPlayer();
+        entity = GameManager.Instance.PlayerEntity;
         InitializedHolder();
 
-        listOfAllAbilities = GameManager.instance.GetAllListOfAbility;
+        listOfAllAbilities = GameManager.Instance.GetAllListOfAbility;
         listOfUnlockedAbilities = entity.Ability_Controller.GetListOfUnlockedAbilities();
     }
 
@@ -64,7 +64,7 @@ public class AbilityInventory : UIPages
     {
         //Done edit ability
 
-        UIManager.instance.SetGUIState();
+        UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
     }
 
     private void GenerateSlots()
@@ -304,7 +304,7 @@ public class AbilityInventory : UIPages
         UpdateUnlockAbilityInList();
         UpdateHolderVisual();
 
-        GameManager.instance.SetPauseValue(true);
+        GameManager.Instance.SetPauseValue(true);
     }
 
     public override void HideBehavior()
@@ -313,7 +313,7 @@ public class AbilityInventory : UIPages
         UpdateHolderVisual();
 
         entity.Ability_Controller.ListOfCurrentAbilities = currentUsedAbilities.ToList();
-        GameManager.instance.SetPauseValue(false);
+        GameManager.Instance.SetPauseValue(false);
     }
 
 

@@ -45,7 +45,7 @@ public class QuestionaireUI : UIPages
 
     private void ChoicePressed(string selectedAnswer)
     {
-        var checkedAnswer = QuestionsManager.instance.CheckAnswer(questionIndex, selectedAnswer);
+        var checkedAnswer = QuestionsManager.Instance.CheckAnswer(questionIndex, selectedAnswer);
         StartCoroutine(CheckStatus(checkedAnswer));
     }
 
@@ -60,7 +60,7 @@ public class QuestionaireUI : UIPages
             CorrectUpgrade(); 
         } 
         else{
-            UIManager.instance.SetGUIState(UIManager.GUIState.InGame);
+            UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
         }
 
     }
@@ -73,7 +73,7 @@ public class QuestionaireUI : UIPages
 
     private void UpdateQuestion()
     {
-        var selectedQuestion = QuestionsManager.instance.GenerateQandA(QuestionsManager.QuestionType.Question1);
+        var selectedQuestion = QuestionsManager.Instance.GenerateQandA(QuestionsManager.QuestionType.Question1);
 
         questionIndex = selectedQuestion.Item1;
         string question = selectedQuestion.Item2;
@@ -110,7 +110,7 @@ public class QuestionaireUI : UIPages
     private void CorrectUpgrade()
     {
         upgradeSystemUI.AddPoints();
-        UIManager.instance.SetGUIState(UIManager.GUIState.Upgradable);
+        UIManager.instance.ChangeUIState = UIManager.GUIState.Upgradable;
     }
 
     public override void ShowBehavior()

@@ -21,7 +21,7 @@ public class PauseController : MonoBehaviour
 
     private void QuitMenu()
     {
-        LevelManager.instance.ChangeLevel(0);
+        LevelManager.Instance.ChangeLevel(0);
     }
 
     private void OptionMenu()
@@ -32,13 +32,13 @@ public class PauseController : MonoBehaviour
     private void ShowPause()
     {
         pauseUI.SetActive(true);
-        GameManager.instance.SetPauseValue(true);
+        GameManager.Instance.SetPauseValue(true);
         pauseBtn.gameObject.SetActive(false);
     }
     private void HidePause()
     {
         pauseUI.SetActive(false);
-        GameManager.instance.SetPauseValue(false);
+        GameManager.Instance.SetPauseValue(false);
         pauseBtn.gameObject.SetActive(true);
     }
 }

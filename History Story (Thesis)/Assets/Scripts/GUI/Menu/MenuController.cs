@@ -36,18 +36,18 @@ public class MenuController : MonoBehaviour
 
     public void EasyMode()
     {
-        LevelManager.instance.SetGameDifficulties(GameDifficulties.Easy);
-        LevelManager.instance.ChangeLevel(1);
+        LevelManager.Instance.SetGameDifficulties(GameDifficulties.Easy);
+        LevelManager.Instance.ChangeLevel(1);
     }
     public void NormalMode() 
     {
-        LevelManager.instance.SetGameDifficulties(GameDifficulties.Normal);
-        LevelManager.instance.ChangeLevel(1);
+        LevelManager.Instance.SetGameDifficulties(GameDifficulties.Normal);
+        LevelManager.Instance.ChangeLevel(1);
     }
     public void HardMode()
     {
-        LevelManager.instance.SetGameDifficulties(GameDifficulties.Hard);
-        LevelManager.instance.ChangeLevel(1);
+        LevelManager.Instance.SetGameDifficulties(GameDifficulties.Hard);
+        LevelManager.Instance.ChangeLevel(1);
     }
 
 

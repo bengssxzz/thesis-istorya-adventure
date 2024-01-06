@@ -24,6 +24,7 @@ public class PlayerScript : Entities
     protected override void Awake()
     {
         base.Awake();
+        move = InputManager.instance.PlayerActionInput.actions["Move"];
 
         //playerInput = new PlayerInputs();
     }
@@ -33,12 +34,14 @@ public class PlayerScript : Entities
         base.OnEnable();
 
         ButtonInputEvent_Subscribe();
-        
+
 
         //playerInput.Player.Enable();
         //InputManager.instance.PlayerActionInputs.Player.Enable();
         //move = playerInput.Player.Move;
-        move = InputManager.instance.PlayerActionInputs.Player.Move;
+        //move = InputManager.instance.PlayerActionInputs.Player.Move;
+
+        //move = InputManager.instance.PlayerActionInput.actions["Move"];
     }
     protected override void OnDisable()
     {
@@ -59,14 +62,25 @@ public class PlayerScript : Entities
 
     private void ButtonInputEvent_Subscribe()
     {
-        InputManager.instance.PlayerActionInputs.Player.SkillBag.started += AbilityInventoryController;
+        InputManager.instance.PlayerActionInput.actions["Skill Bag"].started += AbilityInventoryController;
 
-        InputManager.instance.PlayerActionInputs.Player.Skill0.canceled += Skill0Trigger;
-        InputManager.instance.PlayerActionInputs.Player.Skill1.canceled += Skill1Trigger;
-        InputManager.instance.PlayerActionInputs.Player.Skill2.canceled += Skill2Trigger;
-        InputManager.instance.PlayerActionInputs.Player.Skill3.canceled += Skill3Trigger;
+        InputManager.instance.PlayerActionInput.actions["Skill 0"].canceled += Skill0Trigger;
+        InputManager.instance.PlayerActionInput.actions["Skill 1"].canceled += Skill1Trigger;
+        InputManager.instance.PlayerActionInput.actions["Skill 2"].canceled += Skill2Trigger;
+        InputManager.instance.PlayerActionInput.actions["Skill 3"].canceled += Skill3Trigger;
 
-        InputManager.instance.PlayerActionInputs.Player.Interact.started += InteractTrigger;
+        InputManager.instance.PlayerActionInput.actions["Interact"].started += InteractTrigger;
+
+
+
+        //InputManager.instance.PlayerActionInputs.Player.SkillBag.started += AbilityInventoryController;
+
+        //InputManager.instance.PlayerActionInputs.Player.Skill0.canceled += Skill0Trigger;
+        //InputManager.instance.PlayerActionInputs.Player.Skill1.canceled += Skill1Trigger;
+        //InputManager.instance.PlayerActionInputs.Player.Skill2.canceled += Skill2Trigger;
+        //InputManager.instance.PlayerActionInputs.Player.Skill3.canceled += Skill3Trigger;
+
+        //InputManager.instance.PlayerActionInputs.Player.Interact.started += InteractTrigger;
 
 
         //playerInput.Player.SkillBag.started += AbilityInventoryController;
@@ -79,14 +93,24 @@ public class PlayerScript : Entities
     }
     private void ButtonInputEvent_Unsubscribe()
     {
-        InputManager.instance.PlayerActionInputs.Player.SkillBag.started -= AbilityInventoryController;
+        InputManager.instance.PlayerActionInput.actions["Skill Bag"].started -= AbilityInventoryController;
 
-        InputManager.instance.PlayerActionInputs.Player.Skill0.canceled -= Skill0Trigger;
-        InputManager.instance.PlayerActionInputs.Player.Skill1.canceled -= Skill1Trigger;
-        InputManager.instance.PlayerActionInputs.Player.Skill2.canceled -= Skill2Trigger;
-        InputManager.instance.PlayerActionInputs.Player.Skill3.canceled -= Skill3Trigger;
+        InputManager.instance.PlayerActionInput.actions["Skill 0"].canceled -= Skill0Trigger;
+        InputManager.instance.PlayerActionInput.actions["Skill 1"].canceled -= Skill1Trigger;
+        InputManager.instance.PlayerActionInput.actions["Skill 2"].canceled -= Skill2Trigger;
+        InputManager.instance.PlayerActionInput.actions["Skill 3"].canceled -= Skill3Trigger;
 
-        InputManager.instance.PlayerActionInputs.Player.Interact.started -= InteractTrigger;
+        InputManager.instance.PlayerActionInput.actions["Interact"].started -= InteractTrigger;
+
+
+        //InputManager.instance.PlayerActionInputs.Player.SkillBag.started -= AbilityInventoryController;
+
+        //InputManager.instance.PlayerActionInputs.Player.Skill0.canceled -= Skill0Trigger;
+        //InputManager.instance.PlayerActionInputs.Player.Skill1.canceled -= Skill1Trigger;
+        //InputManager.instance.PlayerActionInputs.Player.Skill2.canceled -= Skill2Trigger;
+        //InputManager.instance.PlayerActionInputs.Player.Skill3.canceled -= Skill3Trigger;
+
+        //InputManager.instance.PlayerActionInputs.Player.Interact.started -= InteractTrigger;
 
         //playerInput.Player.SkillBag.started -= AbilityInventoryController;
         //playerInput.Player.Skill0.canceled -= Skill0Trigger;
@@ -131,11 +155,11 @@ public class PlayerScript : Entities
     private void AbilityInventoryController(InputAction.CallbackContext obj) //Show/Hide ability inventory
     {
         //Toggle
-        var uiState = UIManager.instance.SetUIState;
+        var uiState = UIManager.instance.ChangeUIState;
         if (uiState == UIManager.GUIState.InGame)
-            UIManager.instance.SetGUIState(UIManager.GUIState.Inventory);
+            UIManager.instance.ChangeUIState = UIManager.GUIState.Inventory;
         else if (uiState == UIManager.GUIState.Inventory)
-            UIManager.instance.SetGUIState(UIManager.GUIState.InGame);
+            UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
 
     }
 

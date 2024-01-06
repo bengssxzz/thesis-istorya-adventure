@@ -15,6 +15,7 @@ public class TriggerTimeLine : MonoBehaviour, IInteractable
     }
 
     private PlayableDirector timelineDirector;
+    //[SerializeField] private PlayableAsset playableAsset;
     private Collider2D triggerCollider;
 
     [SerializeField] private TriggerState triggerState;
@@ -63,12 +64,14 @@ public class TriggerTimeLine : MonoBehaviour, IInteractable
             return;
         }
 
-        LevelManager.instance.SetDirector(timelineDirector);
-        LevelManager.instance.PlayDirector();
+        //LevelManager.Instance.SetDirector(timelineDirector);
+        //LevelManager.Instance.PlayDirector();
+
+        DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector);
 
 
         if (playOnce)
-            GetComponent<TriggerTimeLine>().enabled = false; //Disable this script para di na matrigger ulit
+            this.enabled = false; //Disable this script para di na matrigger ulit
 
         //timeLineDirector.Play();
 

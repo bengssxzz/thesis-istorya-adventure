@@ -16,7 +16,7 @@ public class MobileUITouchController : UIPages
 
     private void Awake()
     {
-        entity = GameManager.instance.GetPlayer();
+        entity = GameManager.Instance.PlayerEntity;
         listOfTouchHolderUI = transform.GetComponentsInChildren<TouchSkillUI>(true);
     }
 

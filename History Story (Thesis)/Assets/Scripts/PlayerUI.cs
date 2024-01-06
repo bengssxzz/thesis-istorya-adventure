@@ -14,7 +14,7 @@ public class PlayerUI : UIPages
 
     private void Start()
     {
-        entity = GameManager.instance.GetPlayer();
+        entity = GameManager.Instance.PlayerEntity;
 
         entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;
         //entity.OnHealthChanged += ChangeHealth;

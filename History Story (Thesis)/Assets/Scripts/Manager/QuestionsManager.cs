@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using SimpleSQL;
 
 
 
-public class QuestionsManager : MonoBehaviour
+public class QuestionsManager : Singleton<QuestionsManager>
 {
     [System.Serializable] public class QandA
     {
@@ -27,24 +28,30 @@ public class QuestionsManager : MonoBehaviour
         Question2
     }
 
+    public class QuestionsAnswer
+    {
+        // The PlayerID is the primary key and also autoincrements itself
+        // the SQLite database so we reflect that here with these attributes.
+        [PrimaryKey, AutoIncrement] public int id { get; set; }
+        public string question { get; set; }
+        public int c_answer { get; set; }
+        public int w_answers { get; set; }
+    }
 
-    public static QuestionsManager instance;
-          
+    [SerializeField] private SimpleSQLManager dbManager;
+
 
     [SerializeField] private TextAsset jsonQuestionaire;
     [SerializeField] private QuestionType type;
     private QuestionList questionsList = new QuestionList();
 
-    private void Awake()
+
+    protected override void Awake()
     {
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            DestroyImmediate(gameObject);
-        }
+        base.Awake();
+
+        dbManager = GetComponent<SimpleSQLManager>();
+
     }
 
 

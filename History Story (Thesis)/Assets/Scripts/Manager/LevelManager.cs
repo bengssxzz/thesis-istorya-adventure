@@ -12,28 +12,17 @@ public enum GameDifficulties
     Normal,
     Hard
 }
-public class LevelManager : MonoBehaviour
+public class LevelManager : Singleton<LevelManager>
 {
-    public static LevelManager instance;
-
-
-    [HideInInspector] public PlayableDirector currentDirector { get; private set; }
+    public PlayableDirector currentDirector { get; private set; }
 
 
     private GameDifficulties gameDifficulties = GameDifficulties.Easy;
 
-    void Awake()
+    protected override void Awake()
     {
-        //Singleton
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            DestroyImmediate(gameObject);
-        }
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
     }
 
 

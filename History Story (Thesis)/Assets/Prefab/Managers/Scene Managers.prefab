@@ -148,6 +148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6003421730938034818}
+  - component: {fileID: 2968447953539627786}
   - component: {fileID: 6003421730938034819}
   m_Layer: 0
   m_Name: Questions Manager
@@ -171,6 +172,25 @@ Transform:
   m_Father: {fileID: 5464019835954912075}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2968447953539627786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6003421730938034821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1705125264, guid: 8382d7f8352b70544aa11f6729f875f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  databaseFile: {fileID: 4900000, guid: 4b922b345e8c5da4c9757b9a205536db, type: 3}
+  overrideBasePath: 
+  overridePathMode: 0
+  changeWorkingName: 0
+  workingName: 
+  overwriteIfExists: 1
+  debugTrace: 0
 --- !u!114 &6003421730938034819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7c0416b2870ba4e8bcecc71998624d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dbManager: {fileID: 2968447953539627786}
   jsonQuestionaire: {fileID: 4900000, guid: 7353e1117bac4ed4882abd1ceb51ed76, type: 3}
   type: 0
 --- !u!1 &6971611421078702271

@@ -40,14 +40,14 @@ public class UIManager : MonoBehaviour
     private List<UIPages> pages = new List<UIPages>();
 
     private GUIState uiState = GUIState.InGame;
-    public GUIState SetUIState 
-    { 
-        get { return uiState; } 
-        set 
+    public GUIState ChangeUIState
+    {
+        get { return uiState; }
+        set
         {
             uiState = value;
-            ChangeGUIState(value); 
-        } 
+            ChangeGUIState(value);
+        }
     }
 
  
@@ -78,10 +78,6 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void Action_started(InputAction.CallbackContext obj)
-    {
-        throw new System.NotImplementedException();
-    }
 
     private void Start()
     {
@@ -89,10 +85,10 @@ public class UIManager : MonoBehaviour
         ChangeGUIState(uiState);
     }
 
-    public void SetGUIState(GUIState state = GUIState.InGame)
-    {
-        SetUIState = state;
-    }
+    //public void SetGUIState(GUIState state = GUIState.InGame)
+    //{
+    //    SetUIState = state;
+    //}
 
     private void ChangeGUIState(GUIState state)
     {
@@ -104,8 +100,8 @@ public class UIManager : MonoBehaviour
                 HideAllUI();
                 break;
             case GUIState.InGame:
+                InputManager.instance.ChangeActionMap("Player");
                 touchController.UIEnabled();
-                InputManager.instance.ChangeActionMap(InputManager.instance.PlayerActionInputs.Player);
                 playerUI.UIEnabled();
                 break;
             case GUIState.Inventory:
@@ -115,8 +111,8 @@ public class UIManager : MonoBehaviour
                 upgradeStats.UIEnabled();
                 break;
             case GUIState.DialogMode:
+                InputManager.instance.ChangeActionMap("DialogUI");
                 dialogUI.UIEnabled();
-                InputManager.instance.ChangeActionMap(InputManager.instance.PlayerActionInputs.DialogUI);
                 break;
             case GUIState.QandA:
                 QandAUI.UIEnabled();

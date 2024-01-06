@@ -46,7 +46,7 @@ public class UpgradeStatsSystem : UIPages
 
     private void ConfirmBtn()
     {
-        UIManager.instance.SetGUIState(UIManager.GUIState.InGame);
+        UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
         //Hide();
     }
 
@@ -92,11 +92,11 @@ public class UpgradeStatsSystem : UIPages
     public override void ShowBehavior()
     {
         UpdateUIVisuals();
-        GameManager.instance.SetPauseValue(true);
+        GameManager.Instance.SetPauseValue(true);
     }
 
     public override void HideBehavior()
     {
-        GameManager.instance.SetPauseValue(false);
+        GameManager.Instance.SetPauseValue(false);
     }
 }
