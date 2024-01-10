@@ -1,0 +1,76 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using PlayFab.ClientModels;
+
+public class Setup_Login : UIPages
+{
+    [SerializeField] private TMP_InputField userEmail;
+    [SerializeField] private TMP_InputField password;
+
+    [SerializeField] private TextMeshProUGUI errorTxt;
+    [SerializeField] private Button LoginBtn, signupBtn, guestBtn;
+    [SerializeField] private UIPages guestPage, signupPage;
+
+
+
+    public override void ShowBehavior()
+    {
+        LoginBtn.onClick.AddListener(PressLogin);
+
+        signupBtn.onClick.AddListener(() => { 
+            signupPage.UIEnabled();
+            this.UIDisabled();
+        
+        });
+
+        guestBtn.onClick.AddListener(() => {
+            guestPage.UIEnabled();
+            this.UIDisabled();
+
+        });
+
+        PlayfabManager.Instance.OnSuccessLogin += OnSuccessLogin;
+        PlayfabManager.Instance.OnError += OnErrorThrow;
+
+    }
+    public override void HideBehavior()
+    {
+        LoginBtn.onClick.RemoveAllListeners();
+        signupBtn.onClick.RemoveAllListeners();
+        guestBtn.onClick.RemoveAllListeners();
+
+        PlayfabManager.Instance.OnSuccessLogin -= OnSuccessLogin;
+        PlayfabManager.Instance.OnError -= OnErrorThrow;
+    }
+
+    private void Start()
+    {
+        guestPage?.UIDisabled();
+        signupPage?.UIDisabled();
+    }
+
+    private void OnErrorThrow(string errorString)
+    {
+        errorTxt.gameObject.SetActive(true);
+        errorTxt.text = errorString;
+
+    }
+    private void OnSuccessLogin(LoginResult obj)
+    {
+        //Success
+        Debug.Log("Login Success!!");
+
+        //TODO: To go scene main menu
+        SceneTransitionManager.Instance.GoToScene("MainMenu");
+    }
+
+    private void PressLogin()
+    {
+        PlayfabManager.Instance.LoginAccount(userEmail.text, password.text);
+    }
+
+}

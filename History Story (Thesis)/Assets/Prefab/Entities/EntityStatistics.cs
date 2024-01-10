@@ -56,7 +56,6 @@ public class EntityStatistics
     //Regeneration
     public float lifeSteal { get; private set; } //Every kill absorb health
 
-
 #region Temporary Saved Data for temporary modification
 
     private float saved_curr_health;
@@ -158,7 +157,40 @@ public class EntityStatistics
     public void UpgradeDefence(int amount)
     {
         defense += amount;
+
     }
+
+    public void StatsModify_Defense(float addValue)
+    {
+        if (is_already_modified_defense)
+        {
+            defense = saved_curr_defense; //Revert the original stats first
+        }
+        else
+        {
+            is_already_modified_defense = true;
+        }
+
+        saved_curr_defense = defense;  //Save the current stats
+        defense += addValue; //Modify the stats
+
+    }
+    public void StatsModify_MoveSpeed(float addValue)
+    {
+        if (is_already_modified_movementSpeed)
+        {
+            currentMoveSpeed = saved_curr_movementSpeed; //Revert the original stats first
+        }
+        else
+        {
+            is_already_modified_movementSpeed = true;
+        }
+
+        saved_curr_movementSpeed = currentMoveSpeed;  //Save the current stats
+        currentMoveSpeed += addValue; //Modify the stats
+
+    }
+
 
 
     public void TemporaryStatsModification(EntityStats modifyStats, float addModifyValue)

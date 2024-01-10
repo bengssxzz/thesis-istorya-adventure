@@ -15,20 +15,27 @@ public class QuestionaireUI : UIPages
     [SerializeField] private UpgradeStatsSystem upgradeSystemUI;
 
     private QandAChoicesBtnUI[] buttonChoices;
-    
-
-    private int questionIndex;
-    private int pointsToGive = 0;
 
     private void Awake()
     {
         buttonChoices = GetComponentsInChildren<QandAChoicesBtnUI>();
     }
 
-    
+    public override void ShowBehavior()
+    {
+        SubscribeBtn();
+        ResetPanel(); 
+    }
+
+    public override void HideBehavior()
+    {
+        UnsubscribeBtn();
+    }
 
     private void SubscribeBtn()
     {
+        QuestionsManager.Instance.OnQuestionTrigger += QuestionTrigger;
+
         foreach (var item in buttonChoices)
         {
             item.OnButtonPressed += ChoicePressed;
@@ -36,16 +43,47 @@ public class QuestionaireUI : UIPages
     }
     private void UnsubscribeBtn()
     {
+        QuestionsManager.Instance.OnQuestionTrigger -= QuestionTrigger;
+
         foreach (var item in buttonChoices)
         {
             item.OnButtonPressed -= ChoicePressed;
         }
     }
 
-
-    private void ChoicePressed(string selectedAnswer)
+    private void ResetPanel() //Reset the panel
     {
-        var checkedAnswer = QuestionsManager.Instance.CheckAnswer(questionIndex, selectedAnswer);
+        questionText.text = "";
+
+        //Change the button text
+        for (int i = 0; i < buttonChoices.Length; i++)
+        {
+            buttonChoices[i].UpdateBtn("");
+        }
+
+        correctPanel.SetActive(false);
+        wrongPanel.SetActive(false);
+    }
+
+    private void QuestionTrigger(int id, string question, string[] choices) //Reciever from QuestionsManager
+    {
+        //Change the question
+        questionText.text = question;
+
+        //Change the button text
+        for (int i = 0; i < buttonChoices.Length; i++)
+        {
+            buttonChoices[i].UpdateBtn(choices[i]);
+        }
+    }
+    private void ChoicePressed(string selectedAnswer) //Reciever from each buttons
+    {
+        //Check the answer on button press
+        var currentTableName = QuestionsManager.Instance.CurrentQuestionTable;
+        var currentIDQuestion = QuestionsManager.Instance.CurrentIDQuestion;
+
+        var checkedAnswer = QuestionsManager.Instance.CheckQuestionAnswer(currentIDQuestion, currentTableName, selectedAnswer);
+
         StartCoroutine(CheckStatus(checkedAnswer));
     }
 
@@ -60,68 +98,17 @@ public class QuestionaireUI : UIPages
             CorrectUpgrade(); 
         } 
         else{
-            UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
+            UIManager.Instance.ChangeUIState = UIManager.GUIState.InGame;
         }
 
-    }
-
-    private void ResetStatusPanel()
-    {
-        correctPanel.SetActive(false);
-        wrongPanel.SetActive(false);
-    }
-
-    private void UpdateQuestion()
-    {
-        var selectedQuestion = QuestionsManager.Instance.GenerateQandA(QuestionsManager.QuestionType.Question1);
-
-        questionIndex = selectedQuestion.Item1;
-        string question = selectedQuestion.Item2;
-        string correctAns = selectedQuestion.Item3;
-        string[] wrongAns = selectedQuestion.Item4;
-
-        var choices = RandomizeChoices(correctAns, wrongAns, buttonChoices.Length);
-
-        questionText.text = question;
-
-        for (int i = 0; i < buttonChoices.Length; i++)
-        {
-            buttonChoices[i].UpdateBtn(choices[i]);
-        }
-    }
-
-    private string[] RandomizeChoices(string correctAnswer, string[] wrongAnswers, int capacity)
-    {
-        var newChoices = new List<string>();
-
-        newChoices.Add(correctAnswer);
-
-        wrongAnswers = wrongAnswers.OrderBy(x => UnityEngine.Random.value).ToArray(); //Randomize the wrong answer array
-
-        for (int i = 0; i < capacity - 1; i++)
-        {
-            newChoices.Add(wrongAnswers[i]); //Add wrong answer
-        }
-
-        newChoices = newChoices.OrderBy(x => UnityEngine.Random.value).ToList(); //Randomize the list
-        return newChoices.ToArray();
     }
 
     private void CorrectUpgrade()
     {
+        //TODO: Add points to leaderboard
         upgradeSystemUI.AddPoints();
-        UIManager.instance.ChangeUIState = UIManager.GUIState.Upgradable;
+        UIManager.Instance.ChangeUIState = UIManager.GUIState.Upgradable;
     }
 
-    public override void ShowBehavior()
-    {
-        SubscribeBtn();
-        UpdateQuestion();
-    }
-
-    public override void HideBehavior()
-    {
-        UnsubscribeBtn();
-        ResetStatusPanel();
-    }
+    
 }

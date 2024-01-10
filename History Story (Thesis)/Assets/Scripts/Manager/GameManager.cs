@@ -22,7 +22,8 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        //entity = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerScript>();
+
+
         PlayerEntity = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerScript>();
     }
 

@@ -4,128 +4,134 @@ using UnityEngine;
 using System.IO;
 using System;
 using SimpleSQL;
-
-
+using ThesisLibrary;
+using System.Linq;
 
 public class QuestionsManager : Singleton<QuestionsManager>
 {
-    [System.Serializable] public class QandA
-    {
-        public int questionNumber; //Question number
-        public string questionText; //Questions
-        public string correctAnswer; //Correct answer
-        public string[] wrongAnswers; //List of wrong answer
-    }
-    [System.Serializable] public class QuestionList
-    {
-        public QandA[] questions;
-        public QandA[] questions1;
-    }
-
-    public enum QuestionType
-    {
-        Question1,
-        Question2
-    }
-
     public class QuestionsAnswer
     {
         // The PlayerID is the primary key and also autoincrements itself
         // the SQLite database so we reflect that here with these attributes.
         [PrimaryKey, AutoIncrement] public int id { get; set; }
         public string question { get; set; }
-        public int c_answer { get; set; }
-        public int w_answers { get; set; }
+        public string c_answer { get; set; }
+        public string w_answers { get; set; }
     }
 
-    [SerializeField] private SimpleSQLManager dbManager;
+    public event Action<int, string, string[]> OnQuestionTrigger;
 
 
-    [SerializeField] private TextAsset jsonQuestionaire;
-    [SerializeField] private QuestionType type;
-    private QuestionList questionsList = new QuestionList();
+    private SimpleSQLManager dbManager;
+    private Dictionary<string, List<QuestionsAnswer>> questionList;
 
+    public string CurrentQuestionTable { get; private set; } = "Chapter1";
+    public int CurrentIDQuestion { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
 
         dbManager = GetComponent<SimpleSQLManager>();
-
+        questionList = new Dictionary<string, List<QuestionsAnswer>>();
     }
-
 
     private void Start()
     {
-        questionsList = JsonUtility.FromJson<QuestionList>(jsonQuestionaire.text);
-
-        
+        InitializeQuestionAnswer("Chapter1");
     }
 
-    private void Update()
+    private void InitializeQuestionAnswer(params string[] tableName) //Get all the data in DB and put it inside the dictionary
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        foreach (string name in tableName)
         {
-            var question = GenerateQandA(type);
-            Debug.Log(question.Item1);
-            Debug.Log(question.Item2);
-            Debug.Log(question.Item3);
-
-            int selectedWrongIndex = UnityEngine.Random.Range(0, question.Item4.Length);
-            Debug.Log(question.Item4[selectedWrongIndex]);
-
-            Debug.Log("Check: " + CheckAnswer(question.Item1, "Adobo"));
+            string sql = String.Format("SELECT * FROM {0}", tableName);
+            List<QuestionsAnswer> qanda = dbManager.Query<QuestionsAnswer>(sql);
+            questionList.Add(name, qanda);
         }
     }
 
-    private QandA[] SetType(QuestionType _type)
+    public void TriggerQuestion(string questionFrom) //Trigger questions behaviour
     {
-        switch (_type)
-        {
-            case QuestionType.Question1:
-                return questionsList.questions;
+        UIManager.Instance.ChangeUIState = UIManager.GUIState.QandA;
 
-            case QuestionType.Question2:
-                return questionsList.questions1;
-            default:
-                return null;
-        }
+        CurrentQuestionTable = questionFrom;
+        var info = GetQuestionFrom(questionFrom);
+        CurrentIDQuestion = info.Item1;
+        OnQuestionTrigger?.Invoke(info.Item1, info.Item2, info.Item3);
     }
-
-    public (int, string, string, string[]) GenerateQandA(QuestionType _type)
+    public (int, string, string, string[]) GetQuestionInfo(string tableName)
     {
-        QandA[] questionType = SetType(_type);
+        var questionInfo = ThesisUtility.RandomGetObject(questionList[tableName].ToArray());
 
-        int questionIndex = UnityEngine.Random.Range(0, questionType.Length);
+        string[] wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
 
-        int number = questionType[questionIndex].questionNumber;
-        string q = questionType[questionIndex].questionText;
-        string answer = questionType[questionIndex].correctAnswer;
-        string[] arrayOfWrongAnswer = questionType[questionIndex].wrongAnswers;
-
-        int indexWrongAnswer = UnityEngine.Random.Range(0, arrayOfWrongAnswer.Length);
-        string choosenWrongAnswer = arrayOfWrongAnswer[indexWrongAnswer];
-
-
-        return (
-            number, //Item1 = Question number
-            q, //Item2 = Question
-            answer, //Item3 = Correct answer
-            arrayOfWrongAnswer //Item4 = Wrong Answer
-            );
+        return (questionInfo.id, questionInfo.question, questionInfo.c_answer, wrongAnswerList);
     }
-    
-    public bool CheckAnswer(int _questionNumber, string answer)
+    private (int, string, string[]) GetQuestionFrom(string tableName, int wrongAnswerCount = 1) //Return ID, question, and list of choices
     {
-        foreach (var item in questionsList.questions)
+        int questionID;
+        string question = "";
+        string correctAns = "";
+        string[] wrongAns = new string[wrongAnswerCount];
+
+        string[] choices;
+
+        var questionInfo = ThesisUtility.RandomGetObject(questionList[tableName].ToArray()); //Get random list
+
+        questionID = questionInfo.id;
+        question = questionInfo.question;
+        correctAns = questionInfo.c_answer;
+
+        //Wrong answer list
+        string[] wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
+
+        for (int i = 0; i < wrongAns.Length; i++)
         {
-            if(item.questionNumber == _questionNumber)
+            string selected = "";
+
+            //To prevent duplicating wrong answer
+            do
             {
-                 return item.correctAnswer == answer;
+                selected = ThesisUtility.RandomGetObject(wrongAnswerList);
+
+            } while (wrongAns[i] == selected);
+
+            wrongAns[i] = selected;
+        }
+
+        // Merge correctAns and wrongAns into choices
+        choices = new string[] { correctAns }.Concat(wrongAns).ToArray();
+        choices = ThesisUtility.Shuffle(choices);
+
+        return (questionID, question, choices);
+    }
+    public bool CheckQuestionAnswer(int QuestionId, string tableName, string user_answer) //Checking the answer
+    {
+        // Check if the table name exists in the dictionary
+        if (questionList.TryGetValue(tableName, out List<QuestionsAnswer> questionAnswers))
+        {
+            // Find the QuestionsAnswer object with the specified QuestionId
+            QuestionsAnswer questionInfo = questionAnswers.Find(q => q.id == QuestionId);
+
+            if (questionInfo != null)
+            {
+                // Check if the user's answer matches the correct answer
+                return user_answer == questionInfo.c_answer;
+            }
+            else
+            {
+                // Handle the case where the QuestionId is not found
+                Debug.LogError("Checking answer to table question ID is null");
+                return false;
             }
         }
-
-        return false;
+        else
+        {
+            // Handle the case where the table name is not found in the dictionary
+            Debug.LogError("Table is missing/wrong spelling");
+            return false;
+        }
     }
 
 

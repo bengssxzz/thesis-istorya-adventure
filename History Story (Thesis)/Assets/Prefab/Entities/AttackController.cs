@@ -16,7 +16,6 @@ public class AttackController : DetectMyEnemies
     [SerializeField] private string projectileTag;
 
     public Transform EnemyInsideArea;
-    public bool EnableAttacking { get; set; }
     [Space(20)]
     [Header("Ranged Attack Type")]
     [SerializeField] private bool canRangeAttack = true;
@@ -36,7 +35,9 @@ public class AttackController : DetectMyEnemies
     [SerializeField] private float knockBackPower = 15f;
     private bool readyMeleeAttack = true;
 
-   
+    public bool EnableAttacking { get; set; }
+    public Transform GetAttackHolder { get { return attackHolder; } }
+
 
     //[Space]
     //private float rangedAttackField, meleeAttackField;

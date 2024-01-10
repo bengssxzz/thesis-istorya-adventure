@@ -20,12 +20,6 @@ public class MobileUITouchController : UIPages
         listOfTouchHolderUI = transform.GetComponentsInChildren<TouchSkillUI>(true);
     }
 
-    private void Start()
-    {
-        //currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
-        currentAbility = entity.Ability_Controller.ListOfCurrentAbilities.ToArray();
-    }
-
     public override void ShowBehavior()
     {
         //currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
@@ -34,9 +28,11 @@ public class MobileUITouchController : UIPages
         //Subscribe new abilities event function
         for (int i = 0; i < listOfTouchHolderUI.Length; i++)
         {
-            if(currentAbility[i] == null) {
+            if (currentAbility[i] == null)
+            {
                 listOfTouchHolderUI[i].ResetDataHolder();
-                continue; }
+                continue;
+            }
 
             currentAbility[i].OnAbilityTimeLapse += listOfTouchHolderUI[i].AbilityCooldown;
         }
@@ -52,6 +48,14 @@ public class MobileUITouchController : UIPages
             currentAbility[i].OnAbilityTimeLapse -= listOfTouchHolderUI[i].AbilityCooldown;
         }
     }
+
+    private void Start()
+    {
+        //currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
+        currentAbility = entity.Ability_Controller.ListOfCurrentAbilities.ToArray();
+    }
+
+   
 
     private void UpdateHolderVisual()
     {

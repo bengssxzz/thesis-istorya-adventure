@@ -21,7 +21,8 @@ public class PauseController : MonoBehaviour
 
     private void QuitMenu()
     {
-        LevelManager.Instance.ChangeLevel(0);
+        //TODO: Go to main menu
+        Debug.Log("Go to main menu");
     }
 
     private void OptionMenu()

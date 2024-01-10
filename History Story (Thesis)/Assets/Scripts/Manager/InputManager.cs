@@ -5,21 +5,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
-    public static InputManager instance;
-
     public PlayerInput PlayerActionInput { get; private set; }
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        //PlayerActionInputs = new PlayerInputs();
-
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
 
         PlayerActionInput = GetComponent<PlayerInput>();
     }

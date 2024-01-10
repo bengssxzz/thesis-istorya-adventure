@@ -1,67 +1,86 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ThesisLibrary;
+using UnityEngine.Events;
 
 public class RoomSpawnerEnemy : MonoBehaviour
 {
     [System.Serializable]
     public class WaveSystem
     {
-        public int maxEnemySpawn = 5;
+        public int maxEnemySpawnInWave = 5;
         public GameObject[] enemyArray;
     }
 
     private PolygonCollider2D roomAreaCollider;
+    private RoomArea roomArea;
+
+    [SerializeField] private bool chanceToBattle = false;
 
     [SerializeField] private LayerMask cannotSpawn;
     [SerializeField] private WaveSystem[] waveInfoList;
     [SerializeField] private int maxEnemySpawnInRoom = 5;
 
+    [Space(25)]
+    public UnityEvent OnStartedBattleTrigger;
+    public UnityEvent OnFinishedBattleTrigger;
+
     private List<Collider2D> collidersList = new List<Collider2D>();
     private int currentWave = 0;
     private int enemySpawnCount = 0;
+
+    private bool playerAlreadyTriggerBattle = false;
+    private bool isRunningBattle = false;
     private bool isDoneBattleRoom = false;
 
 
 
     private void Awake()
     {
-        roomAreaCollider = GetComponent<PolygonCollider2D>();
+        roomArea = GetComponentInParent<RoomArea>();
+        roomAreaCollider = GetComponentInParent<RoomArea>().GetComponent<PolygonCollider2D>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        StartCoroutine(ExecuteWaveBattle());
+        roomArea.OnPlayerEnterExitRoom += PlayerEnterExitRoom;
+    }
+
+    
+    private void OnDisable()
+    {
+        roomArea.OnPlayerEnterExitRoom -= PlayerEnterExitRoom;
     }
 
     private void Update()
     {
-        if(isDoneBattleRoom == true) { return; }
+        //ScanAllEnemy();
+    }
 
-        ScanAllEnemy();
+    private void PlayerEnterExitRoom(bool playerEnterExit)
+    {
+        if (playerEnterExit)
+        {
+            //If the player is inside the room collider
+        }
+        else
+        {
+            //If the player exit the room collider
+        }
     }
 
 
-    
     private WaveSystem GetInfoCurrentWave() //Get the info of the current wave
     {
         return waveInfoList[currentWave];
     }
 
-    private GameObject RandomEnemySpawn() //Randomize enemy according to wave round
-    {
-        //Get the value of the array in current wave
-        var waveInfo = GetInfoCurrentWave();
-
-        var enemyIndex = Random.Range(0, waveInfo.enemyArray.Length - 1);
-        var chosenEnemy = ObjectPooling.instance.GetObjectInPool("enemy", waveInfo.enemyArray[enemyIndex]);
-        return chosenEnemy;
-    }
     private Vector2 RandomSpawnLocation() //Generate random valid position
     {
         if (roomAreaCollider == null || GetInfoCurrentWave().enemyArray.Length <= 0)
         {
-            Debug.LogWarning("Please assign the PolygonCollider2D and Enemy Prefab in the inspector.");
+            Debug.LogError("Please assign the PolygonCollider2D and Enemy Prefab in the inspector.");
             return Vector2.zero;
         }
 
@@ -69,7 +88,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         Collider2D restrictedPos;
 
         Bounds colliderBounds = roomAreaCollider.bounds;
-        
+
 
         do
         {
@@ -92,6 +111,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
     private void ScanAllEnemy() //Scanning the enemy
     {
+        if (!isRunningBattle) { return; }
+
         if (roomAreaCollider != null)
         {
             // Set up a ContactFilter2D to filter colliders by tag
@@ -107,21 +128,49 @@ public class RoomSpawnerEnemy : MonoBehaviour
             Debug.LogError("PolygonCollider2D is not existed.");
         }
     }
+    IEnumerator ScanEnemies()
+    {
+        if (roomAreaCollider != null)
+        {
+            // Set up a ContactFilter2D to filter colliders by tag
+            ContactFilter2D contactFilter = new ContactFilter2D();
+            contactFilter.SetLayerMask(LayerMask.GetMask("Enemy")); // Replace "Enemy" with your actual layer or tag
 
+            do
+            {
+                // Get all enemy colliders inside the PolygonCollider2D
+                collidersList = new List<Collider2D>();
+                roomAreaCollider.OverlapCollider(contactFilter, collidersList);
+
+                Debug.Log("Still scanning enemies: " + collidersList.Count);
+                yield return new WaitForSeconds(0.2f);
+
+                //If there are no more enemy to be scan then while loop done
+            } while (collidersList.Count > 0 || isRunningBattle);
+
+            //TODO: Disable magical barrier
+            OnFinishedBattleTrigger?.Invoke();
+        }
+        else
+        {
+            Debug.LogError("PolygonCollider2D is not existed.");
+        }
+    }
     IEnumerator EnemyWaveSpawner() //Control the spawning enemy in each wave
     {
-        int maxNumberEnemy = GetInfoCurrentWave().maxEnemySpawn;
+        int maxNumberEnemy = GetInfoCurrentWave().maxEnemySpawnInWave;
         int remainingSpawn = maxNumberEnemy - enemySpawnCount;
 
-        if(remainingSpawn > 0)
+        if (remainingSpawn > 0)
         {
             //If still have remaining enemy to be spawn
             int toSpawn = remainingSpawn > maxEnemySpawnInRoom ? maxEnemySpawnInRoom : remainingSpawn;
 
             for (int i = 0; i < toSpawn; i++)
             {
-                var selectedRandomEnemy = RandomEnemySpawn();
-                selectedRandomEnemy.transform.position = RandomSpawnLocation();
+
+                var selectedRandomEnemy = ObjectPooling.instance.GetObjectInPool("enemy", GetInfoCurrentWave().enemyArray.RandomGetObject()); //Get Enemy
+                selectedRandomEnemy.transform.position = RandomSpawnLocation(); //Set the position
                 enemySpawnCount++;
                 yield return new WaitForSeconds(Random.Range(0.2f, 1.5f));
             }
@@ -138,7 +187,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         {
             yield return new WaitForSeconds(0.2f);
 
-            if (collidersList.Count == 0 && enemySpawnCount >= GetInfoCurrentWave().maxEnemySpawn)
+            if (collidersList.Count == 0 && enemySpawnCount >= GetInfoCurrentWave().maxEnemySpawnInWave)
             {
                 //Next Wave
                 Debug.Log("Next wave");
@@ -146,23 +195,63 @@ public class RoomSpawnerEnemy : MonoBehaviour
                 enemySpawnCount = 0;
                 currentWave++;
 
-            } else if (collidersList.Count <= 3)
+            }
+            else if (collidersList.Count <= 3)
             {
                 yield return StartCoroutine(EnemyWaveSpawner()); //Wait to finish the wave
                 yield return new WaitForSeconds(0.5f);
             }
-            
-            
-            
+
+
+
         } while (currentWave <= waveInfoList.Length - 1);
 
         //Done fighting
         Debug.Log("THIS ROOM IS FINISH");
         isDoneBattleRoom = true;
+        isRunningBattle = false;
     }
 
+    private void StartBattle() //Start the battle
+    {
+        StartCoroutine(ExecuteWaveBattle());
+        isRunningBattle = true;
 
+        //TODO: Enable magical barrier
+        OnStartedBattleTrigger?.Invoke();
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player") && !playerAlreadyTriggerBattle)
+        {
+            playerAlreadyTriggerBattle = true;
+
+            if (!isRunningBattle)
+            {
+                //Trigger battle event
+                StartCoroutine(ScanEnemies());
+                if (!isDoneBattleRoom)
+                {
+                    StartBattle();
+                }
+                else
+                {
+                    //If chance to battle is done, then calculate a chance to trigger battle again
+                    if (chanceToBattle && ThesisUtility.RandomGetChanceBool())
+                    {
+                        //Reset the variables
+                        currentWave = 0;
+                        enemySpawnCount = 0;
+
+                        //Trigger the battle again
+                        StartBattle();
+                    }
+                }
+            }
+
+        }    
+    }
 
 
 

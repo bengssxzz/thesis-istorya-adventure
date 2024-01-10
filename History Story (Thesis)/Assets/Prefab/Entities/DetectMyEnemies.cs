@@ -15,11 +15,14 @@ public class DetectMyEnemies : MonoBehaviour
     [SerializeField] protected LayerMask myEnemyLayer, obstacleLayer;
     private LayerMask raycastCanSee => myEnemyLayer + obstacleLayer;//Combined layer
 
-    public int TESTINGCOUNT = 0;
     private Collider2D[] CHECKTARGET;
-    public Transform GetNearestEnemy { get; protected set; } //Nearest enemy
     protected float distanceToNearestEnemy; //Get the distance between gameobject to nearest enemy
     protected bool HasEnemyNearby; //Has enemy around
+    
+    public int TESTINGCOUNT = 0;
+    public Transform GetNearestEnemy { get; protected set; } //Nearest enemy
+    public LayerMask GetMyEnemyLayer { get { return myEnemyLayer; } }
+    public LayerMask GetMyObstacleLayer { get { return obstacleLayer; } }
 
 
     protected virtual void Start()

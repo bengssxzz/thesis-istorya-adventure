@@ -44,12 +44,15 @@ public class Projectile : MonoBehaviour
 
     public void InitializeProjectile(Entities host, Vector2 dir, float _distanceLimit, LayerMask addMask)
     {
-        entityHost = host;
-        hostDamage = host.GetEntityStats.damage;
+        if(host != null)
+        {
+            entityHost = host;
+            hostDamage = host.GetEntityStats.damage;
+            startPoint = host.transform.position;
+        }
 
         direction = dir;
         distanceLimit = _distanceLimit;
-        startPoint = host.transform.position;
 
         SetLayerMask(addMask);
     }

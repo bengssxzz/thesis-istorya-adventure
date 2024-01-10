@@ -17,11 +17,7 @@ public abstract class UIPages : MonoBehaviour
     public abstract void HideBehavior();
 
 
-    public void UIEnabled()
-    {
-        gameObject.SetActive(true);
-    }
-
+    public void UIEnabled() => gameObject.SetActive(true);
     public void UIDisabled() => gameObject.SetActive(false);
 
 

@@ -64,7 +64,7 @@ public class AbilityInventory : UIPages
     {
         //Done edit ability
 
-        UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
+        UIManager.Instance.ChangeUIState = UIManager.GUIState.InGame;
     }
 
     private void GenerateSlots()

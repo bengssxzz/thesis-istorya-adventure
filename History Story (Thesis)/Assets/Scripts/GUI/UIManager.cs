@@ -14,7 +14,7 @@ using UnityEngine.InputSystem;
 //    QandA
 //}
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
     public enum GUIState
     {
@@ -52,20 +52,9 @@ public class UIManager : MonoBehaviour
 
  
 
-
-    public static UIManager instance;
-
-    private void Awake()
+    protected override void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
+        base.Awake();
 
         touchController = GetComponentInChildren<MobileUITouchController>(true);
         abilityInventory = GetComponentInChildren<AbilityInventory>(true);
@@ -100,7 +89,7 @@ public class UIManager : MonoBehaviour
                 HideAllUI();
                 break;
             case GUIState.InGame:
-                InputManager.instance.ChangeActionMap("Player");
+                InputManager.Instance.ChangeActionMap("Player");
                 touchController.UIEnabled();
                 playerUI.UIEnabled();
                 break;
@@ -111,7 +100,7 @@ public class UIManager : MonoBehaviour
                 upgradeStats.UIEnabled();
                 break;
             case GUIState.DialogMode:
-                InputManager.instance.ChangeActionMap("DialogUI");
+                InputManager.Instance.ChangeActionMap("DialogUI");
                 dialogUI.UIEnabled();
                 break;
             case GUIState.QandA:

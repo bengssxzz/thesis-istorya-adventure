@@ -46,7 +46,7 @@ public class UpgradeStatsSystem : UIPages
 
     private void ConfirmBtn()
     {
-        UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
+        UIManager.Instance.ChangeUIState = UIManager.GUIState.InGame;
         //Hide();
     }
 

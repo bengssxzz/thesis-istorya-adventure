@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 8648846010143950694}
   - component: {fileID: 1842834887802013471}
   - component: {fileID: 161349631825798534}
+  - component: {fileID: 1641045201}
   m_Layer: 7
   m_Name: Small Wolf Enemy
   m_TagString: Enemy
@@ -263,7 +264,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2747393040198357271}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -345,7 +346,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2747393040198357271}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e3479b730d063748b03af5624fe50da, type: 3}
   m_Name: 
@@ -354,12 +355,6 @@ MonoBehaviour:
   entityStatsSO: {fileID: 11400000, guid: e0b3c1533d3c2974691b67059df6bd54, type: 2}
   entitySpriteRenderer: {fileID: 0}
   _canAttack: 1
-  listOfDropLoot:
-  - lootPrefab: {fileID: 3914543218310036787, guid: 2436bde3ebab0404087b8d19285813c2, type: 3}
-    randomAmountDrop: 1
-    minAmount: 2
-    maxAmount: 10
-    dropChance: 90
   stopDistance: 0.41
   fleeDistance: 0
 --- !u!114 &8648846010143950694
@@ -425,6 +420,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 2056
+  TESTINGCOUNT: 0
   attackHolder: {fileID: 2747393039596332295}
   projectileTag: enemy_bullet
   EnemyInsideArea: {fileID: 0}
@@ -452,6 +448,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listOfUnlockedAbilities: []
+--- !u!114 &1641045201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2747393040198357271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28412c3147cf15843b89414b27270d5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 1
+  entityStatsSO: {fileID: 11400000, guid: e0b3c1533d3c2974691b67059df6bd54, type: 2}
+  entitySpriteRenderer: {fileID: 0}
+  _canAttack: 1
+  stopDistance: 0
+  fleeDistance: 0
+  moveType: 0
+  canFly: 0
+  isBoss: 0
+  listOfDropLoot: []
 --- !u!1 &2747393040369921150
 GameObject:
   m_ObjectHideFlags: 0

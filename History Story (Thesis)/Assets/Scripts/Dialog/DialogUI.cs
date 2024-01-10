@@ -39,8 +39,8 @@ public class DialogUI : UIPages
 
         DialogManager.Instance.OnDialogContinue += DialogContinue;
 
-        InputManager.instance.PlayerActionInput.actions["Continue"].started += ContinueDialog;
-        InputManager.instance.PlayerActionInput.actions["Skip"].started += SkipDialog;
+        InputManager.Instance.PlayerActionInput.actions["Continue"].started += ContinueDialog;
+        InputManager.Instance.PlayerActionInput.actions["Skip"].started += SkipDialog;
         //continueAction.action.started += ContinueDialog;
     }
 
@@ -55,8 +55,8 @@ public class DialogUI : UIPages
         DialogManager.Instance.OnDialogContinue -= DialogContinue;
 
 
-        InputManager.instance.PlayerActionInput.actions["Continue"].started -= ContinueDialog;
-        InputManager.instance.PlayerActionInput.actions["Skip"].started -= SkipDialog;
+        InputManager.Instance.PlayerActionInput.actions["Continue"].started -= ContinueDialog;
+        InputManager.Instance.PlayerActionInput.actions["Skip"].started -= SkipDialog;
     }
 
     private void InitializeDialog()
@@ -73,7 +73,7 @@ public class DialogUI : UIPages
     private void SkipDialog(InputAction.CallbackContext obj)
     {
         Debug.Log("Dialog Skipped");
-        UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
+        UIManager.Instance.ChangeUIState = UIManager.GUIState.InGame;
     }
 
     private void DialogContinue(bool isDialogDone, string dialogLine)
@@ -87,7 +87,7 @@ public class DialogUI : UIPages
         {
             //The dialog is done
 
-            UIManager.instance.ChangeUIState = UIManager.GUIState.InGame;
+            UIManager.Instance.ChangeUIState = UIManager.GUIState.InGame;
         }
     }
 

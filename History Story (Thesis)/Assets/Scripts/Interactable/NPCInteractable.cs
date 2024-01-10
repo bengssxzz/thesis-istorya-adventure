@@ -28,9 +28,9 @@ public class NPCInteractable : MonoBehaviour, IInteractable
 
     private void SetState()
     {
-        if (UIManager.instance.ChangeUIState != UIManager.GUIState.DialogMode)
+        if (UIManager.Instance.ChangeUIState != UIManager.GUIState.DialogMode)
         {
-            UIManager.instance.ChangeUIState = UIManager.GUIState.DialogMode;
+            UIManager.Instance.ChangeUIState = UIManager.GUIState.DialogMode;
         }
     }
 
