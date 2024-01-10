@@ -26708,7 +26708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a54955155f2e94fbadf932d4496451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkyJSON: {fileID: 4900000, guid: 354c96c39f3c2414e8d759d56a1b52e1, type: 3}
+  inkyJSON: {fileID: 4900000, guid: e9f6ef295b892374ba4fd81eb61f05a6, type: 3}
 --- !u!1 &1244710666
 GameObject:
   m_ObjectHideFlags: 0
@@ -26808,8 +26808,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c279b401df78144b8b73740039088c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkyJSON: {fileID: 4900000, guid: 23be6d6f62e260a4ea9797206baf9fea, type: 3}
-  path: HouseScene
+  inkyJSON: {fileID: 4900000, guid: e9f6ef295b892374ba4fd81eb61f05a6, type: 3}
+  path: TutorialScene
   director: {fileID: 2064116845}
 --- !u!70 &1244710670
 CapsuleCollider2D:
@@ -26854,7 +26854,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: HouseScene
+            m_StringArgument: TutorialScene
             m_BoolArgument: 0
           m_CallState: 2
 --- !u!1001 &1322131423
@@ -27398,10 +27398,10 @@ PrefabInstance:
     - target: {fileID: 2114241535040067393, guid: f8ecb7097af7e0c43ab6b9986413c3c6, type: 3}
       propertyPath: m_PlayableAsset
       value: 
-      objectReference: {fileID: 11400000, guid: a81454254844d2e46bad486a95aeac76, type: 2}
+      objectReference: {fileID: 11400000, guid: e93b8410be4b4dd4d9b9cd0c12c9f750, type: 2}
     - target: {fileID: 2114241535040067393, guid: f8ecb7097af7e0c43ab6b9986413c3c6, type: 3}
       propertyPath: m_SceneBindings.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2114241535040067393, guid: f8ecb7097af7e0c43ab6b9986413c3c6, type: 3}
       propertyPath: m_SceneBindings.Array.data[0].key
@@ -27435,6 +27435,10 @@ PrefabInstance:
       propertyPath: m_SceneBindings.Array.data[7].key
       value: 
       objectReference: {fileID: -8502726930066209860, guid: 4ccd2332c6b219a419c68a07da29aeb2, type: 2}
+    - target: {fileID: 2114241535040067393, guid: f8ecb7097af7e0c43ab6b9986413c3c6, type: 3}
+      propertyPath: m_SceneBindings.Array.data[8].key
+      value: 
+      objectReference: {fileID: -419085811017177444, guid: e93b8410be4b4dd4d9b9cd0c12c9f750, type: 2}
     - target: {fileID: 2114241535040067395, guid: f8ecb7097af7e0c43ab6b9986413c3c6, type: 3}
       propertyPath: m_RootOrder
       value: 8
