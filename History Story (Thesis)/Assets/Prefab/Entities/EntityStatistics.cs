@@ -113,6 +113,13 @@ public class EntityStatistics
         currentMoveSpeed = amount;
     }
 
+    // method to modify the defense value
+    public void ModifiedDefense(float newDefense)
+    {
+        defense = Mathf.Clamp(newDefense, 0f, 1f);
+    }
+
+
     public void SetCurrentHealth(float amount)
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);

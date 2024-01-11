@@ -27,7 +27,7 @@ public class EntityStatsSO : ScriptableObject
     public float maxMoveSpeed= 30;
     [Tooltip("Attack speed in percentage")]
     [Range(10, 100)] public float attackSpeed = 10f;
-    
+
     [Space]
     public List<AbilityScript> abilities;
 }
