@@ -119,6 +119,17 @@ public class EntityStatistics
         defense = Mathf.Clamp(newDefense, 0f, 1f);
     }
 
+    // method to modify the attackspeed value
+    public void ModifiedAttackSpeed(float newAttackSpeed)
+    {
+        currentAttackSpeed = newAttackSpeed;
+    }
+
+    // method to modify the damage value
+    public void ModifiedDamage(float newDamage)
+    {
+        damage = newDamage;
+    }
 
     public void SetCurrentHealth(float amount)
     {
