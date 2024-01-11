@@ -18,6 +18,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
     }
     private void OnEnable()
     {
+        DialogManager.Instance.OnDialogFinished += DialogFinished;
     }
 
     private void OnDisable()
@@ -34,7 +35,7 @@ public class NPCInteractable : MonoBehaviour, IInteractable
         }
     }
 
-    public void Intereractable()
+    public void Intereractable(PlayerScript player)
     {
         Debug.Log("Player interact " + gameObject.name);
         SetState();

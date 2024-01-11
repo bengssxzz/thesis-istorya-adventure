@@ -77,7 +77,7 @@ public class TriggerTimeLine : MonoBehaviour, IInteractable
 
     }
 
-    public void Intereractable()
+    public void Intereractable(PlayerScript player)
     {
         //When the player trigger this, the timeline will trigger
         if (isInside)

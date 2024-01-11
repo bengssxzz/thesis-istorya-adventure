@@ -36,20 +36,20 @@ public class EnemyAI : AIEntity
     private bool canRandomMove = true;
 
 
-
-    protected override void FixedUpdate()
+    public override void StopMovement(bool canMove)
     {
-        base.FixedUpdate();
-
-        MoveTypeBehaviour();
+        Debug.Log("Stop Moving");
+        aiPath.canMove = canMove;
+        IsCanMove = canMove;
     }
 
-    public void MoveTypeBehaviour()
+    protected override void MovementBehaviour()
     {
         switch (moveType)
         {
             case EnemyMoveType.Follow:
-                aiPath.canMove = true;
+                //aiPath.canMove = true;
+                aiPath.canMove = Vector2.Distance(transform.position, aiPath.destination) > stopDistance;
                 aiPath.destination = PlayerSingleton.Instance.transform.position;
                 aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime;
                 break;
@@ -65,9 +65,61 @@ public class EnemyAI : AIEntity
                 break;
         }
 
+        //Stop moving
+        if (Vector2.Distance(transform.position, aiPath.destination) < stopDistance)
+        {
+
+        }
+
         //Flee
         if (Vector2.Distance(transform.position, aiPath.destination) < fleeDistance)
         {
+            //aiPath.canMove = true;
+            FleePath fleePath = FleePath.Construct(transform.position, aiPath.destination, 450);
+            fleePath.aimStrength = 0.8f;
+            fleePath.spread = 0;
+
+
+            seek.StartPath(fleePath, OnPathComplete);
+        }
+    }
+
+    public void MoveTypeBehaviour()
+    {
+        if (!IsCanMove) {
+            return;
+        }
+
+        switch (moveType)
+        {
+            case EnemyMoveType.Follow:
+                //aiPath.canMove = true;
+                aiPath.canMove = Vector2.Distance(transform.position, aiPath.destination) > stopDistance;
+                aiPath.destination = PlayerSingleton.Instance.transform.position;
+                aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime;
+                break;
+            case EnemyMoveType.RandomMove:
+                //RandomPath randomPath = RandomPath.Construct(transform.position, 450, OnPathComplete);
+                //randomPath.spread = 500;
+                //randomPath.aimStrength = 0.8f;
+                //randomPath.aim = aiPath.destination;
+
+                //seek.StartPath(randomPath, OnPathComplete);
+                aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime;
+                StartCoroutine(RandomPathChanger());
+                break;
+        }
+
+        //Stop moving
+        if (Vector2.Distance(transform.position, aiPath.destination) < stopDistance)
+        {
+
+        }
+
+        //Flee
+        if (Vector2.Distance(transform.position, aiPath.destination) < fleeDistance)
+        {
+            aiPath.canMove = true;
             FleePath fleePath = FleePath.Construct(transform.position, aiPath.destination, 450);
             fleePath.aimStrength = 0.8f;
             fleePath.spread = 0;

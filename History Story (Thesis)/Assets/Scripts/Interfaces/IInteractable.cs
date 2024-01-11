@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    void Intereractable();
+    void Intereractable(PlayerScript playerscript);
 }

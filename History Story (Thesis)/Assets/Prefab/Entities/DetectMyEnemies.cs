@@ -19,7 +19,6 @@ public class DetectMyEnemies : MonoBehaviour
     protected float distanceToNearestEnemy; //Get the distance between gameobject to nearest enemy
     protected bool HasEnemyNearby; //Has enemy around
     
-    public int TESTINGCOUNT = 0;
     public Transform GetNearestEnemy { get; protected set; } //Nearest enemy
     public LayerMask GetMyEnemyLayer { get { return myEnemyLayer; } }
     public LayerMask GetMyObstacleLayer { get { return obstacleLayer; } }
@@ -27,7 +26,7 @@ public class DetectMyEnemies : MonoBehaviour
 
     protected virtual void Start()
     {
-        StartCoroutine(ScanEnemyInArea(0.2f));
+        StartCoroutine(ScanEnemyInArea(0.1f));
     }
 
     private IEnumerator ScanEnemyInArea(float executeTime)
@@ -50,39 +49,39 @@ public class DetectMyEnemies : MonoBehaviour
         //Check if the sort array is more than zero
         if(sortEnemyArray.Length > 0)
         {
-            GetPriorityTarget(sortEnemyArray);
+            //GetPriorityTarget(sortEnemyArray);
 
 
-            //GetNearestEnemy = GetNeareastEnemyArea(sortEnemyArray).Item1;
-            //distanceToNearestEnemy = GetNeareastEnemyArea(sortEnemyArray).Item2;
+            GetNearestEnemy = GetNeareastEnemyArea(sortEnemyArray).Item1;
+            distanceToNearestEnemy = GetNeareastEnemyArea(sortEnemyArray).Item2;
 
 
 
-            //foreach (Collider2D myEnemy in sortEnemyArray)
-            //{
-            //    Vector2 distance = myEnemy.transform.position - transform.position;
-            //    Vector2 direction = distance.normalized;
-            //    RaycastHit2D hit;
-            //    if (ignoreObstacle)
-            //        hit = Physics2D.Raycast(transform.position, direction, detectRadius, myEnemyLayer);
-            //    else
-            //        hit = Physics2D.Raycast(transform.position, direction, detectRadius, raycastCanSee);
+            foreach (Collider2D myEnemy in sortEnemyArray)
+            {
+                Vector2 distance = myEnemy.transform.position - transform.position;
+                Vector2 direction = distance.normalized;
+                RaycastHit2D hit;
+                if (ignoreObstacle)
+                    hit = Physics2D.Raycast(transform.position, direction, detectRadius, myEnemyLayer);
+                else
+                    hit = Physics2D.Raycast(transform.position, direction, detectRadius, raycastCanSee);
 
-            //    // Check if the raycast hit the enemy of this object or not
-            //    if (hit.collider != null && (myEnemyLayer & (1 << hit.collider.gameObject.layer)) != 0)
-            //    {
-            //        //I see my enemy without obtacle blocking
-            //        GetNearestEnemy = myEnemy.transform;
-            //        GetPriorityTarget(GetNearestEnemy);
-            //        distanceToNearestEnemy = Vector2.Distance(hit.point, transform.position);
+                // Check if the raycast hit the enemy of this object or not
+                if (hit.collider != null && (myEnemyLayer & (1 << hit.collider.gameObject.layer)) != 0)
+                {
+                    //I see my enemy without obtacle blocking
+                    GetNearestEnemy = myEnemy.transform;
+                    //GetPriorityTarget(GetNearestEnemy);
+                    distanceToNearestEnemy = Vector2.Distance(hit.point, transform.position);
 
 
-            //        if (debugMode)
-            //            Debug.DrawRay(transform.position, distance, Color.magenta, 0.3f);
+                    if (debugMode)
+                        Debug.DrawRay(transform.position, distance, Color.magenta, 0.3f);
 
-            //        break;
-            //    }
-            //}
+                    break;
+                }
+            }
 
             //Obstacle is blocking my enemies
         }
@@ -122,63 +121,64 @@ public class DetectMyEnemies : MonoBehaviour
         return (enemyDetected, distanceToEnemy);
         //Obstacle is blocking my enemies
     }
-    private void GetPriorityTarget(Collider2D[] enemyArray)
-    {
-        foreach (Collider2D myEnemy in enemyArray)
-        {
-            Vector2 distance = myEnemy.transform.position - transform.position;
-            Vector2 direction = distance.normalized;
-            RaycastHit2D hit;
 
-            // Use OverlapCircleAll instead of Raycast to get all nearby entities
-            CHECKTARGET = Physics2D.OverlapCircleAll(myEnemy.transform.position, 2f, 1 << gameObject.layer);
+    //private void GetPriorityTarget(Collider2D[] enemyArray)
+    //{
+    //    foreach (Collider2D myEnemy in enemyArray)
+    //    {
+    //        Vector2 distance = myEnemy.transform.position - transform.position;
+    //        Vector2 direction = distance.normalized;
+    //        RaycastHit2D hit;
 
-            if (CHECKTARGET.Length > 0)
-            {
-                TESTINGCOUNT = CHECKTARGET.Count(x => x.GetComponent<DetectMyEnemies>()?.GetNearestEnemy == GetNearestEnemy);
-                Collider2D[] sortEnemyArray = CHECKTARGET.OrderBy(enemy => TESTINGCOUNT).ToArray();
+    //        // Use OverlapCircleAll instead of Raycast to get all nearby entities
+    //        CHECKTARGET = Physics2D.OverlapCircleAll(myEnemy.transform.position, 2f, 1 << gameObject.layer);
 
-                // Check if the target entity is already targeted by others
-                if (TESTINGCOUNT > 0)
-                {
-                    // If already targeted, find another entity with fewer attackers
-                    Collider2D lessAttackedEntity = sortEnemyArray.FirstOrDefault(enemy => enemy.GetComponent<DetectMyEnemies>()?.GetNearestEnemy != GetNearestEnemy);
+    //        if (CHECKTARGET.Length > 0)
+    //        {
+    //            TESTINGCOUNT = CHECKTARGET.Count(x => x.GetComponent<DetectMyEnemies>()?.GetNearestEnemy == GetNearestEnemy);
+    //            Collider2D[] sortEnemyArray = CHECKTARGET.OrderBy(enemy => TESTINGCOUNT).ToArray();
 
-                    if (lessAttackedEntity != null)
-                    {
-                        // Set the less attacked entity as the target
-                        Debug.Log("Attacking less attacked entity: " + lessAttackedEntity.gameObject.name);
-                        SetTarget(lessAttackedEntity.transform);
-                    }
-                    else
-                    {
-                        // No less attacked entity found, continue attacking the current target
-                        Debug.Log("Continuing to attack the current target: " + myEnemy.gameObject.name);
-                        SetTarget(myEnemy.transform);
-                    }
-                }
-                else
-                {
-                    // If the target has no attackers, attack it
-                    Debug.Log("Attacking target: " + myEnemy.gameObject.name);
-                    SetTarget(myEnemy.transform);
-                }
-            }
+    //            // Check if the target entity is already targeted by others
+    //            if (TESTINGCOUNT > 0)
+    //            {
+    //                // If already targeted, find another entity with fewer attackers
+    //                Collider2D lessAttackedEntity = sortEnemyArray.FirstOrDefault(enemy => enemy.GetComponent<DetectMyEnemies>()?.GetNearestEnemy != GetNearestEnemy);
 
-            if (debugMode)
-                Debug.DrawRay(transform.position, distance, Color.magenta, 0.3f);
+    //                if (lessAttackedEntity != null)
+    //                {
+    //                    // Set the less attacked entity as the target
+    //                    Debug.Log("Attacking less attacked entity: " + lessAttackedEntity.gameObject.name);
+    //                    SetTarget(lessAttackedEntity.transform);
+    //                }
+    //                else
+    //                {
+    //                    // No less attacked entity found, continue attacking the current target
+    //                    Debug.Log("Continuing to attack the current target: " + myEnemy.gameObject.name);
+    //                    SetTarget(myEnemy.transform);
+    //                }
+    //            }
+    //            else
+    //            {
+    //                // If the target has no attackers, attack it
+    //                Debug.Log("Attacking target: " + myEnemy.gameObject.name);
+    //                SetTarget(myEnemy.transform);
+    //            }
+    //        }
 
-            break;
-        }
-    }
+    //        if (debugMode)
+    //            Debug.DrawRay(transform.position, distance, Color.magenta, 0.3f);
 
-    private void SetTarget(Transform newTarget)
-    {
-        // Implement your logic to set the new target
-        // For example, assign newTarget to GetNearestEnemy or perform other actions
-        GetNearestEnemy = newTarget;
-        // Additional logic...
-    }
+    //        break;
+    //    }
+    //}
+
+    //private void SetTarget(Transform newTarget)
+    //{
+    //    // Implement your logic to set the new target
+    //    // For example, assign newTarget to GetNearestEnemy or perform other actions
+    //    GetNearestEnemy = newTarget;
+    //    // Additional logic...
+    //}
 
 
     protected virtual void OnDrawGizmosSelected()

@@ -7,7 +7,47 @@ using System.Linq;
 
 public class PlayerScript : Entities
 {
-    [SerializeField] private Transform holder;
+    [SerializeField] private Transform placeHolder;
+    private GameObject pickedObject;
+    public bool hasAlreadyPickup { get
+        {
+            return pickedObject != null;
+        } }
+    public GameObject PickedObject { 
+        set {
+
+            if(value == null)
+            {
+                if (pickedObject != null)
+                {
+                    Debug.Log("Drop picked item");
+                    var itemObject = Instantiate(pickedObject);
+                    itemObject.name = pickedObject.name;
+                    itemObject.transform.position = transform.position;
+                    Destroy(pickedObject);
+                    pickedObject = null;
+                }
+                return;
+            }
+
+            if (hasAlreadyPickup)
+            {
+                //drop item
+                Debug.Log("Swap picked item");
+                var itemObject = Instantiate(pickedObject);
+                itemObject.name = value.name;
+                itemObject.transform.position = value.transform.position;
+                Destroy(pickedObject);
+                pickedObject = null;
+            }
+
+            value.transform.SetParent(placeHolder);
+            value.transform.position = placeHolder.position;
+            pickedObject = value;
+
+        } 
+    }
+    public IInteractable[] test;
 
 
     [SerializeField] private bool canInteract = false;
@@ -18,7 +58,7 @@ public class PlayerScript : Entities
     private InputAction move;
 
     //Testing
-    public IInteractable nearestObject;
+    public IInteractable nearestInteractable;
 
 
     protected override void Awake()
@@ -91,15 +131,23 @@ public class PlayerScript : Entities
         Collider2D[] interactable = Physics2D.OverlapCircleAll(transform.position, interactRadius);
 
         // Find objects with the "IInteractable" script in the array
-        IInteractable[] dialogTriggers = interactable.Select(collider => collider.GetComponent<IInteractable>()).Where(dialogTrigger => dialogTrigger != null).ToArray();
-
+        IInteractable[] dialogTriggers = interactable.Select(collider => collider.GetComponent<IInteractable>()).Where(dialogTrigger => dialogTrigger != null && dialogTrigger != pickedObject?.GetComponent<IInteractable>()).ToArray();
+        test = dialogTriggers;
         // Sort the array based on distance to the current position
         dialogTriggers = dialogTriggers.OrderBy(dialogTrigger => Vector2.Distance(transform.position, ((MonoBehaviour)dialogTrigger).transform.position)).ToArray();
-        nearestObject = dialogTriggers.FirstOrDefault();
 
+        nearestInteractable = dialogTriggers.FirstOrDefault();
 
-        //Call the Interactable function of the object closest.
-        nearestObject?.Intereractable();
+        if(nearestInteractable != null)
+        {
+            //Call the Interactable function of the object closest.
+            nearestInteractable?.Intereractable(this);
+        }
+        else
+        {
+            PickedObject = null; //Drop the item
+        }
+        
     }
     private void AbilityInventoryController(InputAction.CallbackContext obj) //Show/Hide ability inventory
     {

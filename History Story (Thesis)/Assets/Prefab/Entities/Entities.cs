@@ -89,6 +89,12 @@ public class Entities : MonoBehaviour, IDamageable
             entitySpriteRenderer.flipX = facingLeft;
         }
     }
+
+    public virtual void StopMovement(bool canMove)
+    {
+        IsCanMove = canMove;
+        rb.velocity = Vector2.zero;
+    }
     private void Movement() //Movement handler
     {
         if (IsCanMove == false) {

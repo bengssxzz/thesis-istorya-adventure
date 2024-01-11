@@ -106,7 +106,7 @@ public class AIEntity : Entities
         if (!debugMode) { return; }
 
 #if UNITY_EDITOR
-        Handles.color = Color.green;
+        Handles.color = Color.magenta;
         Handles.DrawWireDisc(transform.position, transform.forward, stopDistance);
 
         Handles.color = Color.red;
