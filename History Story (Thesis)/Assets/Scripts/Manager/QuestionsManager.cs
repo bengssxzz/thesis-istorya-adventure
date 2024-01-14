@@ -51,60 +51,90 @@ public class QuestionsManager : Singleton<QuestionsManager>
         }
     }
 
-    public void TriggerQuestion(string questionFrom) //Trigger questions behaviour
+    public void TriggerQuestion(string questionFrom, int totalChoices = 2) //Trigger questions behaviour
     {
         UIManager.Instance.ChangeUIState = UIManager.GUIState.QandA;
 
         CurrentQuestionTable = questionFrom;
-        var info = GetQuestionFrom(questionFrom);
+        var info = GetQuestionFrom(questionFrom, totalChoices);
         CurrentIDQuestion = info.Item1;
         OnQuestionTrigger?.Invoke(info.Item1, info.Item2, info.Item3);
     }
-    public (int, string, string, string[]) GetQuestionInfo(string tableName)
-    {
-        var questionInfo = ThesisUtility.RandomGetObject(questionList[tableName].ToArray());
 
-        string[] wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
-
-        return (questionInfo.id, questionInfo.question, questionInfo.c_answer, wrongAnswerList);
-    }
-    private (int, string, string[]) GetQuestionFrom(string tableName, int wrongAnswerCount = 1) //Return ID, question, and list of choices
+    public (int, string, string[]) GetQuestionFrom(string tableName, int totalChoicesCount) //Return ID, question, and list of choices
     {
         int questionID;
         string question = "";
         string correctAns = "";
-        string[] wrongAns = new string[wrongAnswerCount];
+        //[] wrongAns = new string[totalChoicesCount];
+        string[] wrongAnswerList;
 
-        string[] choices;
+        //string[] choices;
+        List<string> choicesList = new List<string>();
 
         var questionInfo = ThesisUtility.RandomGetObject(questionList[tableName].ToArray()); //Get random list
 
+        //The info of the question
         questionID = questionInfo.id;
         question = questionInfo.question;
         correctAns = questionInfo.c_answer;
 
-        //Wrong answer list
-        string[] wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
 
-        for (int i = 0; i < wrongAns.Length; i++)
+        //Count choices
+        choicesList.Add(correctAns); //Add correct answer in the list
+
+        if(totalChoicesCount > 1)
         {
-            string selected = "";
+            //Add wrong answer in the list
+            wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
 
-            //To prevent duplicating wrong answer
-            do
+            //If the wrong answer (including the correct answer) is above total choices count
+            if(wrongAnswerList.Length + 1 >= totalChoicesCount)
             {
-                selected = ThesisUtility.RandomGetObject(wrongAnswerList);
+                do
+                {
+                    var selected = "";
+                    selected = ThesisUtility.RandomGetObject(wrongAnswerList);
 
-            } while (wrongAns[i] == selected);
-
-            wrongAns[i] = selected;
+                    if (!choicesList.Contains(selected))
+                    {
+                        choicesList.Add(selected);
+                    }
+                    //Loop until the count choices is the same as total choice count
+                } while (choicesList.Count != totalChoicesCount);
+            }
+            else
+            {
+                Debug.LogError(String.Format("question ID: {0}, doesnt have enough wrong answer array", questionID));
+            }
         }
 
-        // Merge correctAns and wrongAns into choices
-        choices = new string[] { correctAns }.Concat(wrongAns).ToArray();
-        choices = ThesisUtility.Shuffle(choices);
+        choicesList = ThesisUtility.Shuffle(choicesList.ToArray()).ToList();
 
-        return (questionID, question, choices);
+        return (questionID, question, choicesList.ToArray());
+
+        ////Wrong answer list
+        //string[] wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
+
+        //for (int i = 0; i < wrongAns.Length; i++)
+        //{
+        //    string selected = "";
+
+        //    //To prevent duplicating wrong answer
+        //    do
+        //    {
+        //        selected = ThesisUtility.RandomGetObject(wrongAnswerList);
+
+        //    } while (wrongAns[i] == selected);
+
+        //    wrongAns[i] = selected;
+        //}
+
+        //// Merge correctAns and wrongAns into choices
+        //choices = new string[] { correctAns }.Concat(wrongAns).ToArray();
+        //choices = ThesisUtility.Shuffle(choices);
+
+        //return (questionID, question, choices);
     }
     public bool CheckQuestionAnswer(int QuestionId, string tableName, string user_answer) //Checking the answer
     {

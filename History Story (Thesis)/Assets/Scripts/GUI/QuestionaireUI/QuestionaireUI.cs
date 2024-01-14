@@ -24,7 +24,8 @@ public class QuestionaireUI : UIPages
     public override void ShowBehavior()
     {
         SubscribeBtn();
-        ResetPanel(); 
+        ResetQuestionPanel(); 
+
     }
 
     public override void HideBehavior()
@@ -51,7 +52,7 @@ public class QuestionaireUI : UIPages
         }
     }
 
-    private void ResetPanel() //Reset the panel
+    private void ResetQuestionPanel() //Reset the panel
     {
         questionText.text = "";
 
@@ -64,6 +65,26 @@ public class QuestionaireUI : UIPages
         correctPanel.SetActive(false);
         wrongPanel.SetActive(false);
     }
+
+    //private void GenerateQuestionAnswer()
+    //{
+    //    var questionInfo = QuestionsManager.Instance.GetQuestionFrom(LevelManager.Instance.GetQuestionChapter, buttonChoices.Length);
+
+    //    var questionID = questionInfo.Item1;
+    //    var questionString = questionInfo.Item2;
+    //    string[] choices = questionInfo.Item3;
+
+
+    //    questionText.text = questionString; //Update the question text
+
+    //    //Update the text of the button choices
+    //    for (int i = 0; i < buttonChoices.Length; i++)
+    //    {
+    //        buttonChoices[i].UpdateBtn(choices[i]);
+    //    }
+
+
+    //}
 
     private void QuestionTrigger(int id, string question, string[] choices) //Reciever from QuestionsManager
     {
@@ -86,6 +107,10 @@ public class QuestionaireUI : UIPages
 
         StartCoroutine(CheckStatus(checkedAnswer));
     }
+
+
+
+
 
     private IEnumerator CheckStatus(bool checkedStatus)
     {

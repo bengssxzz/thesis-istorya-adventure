@@ -15,7 +15,9 @@ public class QuestionOrb : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             gameObject.SetActive(false);
-            QuestionsManager.Instance.TriggerQuestion(questionFrom);
+           // UIManager.Instance.ChangeUIState = UIManager.GUIState.QandA;
+
+            QuestionsManager.Instance.TriggerQuestion(questionFrom, 4);
         }
     }
 }

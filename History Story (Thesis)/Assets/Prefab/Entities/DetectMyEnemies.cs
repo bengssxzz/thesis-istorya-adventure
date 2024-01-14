@@ -15,7 +15,6 @@ public class DetectMyEnemies : MonoBehaviour
     [SerializeField] protected LayerMask myEnemyLayer, obstacleLayer;
     private LayerMask raycastCanSee => myEnemyLayer + obstacleLayer;//Combined layer
 
-    private Collider2D[] CHECKTARGET;
     protected float distanceToNearestEnemy; //Get the distance between gameobject to nearest enemy
     protected bool HasEnemyNearby; //Has enemy around
     

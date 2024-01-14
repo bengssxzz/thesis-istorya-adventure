@@ -12,7 +12,7 @@ public class AttackController : DetectMyEnemies
     [System.Serializable] public class AttackState
     {
         public List<BaseAttackBehaviour> attackTypes = new List<BaseAttackBehaviour>();
-        public float delayCast = 0.4f;
+        public float delayCast;
         public bool movingWhileCasting = false;
 
         public bool IsAllBehaviourIsDone()
@@ -111,7 +111,6 @@ public class AttackController : DetectMyEnemies
                 if (timer.TimerNode(fireRate))
                 {
                     //Trigger attack state
-                    Debug.Log("Trigger Attack");
                     StartCoroutine(TriggerAttackType());
                 }
             }
@@ -182,7 +181,7 @@ public class AttackController : DetectMyEnemies
         }
         attackHolder.localScale = new Vector3(1 * transform.localScale.x, Scale.y, 1);
     }
-    private Vector2 GetDirectionTowardsEnemy() => (GetNearestEnemy.position - attackHolder.position).normalized;
+    public Vector2 GetDirectionTowardsEnemy() => (GetNearestEnemy.position - attackHolder.position).normalized;
 
 
     private IEnumerator TriggerAttackType()
@@ -191,6 +190,8 @@ public class AttackController : DetectMyEnemies
         {
             if (!isAlreadyTriggerAttack)
             {
+                Debug.Log("Trigger Attack");
+
                 int previousCurrentState = 0;
 
                 isAlreadyTriggerAttack = true;
