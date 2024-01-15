@@ -131,6 +131,15 @@ public class EntityStatistics
         damage = newDamage;
     }
 
+    //method to restore health for restorehealthability scriipt
+    public void RestoreHealth(int amount)
+    {
+        currentHealth += amount;
+
+        // makes sure the current health doesnt exceed the maximum health
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
+    }
+
     public void SetCurrentHealth(float amount)
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
