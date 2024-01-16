@@ -25,14 +25,14 @@ public class RestoreHealthAbility : AbilityScript
         //restore health
         if(entity != null && entity.GetEntityStats != null)
         {
-            entity.GetEntityStats.RestoreHealth(healthRestoreAmount);
+            entity.GetEntityStats.SetCurrentHealth(healthRestoreAmount);
         }
         else
         {
             Debug.LogError("RestoreHealthAbility : Unable to restore health");
         }
 
-yield return new WaitForSecondsRealtime(time);
+    yield return new WaitForSecondsRealtime(time);
     }
 
     protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
