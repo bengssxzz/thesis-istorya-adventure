@@ -7,6 +7,7 @@ using MoreMountains.Feedbacks;
 
 [RequireComponent(typeof(AttackController))]
 [RequireComponent(typeof(AbilityController))]
+
 public class Entities : MonoBehaviour, IDamageable
 {
     [SerializeField] protected bool debugMode = false;
@@ -38,6 +39,7 @@ public class Entities : MonoBehaviour, IDamageable
     [Header("Entity Feedback")]
     [SerializeField] private MMF_Player hurtFeedback;
     [SerializeField] private MMF_Player diedFeedback;
+    [SerializeField] private MMF_Player mactanShieldFeedback;
 
 
 
@@ -225,7 +227,15 @@ public class Entities : MonoBehaviour, IDamageable
         
     }
 
+    public void mactanShieldPlay()
+    {
+        Console.WriteLine("Entering mactanShieldPlay()");
 
+        mactanShieldFeedback?.PlayFeedbacks();
+
+        Console.WriteLine("Exiting mactanShieldPlay()");
+       
+    }
 
 
 
