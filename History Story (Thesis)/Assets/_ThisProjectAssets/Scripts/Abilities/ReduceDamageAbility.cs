@@ -42,7 +42,7 @@ public class ReduceDamageAbility : AbilityScript
             Debug.LogError("ReducedDamageAbility : Unable to modify entity stats for defense stat");
         }
 
-yield return new WaitForSecondsRealtime(time);
+        yield return new WaitForSecondsRealtime(time);
     }
 
     protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
@@ -59,6 +59,32 @@ yield return new WaitForSecondsRealtime(time);
             Debug.LogError("ReduceDamageAbility: Unable to reset defense stat to normal.");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

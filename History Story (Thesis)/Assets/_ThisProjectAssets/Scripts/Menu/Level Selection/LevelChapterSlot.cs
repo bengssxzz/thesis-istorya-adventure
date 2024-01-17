@@ -4,35 +4,67 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class LevelChapterSlot : BaseSlot
 {
-    [SerializeField] private string sceneName;
+    private Chapter_LevelSO chapterLevelSO;
 
-    [SerializeField] private Sprite chapterImage;
-    [SerializeField] private string chapterName;
-    [SerializeField] private string chapterTitle;
-    
-    [Space(25)]
+    public event Action<LevelChapterSlot> OnPressSelectChapter;
+    public event Action OnPressEnterLevelChapter;
+
+    [SerializeField] private Image deselectedPanel;
+
     [SerializeField] private Image chapterImageUI;
-    [SerializeField] private TextMeshProUGUI chapterNameUI;
-    [SerializeField] private TextMeshProUGUI chapterTitleUI;
+    [SerializeField] private TextMeshProUGUI chapterNameTxt;
+    [SerializeField] private TextMeshProUGUI chapterTitleTxt;
 
     private bool isLock = false;
 
+    private bool isSelected = false;
+    public bool GetChapterLevelBtnIsSelected { get { return isSelected; } set { 
+            isSelected = value;
+            deselectedPanel.gameObject.SetActive(!value);
+        } } 
 
 
-    private void Start()
+
+    public void InitializeChapterButton(Chapter_LevelSO chapterLevelSO)
     {
-        chapterImageUI.sprite = chapterImage;
+        this.chapterLevelSO = chapterLevelSO;
 
-        chapterNameUI.text = chapterName;
-        chapterTitleUI.text = chapterTitle;
+        chapterImageUI.sprite = chapterLevelSO.chapter_img;
+        chapterNameTxt.text = chapterLevelSO.chapterName;
+        chapterTitleTxt.text = chapterLevelSO.chapterTitle;
+
+        GetChapterLevelBtnIsSelected = false;
     }
+
+    public void SelectChapterSlot(bool selected)
+    {
+        isSelected = selected;
+        deselectedPanel.gameObject.SetActive(!selected);
+    }
+
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Pressing " + chapterTitle);
+
+        if (!isSelected)
+        {
+            GetChapterLevelBtnIsSelected = true;
+
+            OnPressSelectChapter?.Invoke(this);
+            //TODO: Show this chapter info
+            Debug.Log("First press: Show details");
+        }
+        else
+        {
+            //TODO: to go the scene assign to this chapter
+            OnPressEnterLevelChapter?.Invoke();
+            Debug.Log("Go to this scene");
+        }
+
     }
 
 

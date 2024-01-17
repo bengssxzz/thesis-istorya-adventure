@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
-
-
+using System.IO;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -13,7 +12,7 @@ public class GameManager : Singleton<GameManager>
 
     private bool playerCanMove = true;
 
-    [SerializeField] private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
+    private List<AbilityScript> listOfAllAbilities; // = new List<AbilityScript>(); //List of all available abilities
 
     public List<AbilityScript> GetAllListOfAbility => listOfAllAbilities;
 
@@ -23,9 +22,37 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
 
+        listOfAllAbilities = new List<AbilityScript>();
+        LoadAbilitiesInFolder("Assets/_ThisProjectAssets/Scriptable Object/Abilities");
 
         PlayerEntity = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerScript>();
     }
+
+    private void LoadAbilitiesInFolder(string folderPath) // Get all abilities (Scriptable Objects) inside the folder
+    {
+        string[] files = Directory.GetFiles(folderPath, "*.asset");
+
+        foreach (string filePath in files)
+        {
+            // Load the Scriptable Object from the file
+            AbilityScript ability = UnityEditor.AssetDatabase.LoadAssetAtPath<AbilityScript>(filePath);
+
+            if (ability != null)
+            {
+                listOfAllAbilities.Add(ability);
+            }
+        }
+
+        // Get all subdirectories (subfolders) in the folder
+        string[] subfolders = Directory.GetDirectories(folderPath);
+
+        foreach (string subfolder in subfolders)
+        {
+            // Recursively load abilities from subfolders
+            LoadAbilitiesInFolder(subfolder);
+        }
+    }
+
 
     //public PlayerScript GetPlayer() { return entity; }
     public void IsPlayerCanMove(bool value) => playerCanMove = value;

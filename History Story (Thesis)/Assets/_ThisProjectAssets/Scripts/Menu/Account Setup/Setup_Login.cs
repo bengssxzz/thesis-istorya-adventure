@@ -33,8 +33,8 @@ public class Setup_Login : UIPages
 
         });
 
-        PlayfabManager.Instance.OnSuccessLogin += OnSuccessLogin;
-        PlayfabManager.Instance.OnError += OnErrorThrow;
+        //PlayfabManager.Instance.OnSuccessLogin += OnSuccessLogin;
+        //PlayfabManager.Instance.OnError += OnErrorThrow;
 
     }
     public override void HideBehavior()
@@ -43,14 +43,22 @@ public class Setup_Login : UIPages
         signupBtn.onClick.RemoveAllListeners();
         guestBtn.onClick.RemoveAllListeners();
 
-        PlayfabManager.Instance.OnSuccessLogin -= OnSuccessLogin;
-        PlayfabManager.Instance.OnError -= OnErrorThrow;
+        //PlayfabManager.Instance.OnSuccessLogin -= OnSuccessLogin;
+        //PlayfabManager.Instance.OnError -= OnErrorThrow;
+    }
+
+    private void Awake()
+    {
+       
     }
 
     private void Start()
     {
         guestPage?.UIDisabled();
         signupPage?.UIDisabled();
+
+        //Initialize account
+        AccountManager.InitializeAccount();
     }
 
     private void OnErrorThrow(string errorString)
@@ -70,7 +78,8 @@ public class Setup_Login : UIPages
 
     private void PressLogin()
     {
-        PlayfabManager.Instance.LoginAccount(userEmail.text, password.text);
+        AccountManager.LoginAccount(userEmail.text, password.text);
+        //PlayfabManager.Instance.LoginAccount(userEmail.text, password.text);
     }
 
 }

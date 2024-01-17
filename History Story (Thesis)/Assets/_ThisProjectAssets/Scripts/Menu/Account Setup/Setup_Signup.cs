@@ -29,8 +29,8 @@ public class Setup_Signup : UIPages
         
         });
 
-        PlayfabManager.Instance.OnSuccessRegister += OnSuccessRegister;
-        PlayfabManager.Instance.OnError += OnErrorThrow;
+        //PlayfabManager.Instance.OnSuccessRegister += OnSuccessRegister;
+        //PlayfabManager.Instance.OnError += OnErrorThrow;
     }
 
   
@@ -40,8 +40,8 @@ public class Setup_Signup : UIPages
         signupBtn.onClick.RemoveAllListeners();
         loginBtn.onClick.RemoveAllListeners();
 
-        PlayfabManager.Instance.OnSuccessRegister -= OnSuccessRegister;
-        PlayfabManager.Instance.OnError -= OnErrorThrow;
+        //PlayfabManager.Instance.OnSuccessRegister -= OnSuccessRegister;
+        //PlayfabManager.Instance.OnError -= OnErrorThrow;
 
     }
 
@@ -71,7 +71,7 @@ public class Setup_Signup : UIPages
             return;
         }
 
-        PlayfabManager.Instance.RegisterAccount(userName.text, emailAddress.text, password.text);
+        //PlayfabManager.Instance.RegisterAccount(userName.text, emailAddress.text, password.text);
     }
     private void OnPressLogin()
     {
