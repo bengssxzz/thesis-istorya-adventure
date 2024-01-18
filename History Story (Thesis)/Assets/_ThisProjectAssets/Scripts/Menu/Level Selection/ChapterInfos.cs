@@ -13,23 +13,24 @@ public class ChapterInfos : MonoBehaviour
 
     private void Start()
     {
-        chapterName.gameObject.SetActive(false);
-        chapterTitle.gameObject.SetActive(false);
-        chapterDescription.gameObject.SetActive(false);
+        ShowInfoUI(false);
     }
 
-    public void ShowChapterInfos(string chapterName, string chapterTitle, string chapterDesc)
+    public void ShowChapterInfos(Chapter_LevelSO chapterLevelSO)
     {
-        this.chapterName.gameObject.SetActive(true);
-        this.chapterTitle.gameObject.SetActive(true);
-        this.chapterDescription.gameObject.SetActive(true);
+        ShowInfoUI(true);
 
-        this.chapterName.text = chapterName;
-        this.chapterTitle.text = chapterTitle;
-        this.chapterDescription.text = chapterDesc;
+        this.chapterName.text = chapterLevelSO.chapterName;
+        this.chapterTitle.text = chapterLevelSO.chapterTitle;
+        this.chapterDescription.text = chapterLevelSO.description;
 
     }
 
-
+    private void ShowInfoUI(bool visible)
+    {
+        chapterName.gameObject.SetActive(visible);
+        chapterTitle.gameObject.SetActive(visible);
+        chapterDescription.gameObject.SetActive(visible);
+    }
 
 }

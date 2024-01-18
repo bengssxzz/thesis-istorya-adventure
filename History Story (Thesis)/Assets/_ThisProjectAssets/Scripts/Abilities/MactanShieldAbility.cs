@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
+using MoreMountains.FeedbacksForThirdParty;
 
 [CreateAssetMenu(fileName = "Mactan Shield", menuName = "Abilities/Mactan Shield")]
 public class MactanShieldAbility : AbilityScript
 {
+
     [Space(15)]
     [Header("Mactan Shield Ability")]
     [SerializeField] private Projectile projectile;
@@ -12,7 +15,6 @@ public class MactanShieldAbility : AbilityScript
     public float damageReductionPercentage;
     public float time;
     private int circleRayCount = 30;
-    float angleStep = 0;
     float startAngle = 0;
 
     private float normalDefense;
@@ -21,31 +23,16 @@ public class MactanShieldAbility : AbilityScript
     {
         yield return base.PreCastingBehaviour(mono, entity);
 
-        //Save the original defense stat
-        if (entity != null && entity.GetEntityStats != null)
-        {
-            normalDefense = entity.GetEntityStats.defense;
-        }
-        else
-        {
-            Debug.LogError("ReducedDamageAbility : Unable to retrieve entity stats for defense reduction");
-        }
+        normalDefense = entity.GetEntityStats.defense;
+
     }
     protected override IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return base.CastingBehaviour(mono, entity);
 
-        //modify defense stat
-        if (entity != null && entity.GetEntityStats != null)
-        {
-            entity.GetEntityStats.ModifiedDefense(normalDefense + damageReductionPercentage);
-        }
-        else
-        {
-            Debug.LogError("ReducedDamageAbility : Unable to modify entity stats for defense stat");
-        }
+        entity.GetEntityStats.ModifiedDefense(normalDefense + damageReductionPercentage);
 
-        yield return new WaitForSecondsRealtime(time);
+        yield return new WaitForSeconds(time);
     }
 
     protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
@@ -54,7 +41,7 @@ public class MactanShieldAbility : AbilityScript
 
         float currentAngle = startAngle;
 
-        
+
         for (int j = 0; j < circleRayCount; j++)
         {
             // Convert angle to radians
@@ -63,7 +50,7 @@ public class MactanShieldAbility : AbilityScript
             float dirX = Mathf.Cos(radians);
             float dirY = Mathf.Sin(radians);
 
-            Vector2 bulletDir = new Vector2 (dirX, dirY);
+            Vector2 bulletDir = new Vector2(dirX, dirY);
 
             var dir = entity.Attack_Controller.GetAttackHolder.TransformDirection(bulletDir);
             GameObject newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectile.gameObject);
@@ -81,17 +68,7 @@ public class MactanShieldAbility : AbilityScript
         startAngle = -360 / 2;
 
 
-        //set to normal defense stat
-        if (entity != null && entity.GetEntityStats != null)
-        {
-            entity.GetEntityStats.ModifiedDefense(normalDefense);
-        }
-        else
-        {
-            Debug.LogError("ReduceDamageAbility: Unable to reset defense stat to normal.");
-        }
-
-
+        entity.GetEntityStats.ModifiedDefense(normalDefense);
     }
 
 }

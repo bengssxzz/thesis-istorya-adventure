@@ -19,6 +19,8 @@ public class LevelChapterSlot : BaseSlot
     [SerializeField] private TextMeshProUGUI chapterNameTxt;
     [SerializeField] private TextMeshProUGUI chapterTitleTxt;
 
+    public Chapter_LevelSO GetChapterLevelSO { get { return chapterLevelSO; } }
+
     private bool isLock = false;
 
     private bool isSelected = false;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 
 public class AbilityScript : ScriptableObject
@@ -30,6 +31,13 @@ public class AbilityScript : ScriptableObject
 
     [Header("Ability Stats")]
     //TODO: Add the list of stats to be added to player stats
+
+    [Space(10)]
+    [Header("Feedbacks")]
+    [SerializeField] private MMF_Player precastingAtStartFeedback;
+    [SerializeField] private MMF_Player castingAtStartFeedback;
+    [SerializeField] private MMF_Player finishedAtStartFeedback;
+
 
 
     private bool isOnCoolDown = false;
@@ -71,16 +79,20 @@ public class AbilityScript : ScriptableObject
     protected virtual IEnumerator PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return null;
+        AbilityPlayFeedbacks(precastingAtStartFeedback);
+
     }
     protected virtual IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return null;
+        AbilityPlayFeedbacks(castingAtStartFeedback);
         mono.StartCoroutine(CooldownTimer());
 
     }
     protected virtual IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return null;
+        AbilityPlayFeedbacks(finishedAtStartFeedback);
     }
 
     private IEnumerator CooldownTimer() //Cooldown timer
@@ -102,6 +114,15 @@ public class AbilityScript : ScriptableObject
         // Cooldown finished, do any final actions here
         isOnCoolDown = false;
         OnAbilityTimeLapse?.Invoke(isOnCoolDown, 0f);
+    }
+    protected void AbilityPlayFeedbacks(MMF_Player feedbackPrefab) //Play feedback
+    {
+        if(feedbackPrefab == null) { return; }
+
+
+        var newPlayerFeedback = Instantiate(feedbackPrefab);
+        newPlayerFeedback.PlayFeedbacks();
+        Destroy(newPlayerFeedback);
     }
 
     public void Reset(){

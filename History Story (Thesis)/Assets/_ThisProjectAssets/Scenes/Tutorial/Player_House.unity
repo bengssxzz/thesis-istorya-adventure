@@ -26343,6 +26343,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe8a264b36d316a4d8522cc12093c6fb, type: 3}
+--- !u!1 &952002131 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4666639655776792685, guid: a33733cb51bf2dc4ba0f67ff88271f6a, type: 3}
+  m_PrefabInstance: {fileID: 86465219}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &952002135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952002131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 2
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 0
+  m_UseCameraSpace: 1
+  m_ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &962309115
 GameObject:
   m_ObjectHideFlags: 0
@@ -27027,12 +27055,20 @@ PrefabInstance:
       objectReference: {fileID: 1834048772}
     - target: {fileID: 753467171, guid: bfd87cea5125e1f47b633911aa062bed, type: 3}
       propertyPath: listOfUnlockedAbilities.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 753467171, guid: bfd87cea5125e1f47b633911aa062bed, type: 3}
       propertyPath: listOfUnlockedAbilities.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 4b1a7227656ac1b4db897d51f5555db2, type: 2}
+    - target: {fileID: 753467171, guid: bfd87cea5125e1f47b633911aa062bed, type: 3}
+      propertyPath: listOfUnlockedAbilities.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: d3743ba21bfae474a8432ebafb86d500, type: 2}
+    - target: {fileID: 753467171, guid: bfd87cea5125e1f47b633911aa062bed, type: 3}
+      propertyPath: listOfUnlockedAbilities.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: a62472959f601604ba1cf812b7933e83, type: 2}
     - target: {fileID: 753467172, guid: bfd87cea5125e1f47b633911aa062bed, type: 3}
       propertyPath: attackHolder
       value: 

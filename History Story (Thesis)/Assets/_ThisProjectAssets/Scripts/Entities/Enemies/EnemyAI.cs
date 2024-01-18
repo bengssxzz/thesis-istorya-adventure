@@ -38,7 +38,7 @@ public class EnemyAI : AIEntity
 
     public override void StopMovement(bool canMove)
     {
-        Debug.Log("Stop Moving");
+        //Debug.Log("Stop Moving");
         aiPath.canMove = canMove;
         IsCanMove = canMove;
     }

@@ -42,7 +42,7 @@ public class ReduceDamageAbility : AbilityScript
             Debug.LogError("ReducedDamageAbility : Unable to modify entity stats for defense stat");
         }
 
-        yield return new WaitForSecondsRealtime(time);
+        yield return new WaitForSeconds(time);
     }
 
     protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)

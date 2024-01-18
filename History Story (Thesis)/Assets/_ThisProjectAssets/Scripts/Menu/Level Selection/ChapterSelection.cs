@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ChapterSelection : MonoBehaviour
 {
     [Header("Prefab Info")]
@@ -50,7 +51,7 @@ public class ChapterSelection : MonoBehaviour
         }
     }
 
-    private void DeselectAllChapterSlot()
+    public void DeselectAllChapterSlot() //Deselect all the chapter slots
     {
         foreach (var itemSlot in chapterSlots)
         {
@@ -65,7 +66,11 @@ public class ChapterSelection : MonoBehaviour
         DeselectAllChapterSlot();
 
         index = chapterSlots.IndexOf(slot);
-        chapterSlots[index].SelectChapterSlot(true);
+
+        var chapterSlotInfo = chapterSlots[index];
+        chapterSlotInfo.SelectChapterSlot(true);
+
+        chapterInfo.ShowChapterInfos(chapterSlotInfo.GetChapterLevelSO); //Show info
     }
 
 }

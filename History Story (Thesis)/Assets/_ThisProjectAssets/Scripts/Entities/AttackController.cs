@@ -207,7 +207,7 @@ public class AttackController : DetectMyEnemies
 
                 _fireRate = Time.time + 1 / fireRate;
 
-                Debug.Log("Done state attack: " + Time.time + " :: " + _fireRate);
+                //Debug.Log("Done state attack: " + Time.time + " :: " + _fireRate);
                 
 
             }
