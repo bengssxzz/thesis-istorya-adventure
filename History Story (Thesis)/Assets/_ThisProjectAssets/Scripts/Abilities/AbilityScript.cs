@@ -15,6 +15,8 @@ public class AbilityScript : ScriptableObject
         Finished, //When the casting is finished
     }
 
+    private bool isOnCoolDown = false;
+    
     public Action<bool, float> OnAbilityTimeLapse;
 
     public string abilityName => this.name;
@@ -39,9 +41,8 @@ public class AbilityScript : ScriptableObject
     [SerializeField] private MMF_Player finishedAtStartFeedback;
 
 
-
-    private bool isOnCoolDown = false;
     public bool OnCoolDown { get => isOnCoolDown; }
+
 
 
     private IEnumerator AbilityStateControll(MonoBehaviour mono)
@@ -79,20 +80,20 @@ public class AbilityScript : ScriptableObject
     protected virtual IEnumerator PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return null;
-        AbilityPlayFeedbacks(precastingAtStartFeedback);
+        AbilityPlayFeedbacks(entity, precastingAtStartFeedback);
 
     }
     protected virtual IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return null;
-        AbilityPlayFeedbacks(castingAtStartFeedback);
+        AbilityPlayFeedbacks(entity, castingAtStartFeedback);
         mono.StartCoroutine(CooldownTimer());
 
     }
     protected virtual IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return null;
-        AbilityPlayFeedbacks(finishedAtStartFeedback);
+        AbilityPlayFeedbacks(entity, finishedAtStartFeedback);
     }
 
 
@@ -114,13 +115,13 @@ public class AbilityScript : ScriptableObject
         List<MMF_Scale> scaleFeedbacks = MyTargetMMFPlayer.GetFeedbacksOfType<MMF_Scale>("MyCustomLabel");
     }*/
 
-    protected void AbilityPlayFeedbacks(MMF_Player feedbackPrefab, Action<MMF_Player> OnSetProperties = null) //Play feedback
+    protected void AbilityPlayFeedbacks(Entities entity, MMF_Player feedbackPrefab, Action<Entities, MMF_Player> OnSetProperties = null) //Play feedback
     {
         if (feedbackPrefab == null) { return; }
 
         //Callbacks: Modify the feedback before playing it
         if (OnSetProperties != null)
-            OnSetProperties(feedbackPrefab);
+            OnSetProperties(entity, feedbackPrefab);
 
         MMF_Player newPlayerFeedback = ObjectPooling.instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject).GetComponent<MMF_Player>();
         newPlayerFeedback.PlayFeedbacks();
