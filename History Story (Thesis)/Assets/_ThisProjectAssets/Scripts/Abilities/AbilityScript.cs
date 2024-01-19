@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using MoreMountains.Feedbacks;
-
+using UnityEngine.Events;
 
 public class AbilityScript : ScriptableObject
 {
@@ -95,6 +95,38 @@ public class AbilityScript : ScriptableObject
         AbilityPlayFeedbacks(finishedAtStartFeedback);
     }
 
+
+    /* SAMPLE CODE FOR MODIFYING FEEDBACKS (DONT UNCOMMENT THIS OR COPY)
+    AbilityPlayFeedbacks(finishedAtStartFeedback, ModifyingFeedback);
+
+    private void ModifyingFeedback(MMF_Player mmfPlayer)
+    {
+        // will return the first MMF_Scale found on that MMF_Player
+        MMF_Scale scaleFeedback = MyTargetMMFPlayer.GetFeedbackOfType<MMF_Scale>();
+
+        // will return a list of all MMF_Scale found on that MMF_Player
+        List<MMF_Scale> scaleFeedbacks = MyTargetMMFPlayer.GetFeedbacksOfType<MMF_Scale>();
+
+        // will return the first MMF_Scale found on that MMF_Player whose label matches "MyCustomLabel"
+        MMF_Scale scaleFeedback = MyTargetMMFPlayer.GetFeedbackOfType<MMF_Scale>("MyCustomLabel");
+
+        // will return a list of all the MMF_Scale found on that MMF_Player whose label matches "MyCustomLabel"
+        List<MMF_Scale> scaleFeedbacks = MyTargetMMFPlayer.GetFeedbacksOfType<MMF_Scale>("MyCustomLabel");
+    }*/
+
+    protected void AbilityPlayFeedbacks(MMF_Player feedbackPrefab, Action<MMF_Player> OnSetProperties = null) //Play feedback
+    {
+        if (feedbackPrefab == null) { return; }
+
+        //Callbacks: Modify the feedback before playing it
+        if (OnSetProperties != null)
+            OnSetProperties(feedbackPrefab);
+
+        MMF_Player newPlayerFeedback = ObjectPooling.instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject).GetComponent<MMF_Player>();
+        newPlayerFeedback.PlayFeedbacks();
+        newPlayerFeedback.gameObject.SetActive(false);
+    }
+
     private IEnumerator CooldownTimer() //Cooldown timer
     {
         float startTime = Time.time;
@@ -115,15 +147,7 @@ public class AbilityScript : ScriptableObject
         isOnCoolDown = false;
         OnAbilityTimeLapse?.Invoke(isOnCoolDown, 0f);
     }
-    protected void AbilityPlayFeedbacks(MMF_Player feedbackPrefab) //Play feedback
-    {
-        if(feedbackPrefab == null) { return; }
-
-
-        var newPlayerFeedback = Instantiate(feedbackPrefab);
-        newPlayerFeedback.PlayFeedbacks();
-        Destroy(newPlayerFeedback);
-    }
+    
 
     public void Reset(){
         isOnCoolDown = false;

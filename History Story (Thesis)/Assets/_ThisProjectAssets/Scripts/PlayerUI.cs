@@ -10,7 +10,6 @@ public class PlayerUI : UIPages
 {
     private Entities entity;
 
-    [SerializeField] private Slider healthBar;
     [SerializeField] private MMProgressBar healthBarUI;
     
 
@@ -26,10 +25,6 @@ public class PlayerUI : UIPages
 
     public void ChangeHealth(float currentHealth, float maxHealth)
     {
-        float value = currentHealth / maxHealth;
-
-        healthBar.value = value;
-
         healthBarUI.UpdateBar(currentHealth, 0, maxHealth);
     }
 

@@ -10,36 +10,38 @@ using MoreMountains.Feedbacks;
 
 public class Entities : MonoBehaviour, IDamageable
 {
-    [SerializeField] protected bool debugMode = false;
-
     protected Rigidbody2D rb;
     protected Animator animator_controller;
 
+    [Header("Entity Base")]
+    [SerializeField] protected bool debugMode = false;
+
     [SerializeField] private EntityStatsSO entityStatsSO;
     [SerializeField] private SpriteRenderer entitySpriteRenderer;
-    private bool facingLeft = false;
-
-    
-    public event Action<bool> OnAttackInRange;
-    public event Action OnHit;
-
-    public Rigidbody2D GetRigidbody2D { get { return rb; } }
-    public AttackController Attack_Controller { get; set; }
-    public AbilityController Ability_Controller { get; set; }
-    public EntityStatistics GetEntityStats { get; private set; }
-
 
     [SerializeField] private bool _canAttack = true;
-    public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
-
-    public Vector2 GetMoveDirection { get; protected set; }
-    public bool IsCanMove { get; set; } = true;
 
     [Space(15)]
     [Header("Entity Feedback")]
     [SerializeField] private MMF_Player hurtFeedback;
     [SerializeField] private MMF_Player diedFeedback;
-    [SerializeField] private MMF_Player mactanShieldFeedback;
+
+    //Events
+    public event Action<bool> OnAttackInRange;
+    public event Action OnHit;
+
+
+    //Getter & Setter
+    public Rigidbody2D GetRigidbody2D { get { return rb; } }
+    public AttackController Attack_Controller { get; set; }
+    public AbilityController Ability_Controller { get; set; }
+    public EntityStatistics GetEntityStats { get; private set; }
+    public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
+    public Vector2 GetMoveDirection { get; protected set; }
+    public bool IsCanMove { get; set; } = true;
+
+    //Private variables
+    private bool facingLeft = false;
 
 
 
@@ -226,19 +228,6 @@ public class Entities : MonoBehaviour, IDamageable
     {
         
     }
-
-    public void mactanShieldPlay()
-    {
-        Console.WriteLine("Entering mactanShieldPlay()");
-
-        mactanShieldFeedback?.PlayFeedbacks();
-
-        Console.WriteLine("Exiting mactanShieldPlay()");
-       
-    }
-
-
-
 
 
 
