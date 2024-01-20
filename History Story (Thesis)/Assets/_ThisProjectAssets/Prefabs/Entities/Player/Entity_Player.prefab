@@ -1154,6 +1154,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3272832203514510535, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
     - target: {fileID: 3272832204859969409, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_Name
       value: Entity_Player
@@ -1238,6 +1242,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3272832204859969409, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
   m_PrefabInstance: {fileID: 8113461987735478797}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &215449658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6769931944101195148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a59a136a5728a43a219894b9729f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemHolder: {fileID: 0}
 --- !u!114 &753467170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,22 +1327,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071098aa620008049988d55e1e83bfc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &215449658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6769931944101195148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03a59a136a5728a43a219894b9729f3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMode: 1
-  interactArea: 0.17
-  offsetArea: {x: 0, y: 0.03}
-  nearest: {fileID: 0}
 --- !u!4 &6769931944101195151 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3272832204859969410, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}

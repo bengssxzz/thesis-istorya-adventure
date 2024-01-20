@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,25 +13,53 @@ using UnityEditor;
 
 public class PlayerInteractHandler : MonoBehaviour
 {
-
     [SerializeField] private Transform itemHolder;
 
     public bool IsHoldingSomething { get { return itemHolder.childCount > 0; } } //Player is holding something
 
-    public void DropObject() //Drop item to position of the player
+
+    private void OnEnable()
     {
+        InputManager.Instance.PlayerActionInput.actions["Interact"].started += InteractObject;
     }
-    private void DropObject(PickupObject _object) //Drop item to new object
+    private void OnDisable()
     {
-        PickupObject holdItem = itemHolder.GetComponentInChildren<PickupObject>(true);
+        InputManager.Instance.PlayerActionInput.actions["Interact"].started -= InteractObject;
+
+    }
+
+    private void InteractObject(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        DropObject();
+    }
+
+    private void DropObject(PickupObject _object = null) //Drop item to new object
+    {
+        //PickupObject holdItem = itemHolder.GetComponentInChildren<PickupObject>(true);
+        //PickupObject holdItem = itemHolder.GetChild(0).GetComponent<PickupObject>();
+        PickupObject holdItem = itemHolder.GetComponentsInChildren<PickupObject>().FirstOrDefault();
         GameObject dropItem = ObjectPooling.instance.GetObjectInPool("item", holdItem.gameObject);
-        dropItem.transform.position = _object.transform.position;
+
+        if (_object == null)
+        {
+            //Drop to players position
+            dropItem.transform.position = transform.position;
+        }
+        else
+        {
+            //PickupObject holdItem = itemHolder.GetComponentInChildren<PickupObject>(true);
+            //GameObject dropItem = ObjectPooling.instance.GetObjectInPool("item", holdItem.gameObject);
+            dropItem.transform.position = _object.transform.position;
+        }
+        Debug.Log("holditem: " + holdItem.name);
+        //Destroy(holdItem.gameObject);
+        holdItem.gameObject.SetActive(false);
     }
     private void PickUp(PickupObject _object)
     {
         _object.transform.SetParent(itemHolder);
-        _object.transform.position = Vector3.zero; //Reset the position
-        _object.transform.rotation = Quaternion.identity; //Reset the position
+        _object.transform.position = itemHolder.position; //Reset the position
+        _object.transform.rotation = itemHolder.rotation; //Reset the position
     }
 
     public void PickUpObject(PickupObject _object)
