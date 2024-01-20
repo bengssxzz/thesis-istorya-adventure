@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -12,7 +13,7 @@ public class GameManager : Singleton<GameManager>
 
     private bool playerCanMove = true;
 
-    private List<AbilityScript> listOfAllAbilities; // = new List<AbilityScript>(); //List of all available abilities
+    private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
 
     public List<AbilityScript> GetAllListOfAbility => listOfAllAbilities;
 
@@ -40,6 +41,7 @@ public class GameManager : Singleton<GameManager>
             if (ability != null)
             {
                 listOfAllAbilities.Add(ability);
+                //listOfAllAbilities.Add(ability);
             }
         }
 

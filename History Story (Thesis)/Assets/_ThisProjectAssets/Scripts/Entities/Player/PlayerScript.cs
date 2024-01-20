@@ -55,6 +55,8 @@ public class PlayerScript : Entities
 
 
     //private PlayerInputs playerInput;
+    public PlayerInteractHandler GetInteractHandler { get; private set; }
+
     private InputAction move;
 
     ////Testing
@@ -65,6 +67,8 @@ public class PlayerScript : Entities
     {
         base.Awake();
         move = InputManager.Instance.PlayerActionInput.actions["Move"];
+
+        GetInteractHandler = GetComponent<PlayerInteractHandler>();
     }
 
     protected override void OnEnable()
