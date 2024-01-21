@@ -14,6 +14,10 @@ GameObject:
   - component: {fileID: 7584019274662322319}
   - component: {fileID: 7584019274662322316}
   - component: {fileID: 7584019274662322312}
+  - component: {fileID: 1667155945939646877}
+  - component: {fileID: 7128538737992823658}
+  - component: {fileID: 4821330183032250009}
+  - component: {fileID: 7245448303463166393}
   m_Layer: 7
   m_Name: Normal Enemy
   m_TagString: Enemy
@@ -74,8 +78,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1496923225
-  m_SortingLayer: 1
+  m_SortingLayerID: 474978497
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: a49d40ff87e5cda4ebc3ec16525afda4, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -137,8 +141,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e3479b730d063748b03af5624fe50da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_health: 100
-  moveSpeed: 15
+  debugMode: 0
+  entityStatsSO: {fileID: 0}
+  entitySpriteRenderer: {fileID: 0}
+  _canAttack: 1
+  hurtFeedback: {fileID: 0}
+  diedFeedback: {fileID: 0}
+  stopDistance: 0
+  fleeDistance: 0
 --- !u!114 &7584019274662322312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,3 +169,111 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2112
   detectRadius: 2.5
+--- !u!114 &1667155945939646877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584019274662322318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
+--- !u!114 &7128538737992823658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584019274662322318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+  radius: 0.5
+  height: 2
+  canMove: 1
+  maxSpeed: 1
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 0
+  enableRotation: 1
+  autoRepath:
+    mode: 2
+    period: 0.5
+    sensitivity: 10
+    maximumPeriod: 2
+    visualizeSensitivity: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 0.6
+  pickNextWaypointDist: 2
+  endReachedDistance: 0.2
+  alwaysDrawGizmos: 0
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 0
+--- !u!114 &4821330183032250009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584019274662322318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cf90e33f69b8d4e85ca8a2b0c09261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 0
+  ignoreObstacle: 0
+  detectRadius: 0.5
+  myEnemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  attackStates: []
+  attackHolder: {fileID: 0}
+  fireRate: 0.1
+  rangedAttackDistance: 0
+--- !u!114 &7245448303463166393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584019274662322318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8684fbcd547a91846bfdb0d41b6d1b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listOfUnlockedAbilities: []

@@ -102,8 +102,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1496923225
-  m_SortingLayer: 1
+  m_SortingLayerID: 314282649
+  m_SortingLayer: 6
   m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 1, b: 0.93712807, a: 1}
@@ -130,6 +130,10 @@ GameObject:
   - component: {fileID: 2602387665417424202}
   - component: {fileID: 2602387665417424201}
   - component: {fileID: 2602387665417424199}
+  - component: {fileID: 614096812285448162}
+  - component: {fileID: 8807885549124213561}
+  - component: {fileID: 1994578087082580800}
+  - component: {fileID: 1178393705622635791}
   m_Layer: 7
   m_Name: Range Enemy
   m_TagString: Enemy
@@ -223,16 +227,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07f68ec5df41cb48b5773dee881f826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugMode: 0
   entityStatsSO: {fileID: 11400000, guid: 5bddef6e5caf46540988364038d3ab71, type: 2}
-  showGizmos: 1
-  listOfDropLoot:
-  - lootPrefab: {fileID: 3914543218310036787, guid: 2436bde3ebab0404087b8d19285813c2, type: 3}
-    randomAmountDrop: 1
-    minAmount: 1
-    maxAmount: 5
-    dropChance: 100
+  entitySpriteRenderer: {fileID: 0}
+  _canAttack: 1
+  hurtFeedback: {fileID: 0}
+  diedFeedback: {fileID: 0}
   stopDistance: 1.39
-  FleeDistance: 0.89
+  fleeDistance: 0
   holder: {fileID: 2602387664694032728}
 --- !u!114 &2602387665417424199
 MonoBehaviour:
@@ -251,6 +253,114 @@ MonoBehaviour:
   bulletDamage: 5
   bulletSpeed: 50
   fireRate: 0.2
+--- !u!114 &614096812285448162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602387665417424200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
+--- !u!114 &8807885549124213561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602387665417424200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+  radius: 0.5
+  height: 2
+  canMove: 1
+  maxSpeed: 1
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 0
+  enableRotation: 1
+  autoRepath:
+    mode: 2
+    period: 0.5
+    sensitivity: 10
+    maximumPeriod: 2
+    visualizeSensitivity: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 0.6
+  pickNextWaypointDist: 2
+  endReachedDistance: 0.2
+  alwaysDrawGizmos: 0
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 0
+  constrainInsideGraph: 0
+--- !u!114 &1994578087082580800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602387665417424200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cf90e33f69b8d4e85ca8a2b0c09261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 0
+  ignoreObstacle: 0
+  detectRadius: 0.5
+  myEnemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  attackStates: []
+  attackHolder: {fileID: 0}
+  fireRate: 0.1
+  rangedAttackDistance: 0
+--- !u!114 &1178393705622635791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602387665417424200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8684fbcd547a91846bfdb0d41b6d1b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listOfUnlockedAbilities: []
 --- !u!1 &2602387665531056161
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,8 +431,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1496923225
-  m_SortingLayer: 1
+  m_SortingLayerID: 314282649
+  m_SortingLayer: 6
   m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 1, b: 0.93712807, a: 1}
@@ -438,8 +548,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1496923225
-  m_SortingLayer: 1
+  m_SortingLayerID: 474978497
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: a49d40ff87e5cda4ebc3ec16525afda4, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
