@@ -15,7 +15,7 @@ public class VisualSpawner : MonoBehaviour
     public void ToSpawn()
     {
         //TODO: Spawn
-        var spawn = ObjectPooling.instance.GetObjectInPool("enemy", gameobjectSpawn);
+        var spawn = ObjectPooling.Instance.GetObjectInPool("enemy", gameobjectSpawn);
         spawn.transform.position = transform.position;
 
         gameObject.SetActive(false);

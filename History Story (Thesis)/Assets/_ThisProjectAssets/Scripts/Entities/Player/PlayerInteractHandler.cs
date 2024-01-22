@@ -38,7 +38,7 @@ public class PlayerInteractHandler : MonoBehaviour
         //PickupObject holdItem = itemHolder.GetComponentInChildren<PickupObject>(true);
         //PickupObject holdItem = itemHolder.GetChild(0).GetComponent<PickupObject>();
         PickupObject holdItem = itemHolder.GetComponentsInChildren<PickupObject>().FirstOrDefault();
-        GameObject dropItem = ObjectPooling.instance.GetObjectInPool("item", holdItem.gameObject);
+        GameObject dropItem = ObjectPooling.Instance.GetObjectInPool("item", holdItem.gameObject);
 
         if (_object == null)
         {

@@ -169,7 +169,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
             for (int i = 0; i < toSpawn; i++)
             {
 
-                var selectedRandomEnemy = ObjectPooling.instance.GetObjectInPool("enemy", GetInfoCurrentWave().enemyArray.RandomGetObject()); //Get Enemy
+                var selectedRandomEnemy = ObjectPooling.Instance.GetObjectInPool("enemy", GetInfoCurrentWave().enemyArray.RandomGetObject()); //Get Enemy
                 selectedRandomEnemy.transform.position = RandomSpawnLocation(); //Set the position
                 enemySpawnCount++;
                 yield return new WaitForSeconds(Random.Range(0.2f, 1.5f));

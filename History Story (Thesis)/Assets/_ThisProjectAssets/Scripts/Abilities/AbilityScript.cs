@@ -123,7 +123,7 @@ public class AbilityScript : ScriptableObject
         if (OnSetProperties != null)
             OnSetProperties(entity, feedbackPrefab);
 
-        MMF_Player newPlayerFeedback = ObjectPooling.instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject).GetComponent<MMF_Player>();
+        MMF_Player newPlayerFeedback = ObjectPooling.Instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject).GetComponent<MMF_Player>();
         newPlayerFeedback.PlayFeedbacks();
         newPlayerFeedback.gameObject.SetActive(false);
     }

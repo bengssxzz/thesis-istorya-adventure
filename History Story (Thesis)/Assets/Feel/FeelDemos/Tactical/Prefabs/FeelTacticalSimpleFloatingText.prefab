@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5952698596636219053}
   m_Father: {fileID: 1418480443928390042}
@@ -41,14 +42,15 @@ GameObject:
   m_Component:
   - component: {fileID: 1418480443928390042}
   - component: {fileID: 1418480443928390043}
-  - component: {fileID: 2580486995947534351}
+  - component: {fileID: 1867327097437979106}
+  - component: {fileID: 6555289261559229230}
   m_Layer: 0
   m_Name: FeelTacticalSimpleFloatingText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1418480443928390042
 Transform:
   m_ObjectHideFlags: 0
@@ -59,6 +61,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6522080239221119930}
   m_Father: {fileID: 0}
@@ -80,7 +83,7 @@ MonoBehaviour:
   Billboard: {fileID: 5952698596636219053}
   TargetTextMesh: {fileID: 1418480444232694739}
   Direction: {x: 0, y: 1, z: 0}
---- !u!114 &2580486995947534351
+--- !u!114 &1867327097437979106
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,7 +96,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoundsBasedOn: 3
+  ExecuteOnEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  ExecuteOnDisable:
+    m_PersistentCalls:
+      m_Calls: []
   LifeTime: 0
+--- !u!210 &6555289261559229230
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418480443928390021}
+  m_Enabled: 1
+  m_SortingLayerID: -878505069
+  m_SortingLayer: 4
+  m_SortingOrder: 0
 --- !u!1 &1418480444232694749
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +142,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5952698596636219053}
   m_RootOrder: 0
@@ -137,14 +158,16 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7015f2d2ce595844e9fe6e0c3bd8d27b, type: 3}
+  - {fileID: 2100000, guid: aa35aec7f2cbcf44a8eb564cd037f319, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -165,6 +188,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!102 &1418480444232694739
 TextMesh:
   serializedVersion: 3
@@ -183,7 +207,7 @@ TextMesh:
   m_FontSize: 106
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 7015f2d2ce595844e9fe6e0c3bd8d27b, type: 3}
+  m_Font: {fileID: 12800000, guid: aa35aec7f2cbcf44a8eb564cd037f319, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -213,6 +237,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1418480444232694738}
   m_Father: {fileID: 6522080239221119930}

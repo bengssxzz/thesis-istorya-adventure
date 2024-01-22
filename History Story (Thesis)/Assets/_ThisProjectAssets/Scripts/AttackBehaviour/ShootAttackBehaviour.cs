@@ -48,7 +48,7 @@ public class ShootAttackBehaviour : MonoBehaviour
 
                 bulletDir = ((Vector2)PlayerSingleton.Instance.transform.position - (Vector2)transform.position).normalized;
 
-                newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+                newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
                 newBul.GetComponent<Projectile>().InitializeProjectile(null, bulletDir, 5, attackController.GetMyEnemyLayer);
                 newBul.transform.position = transform.position;
 
@@ -65,7 +65,7 @@ public class ShootAttackBehaviour : MonoBehaviour
 
                     bulletDir = ((Vector2)PlayerSingleton.Instance.transform.position - (Vector2)transform.position).normalized;
 
-                    newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+                    newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
                     newBul.GetComponent<Projectile>().InitializeProjectile(null, bulletDir, 5, attackController.GetMyEnemyLayer);
                     newBul.transform.position = transform.position;
                 }
@@ -99,7 +99,7 @@ public class ShootAttackBehaviour : MonoBehaviour
                 var dir = attackController.GetAttackHolder.TransformDirection(bulletDir);
 
                 // Instantiate the bullet and set its position and direction
-                GameObject newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+                GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
                 newBul.GetComponent<Projectile>().InitializeProjectile(null, dir, 5, attackController.GetMyEnemyLayer);
                 newBul.transform.position = attackController.GetAttackHolder.position;
                 newBul.transform.rotation = attackController.GetAttackHolder.rotation;
@@ -128,7 +128,7 @@ public class ShootAttackBehaviour : MonoBehaviour
                 Vector2 bulletVector = new Vector2(dirX, dirY);
                 Vector2 bulletDir = (bulletVector - (Vector2)transform.position).normalized;
 
-                GameObject newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+                GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
                 newBul.GetComponent<Projectile>().InitializeProjectile(null, bulletDir, 5, attackController.GetMyEnemyLayer);
                 newBul.transform.position = attackController.GetAttackHolder.position;
                 newBul.transform.rotation = attackController.GetAttackHolder.rotation;

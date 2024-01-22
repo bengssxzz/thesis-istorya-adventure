@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
 
     private Rigidbody2D rb;
     private AudioSource audioSource;
-    
+
     private Entities entityHost; //Host entity kung kanino galing tong projectile
 
     private Vector2 direction;
@@ -33,7 +33,7 @@ public class Projectile : MonoBehaviour
     private Vector2 startPoint;
     private float distanceLimit;
 
-    
+
 
 
     private void Awake()
@@ -42,9 +42,11 @@ public class Projectile : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+
+
     public void InitializeProjectile(Entities host, Vector2 dir, float _distanceLimit, LayerMask addMask)
     {
-        if(host != null)
+        if (host != null)
         {
             entityHost = host;
             hostDamage = host.GetEntityStats.damage;
@@ -102,7 +104,7 @@ public class Projectile : MonoBehaviour
 
     }
 
-    
+
     public void SetLayerMask(params LayerMask[] addMask)
     {
         temp_WhatToHit = _whatToHit;
@@ -128,7 +130,7 @@ public class Projectile : MonoBehaviour
         yield return new WaitForSeconds(BULLET_LIFETIME);
         BulletHitBehaviour();
     }
-    
+
     protected virtual void BulletHitBehaviour()
     {
         gameObject.SetActive(false);
@@ -141,6 +143,82 @@ public class Projectile : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, rayRadius);
     }
+
+
+
+
+
+
+
+    ////CONTINUE NEXT TIME
+
+    //private const float OFFSET_MAX_LIMIT = 0.3f;
+
+    //[Header("Bullet Damage")]
+    //[SerializeField] private float additionalDamage = 0f;
+    //[SerializeField] private float additionalCriticalDamage = 0f;
+    //[SerializeField] private bool canCritical = true;
+
+    //[Header("Distance")]
+    //[SerializeField] private bool useMaxLimitDistance = true;
+
+
+    //private Vector2 startPosition;
+    //private Vector2 targetPosition;
+    //private float maxLimitDistance = 0f;
+
+    //private float bulletDamage;
+    //private float bulletCriticalDamage;
+    //private bool isCritical = false;
+
+
+    //private void OnEnable()
+    //{
+    //    startPosition = transform.position; // Start position
+    //}
+
+    //public void InitializeProjectile(Entities entityHost, Vector2 targetPosition, float maxDistance)
+    //{
+    //    bulletDamage = entityHost.GetEntityStats.damage + additionalDamage;
+    //    bulletCriticalDamage = entityHost.GetEntityStats.criticalDamage + additionalCriticalDamage;
+
+    //    this.targetPosition = targetPosition;
+    //    maxLimitDistance = maxDistance + OFFSET_MAX_LIMIT;
+
+    //}
+
+
+
+    //private void FixedUpdate()
+    //{
+    //    ProjectileBehaviour();
+    //}
+
+
+    //public virtual void ProjectileBehaviour()
+    //{
+    //    if (useMaxLimitDistance)
+    //    {
+    //        if(Vector2.Distance(startPosition, transform.position) < maxLimitDistance)
+    //        {
+    //            //If inside the range
+    //        }
+    //        else
+    //        {
+    //            //Out side the attack range
+    //            gameObject.SetActive(false);
+    //        }
+
+    //    }
+    //}
+
+
+
+
+
+
+
+
 
 
 

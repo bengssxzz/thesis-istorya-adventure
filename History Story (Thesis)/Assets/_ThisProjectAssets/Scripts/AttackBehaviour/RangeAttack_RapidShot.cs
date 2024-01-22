@@ -16,7 +16,7 @@ public class RangeAttack_RapidShot : BaseAttackBehaviour
 
             bulletDir = ((Vector2)PlayerSingleton.Instance.transform.position - (Vector2)transform.position).normalized;
 
-            newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+            newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
             newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), 5, GetAttackController.GetMyEnemyLayer);
             newBul.transform.position = transform.position;
         }
@@ -34,7 +34,7 @@ public class RangeAttack_RapidShot : BaseAttackBehaviour
 
             bulletDir = ((Vector2)PlayerSingleton.Instance.transform.position - (Vector2)transform.position).normalized;
 
-            newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+            newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
             newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), 5, GetAttackController.GetMyEnemyLayer);
             newBul.transform.position = transform.position;
 
