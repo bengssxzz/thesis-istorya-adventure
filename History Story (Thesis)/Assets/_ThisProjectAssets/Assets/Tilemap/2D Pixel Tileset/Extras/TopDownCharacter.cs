@@ -10,37 +10,14 @@ public class TopDownCharacter : MonoBehaviour {
 
 	//This script requires a rigidbody and collider component, as it uses physics force to move. Refer to the "Wisp" prefab for ideal rigidbody values. Gravity scale must be set to 0!
 
-	public float minMoveValue = 0.1f; //Minimum value that axis movement needs to be for the character to move.
-	public float moveSpeed = 6.0f; //Move speed value in all directions. Value is later multiplied by below variable; pixels per unit.
 	public int pixelsPerUnit = 32; //Amount of pixels per unit in Unity.
 	public float sortOrderOffset = 1.0f; //Value with which to offset the automatic order in layer. Positive number means object gets rendered in front earlier and vice versa.
 	private int sortIndex; //The sorting order number for the object.
-	private float speed; //Internal/private final speed value; moveSpeed multiplied by pixelsPerUnit.
 	
 	void Start() {
 		//Sorting order change, to appear in front of or behind objects.
 		sortIndex = Mathf.RoundToInt(transform.position.y - sortOrderOffset);
 		GetComponent<Renderer>().sortingOrder = -sortIndex;
-	}
-
-	void FixedUpdate() {
-		speed = moveSpeed * pixelsPerUnit; //Multiply speed by unit size. Note that this does not mean, for instance, 1 unit per second, due to rigidbody mass and drag affecting speed.
-
-		//Horizontal movement.
-		if (Input.GetAxis("Horizontal") > minMoveValue) {
-			GetComponent<Rigidbody2D>().AddForce(new Vector2(speed,0) * Time.deltaTime);
-		}
-		else if (Input.GetAxis("Horizontal") < -minMoveValue) {
-			GetComponent<Rigidbody2D>().AddForce(new Vector2(-speed,0) * Time.deltaTime);
-		}
-
-		//Vertical movement.
-		if (Input.GetAxis("Vertical") > minMoveValue) {
-			GetComponent<Rigidbody2D>().AddForce(new Vector2(0,speed) * Time.deltaTime);
-		}
-		else if (Input.GetAxis("Vertical") < -minMoveValue) {
-			GetComponent<Rigidbody2D>().AddForce(new Vector2(0,-speed) * Time.deltaTime);
-		}
 	}
 	
 	void Update () {
