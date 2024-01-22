@@ -66,7 +66,7 @@ namespace MoreMountains.Feel
 			if (Time.time - _lastJumpStartedAt > CooldownDuration)
 			{
 				float damage = Random.Range(20, 200);
-				ShootFeedback?.PlayFeedbacks(ImpactPosition.position, damage);
+				ShootFeedback?.PlayFeedbacks(ImpactPosition.position);
 				_lastJumpStartedAt = Time.time;
 				_magazine--;
 			}         

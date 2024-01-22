@@ -8,13 +8,18 @@ using System;
 
 public class GameManager : Singleton<GameManager>
 {
+    private PlayerData playerData;
+
     private PlayerScript entity;
-    public PlayerScript PlayerEntity { get; private set; }
+
 
     private bool playerCanMove = true;
 
     private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
 
+    public PlayerData GetPlayerData { get { return playerData; } }
+    public PlayerScript PlayerEntity { get; private set; }
+    
     public List<AbilityScript> GetAllListOfAbility => listOfAllAbilities;
 
     public bool IsPause { get; set; } = false;
@@ -22,6 +27,8 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
+
+        playerData = new PlayerData();
 
         listOfAllAbilities = new List<AbilityScript>();
         LoadAbilitiesInFolder("Assets/_ThisProjectAssets/Scriptable Object/Abilities");
