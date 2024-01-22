@@ -13,6 +13,8 @@ using UnityEngine.InputSystem;
 //    DialogMode,
 //    QandA
 //}
+public enum TRYTEST { test1, test2}
+
 
 public class UIManager : Singleton<UIManager>
 {
@@ -50,7 +52,8 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
- 
+    public void TESTERENUM(TRYTEST tRYTEST) { }
+    public void test() { }
 
     protected override void Awake()
     {

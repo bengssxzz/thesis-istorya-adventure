@@ -5,22 +5,11 @@ using System.Linq;
 using System;
 
 
-public class ObjectPooling : MonoBehaviour
+public class ObjectPooling : Singleton<ObjectPooling>
 {
-    public static ObjectPooling instance;
 
     private Dictionary<string, List<GameObject>> poolObjects = new Dictionary<string, List<GameObject>>();
 
-    private void Awake()
-    {
-        //Instance
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else { DestroyImmediate(gameObject); }
-
-    }
 
     public GameObject GetObjectInPool(string objectTag, GameObject prefabObject)
     {

@@ -32,10 +32,10 @@ public class Entities : MonoBehaviour, IDamageable
 
 
     //Getter & Setter
-    public Rigidbody2D GetRigidbody2D { get { return rb; } }
-    public AttackController Attack_Controller { get; set; }
-    public AbilityController Ability_Controller { get; set; }
-    public EntityStatistics GetEntityStats { get; private set; }
+    public Rigidbody2D GetRigidbody2D { get { return rb; } } //Get Rigidbody2D
+    public AttackController Attack_Controller { get; private set; } //Get attack controller
+    public AbilityController Ability_Controller { get; set; } //Get ability controller
+    public EntityStatistics GetEntityStats { get; private set; } //Get entity stats handler
     public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
     public Vector2 GetMoveDirection { get; protected set; }
     public bool IsCanMove { get; set; } = true;

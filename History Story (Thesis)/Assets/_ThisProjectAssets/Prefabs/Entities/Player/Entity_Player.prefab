@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 5292034647248505064}
   m_Father: {fileID: 6769931944101195151}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1582148917
 GameObject:
@@ -93,7 +93,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6769931944101195151}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1654909148
 GameObject:
@@ -999,7 +999,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5950621255189830220}
   m_Layer: 6
-  m_Name: Other
+  m_Name: Other State
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1020,7 +1020,7 @@ Transform:
   - {fileID: 721065091129677917}
   - {fileID: 1582148918}
   m_Father: {fileID: 6769931944101195151}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9191140780726926316
 GameObject:
@@ -1054,7 +1054,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6769931944101195151}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &920302427
 CircleCollider2D:
@@ -1226,9 +1226,13 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.029673025
       objectReference: {fileID: 0}
+    - target: {fileID: 3496656081077769635, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5438189304426197161, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}

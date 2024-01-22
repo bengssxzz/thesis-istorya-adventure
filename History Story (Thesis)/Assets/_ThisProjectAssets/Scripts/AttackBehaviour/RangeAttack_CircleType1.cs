@@ -34,7 +34,7 @@ public class RangeAttack_CircleType1 : BaseAttackBehaviour
                 var dir = GetAttackController.GetAttackHolder.TransformDirection(bulletDir);
 
                 // Instantiate the bullet and set its position and direction
-                GameObject newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+                GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
                 newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, dir, 5, GetAttackController.GetMyEnemyLayer);
                 newBul.transform.position = GetAttackController.GetAttackHolder.position;
                 newBul.transform.rotation = GetAttackController.GetAttackHolder.rotation;
@@ -70,7 +70,7 @@ public class RangeAttack_CircleType1 : BaseAttackBehaviour
                 var dir = GetAttackController.GetAttackHolder.TransformDirection(bulletDir);
 
                 // Instantiate the bullet and set its position and direction
-                GameObject newBul = ObjectPooling.instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+                GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
                 newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, dir, 5, GetAttackController.GetMyEnemyLayer);
                 newBul.transform.position = GetAttackController.GetAttackHolder.position;
                 newBul.transform.rotation = GetAttackController.GetAttackHolder.rotation;

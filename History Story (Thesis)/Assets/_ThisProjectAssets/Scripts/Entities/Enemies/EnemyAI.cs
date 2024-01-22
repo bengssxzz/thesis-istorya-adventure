@@ -161,7 +161,7 @@ public class EnemyAI : AIEntity
 
         for (int i = 0; i < amount; i++)
         {
-            GameObject _loot = ObjectPooling.instance.GetObjectInPool("loot", itemLoot.lootPrefab);
+            GameObject _loot = ObjectPooling.Instance.GetObjectInPool("loot", itemLoot.lootPrefab);
             dropList.Add(_loot);
         }
 
