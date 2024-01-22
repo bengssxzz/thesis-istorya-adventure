@@ -32,7 +32,7 @@ public class RestoreHealthAbility : AbilityScript
             Debug.LogError("RestoreHealthAbility : Unable to restore health");
         }
 
-    yield return new WaitForSecondsRealtime(time);
+    yield return new WaitForSeconds(time);
     }
 
     protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)

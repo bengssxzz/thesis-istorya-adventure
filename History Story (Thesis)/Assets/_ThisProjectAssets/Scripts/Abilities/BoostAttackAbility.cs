@@ -44,7 +44,7 @@ public class BoostAttackAbility : AbilityScript
             Debug.LogError("BoostAttackAbility : Unable to modify entity stats for dboost attack");
         }
 
-        yield return new WaitForSecondsRealtime(time);
+        yield return new WaitForSeconds(time);
     }
 
     protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
