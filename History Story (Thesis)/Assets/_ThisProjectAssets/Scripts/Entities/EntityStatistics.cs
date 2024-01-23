@@ -131,6 +131,24 @@ public class EntityStatistics
         damage = newDamage;
     }
 
+    // !Added by different person.
+    // method to modify the damage value
+    public void ModifiedLifesteal(float newLifesteal)
+    {
+        lifeSteal = newLifesteal;
+    }
+
+    public void ModifiedCriticalChance(float newCriticalChance)
+    {
+        criticalChance = newCriticalChance;
+    }
+
+    public void ModifiedCriticalDamage(float newCriticalDamage)
+    {
+        criticalDamage = newCriticalDamage;
+    }
+
+    // !Addition of different person ends.
 
     public void SetCurrentHealth(float amount)
     {

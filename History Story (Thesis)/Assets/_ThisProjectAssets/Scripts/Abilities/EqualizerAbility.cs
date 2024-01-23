@@ -1,4 +1,5 @@
 using Language.Lua;
+using PixelCrushers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,15 +34,21 @@ public class EqualizerAbility : AbilityScript
     int[] chosenDie;
     int dieFace;
     // Baselines
-    const float CooldownTime = 3f; // cooldown for this ability.
+    const float CooldownTime = 5f; // cooldown for this ability.
     const float CriticalHealthPercentage = .25f; // the limit where the player is considered at a "critical" state.
-    const float SelfDamage = 10f; // the damage the player can deal to itself.
+    const float SelfDamage = 15f; // the damage the player can deal to itself.
     const float DamageBoostPercentage = 1.5f; // additional damage the player can deal to enemies.
     const float ShieldPercentage = .5f; // shield the player can receive.
     const float SelfDamagePercentage = .5f; // damage the player inflicts to itself.
+    const float AttackSpeedPenalty = SelfDamagePercentage; // Attack speed penalty for die face no. 3.
+    const float FirstTriBoostPercentage = .4f; // Boost for die face no. 3.
+    const float HugeBoost = 5f; // For die face no. 5, boosts attacks damage, speed, and life steal.
     // Initialize variables that will be reverted after the skill finishes.
     float normalDefense;
     float normalDamage;
+    float normalLifesteal;
+    float normalAttackSpeed;
+    float normalCriticalChance, normalCriticalDamage;
     // ?
     float currentHealthPercentage;
     float lostHealth;
@@ -54,6 +61,10 @@ public class EqualizerAbility : AbilityScript
         // Store variables that will be reverted later.
         normalDefense = entity.GetEntityStats.defense;
         normalDamage = entity.GetEntityStats.damage;
+        normalLifesteal = entity.GetEntityStats.lifeSteal;
+        normalAttackSpeed = entity.GetEntityStats.currentAttackSpeed;
+        normalCriticalChance = entity.GetEntityStats.criticalChance;
+        normalCriticalDamage = entity.GetEntityStats.criticalDamage;
 
         // Compute for lost health, which might be needed later.
         lostHealth = entity.GetEntityStats.maxHealth - entity.GetEntityStats.currentHealth;
@@ -88,6 +99,12 @@ public class EqualizerAbility : AbilityScript
                 entity.GetEntityStats.SetCurrentHealth(entity.GetEntityStats.currentHealth - SelfDamage);
                 break;
             case 3:
+                // Boost damage, critical damage, and critical chance by FirstTriBoostPercentage.
+                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.damage) + entity.GetEntityStats.damage * FirstTriBoostPercentage);
+                entity.GetEntityStats.ModifiedCriticalDamage((entity.GetEntityStats.criticalDamage) + entity.GetEntityStats.criticalDamage * FirstTriBoostPercentage);
+                entity.GetEntityStats.ModifiedCriticalChance((entity.GetEntityStats.criticalChance) + entity.GetEntityStats.criticalChance * FirstTriBoostPercentage);
+                // Reduce attack speed by its penalty.
+                entity.GetEntityStats.ModifiedAttackSpeed(entity.GetEntityStats.currentAttackSpeed * AttackSpeedPenalty);
                 break;
             case 4:
                 // Boost projectile damage based on player's lost health.
@@ -98,6 +115,10 @@ public class EqualizerAbility : AbilityScript
                 entity.GetEntityStats.ModifiedDefense(normalDefense + (ShieldPercentage * lostHealth));
                 break;
             case 6:
+                // Boost attack damage, attack speed, and lifesteal by HugeBoost.
+                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.damage) + entity.GetEntityStats.damage * HugeBoost);
+                entity.GetEntityStats.ModifiedAttackSpeed((entity.GetEntityStats.currentAttackSpeed) + entity.GetEntityStats.currentAttackSpeed * HugeBoost);
+                entity.GetEntityStats.ModifiedLifesteal((entity.GetEntityStats.lifeSteal) + entity.GetEntityStats.lifeSteal * HugeBoost);
                 break;
             default:
                 Debug.Log("How did you get an integer not 1-6?");
@@ -114,15 +135,18 @@ public class EqualizerAbility : AbilityScript
         // Restore player stats
         entity.GetEntityStats.ModifiedDefense(normalDefense);
         entity.GetEntityStats.ModifiedDamage(normalDamage);
+        entity.GetEntityStats.ModifiedLifesteal(normalLifesteal);
+        entity.GetEntityStats.ModifiedAttackSpeed(normalAttackSpeed);
+        entity.GetEntityStats.ModifiedCriticalChance(normalCriticalChance);
+        entity.GetEntityStats.ModifiedCriticalDamage(normalCriticalDamage);
     }
 }
 
-
-/* Die explanation
-1 Take 50% self-damage. 
+/* New Die explanation
+1 Take x% self-damage. 
 2 Take x points of self-damage.
-3 Lower enemy defense on-screen. (?)
-4 Deal damage to enemies based on 150% of lost health. 
-5 Gain shield based on 50% of lost health.
-6 Instantly remove enemies within range. (?)
+3 Boost attack damage, critcial chance, and critical damage by x%, while decrease attack speed by x%.
+4 Deal damage to enemies based on x% of lost health. 
+5 Gain shield based on x% of lost health.
+6 Boost attack damage, attack speed, and life steal by x%.
 */
