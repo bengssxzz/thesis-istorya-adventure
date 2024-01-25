@@ -9,125 +9,93 @@ public class RoomSpawnerEnemy : MonoBehaviour
     [System.Serializable]
     public class WaveSystem
     {
-        public int maxEnemySpawnInWave = 5;
+        public int enemySpawnCount = 5;
         public GameObject[] enemyArray;
+        public float statsMultiplier = 0f;
     }
+
+    private enum BattleStartState { None, OnEnterRoom, OnTrigger}
 
     private PolygonCollider2D roomAreaCollider;
     private RoomArea roomArea;
 
+    [SerializeField] private BattleStartState battleMode = BattleStartState.None;
     [SerializeField] private bool chanceToBattle = false;
 
-    [SerializeField] private LayerMask cannotSpawn;
+    [Space(25)]
+    [Header("Wave System")]
     [SerializeField] private WaveSystem[] waveInfoList;
+    [SerializeField] private LayerMask cannotSpawn;
     [SerializeField] private int maxEnemySpawnInRoom = 5;
 
-    [Space(25)]
-    public UnityEvent OnStartedBattleTrigger;
-    public UnityEvent OnFinishedBattleTrigger;
+    [Space(30)]
+    public UnityEvent OnBeforeBattleTrigger; //Before battle
+    public UnityEvent OnStartBattleTrigger; //When the battle started
+    public UnityEvent OnFinishedBattleTrigger; //When the battle finish
 
-    private List<Collider2D> collidersList = new List<Collider2D>();
+
+    private List<Collider2D> enemiesAliveList = new List<Collider2D>();
     private int currentWave = 0;
     private int enemySpawnCount = 0;
 
-    private bool playerAlreadyTriggerBattle = false;
-    private bool isRunningBattle = false;
-    private bool isDoneBattleRoom = false;
-
+    private bool isAlreadyTrigger = false;
+    private bool isPendingBattle = false;
 
 
     private void Awake()
     {
         roomArea = GetComponentInParent<RoomArea>();
-        roomAreaCollider = GetComponentInParent<RoomArea>().GetComponent<PolygonCollider2D>();
+        roomAreaCollider = roomArea.GetComponent<PolygonCollider2D>();
     }
 
     private void OnEnable()
     {
-        roomArea.OnPlayerEnterExitRoom += PlayerEnterExitRoom;
+        roomArea.OnPlayerEnterRoom.AddListener(OnPlayerEnterRooom);
+        roomArea.OnPlayerExitRoom.AddListener(OnPlayerExitRoom);
     }
 
-    
+   
+
     private void OnDisable()
     {
-        roomArea.OnPlayerEnterExitRoom -= PlayerEnterExitRoom;
-    }
+        roomArea.OnPlayerEnterRoom.RemoveListener(OnPlayerEnterRooom);
+        roomArea.OnPlayerExitRoom.RemoveListener(OnPlayerExitRoom);
 
-    private void Update()
-    {
-        //ScanAllEnemy();
-    }
-
-    private void PlayerEnterExitRoom(bool playerEnterExit)
-    {
-        if (playerEnterExit)
-        {
-            //If the player is inside the room collider
-        }
-        else
-        {
-            //If the player exit the room collider
-        }
     }
 
 
-    private WaveSystem GetInfoCurrentWave() //Get the info of the current wave
+    private void OnPlayerEnterRooom()
     {
-        return waveInfoList[currentWave];
-    }
-
-    private Vector2 RandomSpawnLocation() //Generate random valid position
-    {
-        if (roomAreaCollider == null || GetInfoCurrentWave().enemyArray.Length <= 0)
+        if (battleMode == BattleStartState.OnEnterRoom)
         {
-            Debug.LogError("Please assign the PolygonCollider2D and Enemy Prefab in the inspector.");
-            return Vector2.zero;
-        }
-
-        Vector2 generatedPos;
-        Collider2D restrictedPos;
-
-        Bounds colliderBounds = roomAreaCollider.bounds;
-
-
-        do
+            if (!isAlreadyTrigger) //If the room is not yet trigger
+            {
+                //Start the battle
+                StartBattle();
+            }
+            else
+            {
+                if (chanceToBattle && ThesisUtility.RandomGetChanceBool()) //If the room is already trigger and has chance to battle
+                {
+                    //Start the battle
+                    StartBattle();
+                }
+            }
+        }else if(battleMode == BattleStartState.None)
         {
-            // Generate a random point inside a unit circle
-            Vector2 randomPoint = Random.insideUnitCircle;
-
-            // Transform the point to local coordinates within the collider bounds
-            generatedPos = new Vector2(
-                Mathf.Lerp(colliderBounds.min.x, colliderBounds.max.x, (randomPoint.x + 1) * 0.5f),
-                Mathf.Lerp(colliderBounds.min.y, colliderBounds.max.y, (randomPoint.y + 1) * 0.5f)
-            );
-
-            restrictedPos = Physics2D.OverlapCircle(generatedPos, 0.02f, cannotSpawn);
-            //If restrictedPos collide with the layermask, repeat loop
-        } while (restrictedPos);
-
-
-        return generatedPos;
-    }
-
-    private void ScanAllEnemy() //Scanning the enemy
-    {
-        if (!isRunningBattle) { return; }
-
-        if (roomAreaCollider != null)
-        {
-            // Set up a ContactFilter2D to filter colliders by tag
-            ContactFilter2D contactFilter = new ContactFilter2D();
-            contactFilter.SetLayerMask(LayerMask.GetMask("Enemy")); // Replace "Enemy" with your actual layer or tag
-
-            // Get all enemy colliders inside the PolygonCollider2D
-            collidersList = new List<Collider2D>();
-            roomAreaCollider.OverlapCollider(contactFilter, collidersList);
-        }
-        else
-        {
-            Debug.LogError("PolygonCollider2D is not existed.");
+            if (chanceToBattle && ThesisUtility.RandomGetChanceBool()) //If the room has chance to battle
+            {
+                //Start the battle
+                StartBattle();
+            }
         }
     }
+    private void OnPlayerExitRoom()
+    {
+        //No need
+    }
+
+
     IEnumerator ScanEnemies()
     {
         if (roomAreaCollider != null)
@@ -139,26 +107,27 @@ public class RoomSpawnerEnemy : MonoBehaviour
             do
             {
                 // Get all enemy colliders inside the PolygonCollider2D
-                collidersList = new List<Collider2D>();
-                roomAreaCollider.OverlapCollider(contactFilter, collidersList);
+                enemiesAliveList = new List<Collider2D>();
+                roomAreaCollider.OverlapCollider(contactFilter, enemiesAliveList);
 
-                Debug.Log("Still scanning enemies: " + collidersList.Count);
+                Debug.Log("Enemy alive left: " + enemiesAliveList.Count);
                 yield return new WaitForSeconds(0.2f);
 
                 //If there are no more enemy to be scan then while loop done
-            } while (collidersList.Count > 0 || isRunningBattle);
+            } while (enemiesAliveList.Count > 0 || isPendingBattle);
 
-            //TODO: Disable magical barrier
+            //Done fighting in this room
+            ResetBattle(); //Reset the battle system
             OnFinishedBattleTrigger?.Invoke();
         }
         else
         {
-            Debug.LogError("PolygonCollider2D is not existed.");
+            Debug.LogError("Collider2D is not existed.");
         }
     }
     IEnumerator EnemyWaveSpawner() //Control the spawning enemy in each wave
     {
-        int maxNumberEnemy = GetInfoCurrentWave().maxEnemySpawnInWave;
+        int maxNumberEnemy = waveInfoList[currentWave].enemySpawnCount;
         int remainingSpawn = maxNumberEnemy - enemySpawnCount;
 
         if (remainingSpawn > 0)
@@ -169,8 +138,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
             for (int i = 0; i < toSpawn; i++)
             {
 
-                var selectedRandomEnemy = ObjectPooling.Instance.GetObjectInPool("enemy", GetInfoCurrentWave().enemyArray.RandomGetObject()); //Get Enemy
-                selectedRandomEnemy.transform.position = RandomSpawnLocation(); //Set the position
+                var selectedRandomEnemy = ObjectPooling.Instance.GetObjectInPool("enemy", waveInfoList[currentWave].enemyArray.RandomGetObject()); //Get Enemy
+                selectedRandomEnemy.transform.position = ThesisUtility.RandomGetVector2InCollider2DArea(roomAreaCollider, 0.1f, cannotSpawn); //Set the position
                 enemySpawnCount++;
                 yield return new WaitForSeconds(Random.Range(0.2f, 1.5f));
             }
@@ -181,13 +150,13 @@ public class RoomSpawnerEnemy : MonoBehaviour
             Debug.Log("Enemy spawned reached maximum amount in this wave");
         }
     }
-    IEnumerator ExecuteWaveBattle() //Control the wave
+    IEnumerator ExecuteWaveBattle() //Control the wave battle
     {
         do
         {
             yield return new WaitForSeconds(0.2f);
 
-            if (collidersList.Count == 0 && enemySpawnCount >= GetInfoCurrentWave().maxEnemySpawnInWave)
+            if (enemiesAliveList.Count == 0 && enemySpawnCount >= waveInfoList[currentWave].enemySpawnCount)
             {
                 //Next Wave
                 Debug.Log("Next wave");
@@ -196,9 +165,9 @@ public class RoomSpawnerEnemy : MonoBehaviour
                 currentWave++;
 
             }
-            else if (collidersList.Count <= 3)
+            else if (enemiesAliveList.Count <= 3)
             {
-                yield return StartCoroutine(EnemyWaveSpawner()); //Wait to finish the wave
+                yield return StartCoroutine(EnemyWaveSpawner()); //Wait to finish the wave spawning
                 yield return new WaitForSeconds(0.5f);
             }
 
@@ -206,51 +175,71 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         } while (currentWave <= waveInfoList.Length - 1);
 
-        //Done fighting
-        Debug.Log("THIS ROOM IS FINISH");
-        isDoneBattleRoom = true;
-        isRunningBattle = false;
+        //Done spawning enemies
+        Debug.Log("THIS ROOM IS FINISH SPAWNING");
+        isAlreadyTrigger = true;
+        isPendingBattle = false;
     }
 
+    private void ResetBattle()
+    {
+        //Reset the variables
+        currentWave = 0;
+        enemySpawnCount = 0;
+    }
     private void StartBattle() //Start the battle
     {
-        StartCoroutine(ExecuteWaveBattle());
-        isRunningBattle = true;
+        OnBeforeBattleTrigger?.Invoke(); //Invoke before the battle start
 
-        //TODO: Enable magical barrier
-        OnStartedBattleTrigger?.Invoke();
+        StartCoroutine(ExecuteWaveBattle());
+        isPendingBattle = true;
+
+        StartCoroutine(ScanEnemies()); //Start the scanning
+
+        OnStartBattleTrigger?.Invoke(); //Invoke after the battle started
     }
+
+    /* You can use these in the unity event in the inspector
+     * The StartBattleOnChance() mathod, ipla-play nya ang battle on chances only
+     * The ForceStartBattle() method will play without calling the unity events
+     */
+    public void StartBattleOnChance() //Start the battle on chances
+    {
+        if (ThesisUtility.RandomGetChanceBool())
+        {
+            //Start the battle
+            ForceStartBattle();
+            StartCoroutine(ScanEnemies()); //Start the scanning
+        }
+    }
+    public void ForceStartBattle() //Force start the battle
+    {
+        StartCoroutine(ExecuteWaveBattle());
+        isPendingBattle = true;
+
+        StartCoroutine(ScanEnemies()); //Start the scanning
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !playerAlreadyTriggerBattle)
+        if(collision.CompareTag("Player") && battleMode == BattleStartState.OnTrigger)
         {
-            playerAlreadyTriggerBattle = true;
-
-            if (!isRunningBattle)
+            if (!isAlreadyTrigger) //If not yet trigger 
             {
-                //Trigger battle event
-                StartCoroutine(ScanEnemies());
-                if (!isDoneBattleRoom)
+                //Start battle
+                StartBattle();
+                isAlreadyTrigger = true;
+            }
+            else //Is already trigger
+            {
+                if (chanceToBattle && ThesisUtility.RandomGetChanceBool()) //If has chance to trigger the battle
                 {
+                    //Start battle
                     StartBattle();
                 }
-                else
-                {
-                    //If chance to battle is done, then calculate a chance to trigger battle again
-                    if (chanceToBattle && ThesisUtility.RandomGetChanceBool())
-                    {
-                        //Reset the variables
-                        currentWave = 0;
-                        enemySpawnCount = 0;
-
-                        //Trigger the battle again
-                        StartBattle();
-                    }
-                }
             }
-
-        }    
+        }
     }
 
 
