@@ -78,11 +78,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c24f9477dd5d364d8b35cc60a1f8f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NPCActor: {fileID: 0}
+  positions: {fileID: 0}
   moveBehaviour: 0
-  areaCollider: {fileID: 0}
+  invalidPositionLayer:
+    serializedVersion: 2
+    m_Bits: 0
   minRandom: 1
   maxRandom: 2
-  targetLocations: []
   loopState: 1
   moveSpeed: 0
 --- !u!210 &6615504171951595136
