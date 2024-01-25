@@ -21,7 +21,7 @@ public class ReduceDamageAbility : AbilityScript
         //Save the original defense stat
         if (entity != null && entity.GetEntityStats != null)
         {
-            normalDefense = entity.GetEntityStats.defense;
+            normalDefense = entity.GetEntityStats.maxDefense;
         }
         else
         {

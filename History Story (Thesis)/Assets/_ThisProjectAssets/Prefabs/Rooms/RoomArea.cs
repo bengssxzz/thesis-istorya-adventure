@@ -3,45 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System;
+using UnityEngine.Events;
 
 public class RoomArea : MonoBehaviour
 {
-    public event Action<bool> OnPlayerEnterExitRoom;
-    private CinemachineVirtualCamera roomCamera;
     
+    public UnityEvent OnPlayerEnterRoom;
+    public UnityEvent OnPlayerExitRoom;
+
+
     public bool isPlayerInsideRoom { get; private set; }
-
-    private void Awake()
-    {
-        roomCamera = GetComponentInChildren<CinemachineVirtualCamera>(true);
-    }
-    private void Start()
-    {
-    }
-
-    private void SetPlayerCameraFollow()
-    {
-        roomCamera.gameObject.SetActive(true);
-        roomCamera.Follow = PlayerSingleton.Instance.transform;
-    }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Player enter the room
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("I saw Player");
-            SetPlayerCameraFollow();
-            OnPlayerEnterExitRoom?.Invoke(true);
+            isPlayerInsideRoom = true;
+            OnPlayerEnterRoom?.Invoke();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        //Player exit the room
         if (collision.CompareTag("Player"))
         {
-            roomCamera.gameObject.SetActive(false);
             isPlayerInsideRoom = false;
-            OnPlayerEnterExitRoom?.Invoke(false) ;
+            OnPlayerExitRoom?.Invoke();
         }
     }
 

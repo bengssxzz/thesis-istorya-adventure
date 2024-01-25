@@ -18,36 +18,52 @@ public class ModifyStatsAbility : AbilityScript
     protected override IEnumerator PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return base.PreCastingBehaviour(mono, entity);
-
-        mono.StopCoroutine(CastingBehaviour(mono, entity));
+        //Not needed
     }
     protected override IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return base.CastingBehaviour(mono, entity);
 
-        float _timer = 0;
-
-        do
-        {
-            foreach (ModifyStats statsModifying in listOfStatsModified)
-            {
-                entity.GetEntityStats.TemporaryStatsModification(statsModifying.modifyStats, statsModifying.modifyValue);
-            }
-            _timer += Time.deltaTime;
-            yield return null;
-        } while (activeTime >= _timer);
-
         //Modifying entity stats 
-        
+        foreach (ModifyStats statsModifying in listOfStatsModified)
+        {
+            switch (statsModifying.modifyStats)
+            {
+                case EntityStats.Health:
+                    break;
+                case EntityStats.Mana:
+                    break;
+                case EntityStats.Defense:
+                    entity.GetEntityStats.TempModifiedDefense(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
+                    break;
+                case EntityStats.MoveSpeed:
+                    entity.GetEntityStats.TempModifiedMoveSpeed(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
+                    break;
+                case EntityStats.AttackSpeed:
+                    entity.GetEntityStats.TempModifiedAttackSpeed(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
+                    break;
+                case EntityStats.CriticalChance:
+                    entity.GetEntityStats.TempModifiedCriticalChance(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
+                    break;
+                case EntityStats.CriticalDamage:
+                    entity.GetEntityStats.TempModifiedCriticalDamage(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
+                    break;
+                case EntityStats.Dodging:
+                    entity.GetEntityStats.TempModifiedDodgeChance(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
+                    break;
+                case EntityStats.LifeSteal:
+                    entity.GetEntityStats.TempModifiedDamage(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
+                    break;
+                case EntityStats.Damage:
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return base.FinishedCastingBehaviour(mono, entity);
-
-        //Revert back to original current stats
-        foreach (ModifyStats statsModifying in listOfStatsModified)
-        {
-            entity.GetEntityStats.RevertCurrentStats(statsModifying.modifyStats);
-        }
+        //Not needed
     }
 }

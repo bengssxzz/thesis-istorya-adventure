@@ -22,7 +22,7 @@ public class BoostAttackAbility : AbilityScript
         if (entity != null && entity.GetEntityStats != null)
         {
             normalAttackSpeed = entity.GetEntityStats.currentAttackSpeed;
-            normalDamage = entity.GetEntityStats.damage;
+            normalDamage = entity.GetEntityStats.maxDamage;
         }
         else
         {

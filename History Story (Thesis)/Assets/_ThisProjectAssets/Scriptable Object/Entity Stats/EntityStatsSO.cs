@@ -15,13 +15,13 @@ public class EntityStatsSO : ScriptableObject
     [Header("Damage")]
     public float damage = 10;
     [Tooltip("Critical Damage in percentage")]
-    [Range(0.0f, 1f)] public float criticalDamage = 0.20f;
-    [Range(0.0f, 1f)] public float criticalChance = 0f;
+    public float criticalDamage = 20f; 
+    [Range(0.0f, 100f)] public float criticalChance = 0f;
 
     [Header("Defense")]
     [Tooltip("Critical Damage in percentage")]
-    [Range(0.0f, 1f)] public float defense = 0f;
-    [Range(0.0f, 1f)] public float dodgingChance = 0;
+    [Range(0.0f, 100f)] public float defense = 0f;
+    [Range(0.0f, 100f)] public float dodgingChance = 0;
     
     [Header("Speed")]
     public float maxMoveSpeed= 30;

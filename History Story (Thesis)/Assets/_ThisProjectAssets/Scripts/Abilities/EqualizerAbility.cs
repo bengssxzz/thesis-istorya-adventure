@@ -59,12 +59,12 @@ public class EqualizerAbility : AbilityScript
         yield return base.PreCastingBehaviour(mono, entity);
 
         // Store variables that will be reverted later.
-        normalDefense = entity.GetEntityStats.defense;
-        normalDamage = entity.GetEntityStats.damage;
+        normalDefense = entity.GetEntityStats.maxDefense;
+        normalDamage = entity.GetEntityStats.maxDamage;
         normalLifesteal = entity.GetEntityStats.lifeSteal;
         normalAttackSpeed = entity.GetEntityStats.currentAttackSpeed;
-        normalCriticalChance = entity.GetEntityStats.criticalChance;
-        normalCriticalDamage = entity.GetEntityStats.criticalDamage;
+        normalCriticalChance = entity.GetEntityStats.maxCriticalChance;
+        normalCriticalDamage = entity.GetEntityStats.maxCriticalDamage;
 
         // Compute for lost health, which might be needed later.
         lostHealth = entity.GetEntityStats.maxHealth - entity.GetEntityStats.currentHealth;
@@ -100,9 +100,9 @@ public class EqualizerAbility : AbilityScript
                 break;
             case 3:
                 // Boost damage, critical damage, and critical chance by FirstTriBoostPercentage.
-                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.damage) + entity.GetEntityStats.damage * FirstTriBoostPercentage);
-                entity.GetEntityStats.ModifiedCriticalDamage((entity.GetEntityStats.criticalDamage) + entity.GetEntityStats.criticalDamage * FirstTriBoostPercentage);
-                entity.GetEntityStats.ModifiedCriticalChance((entity.GetEntityStats.criticalChance) + entity.GetEntityStats.criticalChance * FirstTriBoostPercentage);
+                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.maxDamage) + entity.GetEntityStats.maxDamage * FirstTriBoostPercentage);
+                entity.GetEntityStats.ModifiedCriticalDamage((entity.GetEntityStats.maxCriticalDamage) + entity.GetEntityStats.maxCriticalDamage * FirstTriBoostPercentage);
+                entity.GetEntityStats.ModifiedCriticalChance((entity.GetEntityStats.maxCriticalChance) + entity.GetEntityStats.maxCriticalChance * FirstTriBoostPercentage);
                 // Reduce attack speed by its penalty.
                 entity.GetEntityStats.ModifiedAttackSpeed(entity.GetEntityStats.currentAttackSpeed * AttackSpeedPenalty);
                 break;
@@ -116,7 +116,7 @@ public class EqualizerAbility : AbilityScript
                 break;
             case 6:
                 // Boost attack damage, attack speed, and lifesteal by HugeBoost.
-                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.damage) + entity.GetEntityStats.damage * HugeBoost);
+                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.maxDamage) + entity.GetEntityStats.maxDamage * HugeBoost);
                 entity.GetEntityStats.ModifiedAttackSpeed((entity.GetEntityStats.currentAttackSpeed) + entity.GetEntityStats.currentAttackSpeed * HugeBoost);
                 entity.GetEntityStats.ModifiedLifesteal((entity.GetEntityStats.lifeSteal) + entity.GetEntityStats.lifeSteal * HugeBoost);
                 break;

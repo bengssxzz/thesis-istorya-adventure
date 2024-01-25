@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using MoreMountains.FeedbacksForThirdParty;
+using ThesisLibrary;
 
 [CreateAssetMenu(fileName = "Mactan Shield", menuName = "Abilities/Mactan Shield")]
 public class MactanShieldAbility : AbilityScript
@@ -12,25 +13,27 @@ public class MactanShieldAbility : AbilityScript
     [Header("Mactan Shield Ability")]
     [SerializeField] private Projectile projectile;
 
-    public float damageReductionPercentage;
+    [Range(0, 100)]public float addDefensePercentage;
     public float time;
     private int circleRayCount = 30;
     float startAngle = 0;
 
-    private float normalDefense;
+    //private float normalDefense;
 
     protected override IEnumerator PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return base.PreCastingBehaviour(mono, entity);
 
-        normalDefense = entity.GetEntityStats.defense;
 
     }
     protected override IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         yield return base.CastingBehaviour(mono, entity);
 
-        entity.GetEntityStats.ModifiedDefense(normalDefense + damageReductionPercentage);
+        //Kung gusto mag add ng defense, For example you want to add 40% 
+        var entityDefense = entity.GetEntityStats.maxDefense;
+        var calculateDefense = ThesisUtility.ComputeAddedValueWithPercentage(entityDefense, addDefensePercentage);
+        entity.GetEntityStats.TempModifiedDefense(calculateDefense, time).ConfigureAwait(false); //Modify defence
 
         yield return new WaitForSeconds(time);
     }
@@ -66,9 +69,6 @@ public class MactanShieldAbility : AbilityScript
             }
         }
         startAngle = -360 / 2;
-
-
-        entity.GetEntityStats.ModifiedDefense(normalDefense);
     }
 
 }

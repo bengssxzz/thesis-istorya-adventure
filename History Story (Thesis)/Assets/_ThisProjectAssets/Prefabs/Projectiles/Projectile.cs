@@ -49,7 +49,7 @@ public class Projectile : MonoBehaviour
         if (host != null)
         {
             entityHost = host;
-            hostDamage = host.GetEntityStats.damage;
+            hostDamage = host.GetEntityStats.maxDamage;
             startPoint = host.transform.position;
         }
 

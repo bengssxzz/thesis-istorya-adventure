@@ -152,7 +152,7 @@ public class Entities : MonoBehaviour, IDamageable
 
         //Dodge
         if (canDodge == true)
-            if (ThesisUtility.RandomGetChanceBool(GetEntityStats.dodgeChance)) { return; } //if dodge is true, dont take damage
+            if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) { return; } //if dodge is true, dont take damage
 
         //Critical Computation
         if (canCritical == true)
@@ -163,11 +163,12 @@ public class Entities : MonoBehaviour, IDamageable
             {
                 //Critical damage if the sourceDamage is not null
 
-                isCritical = ThesisUtility.RandomGetChanceBool(sourceDamage.GetEntityStats.criticalChance);
+                isCritical = ThesisUtility.RandomGetChanceBool(sourceDamage.GetEntityStats.maxCriticalChance.ConvertNumberToPercent());
                 if (isCritical)
                 {
-                    float criticalDamage = damage * sourceDamage.GetEntityStats.criticalDamage;
-                    damage += criticalDamage;
+                    //float criticalDamage = damage * sourceDamage.GetEntityStats.maxCriticalDamage / 100f;
+                    //damage += criticalDamage;
+                    damage += ThesisUtility.ComputeAddedValueWithPercentage(damage, sourceDamage.GetEntityStats.maxCriticalDamage);
                 }
             }
             else
@@ -186,13 +187,14 @@ public class Entities : MonoBehaviour, IDamageable
 
         //Compute the total damage
         //Formula: Damage - defense %
-        computedDamage = (damage - (damage * GetEntityStats.defense)) * -1;
+        //computedDamage = (damage - (damage * GetEntityStats.maxDefense / 100f));
+        computedDamage = ThesisUtility.ComputeAddedValueWithPercentage(damage, -GetEntityStats.maxDefense); 
 
-        GetEntityStats.SetCurrentHealth(computedDamage);
+        GetEntityStats.SetCurrentHealth(-computedDamage);
         OnHit?.Invoke();
 
         if (debugMode)
-            Debug.Log(String.Format("{3} Taking Damage || Original: {0};  Defense: {1}; Computed: {2};", damage, GetEntityStats.defense, computedDamage, this.name));
+            Debug.Log(String.Format("{3} Taking Damage || Original: {0};  Defense: {1}; Computed: {2};", damage, GetEntityStats.maxDefense.ConvertNumberToPercent(), computedDamage, this.name));
 
         if (GetEntityStats.currentHealth <= 0)
         {

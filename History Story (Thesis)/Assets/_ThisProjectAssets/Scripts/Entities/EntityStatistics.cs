@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public enum EntityStats
 {
     Health,
     Mana,
+    Damage,
     Defense,
     MoveSpeed,
     AttackSpeed,
@@ -37,21 +39,30 @@ public class EntityStatistics
     //Main Stats
     public float maxHealth { get; private set; }
     public float currentHealth { get; private set; }
-    public float damage { get; private set; }
-    public float defense { get; private set; }
+
+    public float maxDamage { get; private set; }
+    public float currentDamage { get; private set; }
+
+    public float maxDefense { get; private set; }
+    public float currentDefense { get; private set; }
 
     //About Speed
     public float maxMoveSpeed { get; private set; }
-    public float currentMoveSpeed { get; set; }
+    public float currentMoveSpeed { get; private set; }
+
     public float maxAttackSpeed { get; private set; }
-    public float currentAttackSpeed { get; set; }
+    public float currentAttackSpeed { get; private set; }
 
     //Accuracy
-    public float criticalDamage { get; private set; }
-    public float dodgeChance { get; private set; }
+    public float maxCriticalDamage { get; private set; }
+    public float currentCriticalDamage { get; private set; }
+
+    public float maxDodgeChance { get; private set; }
+    public float currentDodgeChance { get; private set; }
 
     //Sight
-    public float criticalChance { get; private set; }
+    public float maxCriticalChance { get; private set; }
+    public float currentCriticalChance { get; private set; }
 
     //Regeneration
     public float lifeSteal { get; private set; } //Every kill absorb health
@@ -87,19 +98,26 @@ public class EntityStatistics
         maxHealth = entityStatsSO.maxHealth;
         currentHealth = maxHealth;
 
-        damage = entityStatsSO.damage;
-        defense = entityStatsSO.defense;
+        maxDamage = entityStatsSO.damage;
+        currentDamage = maxDamage;
+
+        maxDefense = entityStatsSO.defense;
+        currentDefense = maxDefense;
 
         maxAttackSpeed = entityStatsSO.attackSpeed;
         currentAttackSpeed = maxAttackSpeed;
+
         maxMoveSpeed = entityStatsSO.maxMoveSpeed;
         currentMoveSpeed = maxMoveSpeed;
 
-        criticalDamage = entityStatsSO.criticalDamage;
-        dodgeChance = entityStatsSO.dodgingChance;
+        maxCriticalDamage = entityStatsSO.criticalDamage;
+        currentCriticalDamage = maxCriticalDamage;
 
-        criticalChance = entityStatsSO.criticalChance;
+        maxDodgeChance = entityStatsSO.dodgingChance;
+        currentDodgeChance = maxDodgeChance;
 
+        maxCriticalChance = entityStatsSO.criticalChance;
+        currentCriticalChance = maxCriticalChance;
 
 
         lifeSteal = entityStatsSO.lifeSteal;
@@ -108,6 +126,7 @@ public class EntityStatistics
 
     }
 
+    #region MODIFICATION (OLD)
     public void ModifiedMoveSpeed(float amount)
     {
         currentMoveSpeed = amount;
@@ -116,7 +135,7 @@ public class EntityStatistics
     // method to modify the defense value
     public void ModifiedDefense(float newDefense)
     {
-        defense = Mathf.Clamp(newDefense, 0f, 1f);
+        maxDefense = Mathf.Clamp(newDefense, 0f, 1f);
     }
 
     // method to modify the attackspeed value
@@ -128,7 +147,7 @@ public class EntityStatistics
     // method to modify the damage value
     public void ModifiedDamage(float newDamage)
     {
-        damage = newDamage;
+        maxDamage = newDamage;
     }
 
     // !Added by different person.
@@ -140,15 +159,130 @@ public class EntityStatistics
 
     public void ModifiedCriticalChance(float newCriticalChance)
     {
-        criticalChance = newCriticalChance;
+        maxCriticalChance = newCriticalChance;
     }
 
     public void ModifiedCriticalDamage(float newCriticalDamage)
     {
-        criticalDamage = newCriticalDamage;
+        maxCriticalDamage = newCriticalDamage;
     }
 
     // !Addition of different person ends.
+    #endregion
+
+    /* To use this in other script. For example:
+     * public async void Activate(){
+     *      await playerstats.TempModifiedDamage(3,3) <-- wait to finish before continue
+     *      //Do some code
+     * }
+     * 
+     * OR
+     * 
+     * public void Activate(){
+     *       playerstats.TempModifiedDamage(3,3).ConfigureAwait(false); <-- dont wait to finish before continue
+     *       //Do some code
+     * }
+     */
+    public async Task TempModifiedDamage(float tempValue, float duration) //Damage
+    {
+        float startTime = Time.time;
+        float endTime = startTime + duration;
+
+        while (Time.time < endTime) // Wait until the specified duration has passed
+        {
+            currentDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); // Apply temporary value
+            await Task.Yield();
+        }
+
+        // Back to the original
+        currentDamage = maxDamage;
+    }
+    public async Task TempModifiedDefense(float tempValue, float duration) //Defense
+    {
+        float startTime = Time.time;
+        float endTime = startTime + duration;
+
+        while (Time.time < endTime) // Wait until the specified duration has passed
+        {
+            currentDefense = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
+            await Task.Yield();
+        }
+
+        // Back to the original 
+        currentDefense = maxDefense;
+    }
+    public async Task TempModifiedMoveSpeed(float tempValue, float duration) //Movement Speed
+    {
+        float startTime = Time.time;
+        float endTime = startTime + duration;
+
+        while (Time.time < endTime) // Wait until the specified duration has passed
+        {
+            currentMoveSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
+            await Task.Yield();
+        }
+
+        // Back to the original 
+        currentMoveSpeed = maxMoveSpeed;
+    }
+    public async Task TempModifiedAttackSpeed(float tempValue, float duration) //Attack Speed
+    {
+        float startTime = Time.time;
+        float endTime = startTime + duration;
+
+        while (Time.time < endTime) // Wait until the specified duration has passed
+        {
+            maxAttackSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
+            await Task.Yield();
+        }
+
+        // Back to the original 
+        currentAttackSpeed = maxAttackSpeed;
+    }
+    public async Task TempModifiedCriticalDamage(float tempValue, float duration) //Critical Damage
+    {
+        float startTime = Time.time;
+        float endTime = startTime + duration;
+
+        while (Time.time < endTime) // Wait until the specified duration has passed
+        {
+            currentCriticalDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
+            await Task.Yield();
+        }
+
+        // Back to the original 
+        currentCriticalDamage = maxCriticalDamage;
+    }
+    public async Task TempModifiedCriticalChance(float tempValue, float duration) //Critical Chance
+    {
+        float startTime = Time.time;
+        float endTime = startTime + duration;
+
+        while (Time.time < endTime) // Wait until the specified duration has passed
+        {
+            currentCriticalChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
+            await Task.Yield();
+        }
+
+        // Back to the original 
+        currentCriticalChance = maxCriticalChance;
+    }
+    public async Task TempModifiedDodgeChance(float tempValue, float duration) //Dodge Chance
+    {
+        float startTime = Time.time;
+        float endTime = startTime + duration;
+
+        while (Time.time < endTime) // Wait until the specified duration has passed
+        {
+            currentDodgeChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
+            await Task.Yield();
+        }
+
+        // Back to the original 
+        currentDodgeChance = maxDodgeChance;
+    }
+
+
 
     public void SetCurrentHealth(float amount)
     {
@@ -162,18 +296,18 @@ public class EntityStatistics
         {
             case CategoryStats.MainStats:
                 maxHealth += 10;
-                defense += 0.01f;
+                maxDefense += 0.01f;
                 break;
             case CategoryStats.Speed:
                 maxMoveSpeed += 0.2f;
                 maxAttackSpeed += 0.01f;
                 break;
             case CategoryStats.Accuracy:
-                criticalDamage += 0.002f;
-                dodgeChance += 0.002f;
+                maxCriticalDamage += 0.002f;
+                maxDodgeChance += 0.002f;
                 break;
             case CategoryStats.Sight:
-                criticalChance += 0.002f;
+                maxCriticalChance += 0.002f;
                 break;
             case CategoryStats.Regeneration:
                 lifeSteal += 1.5f;
@@ -193,197 +327,10 @@ public class EntityStatistics
     }
     public void UpgradeDefence(int amount)
     {
-        defense += amount;
+        maxDefense += amount;
 
     }
 
-    public void StatsModify_Defense(float addValue)
-    {
-        if (is_already_modified_defense)
-        {
-            defense = saved_curr_defense; //Revert the original stats first
-        }
-        else
-        {
-            is_already_modified_defense = true;
-        }
-
-        saved_curr_defense = defense;  //Save the current stats
-        defense += addValue; //Modify the stats
-
-    }
-    public void StatsModify_MoveSpeed(float addValue)
-    {
-        if (is_already_modified_movementSpeed)
-        {
-            currentMoveSpeed = saved_curr_movementSpeed; //Revert the original stats first
-        }
-        else
-        {
-            is_already_modified_movementSpeed = true;
-        }
-
-        saved_curr_movementSpeed = currentMoveSpeed;  //Save the current stats
-        currentMoveSpeed += addValue; //Modify the stats
-
-    }
-
-
-
-    public void TemporaryStatsModification(EntityStats modifyStats, float addModifyValue)
-    {
-        switch (modifyStats)
-        {
-            case EntityStats.Health:
-                break;
-            case EntityStats.Mana:
-                break;
-            case EntityStats.Defense:
-                if (is_already_modified_defense)
-                {
-                    defense = saved_curr_defense; //Revert the original stats first
-                }
-                else
-                {
-                    is_already_modified_defense = true;
-                }
-
-                saved_curr_defense = defense;  //Save the current stats
-                defense += addModifyValue; //Modify the stats
-
-                break;
-
-            case EntityStats.MoveSpeed:
-                if (is_already_modified_movementSpeed)
-                {
-                    currentMoveSpeed = saved_curr_movementSpeed; //Revert the original stats first
-                }
-                else
-                {
-                    is_already_modified_movementSpeed = true;
-                }
-
-                saved_curr_movementSpeed = currentMoveSpeed;  //Save the current stats
-                currentMoveSpeed += addModifyValue; //Modify the stats
-
-                break;
-
-            case EntityStats.AttackSpeed:
-                if (is_already_modified_attackSpeed)
-                {
-                    currentAttackSpeed = saved_curr_attackSpeed; //Revert the original stats first
-                }
-                else
-                {
-                    is_already_modified_attackSpeed = true;
-                }
-
-                saved_curr_attackSpeed = currentAttackSpeed;  //Save the current stats
-                currentAttackSpeed += addModifyValue; //Modify the stats
-
-                break;
-
-            case EntityStats.CriticalChance:
-                if (is_already_modified_criticalChance)
-                {
-                    criticalChance = saved_curr_criticalChance; //Revert the original stats first
-                }
-                else
-                {
-                    is_already_modified_criticalChance = true;
-                }
-
-                saved_curr_criticalChance = criticalChance;  //Save the current stats
-                criticalChance += addModifyValue; //Modify the stats
-
-                break;
-
-            case EntityStats.CriticalDamage:
-                if (is_already_modified_criticalDamage)
-                {
-                    criticalDamage = saved_curr_criticalDamage; //Revert the original stats first
-                }
-                else
-                {
-                    is_already_modified_criticalDamage = true;
-                }
-
-                saved_curr_criticalDamage = criticalDamage;  //Save the current stats
-                criticalDamage += addModifyValue; //Modify the stats
-
-                break;
-
-            case EntityStats.Dodging:
-                if (is_already_modified_dodgeChance)
-                {
-                    dodgeChance = saved_curr_dodgeChance; //Revert the original stats first
-                }
-                else
-                {
-                    is_already_modified_dodgeChance = true;
-                }
-
-                saved_curr_dodgeChance = dodgeChance;  //Save the current stats
-                dodgeChance += addModifyValue; //Modify the stats
-
-                break;
-
-            case EntityStats.LifeSteal:
-                if (is_already_modified_lifeSteal)
-                {
-                    lifeSteal = saved_curr_lifeSteal; //Revert the original stats first
-                }
-                else
-                {
-                    is_already_modified_lifeSteal = true;
-                }
-
-                saved_curr_lifeSteal = lifeSteal;  //Save the current stats
-                lifeSteal += addModifyValue; //Modify the stats
-
-                break;
-        }
-    }
-    public void RevertCurrentStats(EntityStats modifyStats)
-    {
-        switch (modifyStats)
-        {
-            case EntityStats.Health:
-                //Do not modify health
-                break;
-            case EntityStats.Mana:
-                //Do not modify mana
-                break;
-            case EntityStats.Defense:
-                defense = saved_curr_defense;
-                is_already_modified_defense = false;
-                break;
-            case EntityStats.MoveSpeed:
-                currentMoveSpeed = saved_curr_movementSpeed;
-                is_already_modified_movementSpeed = false;
-                break;
-            case EntityStats.AttackSpeed:
-                currentAttackSpeed = saved_curr_attackSpeed;
-                is_already_modified_attackSpeed = false;
-                break;
-            case EntityStats.CriticalChance:
-                criticalChance = saved_curr_criticalChance;
-                is_already_modified_criticalChance = false;
-                break;
-            case EntityStats.CriticalDamage:
-                criticalDamage = saved_curr_criticalDamage;
-                is_already_modified_criticalDamage = false;
-                break;
-            case EntityStats.Dodging:
-                dodgeChance = saved_curr_dodgeChance;
-                is_already_modified_dodgeChance = false;
-                break;
-            case EntityStats.LifeSteal:
-                lifeSteal = saved_curr_lifeSteal;
-                is_already_modified_lifeSteal = false;
-                break;
-        }
-    }
 
 
 }
