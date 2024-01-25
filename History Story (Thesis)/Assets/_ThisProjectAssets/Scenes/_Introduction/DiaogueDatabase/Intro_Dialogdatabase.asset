@@ -214,8 +214,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1332
-        y: 516
+        x: 184
+        y: 50
         width: 160
         height: 30
     - id: 1
@@ -295,8 +295,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1332
-        y: 588
+        x: 184
+        y: 134
         width: 160
         height: 30
     - id: 2
@@ -366,8 +366,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1332
-        y: 732
+        x: 80
+        y: 302
         width: 160
         height: 30
     - id: 3
@@ -438,8 +438,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1328.808
-        y: 855.8301
+        x: 76.94656
+        y: 380.6565
         width: 160
         height: 30
     - id: 4
@@ -509,8 +509,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1328.808
-        y: 927.8301
+        x: 76.94656
+        y: 464.6565
         width: 160
         height: 30
     - id: 5
@@ -580,8 +580,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1476
-        y: 648
+        x: 80
+        y: 218
         width: 160
         height: 30
     - id: 6
@@ -651,21 +651,21 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 1152
-        y: 648
+        x: 288
+        y: 218
         width: 160
         height: 30
     entryGroups:
     - name: When the player woke up
       rect:
         serializedVersion: 2
-        x: 1294.5004
-        y: 817.3815
+        x: 73.94693
+        y: 349.53796
         width: 223.25945
         height: 196.95996
       color: {r: 1, g: 0.65723264, b: 0.98410666, a: 0.5}
-    canvasScrollPosition: {x: 696.7868, y: 422.73456}
-    canvasZoom: 0.61000097
+    canvasScrollPosition: {x: 0, y: 0}
+    canvasZoom: 1.31
   - id: 2
     fields:
     - title: Title
@@ -767,7 +767,78 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: 
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 2
+        originDialogueID: 0
+        destinationConversationID: 2
+        destinationDialogueID: 2
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 180
+        y: 31
+        width: 160
+        height: 30
+    - id: 2
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Pictures
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Parenthetical
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Audio Files
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Video File
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 2
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
@@ -778,7 +849,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 30
+        y: 130
         width: 160
         height: 30
     entryGroups: []
