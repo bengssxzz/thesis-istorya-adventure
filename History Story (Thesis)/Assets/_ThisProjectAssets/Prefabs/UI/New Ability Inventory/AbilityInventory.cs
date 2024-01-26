@@ -41,12 +41,12 @@ public class AbilityInventory : UIPages
         InitializedHolder();
 
         listOfAllAbilities = GameManager.Instance.GetAllListOfAbility;
-        listOfUnlockedAbilities = entity.Ability_Controller.GetListOfUnlockedAbilities();
+        listOfUnlockedAbilities = entity.GetAbility_Controller.GetListOfUnlockedAbilities();
     }
 
     private void Start()
     {
-        currentUsedAbilities = entity.Ability_Controller.ListOfCurrentAbilities.ToArray();
+        currentUsedAbilities = entity.GetAbility_Controller.ListOfCurrentAbilities.ToArray();
 
         doneBtn.onClick.AddListener(DoneEditAbilities);
 
@@ -310,7 +310,7 @@ public class AbilityInventory : UIPages
         UpdateUnlockAbilityInList();
         UpdateHolderVisual();
 
-        entity.Ability_Controller.ListOfCurrentAbilities = currentUsedAbilities.ToList();
+        entity.GetAbility_Controller.ListOfCurrentAbilities = currentUsedAbilities.ToList();
         GameManager.Instance.SetPauseValue(false);
     }
 }

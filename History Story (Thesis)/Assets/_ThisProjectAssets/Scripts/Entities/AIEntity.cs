@@ -12,21 +12,24 @@ using UnityEditor;
 [RequireComponent(typeof(AIPath))]
 public class AIEntity : Entities
 {
+    private enum MoveBehaviourType { Follow, Random}
     protected AIPath aiPath;
     protected Seeker seek;
 
     private Transform targetEntity;
 
-
     [Space(10)]
     [Header("Distance Info")]
+    [SerializeField] private MoveBehaviourType moveBehaviour = MoveBehaviourType.Follow;
     [SerializeField] [Range(0f, 50f)] protected float stopDistance;
     [SerializeField] [Range(0f, 50f)] protected float fleeDistance;
 
+    [Header("For Random Move Behaviour")]
+    [SerializeField] private float minRandomWait;
+    [SerializeField] private float maxRandomWait;
+    private bool isAlreadyCalculateRandom = false;
 
-    //Tryer
-    private bool doFlee = true;
-
+    
     protected override void Awake()
     {
         base.Awake();
@@ -41,18 +44,28 @@ public class AIEntity : Entities
     }
     protected override void Update()
     {
-        //targetEntity = Attack_Controller.GetNearestEnemy;
+        targetEntity = GetAttack_Controller.GetNearestEnemy;
 
         base.Update();
 
-        //StartCoroutine(FleeTryer());
-        //SeekBehaviour();
-        //FleeBehaviour();
+        switch (moveBehaviour)
+        {
+            case MoveBehaviourType.Follow:
+                SeekBehaviour();
+                break;
+            case MoveBehaviourType.Random:
+                StartCoroutine(RandomBehaviour());
+                break;
+        }
+
+        FleeBehaviour();
 
     }
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+
+        
     }
 
 
@@ -62,43 +75,75 @@ public class AIEntity : Entities
         //aiPath.destination = targetEntity.position;
     }
 
-    //private void SeekBehaviour()
-    //{
-    //    var distance = Vector2.Distance(transform.position, targetEntity.position);
-    //    if (distance >  stopDistance && distance > fleeDistance)
-    //    {
-    //        aiPath.canMove = true;
-    //        aiPath.destination = targetEntity.position;
-    //        aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime;
-    //        //Debug.Log($"Current Speeed: {GetEntityStats.currentMoveSpeed} || Deltatime: {Time.deltaTime} || Total: {GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime}");
+    private IEnumerator RandomBehaviour()
+    {
+        if (!isAlreadyCalculateRandom)
+        {
+            isAlreadyCalculateRandom = true;
 
-    //    }
-    //    else
-    //    {
-    //        aiPath.canMove = false;
-    //    }
-    //}
-    //private void FleeBehaviour()
-    //{
-    //    if (Vector2.Distance(transform.position, targetEntity.position) < fleeDistance)
-    //    {
-    //        //TODO: Flee
-    //        Debug.Log("Flee");
-    //        aiPath.canMove = true;
+            Debug.Log("COROUTINE");
+            int lenght = ThesisUtility.RandomGetAmount(500, 1500);
+            RandomPath randomPath = RandomPath.Construct(transform.position, lenght);
+            randomPath.spread = ThesisUtility.RandomGetAmount(300, 1500);
 
-    //        FleePath fleePath = FleePath.Construct(transform.position, targetEntity.position, 450);
-    //        fleePath.aimStrength = 0.8f;
-    //        fleePath.spread = 0;
+            if (targetEntity != null)
+            {
+                randomPath.aim = targetEntity.position;
+                randomPath.aimStrength = ThesisUtility.RandomGetFloat();
+            }
+
+            aiPath.canMove = true;
+            Debug.Log("RANDOM PATH DURATION: " + randomPath.duration);
+
+            Debug.Log("RANDOM IS STARTED");
+            seek.StartPath(randomPath, OnPathComplete);
 
 
-    //        seek.StartPath(fleePath, OnPathComplete);
-    //    }
-    //}
+            yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minRandomWait, maxRandomWait)); //Wait time to change position
+            isAlreadyCalculateRandom = false;
+        }
+    }
+    private void SeekBehaviour()
+    {
+        if (targetEntity == null) { return; }
 
-    //private void OnPathComplete(Path p)
-    //{
-    //    Debug.Log("Done Path");
-    //}
+        var distance = Vector2.Distance(transform.position, targetEntity.position);
+        if (distance > stopDistance && distance > fleeDistance)
+        {
+            aiPath.canMove = true;
+            aiPath.destination = targetEntity.position;
+            aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime;
+            //Debug.Log($"Current Speeed: {GetEntityStats.currentMoveSpeed} || Deltatime: {Time.deltaTime} || Total: {GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime}");
+
+        }
+        else
+        {
+            aiPath.canMove = false;
+        }
+    }
+    private void FleeBehaviour()
+    {
+        if(targetEntity == null) { return; }
+
+        if (Vector2.Distance(transform.position, targetEntity.position) < fleeDistance)
+        {
+            //TODO: Flee
+            Debug.Log("Flee");
+            aiPath.canMove = true;
+
+            int lenght = ThesisUtility.RandomGetAmount(450, 1000);
+            FleePath fleePath = FleePath.Construct(transform.position, targetEntity.position, lenght);
+            fleePath.aimStrength = 0.8f;
+            fleePath.spread = 0;
+
+            seek.StartPath(fleePath, OnPathComplete);
+        }
+    }
+
+    private void OnPathComplete(Path p)
+    {
+        Debug.Log("Done Path");
+    }
 
 
     private void OnDrawGizmosSelected()

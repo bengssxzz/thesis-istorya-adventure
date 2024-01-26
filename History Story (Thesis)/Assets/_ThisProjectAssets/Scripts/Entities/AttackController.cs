@@ -48,6 +48,7 @@ public class AttackController : DetectMyEnemies
     [SerializeField] private float fireRate = 0.1f;
     [SerializeField] [Range(0f, 50f)] private float rangedAttackDistance;
 
+    
 
     private float _fireRate = 0;
     private int currentAttackState = 0;

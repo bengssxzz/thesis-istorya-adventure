@@ -23,7 +23,7 @@ public class MobileUITouchController : UIPages
     public override void ShowBehavior()
     {
         //currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
-        currentAbility = entity.Ability_Controller.ListOfCurrentAbilities.ToArray();
+        currentAbility = entity.GetAbility_Controller.ListOfCurrentAbilities.ToArray();
 
         //Subscribe new abilities event function
         for (int i = 0; i < listOfTouchHolderUI.Length; i++)
@@ -52,7 +52,7 @@ public class MobileUITouchController : UIPages
     private void Start()
     {
         //currentAbility = entity.abilityHolder.GetListOfCurrentAbilities().ToArray();
-        currentAbility = entity.Ability_Controller.ListOfCurrentAbilities.ToArray();
+        currentAbility = entity.GetAbility_Controller.ListOfCurrentAbilities.ToArray();
     }
 
    
