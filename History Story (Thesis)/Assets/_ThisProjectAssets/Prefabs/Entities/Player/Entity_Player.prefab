@@ -6875,6 +6875,22 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8532066318369890184, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_Size.x
+      value: 0.09983182
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532066318369890184, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.09983182
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532066318369890184, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.00026643276
+      objectReference: {fileID: 0}
+    - target: {fileID: 8532066318369890184, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.04136479
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
 --- !u!4 &4314618784951128740 stripped
@@ -6952,14 +6968,15 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 18432
+  attackHolder: {fileID: 1038986683}
+  fireRate: 1
+  rangedAttackDistance: 1.5
   attackStates:
   - attackTypes:
     - {fileID: 4066541492125728282}
     delayCast: 0
     movingWhileCasting: 0
-  attackHolder: {fileID: 1038986683}
-  fireRate: 1
-  rangedAttackDistance: 1.5
+  meleeAttackDistance: 0
 --- !u!114 &8317737906084428166
 MonoBehaviour:
   m_ObjectHideFlags: 0
