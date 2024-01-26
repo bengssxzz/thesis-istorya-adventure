@@ -39,14 +39,16 @@ public class AttackController : DetectMyEnemies
 
     public Entities GetThisEntity { get; private set; }
     
-    [Space(25)]
     [Header("Attack Info")]
-    [SerializeField] private List<AttackState> attackStates = new List<AttackState>();
-
-    [Space(20)]
+    [Header("Range")]
     [SerializeField] private Transform attackHolder;
     [SerializeField] private float fireRate = 0.1f;
     [SerializeField] [Range(0f, 50f)] private float rangedAttackDistance;
+    [SerializeField] private List<AttackState> attackStates = new List<AttackState>();
+
+    [Space(20)]
+    [Header("Melee")]
+    [SerializeField] [Range(0f, 50f)] private float meleeAttackDistance;
 
     
 
@@ -428,24 +430,11 @@ public class AttackController : DetectMyEnemies
         base.OnDrawGizmosSelected();
 
 #if UNITY_EDITOR
-        Handles.color = Color.white;
+        Handles.color = Color.red;
         Handles.DrawWireDisc(transform.position, transform.forward, rangedAttackDistance);
 
-        //if (canRangeAttack)
-        //{
-        //    Handles.color = Color.white;
-        //    Handles.DrawWireDisc(transform.position, transform.forward, rangedAttackDistance);
-        //}
-
-        //if (canMeleeAttack)
-        //{
-        //    Handles.color = Color.white;
-        //    Handles.DrawWireDisc(transform.position, transform.forward, meleeAttackDistance);
-        //    Vector3 angle1 = DirFromAngle(-attackHolder.eulerAngles.z + 90, -viewAngle / 2);
-        //    Vector3 angle2 = DirFromAngle(-attackHolder.eulerAngles.z + 90, viewAngle / 2);
-        //    Handles.DrawLine(transform.position, transform.position + angle1 * meleeAttackDistance);
-        //    Handles.DrawLine(transform.position, transform.position + angle2 * meleeAttackDistance);
-        //}
+        Handles.color = Color.red;
+        Handles.DrawWireDisc(transform.position, transform.forward, meleeAttackDistance);
 #endif
 
 

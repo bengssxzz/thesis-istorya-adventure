@@ -1088,7 +1088,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1014085095
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: a49d40ff87e5cda4ebc3ec16525afda4, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -1343,8 +1343,11 @@ MonoBehaviour:
   _canAttack: 1
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
+  moveBehaviour: 0
   stopDistance: 0.41
   fleeDistance: 0
+  minRandomWait: 0
+  maxRandomWait: 0
 --- !u!114 &8648846010143950694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1443,8 +1446,11 @@ MonoBehaviour:
   _canAttack: 1
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
+  moveBehaviour: 0
   stopDistance: 0
   fleeDistance: 0
+  minRandomWait: 0
+  maxRandomWait: 0
   moveType: 0
   canFly: 0
   isBoss: 0
@@ -1720,7 +1726,7 @@ SortingGroup:
   m_GameObject: {fileID: 4672350840256640003}
   m_Enabled: 1
   m_SortingLayerID: -878505069
-  m_SortingLayer: 3
+  m_SortingLayer: 6
   m_SortingOrder: 0
 --- !u!1 &7759277665844442618
 GameObject:
