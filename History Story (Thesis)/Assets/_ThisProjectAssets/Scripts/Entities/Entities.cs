@@ -33,8 +33,8 @@ public class Entities : MonoBehaviour, IDamageable
 
     //Getter & Setter
     public Rigidbody2D GetRigidbody2D { get { return rb; } } //Get Rigidbody2D
-    public AttackController Attack_Controller { get; private set; } //Get attack controller
-    public AbilityController Ability_Controller { get; set; } //Get ability controller
+    public AttackController GetAttack_Controller { get; private set; } //Get attack controller
+    public AbilityController GetAbility_Controller { get; set; } //Get ability controller
     public EntityStatistics GetEntityStats { get; private set; } //Get entity stats handler
     public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
     public Vector2 GetMoveDirection { get; protected set; }
@@ -50,15 +50,15 @@ public class Entities : MonoBehaviour, IDamageable
         rb = GetComponent<Rigidbody2D>();
         animator_controller = GetComponent<Animator>();
 
-        Attack_Controller = GetComponent<AttackController>();
-        Ability_Controller = GetComponent<AbilityController>();
-        Ability_Controller?.InitializedComponent(this, entityStatsSO.abilities);
+        GetAttack_Controller = GetComponent<AttackController>();
+        GetAbility_Controller = GetComponent<AbilityController>();
+        GetAbility_Controller?.InitializedComponent(this, entityStatsSO.abilities);
 
         GetEntityStats = new EntityStatistics(entityStatsSO, this);
     }
     protected virtual void OnEnable()
     {
-        Ability_Controller.InitializedComponent(this, entityStatsSO.abilities);
+        GetAbility_Controller.InitializedComponent(this, entityStatsSO.abilities);
 
         GetEntityStats = new EntityStatistics(entityStatsSO, this);
     }
@@ -68,13 +68,13 @@ public class Entities : MonoBehaviour, IDamageable
     }
     protected virtual void Start()
     {
-        Attack_Controller.EnableAttacking = _canAttack;
+        GetAttack_Controller.EnableAttacking = _canAttack;
 
         //abilityHolder.OnChangeListAbilities(entityStatsSO.defaultAbilities);
     }
     protected virtual void Update()
     {
-        Attack_Controller.EnableAttacking = _canAttack;
+        GetAttack_Controller.EnableAttacking = _canAttack;
         FlipEntity();
     }
     protected virtual void FixedUpdate()

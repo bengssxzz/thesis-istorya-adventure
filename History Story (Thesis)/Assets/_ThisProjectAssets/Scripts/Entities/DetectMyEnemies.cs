@@ -10,7 +10,7 @@ public class DetectMyEnemies : MonoBehaviour
     [SerializeField] protected bool debugMode = false;
 
     [Header("Detecting my enemy")]
-    [SerializeField] private bool ignoreObstacle = false;
+    [SerializeField] private bool ignoreObstacle = false; //Ignore obstacle
     [SerializeField] protected float detectRadius = 0.5f; //If -1 iba-based ng radius nito sa entity's ranged attack field
     [SerializeField] protected LayerMask myEnemyLayer, obstacleLayer;
     private LayerMask raycastCanSee => myEnemyLayer + obstacleLayer;//Combined layer
@@ -121,65 +121,7 @@ public class DetectMyEnemies : MonoBehaviour
         //Obstacle is blocking my enemies
     }
 
-    //private void GetPriorityTarget(Collider2D[] enemyArray)
-    //{
-    //    foreach (Collider2D myEnemy in enemyArray)
-    //    {
-    //        Vector2 distance = myEnemy.transform.position - transform.position;
-    //        Vector2 direction = distance.normalized;
-    //        RaycastHit2D hit;
-
-    //        // Use OverlapCircleAll instead of Raycast to get all nearby entities
-    //        CHECKTARGET = Physics2D.OverlapCircleAll(myEnemy.transform.position, 2f, 1 << gameObject.layer);
-
-    //        if (CHECKTARGET.Length > 0)
-    //        {
-    //            TESTINGCOUNT = CHECKTARGET.Count(x => x.GetComponent<DetectMyEnemies>()?.GetNearestEnemy == GetNearestEnemy);
-    //            Collider2D[] sortEnemyArray = CHECKTARGET.OrderBy(enemy => TESTINGCOUNT).ToArray();
-
-    //            // Check if the target entity is already targeted by others
-    //            if (TESTINGCOUNT > 0)
-    //            {
-    //                // If already targeted, find another entity with fewer attackers
-    //                Collider2D lessAttackedEntity = sortEnemyArray.FirstOrDefault(enemy => enemy.GetComponent<DetectMyEnemies>()?.GetNearestEnemy != GetNearestEnemy);
-
-    //                if (lessAttackedEntity != null)
-    //                {
-    //                    // Set the less attacked entity as the target
-    //                    Debug.Log("Attacking less attacked entity: " + lessAttackedEntity.gameObject.name);
-    //                    SetTarget(lessAttackedEntity.transform);
-    //                }
-    //                else
-    //                {
-    //                    // No less attacked entity found, continue attacking the current target
-    //                    Debug.Log("Continuing to attack the current target: " + myEnemy.gameObject.name);
-    //                    SetTarget(myEnemy.transform);
-    //                }
-    //            }
-    //            else
-    //            {
-    //                // If the target has no attackers, attack it
-    //                Debug.Log("Attacking target: " + myEnemy.gameObject.name);
-    //                SetTarget(myEnemy.transform);
-    //            }
-    //        }
-
-    //        if (debugMode)
-    //            Debug.DrawRay(transform.position, distance, Color.magenta, 0.3f);
-
-    //        break;
-    //    }
-    //}
-
-    //private void SetTarget(Transform newTarget)
-    //{
-    //    // Implement your logic to set the new target
-    //    // For example, assign newTarget to GetNearestEnemy or perform other actions
-    //    GetNearestEnemy = newTarget;
-    //    // Additional logic...
-    //}
-
-
+  
     protected virtual void OnDrawGizmosSelected()
     {
         if (!debugMode)

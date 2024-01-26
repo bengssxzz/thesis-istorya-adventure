@@ -166,10 +166,10 @@ public class PlayerScript : Entities
 
     }
 
-    private void Skill0Trigger(InputAction.CallbackContext obj) => Ability_Controller.UseAbility(0);
-    private void Skill1Trigger(InputAction.CallbackContext obj) => Ability_Controller.UseAbility(1);
-    private void Skill2Trigger(InputAction.CallbackContext obj) => Ability_Controller.UseAbility(2);
-    private void Skill3Trigger(InputAction.CallbackContext obj) => Ability_Controller.UseAbility(3);
+    private void Skill0Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(0);
+    private void Skill1Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(1);
+    private void Skill2Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(2);
+    private void Skill3Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(3);
 
 
 

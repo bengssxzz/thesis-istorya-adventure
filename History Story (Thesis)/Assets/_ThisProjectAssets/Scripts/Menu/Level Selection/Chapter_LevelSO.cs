@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName ="Chapter Story Level", menuName = "Chapter Level")]
+[CreateAssetMenu(fileName ="Chapter Infos", menuName = "Chapters(Level)/Chapter Infos")]
 public class Chapter_LevelSO : ScriptableObject
 {
     public string chapterName;

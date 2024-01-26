@@ -37,7 +37,7 @@ public class AbilityItem_Pickable : PickableObject
         if (abilitySO != null)
         {
             abilityImage.gameObject.SetActive(true);
-            entity.Ability_Controller.UnlockNewAbility(abilitySO);
+            entity.GetAbility_Controller.UnlockNewAbility(abilitySO);
         }
     }
 }

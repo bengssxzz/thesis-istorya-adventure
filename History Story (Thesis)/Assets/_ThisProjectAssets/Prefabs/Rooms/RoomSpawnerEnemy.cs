@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ThesisLibrary;
 using UnityEngine.Events;
+using Pathfinding;
 
 public class RoomSpawnerEnemy : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
     private int currentWave = 0;
     private int enemySpawnCount = 0;
 
+    
     private bool isAlreadyTrigger = false;
     private bool isPendingBattle = false;
 
@@ -95,6 +97,32 @@ public class RoomSpawnerEnemy : MonoBehaviour
         //No need
     }
 
+    private void BattleIsStarted()
+    {
+        isPendingBattle = true;
+        StartCoroutine(ScanEnemies()); //Start the scanning
+        OnStartBattleTrigger?.Invoke(); //Invoke after the battle started
+
+        //Debug.Log("UPDATE GRAPH");
+
+        UpdateRoomGraphPathFinding();
+
+    }
+    private void BattleIsEnded()
+    {
+        isPendingBattle = false;
+        UpdateRoomGraphPathFinding();
+
+    }
+
+    private void UpdateRoomGraphPathFinding() //Update the graph
+    {
+        Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
+        var guo = new GraphUpdateObject(bounds);
+
+        // Set some settings
+        AstarPath.active.UpdateGraphs(guo); //Update the node according to bound
+    }
 
     IEnumerator ScanEnemies()
     {
@@ -119,6 +147,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
             //Done fighting in this room
             ResetBattle(); //Reset the battle system
             OnFinishedBattleTrigger?.Invoke();
+
+            BattleIsEnded();
         }
         else
         {
@@ -177,6 +207,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         //Done spawning enemies
         Debug.Log("THIS ROOM IS FINISH SPAWNING");
+
         isAlreadyTrigger = true;
         isPendingBattle = false;
     }
@@ -187,16 +218,16 @@ public class RoomSpawnerEnemy : MonoBehaviour
         currentWave = 0;
         enemySpawnCount = 0;
     }
+
+    #region Battle Methods
     private void StartBattle() //Start the battle
     {
         OnBeforeBattleTrigger?.Invoke(); //Invoke before the battle start
 
         StartCoroutine(ExecuteWaveBattle());
-        isPendingBattle = true;
 
-        StartCoroutine(ScanEnemies()); //Start the scanning
+        BattleIsStarted();
 
-        OnStartBattleTrigger?.Invoke(); //Invoke after the battle started
     }
 
     /* You can use these in the unity event in the inspector
@@ -209,17 +240,16 @@ public class RoomSpawnerEnemy : MonoBehaviour
         {
             //Start the battle
             ForceStartBattle();
-            StartCoroutine(ScanEnemies()); //Start the scanning
+
+            BattleIsStarted();
         }
     }
     public void ForceStartBattle() //Force start the battle
     {
         StartCoroutine(ExecuteWaveBattle());
-        isPendingBattle = true;
-
-        StartCoroutine(ScanEnemies()); //Start the scanning
+        BattleIsStarted();
     }
-
+    #endregion
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
