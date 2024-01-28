@@ -11,7 +11,7 @@ public class LevelChapterSlot : BaseSlot
     private Chapter_LevelSO chapterLevelSO;
 
     public event Action<LevelChapterSlot> OnPressSelectChapter;
-    public event Action OnPressEnterLevelChapter;
+    public event Action<string> OnPressEnterLevelChapter;
 
     [SerializeField] private Image deselectedPanel;
 
@@ -27,7 +27,8 @@ public class LevelChapterSlot : BaseSlot
     public bool GetChapterLevelBtnIsSelected { get { return isSelected; } set { 
             isSelected = value;
             deselectedPanel.gameObject.SetActive(!value);
-        } } 
+        } 
+    } 
 
 
 
@@ -42,6 +43,7 @@ public class LevelChapterSlot : BaseSlot
         GetChapterLevelBtnIsSelected = false;
     }
 
+
     public void SelectChapterSlot(bool selected)
     {
         isSelected = selected;
@@ -52,18 +54,15 @@ public class LevelChapterSlot : BaseSlot
     public override void OnPointerClick(PointerEventData eventData)
     {
 
-        if (!isSelected)
+        if (!isSelected) //If first time selected just show a details
         {
             GetChapterLevelBtnIsSelected = true;
 
             OnPressSelectChapter?.Invoke(this);
-            //TODO: Show this chapter info
-            Debug.Log("First press: Show details");
         }
-        else
+        else //Then the second click will chance scene
         {
-            //TODO: to go the scene assign to this chapter
-            OnPressEnterLevelChapter?.Invoke();
+            OnPressEnterLevelChapter?.Invoke(chapterLevelSO.sceneName);
             Debug.Log("Go to this scene");
         }
 

@@ -39,8 +39,8 @@ public class DialogUI : UIPages
 
         DialogManager.Instance.OnDialogContinue += DialogContinue;
 
-        InputManager.Instance.PlayerActionInput.actions["Continue"].started += ContinueDialog;
-        InputManager.Instance.PlayerActionInput.actions["Skip"].started += SkipDialog;
+        //InputManager.Instance.PlayerActionInput.actions["Continue"].started += ContinueDialog;
+        //InputManager.Instance.PlayerActionInput.actions["Skip"].started += SkipDialog;
         //continueAction.action.started += ContinueDialog;
     }
 
@@ -55,8 +55,8 @@ public class DialogUI : UIPages
         DialogManager.Instance.OnDialogContinue -= DialogContinue;
 
 
-        InputManager.Instance.PlayerActionInput.actions["Continue"].started -= ContinueDialog;
-        InputManager.Instance.PlayerActionInput.actions["Skip"].started -= SkipDialog;
+        //InputManager.Instance.PlayerActionInput.actions["Continue"].started -= ContinueDialog;
+        //InputManager.Instance.PlayerActionInput.actions["Skip"].started -= SkipDialog;
     }
 
     private void InitializeDialog()

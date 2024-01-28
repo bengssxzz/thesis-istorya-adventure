@@ -13,10 +13,12 @@ public class MobileUITouchController : UIPages
     private TouchSkillUI[] listOfTouchHolderUI;
     //private List<TouchSkillUI> listOfTouchHolderUI = new List<TouchSkillUI>();
 
+    public Vector2 movement;
 
     private void Awake()
     {
         entity = GameManager.Instance.PlayerEntity;
+        currentAbility = entity.GetAbility_Controller.ListOfCurrentAbilities.ToArray();
         listOfTouchHolderUI = transform.GetComponentsInChildren<TouchSkillUI>(true);
     }
 
@@ -73,5 +75,41 @@ public class MobileUITouchController : UIPages
             listOfTouchHolderUI[i].SetDataHolder(currentAbility[i]);
         }
     }
+
+    public void Movement(Vector2 move) //Movement
+    {
+
+    }
+    public void SkillOnRelease1() //First Skill
+    {
+
+    }
+    public void SkillOnRelease2() //Second Skill
+    {
+
+    }
+    public void SkillOnRelease3() //Third Skill
+    {
+
+    }
+    public void SkillOnRelease4() //Fourth Skill
+    {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

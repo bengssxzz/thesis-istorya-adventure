@@ -131,7 +131,7 @@ public class QuestionaireUI : UIPages
     private void CorrectUpgrade()
     {
         //TODO: Add points to leaderboard
-        upgradeSystemUI.AddPoints();
+        //upgradeSystemUI.AddPoints();
         UIManager.Instance.ChangeUIState = UIManager.GUIState.Upgradable;
     }
 

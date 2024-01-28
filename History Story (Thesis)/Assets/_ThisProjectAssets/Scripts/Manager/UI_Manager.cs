@@ -22,64 +22,67 @@ public class UI_Manager : Singleton<UI_Manager>
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += SceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
     private void OnDisable()
     {
-        
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
-
-    private void Start()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
+        ClearMenuList(); //Clear menu list on every new loaded scene
+
         menus = GetAllUIMenus();
         buttons = GetAllUIButtons();
 
-        ActivateOnStartMenu(); //Activate the OnStartMenu
+        ActivateOnStartMenu(); //Activate all the OnStartMenu
+    }
+    private void OnSceneUnloaded(Scene scene)
+    {
+        previousMenuActive = null;
+        newMenuActive = null;
+
     }
 
-    private void SceneLoaded(Scene arg0, LoadSceneMode arg1)
+    private void Start()
     {
         
     }
+
+   
 
 
     private List<UI_Menu> GetAllUIMenus()
     {
-        IEnumerable<UI_Menu> menus = FindObjectsOfType<UIAbstract>().OfType<UI_Menu>();
+        IEnumerable<UI_Menu> menus = FindObjectsOfType<UIAbstract>(true).OfType<UI_Menu>();
         return new List<UI_Menu>(menus);
     }
-    private List<UI_ButtonMenu> GetAllUIButtons()
+
+    private void ActivateOnStartMenu() //Activate the OnStartMenu
     {
-        IEnumerable<UI_ButtonMenu> buttons = FindObjectsOfType<UIAbstract>().OfType<UI_ButtonMenu>();
-        return new List<UI_ButtonMenu>(buttons);
-    }
-    private void ActivateOnStartMenu()
-    {
-        if(menus.Count(x => x.IsOnStartMenu) == 1)
+        CloseAllMenu(); //Close all activate menu
+
+        var menuOnStart = menus.Where(x => x.IsOnStartMenu);
+
+        foreach (var item in menuOnStart)
         {
-            //One OnStartMenu in the scene UI
-            var onStartMenuActive = menus.FirstOrDefault(x => x.IsOnStartMenu);
-            OpenMenu(onStartMenuActive.GetMenuID);
-        }
-        else if (menus.Count(x => x.IsOnStartMenu) > 1)
-        {
-            Debug.LogWarning("There are 2 or more 'OnStartmenu' active in the scene UI");
-        }
-        else if (menus.Count(x => x.IsOnStartMenu) < 1)
-        {
-            Debug.LogWarning("There are no 'OnStartMenu' in scene UI");
+            item.EnablePage();
         }
     }
-    private void ClearMenuList() => menus.Clear(); //Clear the list menu
-    private void CloseAllMenu()
+    private void ClearMenuList() => menus?.Clear(); //Clear the list menu
+    private void CloseAllMenu() //Close all the menus active in the scene
     {
-        foreach (var item in menus)
+        var menuWithActiveID = menus.Where(x => x.IsGlobalMenu == false);
+
+
+        foreach (var item in menuWithActiveID)
         {
             item.DisablePage();
         }
     }
-
 
 
     #region Menu UI public methods
@@ -98,14 +101,19 @@ public class UI_Manager : Singleton<UI_Manager>
     }
     public void OpenMenu(string menuID) //Find the page with the same ID and open it
     {
-        if(menus.Exists(x => x.GetMenuID == menuID)) //If the menu ID exist in the list
+        if(menus.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
         {
-            CloseAllMenu(); //Close all the menu page first
+            var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
 
+            if (!selectedMenu.IsSubMenu) //If not sub menu then dont close other UI
+            {
+                CloseAllMenu(); //Close all the menu page first
+            }
+            
+            
             if(newMenuActive != null)
                 previousMenuActive = newMenuActive; //Contain the latest active menu to previour menu active
 
-            var selectedMenu = menus.FirstOrDefault(script => script.GetMenuID == menuID);
             selectedMenu.EnablePage();
 
             newMenuActive = selectedMenu; //Set the new menu active
@@ -117,22 +125,24 @@ public class UI_Manager : Singleton<UI_Manager>
     }
     public void CloseMenu(string menuID) //Find the page with the same ID and close it
     {
-        var selectedMenu = menus.FirstOrDefault(script => script.GetMenuID == menuID);
+        var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
         selectedMenu.EnablePage();
     }
 
-    public void ActiveID_OpenMenu(string activeID) //Activate all the 
+    public void ActivateID_OpenMenu(string activateID) //Activate all the menu with activateID
     {
-        var menuWithActiveID = menus.Where(script => script.GetMenuID == activeID);
+        CloseAllMenu(); //Close all
+
+        var menuWithActiveID = menus.Where(script => script.GetActivationIDListener == activateID);
 
         foreach (var item in menuWithActiveID)
         {
             item.EnablePage();
         }
     }
-    public void ActiveID_CloseMenu(string activeID)
+    public void ActivateID_CloseMenu(string activateID)
     {
-        var menuWithActiveID = menus.Where(script => script.GetMenuID == activeID);
+        var menuWithActiveID = menus.Where(script => script.GetActivationIDListener == activateID);
 
         foreach (var item in menuWithActiveID)
         {
@@ -140,4 +150,29 @@ public class UI_Manager : Singleton<UI_Manager>
         }
     }
     #endregion
+
+
+
+    private List<UI_ButtonMenu> GetAllUIButtons()
+    {
+        IEnumerable<UI_ButtonMenu> buttons = FindObjectsOfType<UIAbstract>(true).OfType<UI_ButtonMenu>();
+        return new List<UI_ButtonMenu>(buttons);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

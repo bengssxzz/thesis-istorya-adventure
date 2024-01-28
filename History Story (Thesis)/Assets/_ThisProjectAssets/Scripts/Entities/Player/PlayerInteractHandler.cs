@@ -20,11 +20,11 @@ public class PlayerInteractHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Instance.PlayerActionInput.actions["Interact"].started += InteractObject;
+        //InputManager.Instance.PlayerActionInput.actions["Interact"].started += InteractObject;
     }
     private void OnDisable()
     {
-        InputManager.Instance.PlayerActionInput.actions["Interact"].started -= InteractObject;
+        //InputManager.Instance.PlayerActionInput.actions["Interact"].started -= InteractObject;
 
     }
 

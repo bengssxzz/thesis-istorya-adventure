@@ -11,7 +11,11 @@ public class UI_ButtonMenu : UIAbstract
 
     [SerializeField] private bool canClick = true;
 
-    [SerializeField] private string openMenuID = "Menu ID";
+    [SerializeField] private string activateID = "Activate ID";
+    [SerializeField] private string interactMenuID = "Menu ID";
+
+
+    [SerializeField] private bool callActivateID = false;
 
     private void Awake()
     {
@@ -25,7 +29,25 @@ public class UI_ButtonMenu : UIAbstract
 
     public void OpenMenu()
     {
-        UI_Manager.Instance.OpenMenu(openMenuID);
+        if (callActivateID)
+        {
+            UI_Manager.Instance.ActivateID_OpenMenu(activateID);
+        }
+        else
+        {
+            UI_Manager.Instance.OpenMenu(interactMenuID);
+        }
+    }
+    public void CloseMenu()
+    {
+        if (callActivateID)
+        {
+            UI_Manager.Instance.ActivateID_OpenMenu(activateID);
+        }
+        else
+        {
+            UI_Manager.Instance.CloseMenu(interactMenuID);
+        }
     }
 
 

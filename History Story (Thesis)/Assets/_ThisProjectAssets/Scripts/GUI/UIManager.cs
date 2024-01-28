@@ -84,33 +84,33 @@ public class UIManager : Singleton<UIManager>
 
     private void ChangeGUIState(GUIState state)
     {
-        HideAllUI();
+        //HideAllUI();
 
-        switch (state)
-        {
-            case GUIState.HideAll:
-                HideAllUI();
-                break;
-            case GUIState.InGame:
-                InputManager.Instance.ChangeActionMap("Player");
-                touchController.UIEnabled();
-                playerUI.UIEnabled();
-                break;
-            case GUIState.Inventory:
-                abilityInventory.UIEnabled();
-                break;
-            case GUIState.Upgradable:
-                upgradeStats.UIEnabled();
-                break;
-            case GUIState.DialogMode:
-                InputManager.Instance.ChangeActionMap("DialogUI");
-                dialogUI.UIEnabled();
-                break;
-            case GUIState.QandA:
-                QandAUI.UIEnabled();
-                break;
+        //switch (state)
+        //{
+        //    case GUIState.HideAll:
+        //        HideAllUI();
+        //        break;
+        //    case GUIState.InGame:
+        //        InputManager.Instance.ChangeActionMap("Player");
+        //        touchController.UIEnabled();
+        //        playerUI.UIEnabled();
+        //        break;
+        //    case GUIState.Inventory:
+        //        abilityInventory.UIEnabled();
+        //        break;
+        //    case GUIState.Upgradable:
+        //        upgradeStats.UIEnabled();
+        //        break;
+        //    case GUIState.DialogMode:
+        //        InputManager.Instance.ChangeActionMap("DialogUI");
+        //        dialogUI.UIEnabled();
+        //        break;
+        //    case GUIState.QandA:
+        //        QandAUI.UIEnabled();
+        //        break;
             
-        }
+        //}
     }
 
     private void HideAllUI()

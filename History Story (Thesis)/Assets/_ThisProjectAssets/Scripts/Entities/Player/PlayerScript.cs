@@ -4,6 +4,7 @@ using UnityEngine;
 using ThesisLibrary;
 using UnityEngine.InputSystem;
 using System.Linq;
+using System;
 
 public class PlayerScript : Entities
 {
@@ -57,16 +58,14 @@ public class PlayerScript : Entities
     //private PlayerInputs playerInput;
     public PlayerInteractHandler GetInteractHandler { get; private set; }
 
-    private InputAction move;
+    //private InputAction move;
 
-    ////Testing
-    //public IInteractable nearestInteractable;
 
 
     protected override void Awake()
     {
         base.Awake();
-        move = InputManager.Instance.PlayerActionInput.actions["Move"];
+        //move = InputManager.Instance.PlayerActionInput.actions["Move"];
 
         GetInteractHandler = GetComponent<PlayerInteractHandler>();
     }
@@ -93,30 +92,50 @@ public class PlayerScript : Entities
 
     private void ButtonInputEvent_Subscribe()
     {
-        InputManager.Instance.PlayerActionInput.actions["Skill Bag"].started += AbilityInventoryController;
+        InputManager.Instance.OnPlayerMove += direction => GetMoveDirection = direction;
+        InputManager.Instance.OnSkill0_Released += Skill0Trigger;
+        InputManager.Instance.OnSkill1_Released += Skill1Trigger;
+        InputManager.Instance.OnSkill2_Released += Skill2Trigger;
+        InputManager.Instance.OnSkill3_Released += Skill3Trigger;
 
-        InputManager.Instance.PlayerActionInput.actions["Skill 0"].canceled += Skill0Trigger;
-        InputManager.Instance.PlayerActionInput.actions["Skill 1"].canceled += Skill1Trigger;
-        InputManager.Instance.PlayerActionInput.actions["Skill 2"].canceled += Skill2Trigger;
-        InputManager.Instance.PlayerActionInput.actions["Skill 3"].canceled += Skill3Trigger;
+        InputManager.Instance.OnMobileRegisterButton("Skill 0", Skill0Trigger);
+        InputManager.Instance.OnMobileRegisterButton("Skill 1", Skill1Trigger);
+        InputManager.Instance.OnMobileRegisterButton("Skill 2", Skill2Trigger);
+        InputManager.Instance.OnMobileRegisterButton("Skill 3", Skill3Trigger);
 
-        //InputManager.Instance.PlayerActionInput.actions["Interact"].started += InteractTrigger;
+        //InputManager.Instance.OnSkill0_Released += Skill0Trigger;
+        //InputManager.Instance.OnSkill1_Released += Skill1Trigger;
+        //InputManager.Instance.OnSkill2_Released += Skill2Trigger;
+        //InputManager.Instance.OnSkill3_Released += Skill3Trigger;
+
+        //InputManager.Instance.PlayerActionInput.actions["Skill Bag"].started += AbilityInventoryController;
+
+        //InputManager.Instance.PlayerActionInput.actions["Skill 0"].canceled += Skill0Trigger;
+        //InputManager.Instance.PlayerActionInput.actions["Skill 1"].canceled += Skill1Trigger;
+        //InputManager.Instance.PlayerActionInput.actions["Skill 2"].canceled += Skill2Trigger;
+        //InputManager.Instance.PlayerActionInput.actions["Skill 3"].canceled += Skill3Trigger;
+
+        ////InputManager.Instance.PlayerActionInput.actions["Interact"].started += InteractTrigger;
     }
+
+
     private void ButtonInputEvent_Unsubscribe()
     {
-        InputManager.Instance.PlayerActionInput.actions["Skill Bag"].started -= AbilityInventoryController;
+        //InputManager.Instance.PlayerActionInput.actions["Skill Bag"].started -= AbilityInventoryController;
 
-        InputManager.Instance.PlayerActionInput.actions["Skill 0"].canceled -= Skill0Trigger;
-        InputManager.Instance.PlayerActionInput.actions["Skill 1"].canceled -= Skill1Trigger;
-        InputManager.Instance.PlayerActionInput.actions["Skill 2"].canceled -= Skill2Trigger;
-        InputManager.Instance.PlayerActionInput.actions["Skill 3"].canceled -= Skill3Trigger;
+        //InputManager.Instance.PlayerActionInput.actions["Skill 0"].canceled -= Skill0Trigger;
+        //InputManager.Instance.PlayerActionInput.actions["Skill 1"].canceled -= Skill1Trigger;
+        //InputManager.Instance.PlayerActionInput.actions["Skill 2"].canceled -= Skill2Trigger;
+        //InputManager.Instance.PlayerActionInput.actions["Skill 3"].canceled -= Skill3Trigger;
 
-        //InputManager.Instance.PlayerActionInput.actions["Interact"].started -= InteractTrigger;
+        ////InputManager.Instance.PlayerActionInput.actions["Interact"].started -= InteractTrigger;
     }
+
 
     protected override void MovementBehaviour()
     {
-        GetMoveDirection = move.ReadValue<Vector2>().normalized;
+
+        //GetMoveDirection = move.ReadValue<Vector2>().normalized;
         rb.velocity = GetMoveDirection * GetEntityStats.currentMoveSpeed * Time.deltaTime;
     }
 
@@ -166,10 +185,16 @@ public class PlayerScript : Entities
 
     }
 
-    private void Skill0Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(0);
-    private void Skill1Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(1);
-    private void Skill2Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(2);
-    private void Skill3Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(3);
+
+    private void Skill0Trigger() => GetAbility_Controller.UseAbility(0);
+    private void Skill1Trigger() => GetAbility_Controller.UseAbility(1);
+    private void Skill2Trigger() => GetAbility_Controller.UseAbility(2);
+    private void Skill3Trigger() => GetAbility_Controller.UseAbility(3);
+
+    //private void Skill0Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(0);
+    //private void Skill1Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(1);
+    //private void Skill2Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(2);
+    //private void Skill3Trigger(InputAction.CallbackContext obj) => GetAbility_Controller.UseAbility(3);
 
 
 
@@ -186,5 +211,5 @@ public class PlayerScript : Entities
     //    Gizmos.DrawWireSphere(transform.position, interactRadius);
     //}
 
-    
+
 }

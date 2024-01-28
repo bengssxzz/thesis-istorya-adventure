@@ -31,8 +31,6 @@ public class ModifyStatsAbility : AbilityScript
             {
                 case EntityStats.Health:
                     break;
-                case EntityStats.Mana:
-                    break;
                 case EntityStats.Defense:
                     entity.GetEntityStats.TempModifiedDefense(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
                     break;

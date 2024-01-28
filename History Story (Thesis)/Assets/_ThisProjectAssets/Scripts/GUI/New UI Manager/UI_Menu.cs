@@ -8,16 +8,13 @@ using UnityEngine.Events;
 public class UI_Menu : UIAbstract
 {
     [SerializeField] private RectTransform menuPage;
-    [SerializeField] protected bool onStartMenu = false;
-
+    [SerializeField] private bool isSubMenu = false;
 
     public UnityEvent OnPageEnable;
     public UnityEvent OnPageDisable;
 
-    public bool IsOnStartMenu { get { return onStartMenu; } }
-    public string GetMenuID { get { return menuID; } }
     public RectTransform GetMenuPage { get { return menuPage; } }
-
+    public bool IsSubMenu { get { return isSubMenu; } }
 
 
     private void OnEnable()
@@ -39,10 +36,20 @@ public class UI_Menu : UIAbstract
 
     public override void EnablePage() //Open the page
     {
+        if(menuPage == null)
+        {
+            Debug.LogError($"{gameObject.name}'s menu page is not assign");
+            return;
+        }
         menuPage.gameObject.SetActive(true);
     }
     public override void DisablePage() //Close the page
     {
+        if (menuPage == null)
+        {
+            Debug.LogError($"{gameObject.name}'s menu page is not assign");
+            return;
+        }
         menuPage.gameObject.SetActive(false);
     }
 }

@@ -66,7 +66,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
     }
 
 
-    private void OnPlayerEnterRooom()
+    private void OnPlayerEnterRooom() //When the player enter the room
     {
         if (battleMode == BattleStartState.OnEnterRoom)
         {
@@ -92,12 +92,11 @@ public class RoomSpawnerEnemy : MonoBehaviour
             }
         }
     }
-    private void OnPlayerExitRoom()
+    private void OnPlayerExitRoom()//When the player exit the room
     {
-        //No need
     }
 
-    private void BattleIsStarted()
+    private void BattleIsStarted() //When the battle is started
     {
         isPendingBattle = true;
         StartCoroutine(ScanEnemies()); //Start the scanning
@@ -107,12 +106,14 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         UpdateRoomGraphPathFinding();
 
+        UI_Manager.Instance.CloseMenu("InventoryBtn UI");
     }
-    private void BattleIsEnded()
+    private void BattleIsEnded() //When the battle is Ended
     {
         isPendingBattle = false;
         UpdateRoomGraphPathFinding();
 
+        UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
     }
 
     private void UpdateRoomGraphPathFinding() //Update the graph

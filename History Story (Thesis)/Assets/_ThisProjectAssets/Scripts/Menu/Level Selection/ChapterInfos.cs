@@ -16,7 +16,15 @@ public class ChapterInfos : MonoBehaviour
         ShowInfoUI(false);
     }
 
-    public void ShowChapterInfos(Chapter_LevelSO chapterLevelSO)
+    public void ResetInfos() //Reset the data
+    {
+        this.chapterName.text = "";
+        this.chapterTitle.text = "";
+        this.chapterDescription.text = "";
+
+        ShowInfoUI(false);
+    }
+    public void ShowChapterInfos(Chapter_LevelSO chapterLevelSO) 
     {
         ShowInfoUI(true);
 

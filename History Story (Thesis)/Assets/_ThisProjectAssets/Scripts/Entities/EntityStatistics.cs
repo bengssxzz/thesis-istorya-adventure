@@ -9,7 +9,6 @@ using UnityEngine;
 public enum EntityStats
 {
     Health,
-    Mana,
     Damage,
     Defense,
     MoveSpeed,
@@ -39,59 +38,46 @@ public class EntityStatistics
     //Main Stats
     public float maxHealth { get; private set; }
     public float currentHealth { get; private set; }
+    private float maxHealthBoundValue = float.PositiveInfinity; //Bound to infinite
 
     public float maxDamage { get; private set; }
     public float currentDamage { get; private set; }
+    private float maxDamageBoundValue = float.PositiveInfinity; //Bound to infinite
+
 
     public float maxDefense { get; private set; }
     public float currentDefense { get; private set; }
+    private float maxDefenseBoundValue = 75;
 
-    //About Speed
+    //Speed
     public float maxMoveSpeed { get; private set; }
     public float currentMoveSpeed { get; private set; }
+    private float maxMoveSpeedBoundValue = 150;
 
     public float maxAttackSpeed { get; private set; }
     public float currentAttackSpeed { get; private set; }
+    private float maxAttackSpeedBoundValue = 50;
 
     //Accuracy
     public float maxCriticalDamage { get; private set; }
     public float currentCriticalDamage { get; private set; }
+    private float maxCriticalDamageBoundValue = float.PositiveInfinity; //Bound to infinite
 
     public float maxDodgeChance { get; private set; }
     public float currentDodgeChance { get; private set; }
+    private float maxDodgeChanceBoundValue = 70;
 
     //Sight
     public float maxCriticalChance { get; private set; }
     public float currentCriticalChance { get; private set; }
+    private float maxCriticalChanceBoundValue = 70;
 
     //Regeneration
     public float lifeSteal { get; private set; } //Every kill absorb health
+    private float lifeStealBoundValue = 40;
 
-#region Temporary Saved Data for temporary modification
 
-    private float saved_curr_health;
-    private float saved_curr_mana;
-    private float saved_curr_damage;
-    private float saved_curr_defense;
-    private float saved_curr_movementSpeed;
-    private float saved_curr_attackSpeed;
-    private float saved_curr_criticalDamage;
-    private float saved_curr_criticalChance;
-    private float saved_curr_dodgeChance;
-    private float saved_curr_lifeSteal;
 
-    private bool is_already_modified_health;
-    private bool is_already_modified_mana;
-    private bool is_already_modified_damage;
-    private bool is_already_modified_defense;
-    private bool is_already_modified_movementSpeed;
-    private bool is_already_modified_attackSpeed;
-    private bool is_already_modified_criticalDamage;
-    private bool is_already_modified_criticalChance;
-    private bool is_already_modified_dodgeChance;
-    private bool is_already_modified_lifeSteal;
-
-#endregion
 
 
     public EntityStatistics(EntityStatsSO entityStatsSO, Entities entity){
@@ -330,6 +316,118 @@ public class EntityStatistics
         maxDefense += amount;
 
     }
+
+
+    public void UpgradeStatsPermanent(EntityStats stats, float amount) //Upgrade stats permanently
+    {
+        switch (stats)
+        {
+            case EntityStats.Health: //Can upgrade many times
+                maxHealth = Mathf.Clamp(maxHealth + amount, 0, maxHealthBoundValue);
+                currentHealth = maxHealth;
+                break;
+            case EntityStats.Damage: //Can upgrade many times
+                maxDamage = Mathf.Clamp(maxDamage + amount, 0, maxDamageBoundValue);
+                break;
+            case EntityStats.Defense:
+                maxDefense = Mathf.Clamp(maxDefense + amount, 0, maxDefenseBoundValue);
+                break;
+            case EntityStats.MoveSpeed:
+                maxMoveSpeed = Mathf.Clamp(maxMoveSpeed + amount, 0, maxMoveSpeedBoundValue);
+                break;
+            case EntityStats.AttackSpeed:
+                maxAttackSpeed = Mathf.Clamp(maxAttackSpeed + amount, 0, maxAttackSpeedBoundValue);
+                break;
+            case EntityStats.CriticalChance:
+                maxCriticalChance = Mathf.Clamp(maxCriticalChance + amount, 0, maxCriticalChanceBoundValue);
+                break;
+            case EntityStats.CriticalDamage: //Can upgrade many times
+                maxCriticalDamage = Mathf.Clamp(maxCriticalDamage + amount, 0, maxCriticalDamageBoundValue);
+                break;
+            case EntityStats.Dodging:
+                maxDodgeChance = Mathf.Clamp(maxDodgeChance + amount, 0, maxDodgeChanceBoundValue);
+                break;
+            case EntityStats.LifeSteal:
+                lifeSteal = Mathf.Clamp(lifeSteal + amount, 0, lifeStealBoundValue);
+                break;
+            default:
+                Debug.LogError($"THERE ARE NO {stats.ToString()} IN ENTITY STATISTICS");
+                break;
+        }
+    }
+    public float GetRemainingStatsValue(EntityStats stats) //Get the remaining stats value
+    {
+        float remainValue = 0;
+        switch (stats)
+        {
+            case EntityStats.Health:
+                remainValue = maxHealthBoundValue - maxHealth;
+                break;
+            case EntityStats.Damage:
+                remainValue = maxDamageBoundValue - maxDamage;
+                break;
+            case EntityStats.Defense:
+                remainValue = maxDefenseBoundValue - maxDefense;
+                break;
+            case EntityStats.MoveSpeed:
+                remainValue = maxMoveSpeedBoundValue - maxMoveSpeed;
+                break;
+            case EntityStats.AttackSpeed:
+                remainValue = maxAttackSpeedBoundValue - maxAttackSpeed;
+                break;
+            case EntityStats.CriticalChance:
+                remainValue = maxCriticalChanceBoundValue - maxCriticalChance;
+                break;
+            case EntityStats.CriticalDamage:
+                remainValue = maxCriticalDamageBoundValue - maxCriticalDamage;
+                break;
+            case EntityStats.Dodging:
+                remainValue = maxDodgeChanceBoundValue - maxDodgeChance;
+                break;
+            case EntityStats.LifeSteal:
+                remainValue = lifeStealBoundValue - lifeSteal;
+                break;
+            default:
+                break;
+        }
+
+        return remainValue; 
+    }
+    public float GetMaxBoundStats(EntityStats stats)
+    {
+        switch (stats)
+        {
+            case EntityStats.Health:
+                return maxHealthBoundValue;
+            case EntityStats.Damage:
+                return maxDamageBoundValue;
+            case EntityStats.Defense:
+                return maxDefenseBoundValue;
+            case EntityStats.MoveSpeed:
+                return maxMoveSpeedBoundValue;
+            case EntityStats.AttackSpeed:
+                return maxAttackSpeedBoundValue;
+            case EntityStats.CriticalChance:
+                return maxCriticalChanceBoundValue;
+            case EntityStats.CriticalDamage:
+                return maxCriticalDamageBoundValue;
+            case EntityStats.Dodging:
+                return maxDodgeChanceBoundValue;
+            case EntityStats.LifeSteal:
+                return lifeStealBoundValue;
+            default:
+                Debug.LogError($"There are no {stats} in the Entity Statistic");
+                return 0;
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 

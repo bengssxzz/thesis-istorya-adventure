@@ -7,6 +7,7 @@ using System;
 using UnityEngine.InputSystem.OnScreen;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Layouts;
+using MoreMountains.Tools;
 
 public class TouchSkillUI : OnScreenControl, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -20,14 +21,18 @@ public class TouchSkillUI : OnScreenControl, IPointerDownHandler, IPointerUpHand
     private Button buttonAbility;
     private bool hasAbility = false;
 
+    public MMTouchButton mmTouchButton { get; private set; }
+
     protected override string controlPathInternal { get => m_ControlPath; set => m_ControlPath = value; }
 
     public void Awake()
     {
         buttonAbility = GetComponent<Button>();
+
+        mmTouchButton = GetComponent<MMTouchButton>();
     }
 
-    public void SetDataHolder(AbilityScript ability)
+    public void SetDataHolder(AbilityScript ability) //Set the data of this button
     {
         ActivateAbility();
         hasAbility = true;
@@ -35,7 +40,7 @@ public class TouchSkillUI : OnScreenControl, IPointerDownHandler, IPointerUpHand
         abilityImage.sprite = ability.abilityIcon;
         abilityImage.gameObject.SetActive(true);
     }
-    public void ResetDataHolder()
+    public void ResetDataHolder() //Resetting the data of the button
     {
         ActivateAbility();
         hasAbility = false;
@@ -44,9 +49,8 @@ public class TouchSkillUI : OnScreenControl, IPointerDownHandler, IPointerUpHand
         abilityImage.gameObject.SetActive(false);
     }
 
-    public void AbilityCooldown(bool isOnCooldown, float timeLapse)
+    public void AbilityCooldown(bool isOnCooldown, float timeLapse) //Apply cooldown timer to this button
     {
-        //Debug.Log(isOnCooldown + " Remaining Time: " + timeLapse);
         if (isOnCooldown)
         {
             DeactivateAbility();
@@ -57,6 +61,7 @@ public class TouchSkillUI : OnScreenControl, IPointerDownHandler, IPointerUpHand
             ActivateAbility();
         }
     }
+
     private void ActivateAbility()
     {
         buttonAbility.interactable = true;
