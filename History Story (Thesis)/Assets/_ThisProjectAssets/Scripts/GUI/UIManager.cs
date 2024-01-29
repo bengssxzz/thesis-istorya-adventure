@@ -31,7 +31,7 @@ public class UIManager : Singleton<UIManager>
 
     [SerializeField] private Transform PlayerGUI;
 
-    public MobileUITouchController touchController { get; private set; }
+    //public MobileUITouchController touchController { get; private set; }
     public AbilityInventory abilityInventory { get; private set; }
     public UpgradeStatsSystem upgradeStats{ get; private set; }
     public PlayerUI playerUI{ get; private set; }
@@ -59,7 +59,7 @@ public class UIManager : Singleton<UIManager>
     {
         base.Awake();
 
-        touchController = GetComponentInChildren<MobileUITouchController>(true);
+        //touchController = GetComponentInChildren<MobileUITouchController>(true);
         abilityInventory = GetComponentInChildren<AbilityInventory>(true);
         upgradeStats = GetComponentInChildren<UpgradeStatsSystem>(true);
         playerUI = GetComponentInChildren<PlayerUI>(true);

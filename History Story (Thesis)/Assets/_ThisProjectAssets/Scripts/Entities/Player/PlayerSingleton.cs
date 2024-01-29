@@ -11,7 +11,6 @@ public class PlayerSingleton : Singleton<PlayerSingleton>
     protected override void Awake()
     {
         base.Awake();
-        DontDestroyOnLoad(gameObject);
 
         playerScript = GetComponent<PlayerScript>();
     }

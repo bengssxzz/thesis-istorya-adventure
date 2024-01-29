@@ -67,7 +67,8 @@ public class MobileSkillButtons : MonoBehaviour
     {
         //if (phase != InputPhase.Canceled) { return; }
         Debug.Log("Pressing the key");
-        InputManager.Instance.OnButtonMobilePressedRelease(inputName);
+        OnSkillRelease?.Invoke();
+        //InputManager.Instance.OnButtonMobilePressedRelease(inputName);
     }
 
 

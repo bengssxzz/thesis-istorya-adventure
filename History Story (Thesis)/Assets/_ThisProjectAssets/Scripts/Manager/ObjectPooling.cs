@@ -37,7 +37,7 @@ public class ObjectPooling : Singleton<ObjectPooling>
         
     }
 
-    public GameObject CreateObject(string objectTag, GameObject prefabObject)
+    private GameObject CreateObject(string objectTag, GameObject prefabObject)
     {
         GameObject newObject = Instantiate(prefabObject);
         newObject.transform.SetParent(gameObject.transform);

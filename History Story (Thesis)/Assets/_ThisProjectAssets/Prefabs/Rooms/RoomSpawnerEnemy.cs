@@ -105,7 +105,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         //Debug.Log("UPDATE GRAPH");
 
         UpdateRoomGraphPathFinding();
-
+        Debug.Log("THE GAME IS STARTED");
         UI_Manager.Instance.CloseMenu("InventoryBtn UI");
     }
     private void BattleIsEnded() //When the battle is Ended

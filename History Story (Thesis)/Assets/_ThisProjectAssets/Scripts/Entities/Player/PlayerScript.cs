@@ -98,10 +98,10 @@ public class PlayerScript : Entities
         InputManager.Instance.OnSkill2_Released += Skill2Trigger;
         InputManager.Instance.OnSkill3_Released += Skill3Trigger;
 
-        InputManager.Instance.OnMobileRegisterButton("Skill 0", Skill0Trigger);
-        InputManager.Instance.OnMobileRegisterButton("Skill 1", Skill1Trigger);
-        InputManager.Instance.OnMobileRegisterButton("Skill 2", Skill2Trigger);
-        InputManager.Instance.OnMobileRegisterButton("Skill 3", Skill3Trigger);
+        //InputManager.Instance.OnMobileRegisterButton("Skill 0", Skill0Trigger);
+        //InputManager.Instance.OnMobileRegisterButton("Skill 1", Skill1Trigger);
+        //InputManager.Instance.OnMobileRegisterButton("Skill 2", Skill2Trigger);
+        //InputManager.Instance.OnMobileRegisterButton("Skill 3", Skill3Trigger);
 
         //InputManager.Instance.OnSkill0_Released += Skill0Trigger;
         //InputManager.Instance.OnSkill1_Released += Skill1Trigger;

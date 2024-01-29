@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class InputManager : Singleton<InputManager>
 {
-    private Dictionary<string, Action> OnMobileButtonsReleased = new Dictionary<string, Action>();
+    //private Dictionary<string, Action> OnMobileButtonsReleased = new Dictionary<string, Action>();
 
 
 
@@ -24,6 +24,7 @@ public class InputManager : Singleton<InputManager>
 
     public event Action OnSkill3_Released;
 
+    public event Action OnInteractObject;
     public event Action<InputAction> OnSkillBag_Started;
 
 
@@ -35,10 +36,10 @@ public class InputManager : Singleton<InputManager>
 
         PlayerActionInput = GetComponent<PlayerInput>();
 
-        OnMobileButtonsReleased.Add("Skill 0", OnSkill0_Released);
-        OnMobileButtonsReleased.Add("Skill 1", OnSkill1_Released);
-        OnMobileButtonsReleased.Add("Skill 2", OnSkill2_Released);
-        OnMobileButtonsReleased.Add("Skill 3", OnSkill3_Released);
+        //OnMobileButtonsReleased.Add("Skill 0", OnSkill0_Released);
+        //OnMobileButtonsReleased.Add("Skill 1", OnSkill1_Released);
+        //OnMobileButtonsReleased.Add("Skill 2", OnSkill2_Released);
+        //OnMobileButtonsReleased.Add("Skill 3", OnSkill3_Released);
 
     }
 
@@ -102,24 +103,24 @@ public class InputManager : Singleton<InputManager>
 
 
 
-    public void OnMobileRegisterButton(string inputName, Action callback)
-    {
-        if (OnMobileButtonsReleased.ContainsKey(inputName))
-        {
-            OnMobileButtonsReleased[inputName] += callback;
-        }
-        else
-        {
-            OnMobileButtonsReleased.Add(inputName, callback);
-        }
-    }
-    public void OnButtonMobilePressedRelease(string inputName)
-    {
-        if(OnMobileButtonsReleased.TryGetValue(inputName, out Action value))
-        {
-            value?.Invoke();
-        }
-    }
+    //public void OnMobileRegisterButton(string inputName, Action callback)
+    //{
+    //    if (OnMobileButtonsReleased.ContainsKey(inputName))
+    //    {
+    //        OnMobileButtonsReleased[inputName] += callback;
+    //    }
+    //    else
+    //    {
+    //        OnMobileButtonsReleased.Add(inputName, callback);
+    //    }
+    //}
+    //public void OnButtonMobilePressedRelease(string inputName)
+    //{
+    //    if(OnMobileButtonsReleased.TryGetValue(inputName, out Action value))
+    //    {
+    //        value?.Invoke();
+    //    }
+    //}
 
 
 

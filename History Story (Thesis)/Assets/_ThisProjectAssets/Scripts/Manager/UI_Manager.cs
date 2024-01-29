@@ -86,6 +86,7 @@ public class UI_Manager : Singleton<UI_Manager>
 
 
     #region Menu UI public methods
+    //SHOULD DELETE SOON
     public void BackToPreviousActiveMenu() //Back to the previous menu
     {
         if(previousMenuActive == null) { return; }
@@ -99,6 +100,11 @@ public class UI_Manager : Singleton<UI_Manager>
         newMenuActive = oldMenu;
 
     }
+    //public void CloseSelf()
+    //{
+
+    //}
+
     public void OpenMenu(string menuID) //Find the page with the same ID and open it
     {
         if(menus.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
@@ -126,10 +132,18 @@ public class UI_Manager : Singleton<UI_Manager>
     public void CloseMenu(string menuID) //Find the page with the same ID and close it
     {
         var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
-        selectedMenu.EnablePage();
-    }
 
-    public void ActivateID_OpenMenu(string activateID) //Activate all the menu with activateID
+        if (selectedMenu != null)
+        {
+            selectedMenu.DisablePage();
+        }
+        else
+        {
+            Debug.LogWarning($"{menuID} menu is doesn't exist");
+        }
+    }
+    
+    public void ActivateID_OpenMenu(string activateID) //Open all the menu with the same activateID
     {
         CloseAllMenu(); //Close all
 
@@ -140,13 +154,62 @@ public class UI_Manager : Singleton<UI_Manager>
             item.EnablePage();
         }
     }
-    public void ActivateID_CloseMenu(string activateID)
+    public void ActivateID_CloseMenu(string activateID) //Close all the menu with the same activateID
     {
         var menuWithActiveID = menus.Where(script => script.GetActivationIDListener == activateID);
 
         foreach (var item in menuWithActiveID)
         {
             item.DisablePage();
+        }
+    }
+
+    public T FindComponentInUIMenu<T>(string menuID) //Find object in menu
+    {
+        if(menus.Exists(x => x.GetUI_ID == menuID))
+        {
+            GameObject selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID).gameObject;
+            T component = selectedMenu.GetComponentInChildren<T>(true);
+
+            if(component != null)
+            {
+                Debug.Log($"I FOUND {typeof(T).ToString()} IN {component}");
+                return component;
+            }
+            else
+            {
+                Debug.LogWarning($"THERE ARE NO {typeof(T).ToString()} ATTACH TO {menuID}'s ID MENU");
+                return default(T);
+            }
+        }
+        else
+        {
+            Debug.LogError($"MENU ID ({menuID}) IS MISSPELLED/NOT EXIST IN THE PROJECT");
+            return default(T);
+        }
+    }
+    public T[] FindComponentsInUIMenu<T>(string menuID) //Find all objects in menu
+    {
+        if (menus.Exists(x => x.GetUI_ID == menuID))
+        {
+            GameObject selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID).gameObject;
+            T[] component = selectedMenu.GetComponentsInChildren<T>(true);
+
+            if (component != null)
+            {
+                Debug.Log($"I FOUND {typeof(T).ToString()} IN {component}");
+                return component;
+            }
+            else
+            {
+                Debug.LogWarning($"THERE ARE NO {typeof(T).ToString()} ATTACH TO {menuID}'s ID MENU");
+                return default(T[]);
+            }
+        }
+        else
+        {
+            Debug.LogError($"MENU ID ({menuID}) IS MISSPELLED/NOT EXIST IN THE PROJECT");
+            return default(T[]);
         }
     }
     #endregion
