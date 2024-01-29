@@ -19,7 +19,7 @@ public class Entities : MonoBehaviour, IDamageable
     [SerializeField] private EntityStatsSO entityStatsSO;
     [SerializeField] private SpriteRenderer entitySpriteRenderer;
 
-    [SerializeField] private bool _canAttack = true;
+    //[SerializeField] private bool _canAttack = true;
 
     [Space(15)]
     [Header("Entity Feedback")]
@@ -36,7 +36,7 @@ public class Entities : MonoBehaviour, IDamageable
     public AttackController GetAttack_Controller { get; private set; } //Get attack controller
     public AbilityController GetAbility_Controller { get; set; } //Get ability controller
     public EntityStatistics GetEntityStats { get; private set; } //Get entity stats handler
-    public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
+    //public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
     public Vector2 GetMoveDirection { get; protected set; }
     public bool IsCanMove { get; set; } = true;
 
@@ -68,13 +68,13 @@ public class Entities : MonoBehaviour, IDamageable
     }
     protected virtual void Start()
     {
-        GetAttack_Controller.EnableAttacking = _canAttack;
+        //GetAttack_Controller.EnableAttacking = _canAttack;
 
         //abilityHolder.OnChangeListAbilities(entityStatsSO.defaultAbilities);
     }
     protected virtual void Update()
     {
-        GetAttack_Controller.EnableAttacking = _canAttack;
+        //GetAttack_Controller.EnableAttacking = _canAttack;
         FlipEntity();
     }
     protected virtual void FixedUpdate()

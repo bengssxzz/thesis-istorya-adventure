@@ -38,7 +38,9 @@ public class AttackController : DetectMyEnemies
     }
 
     public Entities GetThisEntity { get; private set; }
-    
+
+    [SerializeField] private bool canAttack = true;
+
     [Header("Attack Info")]
     [Header("Range")]
     [SerializeField] private Transform attackHolder;
@@ -76,7 +78,7 @@ public class AttackController : DetectMyEnemies
     //[SerializeField] private float knockBackPower = 15f;
     //private bool readyMeleeAttack = true;
 
-    public bool EnableAttacking { get; set; }
+    public bool EnableAttacking { get { return canAttack; } set { canAttack = value; } }
     public Transform GetAttackHolder { get { return attackHolder; } }
 
 
@@ -103,11 +105,11 @@ public class AttackController : DetectMyEnemies
 
         //attackStates[0].TriggerAllAttackBehaviours(this);
     }
-
-    private float time = 0;
     private void Update()
     {
-        time = Time.time;
+        if(EnableAttacking == false) { return; } //
+
+
         Aiming(); //Aim the holder
 
 

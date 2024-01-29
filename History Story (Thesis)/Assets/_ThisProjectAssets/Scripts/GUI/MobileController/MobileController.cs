@@ -10,6 +10,7 @@ public class MobileController : MonoBehaviour
 {
     [SerializeField] private MMTouchJoystick moveJoyStick;
     [SerializeField] private MobileSkillButtons[] abilityButtons;
+    [SerializeField] private MMTouchButton interactButton;
 
 
     private void OnEnable()
@@ -22,6 +23,7 @@ public class MobileController : MonoBehaviour
         abilityButtons[2].OnSkillRelease += Skill2ButtonRelease;
         abilityButtons[3].OnSkillRelease += Skill3ButtonRelease;
 
+        interactButton.ButtonReleased.AddListener(InteractTrigger);
 
         //for (int i = 0; i < abilityButtons.Length; i++)
         //{
@@ -44,6 +46,7 @@ public class MobileController : MonoBehaviour
         abilityButtons[2].OnSkillRelease -= Skill2ButtonRelease;
         abilityButtons[3].OnSkillRelease -= Skill3ButtonRelease;
 
+        interactButton.ButtonReleased.RemoveListener(InteractTrigger);
 
         ////Unsubscribe abilities event function
         //for (int i = 0; i < abilityButtons.Length; i++)
@@ -134,6 +137,11 @@ public class MobileController : MonoBehaviour
         //    //SubscribeButtonsEvent();
         //    abilityButtons[i].ButtonSetDataAbility(GetPlayerCurrentEquippedAbility(i)); //Set the data of the button
         //}
+    }
+
+    private void InteractTrigger() //Interact button
+    {
+        InputManager.Instance.InteractMobileButton();
     }
 
     private AbilityScript GetPlayerCurrentEquippedAbility(int index) //Get the current ability of the player
