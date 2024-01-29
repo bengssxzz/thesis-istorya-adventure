@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using PixelCrushers.DialogueSystem;
 
 
 #if UNITY_EDITOR
@@ -13,12 +13,21 @@ using UnityEditor;
 
 public class PlayerInteractHandler : MonoBehaviour
 {
+    private PlayerScript player;
+
+    [SerializeField] ProximitySelector proximitySelector;
     [SerializeField] private Transform itemHolder;
 
     private PickupObject pickupObject;
+
     public bool isHoldingSomething { get { return pickupObject != null; } }
+    public GameObject objectHolding { get { return pickupObject.gameObject; } }
 
 
+    private void Awake()
+    {
+        player = GetComponent<PlayerScript>();
+    }
     private void OnEnable()
     {
         InputManager.Instance.OnInteractObject += InteractObject;
@@ -30,10 +39,12 @@ public class PlayerInteractHandler : MonoBehaviour
 
     private void InteractObject()
     {
-        if (isHoldingSomething)
-        {
-            DropItem();
-        }
+        Debug.Log("SELECTING USABLE OBJECT");
+        proximitySelector.UseCurrentSelection();
+        //if (isHoldingSomething)
+        //{
+        //    DropItem();
+        //}
     }
 
     private void PickUpTheItem(PickupObject pickObject) //Pick up the item
@@ -51,6 +62,9 @@ public class PlayerInteractHandler : MonoBehaviour
         itemObject.name = pickupObject.name;
         itemObject.GetUsablePixelCrushers.enabled = true;
         Destroy(pickupObject.gameObject);
+        pickupObject = null;
+
+        player.GetAttack_Controller.EnableAttacking = !isHoldingSomething;
     }
     public void PickUpObject(PickupObject pickObject) //Trigger pickup
     {
@@ -64,10 +78,13 @@ public class PlayerInteractHandler : MonoBehaviour
             itemObject.name = pickupObject.name;
             itemObject.GetUsablePixelCrushers.enabled = true;
             Destroy(pickupObject.gameObject);
+            pickupObject = null;
 
             PickUpTheItem(pickObject);
 
         }
+
+        player.GetAttack_Controller.EnableAttacking = !isHoldingSomething; //Stop attacking when holding something
     }
 
 

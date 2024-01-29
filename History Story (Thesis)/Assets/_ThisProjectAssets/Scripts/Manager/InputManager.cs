@@ -25,6 +25,7 @@ public class InputManager : Singleton<InputManager>
     public event Action OnSkill3_Released;
 
     public event Action OnInteractObject;
+
     public event Action<InputAction> OnSkillBag_Started;
 
 
@@ -61,6 +62,8 @@ public class InputManager : Singleton<InputManager>
         PlayerActionInput.actions["Skill 1"].canceled += Skill1Trigger;
         PlayerActionInput.actions["Skill 2"].canceled += Skill2Trigger;
         PlayerActionInput.actions["Skill 3"].canceled += Skill3Trigger;
+
+        PlayerActionInput.actions["Interact"].canceled += InteractTrigger;
     }
     private void OnComputerInputDeRegister()
     {
@@ -71,6 +74,8 @@ public class InputManager : Singleton<InputManager>
         PlayerActionInput.actions["Skill 1"].canceled -= Skill1Trigger;
         PlayerActionInput.actions["Skill 2"].canceled -= Skill2Trigger;
         PlayerActionInput.actions["Skill 3"].canceled -= Skill3Trigger;
+
+        PlayerActionInput.actions["Interact"].canceled -= InteractTrigger;
     }
 
 
@@ -79,6 +84,7 @@ public class InputManager : Singleton<InputManager>
     private void Skill1Trigger(InputAction.CallbackContext obj) => OnSkill1_Released?.Invoke();
     private void Skill2Trigger(InputAction.CallbackContext obj) => OnSkill2_Released?.Invoke();
     private void Skill3Trigger(InputAction.CallbackContext obj) => OnSkill3_Released?.Invoke();
+    private void InteractTrigger(InputAction.CallbackContext obj) => OnInteractObject?.Invoke();
 
 
 
@@ -100,28 +106,7 @@ public class InputManager : Singleton<InputManager>
     public void OnSkill1MobileButton() => OnSkill1_Released?.Invoke();
     public void OnSkill2MobileButton() => OnSkill2_Released?.Invoke();
     public void OnSkill3MobileButton() => OnSkill3_Released?.Invoke();
-
-
-
-    //public void OnMobileRegisterButton(string inputName, Action callback)
-    //{
-    //    if (OnMobileButtonsReleased.ContainsKey(inputName))
-    //    {
-    //        OnMobileButtonsReleased[inputName] += callback;
-    //    }
-    //    else
-    //    {
-    //        OnMobileButtonsReleased.Add(inputName, callback);
-    //    }
-    //}
-    //public void OnButtonMobilePressedRelease(string inputName)
-    //{
-    //    if(OnMobileButtonsReleased.TryGetValue(inputName, out Action value))
-    //    {
-    //        value?.Invoke();
-    //    }
-    //}
-
+    public void InteractMobileButton() => OnInteractObject?.Invoke();
 
 
 }
