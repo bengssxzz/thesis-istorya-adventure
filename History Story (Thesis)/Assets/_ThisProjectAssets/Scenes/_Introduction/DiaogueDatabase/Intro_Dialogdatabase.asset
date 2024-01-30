@@ -327,7 +327,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: Timeline(speed, [Timeline Director], 0)
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: Response Menu Sequence
@@ -622,6 +622,10 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
+        value: required Timeline(speed, [Timeline Director], 1) @Message(Continued);
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Response Menu Sequence
         value: 
         type: 0
         typeString: CustomFieldType_Text
@@ -925,13 +929,13 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 180.862
-        y: 578.7242
-        width: 160
-        height: 30
-    entryGroups: []
-    canvasScrollPosition: {x: 0, y: 145.6896}
-    canvasZoom: 1.16
+        x: 180.59969
+        y: 380.01614
+        width: 223.25945
+        height: 196.95996
+      color: {r: 1, g: 0.65723264, b: 0.98410666, a: 0.5}
+    canvasScrollPosition: {x: 0, y: 0}
+    canvasZoom: 0.6500005
   - id: 2
     fields:
     - title: Title

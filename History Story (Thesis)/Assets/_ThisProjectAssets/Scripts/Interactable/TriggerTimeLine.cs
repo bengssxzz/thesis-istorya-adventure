@@ -10,62 +10,42 @@ public class TriggerTimeLine : MonoBehaviour
     public enum TriggerState
     {
         AwakeTrigger, //On start the timeline will trigger
-        InteractTrigger, //when the player interact the object
         OnEnterTrigger, //when the player enter the collider
     }
 
     private PlayableDirector timelineDirector;
-    //[SerializeField] private PlayableAsset playableAsset;
-    private Collider2D triggerCollider;
 
     [SerializeField] private TriggerState triggerState;
-    [SerializeField] private bool playOnce = true;
+    [SerializeField] private DirectorWrapMode wrapMode;
 
+    [SerializeField] private bool playOnce = true;
 
     private bool isInside;
 
 
     private void Awake()
     {
-        triggerCollider = GetComponent<Collider2D>();
         timelineDirector = GetComponent<PlayableDirector>();
     }
 
     private void Start()
     {
-        TimelineTrigger(TriggerState.AwakeTrigger);
+        if(triggerState == TriggerState.AwakeTrigger)
+            PlayDirectorTimeline();
     }
 
-    private void TimelineTrigger(TriggerState state)
-    {
-        if (triggerState != state) { return; }
 
-        switch (triggerState)
-        {
-            case TriggerState.InteractTrigger:
-                PlayDirectorTimeline();
-                break;
-            case TriggerState.AwakeTrigger:
-                PlayDirectorTimeline();
-                break;
-            case TriggerState.OnEnterTrigger:
-                PlayDirectorTimeline();
-                break;
-        }
-    }
 
-    private void PlayDirectorTimeline()
+    public void PlayDirectorTimeline()
     {
         if (timelineDirector == null)
         {
-            Debug.LogWarning("Director timeline is missing");
+            Debug.LogError("Director timeline is missing");
             return;
         }
 
-        //LevelManager.Instance.SetDirector(timelineDirector);
-        //LevelManager.Instance.PlayDirector();
-
-        DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector);
+        //Play director timeline
+        DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
 
 
         if (playOnce)
@@ -75,19 +55,18 @@ public class TriggerTimeLine : MonoBehaviour
 
     }
 
-    public void Intereractable()
-    {
-        //When the player trigger this, the timeline will trigger
-        if (isInside)
-            TimelineTrigger(TriggerState.InteractTrigger);
 
-    }
+
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            TimelineTrigger(TriggerState.OnEnterTrigger);
             isInside = true;
+
+            if(triggerState == TriggerState.OnEnterTrigger) //Play director when on enter trigger
+                PlayDirectorTimeline();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

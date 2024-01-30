@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2114241535040067394}
   - component: {fileID: 2114241535040067393}
   - component: {fileID: 2114241535040067392}
-  - component: {fileID: 1921735376695134620}
   m_Layer: 0
   m_Name: '[Timeline Director]'
   m_TagString: Untagged
@@ -48,7 +47,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.99816704, y: -0.27063918}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -59,7 +58,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.996334, y: 0.45872164}
   m_EdgeRadius: 0
 --- !u!320 &2114241535040067393
 PlayableDirector:
@@ -70,14 +69,29 @@ PlayableDirector:
   m_GameObject: {fileID: 2114241535040067399}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 0}
-  m_InitialState: 1
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
+  m_PlayableAsset: {fileID: 11400000, guid: fa3c24facc6cc0341b578bda53ce7c49, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 0
+  m_DirectorUpdateMode: 2
   m_InitialTime: 0
-  m_SceneBindings: []
+  m_SceneBindings:
+  - key: {fileID: -2124736194986488981, guid: a81454254844d2e46bad486a95aeac76, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -1379129246181687418, guid: a81454254844d2e46bad486a95aeac76, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -419085811017177444, guid: e93b8410be4b4dd4d9b9cd0c12c9f750, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -6610666598438555063, guid: fa3c24facc6cc0341b578bda53ce7c49, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -4691235870663490372, guid: fa3c24facc6cc0341b578bda53ce7c49, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
-    m_References: []
+    m_References:
+    - 03d3a11463bfd874ab6a8e7ad8550adc: {fileID: 0}
+    - 2dd347aa912b1da499f4e66ef74d7a7b: {fileID: 0}
+    - 57237877744a5d847bb80bec43729b96: {fileID: 0}
+    - 129ef8b5b834ce343bed0ca7dc43466e: {fileID: 0}
+    - c75abb0d2fc2d564f8f857a0a7369514: {fileID: 0}
 --- !u!114 &2114241535040067392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,33 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1ac999a413eef449fbc2a57604c527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerState: 0
+  triggerState: 1
+  wrapMode: 2
   playOnce: 1
---- !u!114 &1921735376695134620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114241535040067399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39e184555238b7446b19dd4a12d90bba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  indicator: {fileID: 0}
-  OnTriggerInteract:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2114241535040067392}
-        m_TargetAssemblyTypeName: TriggerTimeLine, Assembly-CSharp
-        m_MethodName: Intereractable
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
