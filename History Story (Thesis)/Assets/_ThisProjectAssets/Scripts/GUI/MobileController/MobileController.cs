@@ -10,7 +10,8 @@ public class MobileController : MonoBehaviour
 {
     [SerializeField] private MMTouchJoystick moveJoyStick;
     [SerializeField] private MobileSkillButtons[] abilityButtons;
-    [SerializeField] private MMTouchButton interactButton;
+    //[SerializeField] private MMTouchButton interactButton;
+    [SerializeField] private MobileInteractButton interactButton;
 
 
     private void OnEnable()
@@ -23,8 +24,9 @@ public class MobileController : MonoBehaviour
         abilityButtons[2].OnSkillRelease += Skill2ButtonRelease;
         abilityButtons[3].OnSkillRelease += Skill3ButtonRelease;
 
-        interactButton.ButtonReleased.AddListener(InteractTrigger);
+        interactButton.OnPressReleasedInteract += InteractTrigger;
 
+        //interactButton.ButtonReleased.AddListener(InteractTrigger);
         //for (int i = 0; i < abilityButtons.Length; i++)
         //{
         //    if (GetPlayerCurrentEquippedAbility(i) == null)
@@ -46,7 +48,10 @@ public class MobileController : MonoBehaviour
         abilityButtons[2].OnSkillRelease -= Skill2ButtonRelease;
         abilityButtons[3].OnSkillRelease -= Skill3ButtonRelease;
 
-        interactButton.ButtonReleased.RemoveListener(InteractTrigger);
+        interactButton.OnPressReleasedInteract -= InteractTrigger;
+
+
+        //interactButton.ButtonReleased.RemoveListener(InteractTrigger);
 
         ////Unsubscribe abilities event function
         //for (int i = 0; i < abilityButtons.Length; i++)
@@ -96,8 +101,6 @@ public class MobileController : MonoBehaviour
     {
         for (int i = 0; i < abilityButtons.Length; i++)
         {
-            abilityButtons[i].ButtonResetData(); //Reset the ability button
-
             //Unsubscribe the button to old abilities
             if (oldAbilities != null && oldAbilities.Length > 0)
             {
@@ -109,6 +112,8 @@ public class MobileController : MonoBehaviour
                     }
                 }
             }
+
+            abilityButtons[i].ButtonResetData(); //Reset the ability button
 
             //Update button for new current abilities
             if (GetPlayerCurrentEquippedAbility(i) != null) //If the ability slot is null then just reset the button
