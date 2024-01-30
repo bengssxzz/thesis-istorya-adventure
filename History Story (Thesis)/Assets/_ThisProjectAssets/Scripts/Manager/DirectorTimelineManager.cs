@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using System;
+using UnityEngine.Events;
 
 
 public class DirectorTimelineManager : Singleton<DirectorTimelineManager> 
 {
+    public event Action OnTimelineDone;
+    
     private PlayableDirector currentTimeline;
+
+
 
 
     protected override void Awake()
@@ -16,19 +22,22 @@ public class DirectorTimelineManager : Singleton<DirectorTimelineManager>
         currentTimeline = GetComponent<PlayableDirector>();
     }
 
-    public void ChangeCurrentTimeline(PlayableDirector director)
+    public void ChangeCurrentTimeline(PlayableDirector director, DirectorWrapMode wrapMode)
     {
         currentTimeline = director;
+        currentTimeline.extrapolationMode = wrapMode;
+        currentTimeline.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
         currentTimeline.Play();
     }
-    public void PauseTimeline()
+
+    public void PauseTimeline() //Pause the current timeline
     {
-        //Pause the current timeline
+        
         currentTimeline.Pause();
     }
-    public void ContinueTimeline()
+       
+    public void ContinueTimeline()  //Continue the current timeline
     {
-        //Continue the current timeline
         currentTimeline.Resume();
     }
 
