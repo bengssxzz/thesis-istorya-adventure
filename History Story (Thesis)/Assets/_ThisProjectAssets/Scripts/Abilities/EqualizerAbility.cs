@@ -5,17 +5,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 using Random = System.Random;
+using ThesisLibrary;
 
 
 // ???
 // Copied from template... Why does this not work?
-// [CreateAssetMenu(fileName = "The Equalizer", menuName = "Abilities/The Equalizer")]
+[CreateAssetMenu(fileName = "Equalizer", menuName = "Abilities/The Equalizer")]
 
 
 public class EqualizerAbility : AbilityScript
 {
     // ???
     // Still copied from template... Why does this not work?
+    // I will not use these.
+    // [Space(15)]
     // [Header("The Equalizer")]
 
     // FUNCTION DECLARATIONS
