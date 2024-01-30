@@ -7,36 +7,32 @@ using System;
 public class PickupObject : MonoBehaviour
 {
     private PlayerScript player;
-    [SerializeField] private Usable usableComponents;
-    [SerializeField] private GameObject selectorVisual;
 
+    [SerializeField] private string itemID;
 
-    public Usable GetUsablePixelCrushers { get { return usableComponents; } }
+    [Space(10)]
+    [SerializeField] private VisualSelector selector;
+    public Usable GetUsablePixelCrushers { get { return selector.GetVisualUsable; } }
 
 
 
     private void OnEnable()
     {
-
-        usableComponents.events.onSelect.AddListener(OnSelectObject);
-        usableComponents.events.onUse.AddListener(OnUseObject);
-        usableComponents.events.onDeselect.AddListener(OnDeselectObject);
+        selector.OnEventUseObject += OnUseObject;
     }
 
   
 
     private void OnDisable()
     {
-        usableComponents.events.onSelect.RemoveListener(OnSelectObject);
-        usableComponents.events.onUse.RemoveListener(OnUseObject);
-        usableComponents.events.onDeselect.RemoveListener(OnDeselectObject);
+        selector.OnEventUseObject -= OnUseObject;
+
     }
 
     private void Start()
     {
         player = PlayerSingleton.Instance.playerScript;
 
-        selectorVisual.SetActive(false);
     }
 
 
@@ -45,62 +41,10 @@ public class PickupObject : MonoBehaviour
         //Pick up the object
         player.GetInteractHandler.PickUpObject(this);
     }
-    private void OnDeselectObject()
-    {
-        Debug.Log("CLOSE THE INTERACT BUTTON");
-        selectorVisual.SetActive(false);
-        UI_Manager.Instance.CloseMenu("Interact Button");
-    }
-    private void OnSelectObject()
-    {
-        Debug.Log("OPEN THE INTERACT BUTTON");
-        selectorVisual.SetActive(true);
-        UI_Manager.Instance.OpenMenu("Interact Button");
-    }
 
 
 
 
-
-
-
-
-
-
-
-    //private enum PickState { Pickable, Collectible}
-    //private PlayerScript player;
-    //private Usable itemUsable;
-
-    //[SerializeField] private PickState pickMode = PickState.Pickable;
-
-    //private bool isPickup = false;
-
-
-    //private void OnEnable()
-    //{
-    //    isPickup = false;
-    //    itemUsable.enabled = !isPickup;
-
-    //}
-
-    //private void Awake()
-    //{
-    //    player = PlayerSingleton.Instance.playerScript;
-    //    itemUsable = transform.GetComponentInChildren<Usable>();
-    //}
-
-
-    //public void OnUse()
-    //{
-    //    if(pickMode != PickState.Pickable && isPickup == false) { return; }
-
-    //    Debug.Log(this.gameObject.name);
-    //    player.GetInteractHandler.PickUpObject(this);
-
-    //    isPickup = true;
-    //    itemUsable.enabled = !isPickup;
-    //}
 
 
 

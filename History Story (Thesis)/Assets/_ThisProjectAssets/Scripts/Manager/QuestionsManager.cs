@@ -25,6 +25,8 @@ public class QuestionsManager : Singleton<QuestionsManager>
     private SimpleSQLManager dbManager;
     private Dictionary<string, List<QuestionsAnswer>> questionList;
 
+    [SerializeField] private string[] questionTableName;
+
     public string CurrentQuestionTable { get; private set; } = "Chapter1";
     public int CurrentIDQuestion { get; private set; }
 
@@ -38,14 +40,14 @@ public class QuestionsManager : Singleton<QuestionsManager>
 
     private void Start()
     {
-        InitializeQuestionAnswer("Chapter1");
+        InitializeQuestionAnswer();
     }
 
-    private void InitializeQuestionAnswer(params string[] tableName) //Get all the data in DB and put it inside the dictionary
+    private void InitializeQuestionAnswer() //Get all the data in DB and put it inside the dictionary
     {
-        foreach (string name in tableName)
+        foreach (string name in questionTableName)
         {
-            string sql = String.Format("SELECT * FROM {0}", tableName);
+            string sql = String.Format("SELECT * FROM {0}", name);
             List<QuestionsAnswer> qanda = dbManager.Query<QuestionsAnswer>(sql);
             questionList.Add(name, qanda);
         }

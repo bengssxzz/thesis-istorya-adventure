@@ -7,12 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class UI_Manager : Singleton<UI_Manager>
 {
+    [Serializable]
+    public class CallMenuOnStart
+    {
+        public string[] CallMenuID;
+        public string[] CallActivateID;
+    }
 
     private List<UI_Menu> menus;
     private List<UI_ButtonMenu> buttons;
 
     private UI_Menu previousMenuActive;
     private UI_Menu newMenuActive;
+
+    [SerializeField] private CallMenuOnStart callOnStart;
 
 
     protected override void Awake()
@@ -31,6 +39,8 @@ public class UI_Manager : Singleton<UI_Manager>
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
+    
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
         ClearMenuList(); //Clear menu list on every new loaded scene
@@ -39,6 +49,7 @@ public class UI_Manager : Singleton<UI_Manager>
         buttons = GetAllUIButtons();
 
         ActivateOnStartMenu(); //Activate all the OnStartMenu
+        CallOnStart(); 
     }
     private void OnSceneUnloaded(Scene scene)
     {
@@ -47,14 +58,26 @@ public class UI_Manager : Singleton<UI_Manager>
 
     }
 
+   
+
     private void Start()
     {
         
     }
 
-   
 
 
+    private void CallOnStart()
+    {
+        foreach (var item in callOnStart.CallMenuID)
+        {
+            OpenMenu(item);
+        }
+        foreach (var item in callOnStart.CallActivateID)
+        {
+            ActivateID_OpenMenu(item);
+        }
+    }
     private List<UI_Menu> GetAllUIMenus()
     {
         IEnumerable<UI_Menu> menus = FindObjectsOfType<UIAbstract>(true).OfType<UI_Menu>();

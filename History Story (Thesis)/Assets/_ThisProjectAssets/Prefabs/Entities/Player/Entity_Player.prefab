@@ -6593,7 +6593,7 @@ MonoBehaviour:
   amount: 0
   useTimer: 0
   intervalShoot: 0
-  fireFeedback: {fileID: 0}
+  fireFeedback: {fileID: 2119637366}
 --- !u!1 &5755683743459766515
 GameObject:
   m_ObjectHideFlags: 0
@@ -6744,7 +6744,7 @@ MonoBehaviour:
   textStyleColor: {r: 0, g: 0, b: 0, a: 1}
   defaultUseMessage: Hello,
   useKey: 0
-  useButton: Interact
+  useButton: 
   enableTouch: 0
   touchArea:
     origin: 0
@@ -6783,6 +6783,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_Intensity
+      value: 0.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.766
+      objectReference: {fileID: 0}
+    - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3272832203514510532, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -6817,11 +6833,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3272832204859969410, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.314
+      value: 5.62
       objectReference: {fileID: 0}
     - target: {fileID: 3272832204859969410, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.848
+      value: 1.28
       objectReference: {fileID: 0}
     - target: {fileID: 3272832204859969410, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6919,7 +6935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a59a136a5728a43a219894b9729f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  proximitySelector: {fileID: 0}
+  proximitySelector: {fileID: 920302428}
   itemHolder: {fileID: 1592103176}
 --- !u!114 &753467170
 MonoBehaviour:
@@ -6950,7 +6966,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8684fbcd547a91846bfdb0d41b6d1b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfUnlockedAbilities: []
+  listOfUnlockedAbilities:
+  - {fileID: 11400000, guid: 4b1a7227656ac1b4db897d51f5555db2, type: 2}
+  - {fileID: 11400000, guid: 8bcd37f6fc77bf649a6576e3554c2fad, type: 2}
+  - {fileID: 11400000, guid: a47575ccb14829144a039dcb5041d0ca, type: 2}
+  - {fileID: 11400000, guid: e187f6b54d709a447a369eab1fee4031, type: 2}
 --- !u!114 &753467172
 MonoBehaviour:
   m_ObjectHideFlags: 0
