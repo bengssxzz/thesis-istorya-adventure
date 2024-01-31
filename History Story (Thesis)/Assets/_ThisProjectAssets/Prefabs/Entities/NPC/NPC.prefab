@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 2365506080340139434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.45, y: 0.45, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3851663602232176334}
@@ -276,7 +276,7 @@ Transform:
   m_GameObject: {fileID: 8731687991914652491}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.28, y: 0.28, z: 0.28}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2683453715637995331}
@@ -292,7 +292,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8731687991914652491}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64578247383140469c45370654a984a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: Proffessor Ian
+  actor: 
   persistentDataName: Proffessor_Ian_251480
   portrait: {fileID: 0}
   spritePortrait: {fileID: 0}
@@ -357,7 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   once: 0
-  conversation: The intro
+  conversation: 
   condition:
     luaConditions: []
     questConditions: []
@@ -390,7 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c593457cd8105e148906690e1707c592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trigger: 1024
+  trigger: 32
   condition:
     luaConditions: []
     questConditions: []
@@ -429,7 +429,7 @@ MonoBehaviour:
   allowBarksDuringConversations: 0
   skipBarkIfNoValidEntries: 0
   cacheBarkLines: 0
-  conversation: The intro
+  conversation: ProfIanCalls1
   conversationConversant: {fileID: 0}
   conversationActor: {fileID: 0}
   startConversationEntryID: -1
@@ -444,7 +444,7 @@ MonoBehaviour:
   maxConversationDistance: 5
   monitorConversationDistanceFrequency: 1
   showCursorDuringConversation: 0
-  pauseGameDuringConversation: 0
+  pauseGameDuringConversation: 1
   setActiveActions: []
   setEnabledActions: []
   setAnimatorStateActions: []
@@ -454,7 +454,7 @@ MonoBehaviour:
   useConversationTitlePicker: 1
   useBarkTitlePicker: 1
   useQuestNamePicker: 1
-  selectedDatabase: {fileID: 11400000, guid: 926fb6b4930d489469cb837ade2fad2b, type: 2}
+  selectedDatabase: {fileID: 11400000, guid: 4c2fdd7f7316f5c4a875d4f10a573274, type: 2}
 --- !u!114 &892842761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,7 +529,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c279b401df78144b8b73740039088c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogTrigger: {fileID: 892842760}
   selector: {fileID: 5167402668523107294}
 --- !u!1001 &456464051651605268
 PrefabInstance:
@@ -540,6 +539,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2052512746331048395, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3272832203514510533, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
@@ -613,6 +616,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3851663602232176334}
     m_Modifications:
+    - target: {fileID: 731254858966806726, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 731254858966806726, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 731254858966806726, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 731254858966806726, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.366
+      objectReference: {fileID: 0}
+    - target: {fileID: 816095906009446299, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+      propertyPath: m_Radius
+      value: 0.37599573
+      objectReference: {fileID: 0}
+    - target: {fileID: 816095906009446299, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.013538136
+      objectReference: {fileID: 0}
     - target: {fileID: 3227058256300907544, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
       propertyPath: m_Size.x
       value: 1.25
@@ -635,15 +662,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8071056392437628706, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.3928572
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8071056392437628706, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.3928572
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8071056392437628706, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.3928572
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8071056392437628706, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -711,6 +738,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8168387100337829835}
     m_Modifications:
+    - target: {fileID: 21494875899510212, guid: c5ee26252ec5d474fbcc8962d2625286, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 403362659015560547, guid: c5ee26252ec5d474fbcc8962d2625286, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2736714083450014014, guid: c5ee26252ec5d474fbcc8962d2625286, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3499284383561322499, guid: c5ee26252ec5d474fbcc8962d2625286, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
