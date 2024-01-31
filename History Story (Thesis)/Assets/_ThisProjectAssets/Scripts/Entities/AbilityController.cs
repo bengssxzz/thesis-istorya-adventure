@@ -10,6 +10,7 @@ public class AbilityController : MonoBehaviour
 
     [SerializeField] private List<AbilityScript> listOfUnlockedAbilities = new List<AbilityScript>();
     private List<AbilityScript> currentAbilities = new List<AbilityScript>();
+   
     public List<AbilityScript> ListOfCurrentAbilities {get => currentAbilities; 
         set 
         {
@@ -51,6 +52,9 @@ public class AbilityController : MonoBehaviour
 
     //Get all the list of unlocked abilities
     public List<AbilityScript> GetListOfUnlockedAbilities() { return listOfUnlockedAbilities; }
+
+    //Set the unlocked abilities
+    public void SetListOfUnlockedAbilities(List<AbilityScript> listOfAbility) { listOfUnlockedAbilities = listOfAbility; }
 
     //Unlock a new ability
     public void UnlockNewAbility(AbilityScript newAbility)

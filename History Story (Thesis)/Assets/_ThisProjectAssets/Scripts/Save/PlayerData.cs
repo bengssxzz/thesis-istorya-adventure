@@ -5,12 +5,18 @@ using UnityEngine;
 public class PlayerData
 {
 
-    private List<GameObject> artifactsCollected = new List<GameObject>();
+    //Save the artifacts collected
+    public List<GameObject> artifactsCollected = new List<GameObject>();
 
-    private List<GameObject> abilitiesUnlocked = new List<GameObject>();
-    private List<GameObject> chapterUnlocked = new List<GameObject>();
+    //Save the unlocked abilities and current used ability
+    public List<AbilityScript> unlockedAbilities = new List<AbilityScript>();
+    public List<AbilityScript> usedCurrentAbilities = new List<AbilityScript>();
 
-    private Dictionary<string, int> chapterScores = new Dictionary<string, int> {
+    //Save the unlocked chapters
+    public List<GameObject> unlockedChapters = new List<GameObject>();
+
+    //Save the score each chapter
+    public Dictionary<string, int> chapterScores = new Dictionary<string, int> {
         {"Chapter 1", 0},
         {"Chapter 2", 0},
         {"Chapter 3", 0},
