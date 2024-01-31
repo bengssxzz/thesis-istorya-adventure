@@ -2680,6 +2680,8 @@ namespace PixelCrushers.DialogueSystem
 
         #endregion
 
+
+
 #if EVALUATION_VERSION
 
         private GameObject watermark = null;

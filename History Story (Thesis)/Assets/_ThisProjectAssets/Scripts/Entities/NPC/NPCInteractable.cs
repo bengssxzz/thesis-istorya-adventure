@@ -56,7 +56,10 @@ public class NPCInteractable : MonoBehaviour
     }
 
 
-
+    public void OnConversationStart(Transform actor) //Broadcast Messages from Dialog Manager
+    {
+        Debug.Log(string.Format("Starting conversation with {0}", actor.name));
+    }
 
 
 
