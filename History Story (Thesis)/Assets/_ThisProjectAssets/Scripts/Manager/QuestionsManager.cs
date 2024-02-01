@@ -55,7 +55,8 @@ public class QuestionsManager : Singleton<QuestionsManager>
 
     public void TriggerQuestion(string questionFrom, int totalChoices = 2) //Trigger questions behaviour
     {
-        UIManager.Instance.ChangeUIState = UIManager.GUIState.QandA;
+        //UIManager.Instance.ChangeUIState = UIManager.GUIState.QandA;
+        UI_Manager.Instance.OpenMenu("Question UI");
 
         CurrentQuestionTable = questionFrom;
         var info = GetQuestionFrom(questionFrom, totalChoices);

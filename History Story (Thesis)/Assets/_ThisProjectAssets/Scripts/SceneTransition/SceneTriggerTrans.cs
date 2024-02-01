@@ -9,14 +9,38 @@ public class SceneTriggerTrans : MonoBehaviour
 {
     [SerializeField] private string transitionID;
     [SerializeField] private string sceneName;
-
     [SerializeField] private Transform positionOut;
 
-
+    [Header("Indicator Info")]
+    [SerializeField] private MMF_Player arrowIndicatorFeedback;
+    [SerializeField] private float indicatorShowRange = 0.5f;
+    [SerializeField] private Vector2 offsetIndicatorPosition;
+     
     [SerializeField] private MMF_Player sceneFeedback;
 
     public string GetTransitionID { get { return transitionID; } }
     public Transform GetPositionOut { get { return positionOut; } }
+
+
+
+
+    private void LateUpdate()
+    {
+        if (PlayerSingleton.Instance.playerScript != null)
+        {
+            Transform playerTransform = PlayerSingleton.Instance.playerScript.transform;
+
+            if (Vector2.Distance(transform.position + (Vector3)offsetIndicatorPosition, playerTransform.transform.position) < indicatorShowRange)
+            {
+                //Show indicator when the player is inside
+                arrowIndicatorFeedback.gameObject.SetActive(true);
+            }else
+                arrowIndicatorFeedback.gameObject.SetActive(false);
+        }
+    }
+
+
+
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,5 +51,25 @@ public class SceneTriggerTrans : MonoBehaviour
             SceneTransitionManager.Instance.GoToScene(sceneName, transitionID);
         }
     }
+
+
+
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position + (Vector3)offsetIndicatorPosition, indicatorShowRange);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }
