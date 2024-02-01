@@ -777,11 +777,11 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Actor
-      value: 1
+      value: 3
       type: 5
       typeString: CustomFieldType_Actor
     - title: Conversant
-      value: 3
+      value: 1
       type: 5
       typeString: CustomFieldType_Actor
     overrideSettings:
@@ -831,7 +831,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 3
+        value: 1
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -863,7 +863,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: 
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 2
@@ -910,7 +910,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Hey [var=Actor],  you there?
+        value: Hey [var=Conversant],  you there?
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -926,9 +926,13 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 
+        value: Timeline(pause, Timeline)
         type: 0
         typeString: CustomFieldType_Text
+      - title: Response Menu Sequence
+        value: 
+        type: 0
+        typeString: 
       conversationID: 2
       isRoot: 0
       isGroup: 0
@@ -951,7 +955,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 80
+        y: 78
         width: 160
         height: 30
     - id: 2
@@ -973,7 +977,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 3
+        value: 1
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -1022,7 +1026,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 130
+        y: 131
         width: 160
         height: 30
     - id: 3
@@ -1116,7 +1120,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 3
+        value: 1
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -1195,8 +1199,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Well, it's a bit of a sticky situation, [var=Actor]. But we need all
-          three Gs to jump to the next timeline. Just be careful, alright?
+        value: Well, it's a bit of a sticky situation, [var=Conversant]. But we need
+          all three Gs to jump to the next timeline. Just be careful, alright?
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -1212,7 +1216,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 
+        value: Timeline(resume, Timeline)
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 2
@@ -1230,12 +1234,12 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 280
+        x: 162
+        y: 281
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
+    canvasScrollPosition: {x: 0, y: 25}
     canvasZoom: 1
   - id: 3
     fields:

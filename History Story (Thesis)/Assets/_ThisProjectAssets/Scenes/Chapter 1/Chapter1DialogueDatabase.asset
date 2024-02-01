@@ -796,8 +796,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 496
-        y: 218
+        x: 357.25006
+        y: 214.25
         width: 160
         height: 30
     - id: 7
@@ -1135,6 +1135,10 @@ MonoBehaviour:
         value: SetActive(Golds,true)
         type: 0
         typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: 9c5aba16-c7e8-4824-8d51-0f94d9234144
+        type: 0
+        typeString: 
       conversationID: 1
       isRoot: 0
       isGroup: 0
@@ -1771,6 +1775,10 @@ MonoBehaviour:
         value: 
         type: 0
         typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: 578d2698-9875-4035-98cb-c6a499f37756
+        type: 0
+        typeString: 
       conversationID: 1
       isRoot: 0
       isGroup: 0
@@ -1791,8 +1799,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 117.28848, y: 6.3221784}
-    canvasZoom: 0.95000005
+    canvasScrollPosition: {x: 544.9999, y: 326.24988}
+    canvasZoom: 0.8000002
   - id: 2
     fields:
     - title: Title
@@ -1900,77 +1908,6 @@ MonoBehaviour:
       - originConversationID: 2
         originDialogueID: 0
         destinationConversationID: 2
-        destinationDialogueID: 1
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 156
-        y: 12
-        width: 160
-        height: 30
-    - id: 1
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Pictures
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Description
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 3
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Dialogue Text
-        value: Where... where am I? More importantly... what year is this!?
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Parenthetical
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Audio Files
-        value: '[]'
-        type: 3
-        typeString: CustomFieldType_Files
-      - title: Video File
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: CustomFieldType_Text
-      conversationID: 2
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 2
-        originDialogueID: 1
-        destinationConversationID: 2
         destinationDialogueID: 2
         isConnector: 0
         priority: 2
@@ -1982,7 +1919,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 156
-        y: 72
+        y: 12
         width: 160
         height: 30
     - id: 2
@@ -2012,9 +1949,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "*Professor Ian's voice emerges from the walkie-talkie* \nAh, there
-          you are! You've successfully traversed the timeline. Welcome to Cebu, 1521,
-          the year where the Battle of Mactan took place!"
+        value: Ah, there you are! You've successfully traversed the timeline. Welcome
+          to Cebu, 1521, the year where the Battle of Mactan took place!
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -2030,7 +1966,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 
+        value: Timeline(pause, Timeline)
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 2
@@ -2200,7 +2136,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 154
-        y: 254
+        y: 255.0989
         width: 160
         height: 30
     - id: 5
@@ -2462,7 +2398,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: 
+        value: Timeline(resume, Timeline)
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 2
@@ -2480,12 +2416,12 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 154
-        y: 454
+        x: 155.09888
+        y: 452.90106
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
+    canvasScrollPosition: {x: 0, y: 293.4066}
     canvasZoom: 0.9100001
   - id: 3
     fields:
