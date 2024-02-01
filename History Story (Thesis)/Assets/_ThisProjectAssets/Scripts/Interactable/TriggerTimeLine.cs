@@ -9,6 +9,7 @@ public class TriggerTimeLine : MonoBehaviour
 {
     public enum TriggerState
     {
+        None, //Trigger nothing
         AwakeTrigger, //On start the timeline will trigger
         OnEnterTrigger, //when the player enter the collider
     }
@@ -21,6 +22,7 @@ public class TriggerTimeLine : MonoBehaviour
     [SerializeField] private bool playOnce = true;
 
     private bool isInside;
+    private bool alreadyPlayOnce = false;
 
 
     private void Awake()
@@ -48,11 +50,11 @@ public class TriggerTimeLine : MonoBehaviour
         DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
 
 
-        if (playOnce)
+        if (playOnce && !alreadyPlayOnce)
+        {
             this.enabled = false; //Disable this script para di na matrigger ulit
-
-        //timeLineDirector.Play();
-
+            alreadyPlayOnce = true; 
+        }
     }
 
 
@@ -77,154 +79,6 @@ public class TriggerTimeLine : MonoBehaviour
         }
     }
 
-
-    //public enum TriggerState
-    //{
-    //    InteractTrigger, //when the player interact the object
-    //    AwakeTrigger, //On start the timeline will trigger
-    //    OnEnterTrigger, //when the player enter the collider
-    //    PlayerOnlyTrigger,
-    //}
-
-    //[SerializeField] private PlayableDirector timeLineDirector;
-
-    //[SerializeField] private Collider2D triggerCollider;
-    //[SerializeField] private TriggerState triggerState;
-
-
-    //private bool isInside;
-    //private bool alreadyTrigger = false;
-
-
-    //private void Awake()
-    //{
-    //    timeLineDirector = GetComponent<PlayableDirector>();    
-    //}
-
-    //private void Start()
-    //{
-    //    TimelineTrigger(TriggerState.AwakeTrigger);
-
-    //    if (triggerState == TriggerState.AwakeTrigger)
-    //    {
-    //        TriggerTimeline();
-    //    }
-    //}
-
-    //private void Update()
-    //{
-    //    if(triggerState == TriggerState.PlayerOnlyTrigger)
-    //    {
-    //        if (isInside)
-    //        {
-    //            TriggerTimeline();
-    //        }
-    //    }
-    //}
-
-
-    //private void TimelineTrigger(TriggerState state)
-    //{
-    //    if(triggerState != state) { return; }
-
-    //    switch (triggerState)
-    //    {
-    //        case TriggerState.InteractTrigger:
-    //            PlayDirectorTimeline();
-    //            break;
-    //        case TriggerState.AwakeTrigger:
-    //            PlayDirectorTimeline();
-    //            break;
-    //        case TriggerState.OnEnterTrigger:
-    //            PlayDirectorTimeline();
-    //            break;
-    //        case TriggerState.PlayerOnlyTrigger:
-    //            PlayDirectorTimeline();
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
-
-
-
-    //private void TriggerTimeline()
-    //{
-    //    switch (triggerState)
-    //    {
-    //        case TriggerState.AwakeTrigger:
-    //            PlayDirectorTimeline();
-    //            break;
-
-    //        case TriggerState.OnEnterTrigger:
-    //            if (!alreadyTrigger)
-    //            {
-    //                PlayDirectorTimeline();
-    //                alreadyTrigger = true;
-    //            }
-    //            break;
-
-    //        case TriggerState.PlayerOnlyTrigger:
-    //            break;
-
-    //        default:
-    //            break;
-    //    }
-    //}
-    //public void Intereractable()
-    //{
-    //    //When the player trigger this, the timeline will trigger
-    //    TimelineTrigger(TriggerState.InteractTrigger);
-
-    //    //if (triggerState != TriggerState.InteractTrigger) { return; }
-
-    //    //Debug.Log("In");
-    //    //PlayDirectorTimeline();
-
-
-    //    //if (triggerState == TriggerState.PlayerOnlyTrigger)
-    //    //{
-    //    //    PlayDirectorTimeline();
-    //    //}
-    //}
-
-    //public void OnEventTimeline()
-    //{
-    //    LevelManager.instance.SetDirector(timeLineDirector);
-    //    LevelManager.instance.PlayDirector();
-    //}
-
-    //public void PlayDirectorTimeline()
-    //{
-    //    if(timeLineDirector == null)
-    //    {
-    //        Debug.LogWarning("Director timeline is missing");
-    //        return;
-    //    }
-
-    //    LevelManager.instance.SetDirector(timeLineDirector);
-    //    LevelManager.instance.PlayDirector();
-
-    //    //timeLineDirector.Play();
-
-    //}
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Player"))
-    //    {
-    //        TimelineTrigger(TriggerState.OnEnterTrigger);
-    //        isInside = true;
-    //        TriggerTimeline();
-    //    }
-    //}
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Player"))
-    //    {
-    //        isInside = false;
-    //    }
-    //}
 
 
 }
