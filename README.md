@@ -1,5 +1,6 @@
 # Thesis Istorya Adeventure
 *This is a work in progress documetation. Edit it as needed.*
+*testing git with github*
 
 ## Level Creation
 
