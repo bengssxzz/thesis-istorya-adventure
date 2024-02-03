@@ -13,12 +13,12 @@ public class RoomArea : MonoBehaviour
 
 
     public bool isPlayerInsideRoom { get; private set; }
-    public RoomSpawnerEnemy battleTrigger { get; private set; }
+    public RoomSpawnerEnemy GetBattleTrigger { get; private set; }
 
 
     private void Awake()
     {
-        battleTrigger = GetComponentInChildren<RoomSpawnerEnemy>();
+        GetBattleTrigger = GetComponentInChildren<RoomSpawnerEnemy>();
     }
 
 

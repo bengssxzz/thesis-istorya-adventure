@@ -42,7 +42,7 @@ public class SceneTriggerTrans : MonoBehaviour
         }
     }
 
-    public void ForceGoToScene()
+    public void ForceGoToScene() //Force to go to another scene with unity events
     {
         SceneTransitionManager.Instance.GoToScene(sceneName, transitionID);
     }

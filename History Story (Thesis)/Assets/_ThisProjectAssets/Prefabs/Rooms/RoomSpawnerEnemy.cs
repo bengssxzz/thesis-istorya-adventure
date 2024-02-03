@@ -41,10 +41,14 @@ public class RoomSpawnerEnemy : MonoBehaviour
     private List<Collider2D> enemiesAliveList = new List<Collider2D>();
     private int currentWave = 0;
     private int enemySpawnCount = 0;
-
-    private bool nextEnterToBattle = false;
-    private bool isAlreadyTrigger = false;
     private bool isPendingBattle = false;
+
+    private bool randomDesiredTimer = false;
+    private bool desiredToBattleInRoom = false;
+    private bool isAlreadyTrigger = false;
+
+    public bool GetNextDesiredBattleTrigger { get { return desiredToBattleInRoom; } set { desiredToBattleInRoom = value; } }
+    public bool IsAlreadyTriggerArea { get { return isAlreadyTrigger; } set { isAlreadyTrigger = value; } }
 
 
     private void Awake()
@@ -65,9 +69,26 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         roomArea.OnPlayerEnterRoom.RemoveListener(OnPlayerEnterRooom);
         roomArea.OnPlayerExitRoom.RemoveListener(OnPlayerExitRoom);
-
     }
 
+    private void Start()
+    {
+        if(battleMode == BattleStartState.None)
+        {
+            if (chanceToBattle)
+                RandomDesiredBattleInRoom();
+            else
+                desiredToBattleInRoom = false;
+        }
+        else
+        {
+            desiredToBattleInRoom = true; //To make sure to trigger the room at first enter
+        }
+        ToggleBarriers(false);
+    }
+
+
+    
 
     private void OnPlayerEnterRooom() //When the player enter the room
     {
@@ -76,27 +97,45 @@ public class RoomSpawnerEnemy : MonoBehaviour
             if (!isAlreadyTrigger) //If the room is not yet trigger
             {
                 //Start the battle
-                StartBattle();
+                StartCoroutine(DelayStartBattle());
             }
             else
             {
-                if (chanceToBattle && ThesisUtility.RandomGetChanceBool()) //If the room is already trigger and has chance to battle
+                if (chanceToBattle && desiredToBattleInRoom) //If the room is already trigger and has chance to battle
                 {
                     //Start the battle
-                    StartBattle();
+                    StartCoroutine(DelayStartBattle());
                 }
             }
         }else if(battleMode == BattleStartState.None)
         {
-            if (chanceToBattle && ThesisUtility.RandomGetChanceBool()) //If the room has chance to battle
+            if (chanceToBattle && desiredToBattleInRoom) //If the room has chance to battle
             {
                 //Start the battle
-                StartBattle();
+                StartCoroutine(DelayStartBattle()); //Trigger the battle with delay
             }
         }
     }
     private void OnPlayerExitRoom()//When the player exit the room
     {
+        //Generate next battle when trigger the room again
+        //Start time for timer
+        if(battleMode == BattleStartState.None)
+        {
+            if (chanceToBattle) //If chance to battle is true and player exit the room
+            {
+                StartCoroutine(TimerToRandomizeDesiredBattle()); //Then randomize the desired battle next trigger
+            }
+        }
+        else
+        {
+            if (isAlreadyTrigger && chanceToBattle)
+            {
+                //Start the timer to randomize a new battle next trigger
+                StartCoroutine(TimerToRandomizeDesiredBattle());
+            }
+        }
+        
     }
 
     private void BattleIsStarted() //When the battle is started
@@ -137,6 +176,33 @@ public class RoomSpawnerEnemy : MonoBehaviour
         }
     }
 
+    IEnumerator TimerToRandomizeDesiredBattle() //Timer to generate a desired next battle trigger
+    {
+        if (!randomDesiredTimer)
+        {
+            randomDesiredTimer = true;
+            yield return new WaitForSeconds(3f); //Wait for 3 secods before randomize the desired battle 
+            RandomDesiredBattleInRoom();
+            randomDesiredTimer = false;
+
+            Debug.Log("RANDOMIZED THE DESIRED BATTLE");
+        }
+    }
+    private void RandomDesiredBattleInRoom()
+    {
+        desiredToBattleInRoom = ThesisUtility.RandomGetChanceBool();
+    }
+
+    IEnumerator DelayStartBattle()
+    {
+        yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(0.8f, 1.5f)); //Wait for a while before trigger the battle
+
+        //Then check if the player is inside the room
+        if (roomArea.isPlayerInsideRoom)
+        {
+            StartBattle(); //Start the battle
+        }
+    }
     IEnumerator ScanEnemies()
     {
         if (roomAreaCollider != null)
@@ -154,6 +220,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
                 Debug.Log("Enemy alive left: " + enemiesAliveList.Count);
                 yield return new WaitForSeconds(0.2f);
 
+                isPendingBattle = enemiesAliveList.Count > 0; //If there are still enemies  then it is still pending battle
                 //If there are no more enemy to be scan then while loop done
             } while (enemiesAliveList.Count > 0 || isPendingBattle);
 
@@ -244,7 +311,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
     }
 
     /* You can use these in the unity event in the inspector
-     * The StartBattleOnChance() mathod, ipla-play nya ang battle on chances only
+     * The StartBattleOnChance() method, ipla-play nya ang battle on chances only
      * The ForceStartBattle() method will play without calling the unity events
      */
     public void StartBattleOnChance() //Start the battle on chances
