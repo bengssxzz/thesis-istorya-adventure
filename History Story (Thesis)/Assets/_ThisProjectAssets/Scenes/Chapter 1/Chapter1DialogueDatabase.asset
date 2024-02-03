@@ -367,11 +367,15 @@ MonoBehaviour:
     - title: Entry 1 State
       value: active
       type: 0
-      typeString: 
+      typeString: CustomFieldType_QuestState
     - title: Entry 1
       value: '[var=GoldCollected]/10 Collected'
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
+    - title: Display Name
+      value: Find gold
+      type: 0
+      typeString: CustomFieldType_Text
   locations: []
   variables:
   - id: 1
@@ -1144,7 +1148,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: SetActive(Golds,true)
+        value: 
         type: 0
         typeString: CustomFieldType_Text
       - title: EventGuid
@@ -2126,8 +2130,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: Collect for me a handful of those gleaming grains, enough to fashion
-          a unique piece.
+        value: So go north by the beach, through the two giant rocks and collect
+          for me a handful of those gleaming grains, enough to fashion a unique piece.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -2186,11 +2190,11 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Actor
-        value: 1
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 2
+        value: 1
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -2244,7 +2248,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 58.75, y: 508.74988}
+    canvasScrollPosition: {x: 108.74997, y: 764.9999}
     canvasZoom: 0.8000002
   - id: 2
     fields:
