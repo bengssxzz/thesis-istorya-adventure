@@ -8,8 +8,13 @@ using MoreMountains.Feedbacks;
 [RequireComponent(typeof(Collider2D))]
 public class SceneTriggerTrans : MonoBehaviour
 {
+    private enum TransitionState { None, OnTrigger}
+
+    [Header("Transition Info")]
+    [SerializeField] private TransitionState state = TransitionState.OnTrigger;
     [SerializeField] private string transitionID;
     [SerializeField] private string sceneName;
+
     [SerializeField] private Transform positionOut;
 
     [Header("Indicator Info")]
@@ -37,7 +42,10 @@ public class SceneTriggerTrans : MonoBehaviour
         }
     }
 
-
+    public void ForceGoToScene()
+    {
+        SceneTransitionManager.Instance.GoToScene(sceneName, transitionID);
+    }
 
 
 
@@ -45,8 +53,11 @@ public class SceneTriggerTrans : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            LevelManager.Instance.SaveSceneLevel(); //Save the scene
-            SceneTransitionManager.Instance.GoToScene(sceneName, transitionID);
+            if (state == TransitionState.OnTrigger)
+            {
+                LevelManager.Instance.SaveSceneLevel(); //Save the scene
+                SceneTransitionManager.Instance.GoToScene(sceneName, transitionID);
+            }
         }
     }
 

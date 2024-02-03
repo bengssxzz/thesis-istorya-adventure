@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-
+[RequireComponent(typeof(PlayableDirector))]
+[RequireComponent(typeof(Collider2D))]
 public class TriggerTimeLine : MonoBehaviour
 {
     public enum TriggerState

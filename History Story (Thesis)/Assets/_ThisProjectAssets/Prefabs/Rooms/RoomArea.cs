@@ -18,7 +18,7 @@ public class RoomArea : MonoBehaviour
 
     private void Awake()
     {
-        battleTrigger = GetComponent<RoomSpawnerEnemy>();
+        battleTrigger = GetComponentInChildren<RoomSpawnerEnemy>();
     }
 
 

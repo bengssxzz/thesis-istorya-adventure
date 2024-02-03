@@ -29,6 +29,9 @@ public class RoomSpawnerEnemy : MonoBehaviour
     [SerializeField] private LayerMask cannotSpawn;
     [SerializeField] private int maxEnemySpawnInRoom = 5;
 
+    [Space(10)]
+    [SerializeField] private List<GameObject> listOfBarriers = new List<GameObject>();
+
     [Space(30)]
     public UnityEvent OnBeforeBattleTrigger; //Before battle
     public UnityEvent OnStartBattleTrigger; //When the battle started
@@ -102,7 +105,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         StartCoroutine(ScanEnemies()); //Start the scanning
         OnStartBattleTrigger?.Invoke(); //Invoke after the battle started
 
-        //Debug.Log("UPDATE GRAPH");
+        ToggleBarriers(true); //Enable all the barriers
 
         UpdateRoomGraphPathFinding();
         Debug.Log("THE GAME IS STARTED");
@@ -112,6 +115,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         isPendingBattle = false;
         UpdateRoomGraphPathFinding();
+
+        ToggleBarriers(false); //Disable the barriers
 
         UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
     }
@@ -123,6 +128,13 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         // Set some settings
         AstarPath.active.UpdateGraphs(guo); //Update the node according to bound
+    }
+    private void ToggleBarriers(bool enable) //To Toggle the barriers in the battle trigger
+    {
+        foreach (var barriers in listOfBarriers)
+        {
+            barriers.SetActive(enable);
+        }
     }
 
     IEnumerator ScanEnemies()

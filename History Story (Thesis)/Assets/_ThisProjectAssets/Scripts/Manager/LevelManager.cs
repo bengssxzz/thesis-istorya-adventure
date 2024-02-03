@@ -37,11 +37,6 @@ public class LevelManager : Singleton<LevelManager>
     private string currentScene;
 
 
-    //private void OnApplicationQuit() //TEMPORARY
-    //{
-    //    SavePickUpObjects();
-    //}
-
     protected override void Awake()
     {
         base.Awake();
@@ -157,6 +152,7 @@ public class LevelManager : Singleton<LevelManager>
 
 
 
+    //To Save the battle trigger in the scene
 
 
 
