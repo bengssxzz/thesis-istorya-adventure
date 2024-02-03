@@ -14,7 +14,6 @@ public class SoundManager : Singleton<SoundManager>
     private void Start()
     {
         PlayMusic(sceneAudio.chapterMusic);
-        PlayMusic(sceneAudio.combatMusic);
     }
 
     public void PlayMusic(AudioClip clip)

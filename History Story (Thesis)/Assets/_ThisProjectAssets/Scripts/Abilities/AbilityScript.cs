@@ -148,6 +148,12 @@ public class AbilityScript : ScriptableObject
         isOnCoolDown = false;
         OnAbilityTimeLapse?.Invoke(isOnCoolDown, 0f);
     }
+
+    /*TODO - Save the cooldown timer of the ability 
+     * Save the cooldown using (Time.time - startTime) to get the cooldown
+     * When loading the cooldown, need iexecute ang cooldown timer
+     */
+
     
 
     public void Reset(){

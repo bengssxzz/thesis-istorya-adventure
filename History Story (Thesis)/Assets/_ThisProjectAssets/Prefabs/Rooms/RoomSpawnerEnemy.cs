@@ -39,7 +39,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
     private int currentWave = 0;
     private int enemySpawnCount = 0;
 
-    
+    private bool nextEnterToBattle = false;
     private bool isAlreadyTrigger = false;
     private bool isPendingBattle = false;
 

@@ -12,7 +12,6 @@ public class DirectorTimelineManager : Singleton<DirectorTimelineManager>
     public event Action OnTimelineDone;
     
     private PlayableDirector currentTimeline;
-    private DialogueSystemEvents dialogEvents;
 
 
 
@@ -22,24 +21,7 @@ public class DirectorTimelineManager : Singleton<DirectorTimelineManager>
         base.Awake();
 
         currentTimeline = GetComponent<PlayableDirector>();
-        dialogEvents = GetComponent<DialogueSystemEvents>();
 
-        DialogueManager.instance.conversationStarted += Instance_conversationStarted;
-    }
-
-    private void Instance_conversationStarted(Transform t)
-    {
-        Debug.Log("PUTANG INA MO UNITY");
-    }
-
-    private void OnEnable()
-    {
-        dialogEvents.conversationEvents.onConversationStart.AddListener(OnStartDialog);
-    }
-
-    private void OnStartDialog(Transform arg0)
-    {
-        Debug.Log("HAHAHAHA ON START ANG DIALOAG");
     }
 
     public void ChangeCurrentTimeline(PlayableDirector director, DirectorWrapMode wrapMode)

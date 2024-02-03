@@ -4,6 +4,7 @@ using UnityEngine;
 using MoreMountains.Feedbacks;
 
 
+
 [RequireComponent(typeof(Collider2D))]
 public class SceneTriggerTrans : MonoBehaviour
 {
@@ -15,20 +16,17 @@ public class SceneTriggerTrans : MonoBehaviour
     [SerializeField] private MMF_Player arrowIndicatorFeedback;
     [SerializeField] private float indicatorShowRange = 0.5f;
     [SerializeField] private Vector2 offsetIndicatorPosition;
-     
-    [SerializeField] private MMF_Player sceneFeedback;
-
+   
     public string GetTransitionID { get { return transitionID; } }
     public Transform GetPositionOut { get { return positionOut; } }
 
 
 
-
     private void LateUpdate()
     {
-        if (PlayerSingleton.Instance.playerScript != null)
+        if (PlayerSingleton.Instance.GetPlayerScript != null)
         {
-            Transform playerTransform = PlayerSingleton.Instance.playerScript.transform;
+            Transform playerTransform = PlayerSingleton.Instance.GetPlayerScript.transform;
 
             if (Vector2.Distance(transform.position + (Vector3)offsetIndicatorPosition, playerTransform.transform.position) < indicatorShowRange)
             {
@@ -47,7 +45,7 @@ public class SceneTriggerTrans : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            sceneFeedback?.PlayFeedbacks();
+            LevelManager.Instance.SaveSceneLevel(); //Save the scene
             SceneTransitionManager.Instance.GoToScene(sceneName, transitionID);
         }
     }
