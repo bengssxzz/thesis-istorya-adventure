@@ -76,7 +76,9 @@ public class UI_Manager : Singleton<UI_Manager>
             this.menus = GetAllUIMenus();
             this.buttons = GetAllUIButtons();
 
-            Debug.LogWarning("FINDING MENUS");
+            if(menus.Count == 0 || menus == null)
+                Debug.LogWarning("FINDING MENUS");
+
             yield return new WaitForEndOfFrame();
 
         } while (menus.Count == 0 || menus == null);
