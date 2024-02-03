@@ -46,7 +46,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         base.Awake();
         sceneCamera = GetComponentInChildren<CinemachineVirtualCamera>();
-        player = PlayerSingleton.Instance.GetPlayerScript;
+        player = PlayerSingleton.Instance?.GetPlayerScript;
 
     }
 
