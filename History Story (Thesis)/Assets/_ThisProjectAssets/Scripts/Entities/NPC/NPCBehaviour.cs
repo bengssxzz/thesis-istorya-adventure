@@ -25,19 +25,24 @@ public class NPCBehaviour : MonoBehaviour
 
     [SerializeField] private MovementBehaviourState moveBehaviour = MovementBehaviourState.Idle;
 
+    [Header("State Info")]
+    //Wait titmer
+    [SerializeField] private float minWaitTime = 1f;
+    [SerializeField] private float maxWaitTime = 2f;
+
     //For Random state
     [Header("For Random Area State")]
     [SerializeField] private LayerMask invalidPositionLayer;
-    [SerializeField] private float minRandom = 1f;
-    [SerializeField] private float maxRandom = 2f;
+   
 
     //For SetLocation state
     [Header("For Setlocation State")]
     [SerializeField] private Loops loopState = Loops.Loop;
 
     [Header("NPC stats")]
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float moveSpeed = 15f;
 
+    private bool facingLeft = false;
 
     private Collider2D areaCollider;
     private Transform[] targetLocations;
@@ -57,8 +62,6 @@ public class NPCBehaviour : MonoBehaviour
         MovementBehaviourStates();
     }
 
-
-    
     private void MovementBehaviourStates()
     {
         switch (moveBehaviour)
@@ -89,8 +92,36 @@ public class NPCBehaviour : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        FlipEntity();
+    }
 
+    private void FlipEntity()
+    {
+        //if (entitySpriteRenderer == null) { return; }
 
+        if (aiPath.velocity.normalized.x < 0 && facingLeft)
+        {
+            //Facing Left
+            var localScale = NPCActor.localScale;
+            localScale.x *= -1;
+            NPCActor.localScale = localScale;
+
+            facingLeft = !facingLeft;
+            //entitySpriteRenderer.flipX = facingLeft;
+        }
+        else if (aiPath.velocity.normalized.x > 0 && !facingLeft)
+        {
+            //Facing Right
+            var localScale = NPCActor.localScale;
+            localScale.x *= -1;
+            NPCActor.localScale = localScale;
+
+            facingLeft = !facingLeft;
+            //entitySpriteRenderer.flipX = facingLeft;
+        }
+    }
 
     private IEnumerator RandomAreaMoveBehaviour()
     {
@@ -111,7 +142,7 @@ public class NPCBehaviour : MonoBehaviour
             //Reached the distination
             //Wait in the destination position
             aiPath.canMove = false;
-            yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minRandom, maxRandom));
+            yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minWaitTime, maxWaitTime));
 
         }
     }
@@ -138,7 +169,7 @@ public class NPCBehaviour : MonoBehaviour
                 yield return null;
 
             //Reached the distination
-
+            yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minWaitTime, maxWaitTime));
 
             // Update the index and direction
             if (isGoingForward)
@@ -181,6 +212,7 @@ public class NPCBehaviour : MonoBehaviour
                     yield return null;
 
                 //Reached the distination
+                yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minWaitTime, maxWaitTime));
             }
         }
     }
@@ -195,6 +227,9 @@ public class NPCBehaviour : MonoBehaviour
 
             while (aiPath.pathPending || !aiPath.reachedEndOfPath) // Wait until we know for sure that the agent has calculated a path to the destination
                 yield return null;
+
+            //Reached the distination
+            yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minWaitTime, maxWaitTime));
         }
     }
     #endregion
