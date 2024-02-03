@@ -36,6 +36,14 @@ public class GameManager : Singleton<GameManager>
         PlayerEntity = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerScript>();
     }
 
+
+    private void Start()
+    {
+        
+    }
+
+    public void IsPlayerCanMove(bool value) => playerCanMove = value;
+    public bool IsPlayerCanMove() { return playerCanMove; }
     private void LoadAbilitiesInFolder(string folderPath) // Get all abilities (Scriptable Objects) inside the folder
     {
         string[] files = Directory.GetFiles(folderPath, "*.asset");
@@ -63,10 +71,6 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    //public PlayerScript GetPlayer() { return entity; }
-    public void IsPlayerCanMove(bool value) => playerCanMove = value;
-    public bool IsPlayerCanMove() { return playerCanMove; }
-
     public void SetPauseValue(bool pause)
     {
         if (pause == true)
@@ -81,12 +85,20 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void SaveGame()
-    {
 
-    }
-    void LoadGame()
-    {
-        
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

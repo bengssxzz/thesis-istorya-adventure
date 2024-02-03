@@ -47,6 +47,7 @@ public class QuestionsManager : Singleton<QuestionsManager>
     {
         foreach (string name in questionTableName)
         {
+            Debug.Log("TABLE " + name);
             string sql = String.Format("SELECT * FROM {0}", name);
             List<QuestionsAnswer> qanda = dbManager.Query<QuestionsAnswer>(sql);
             questionList.Add(name, qanda);

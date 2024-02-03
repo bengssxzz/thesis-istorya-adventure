@@ -13,6 +13,18 @@ public class RoomArea : MonoBehaviour
 
 
     public bool isPlayerInsideRoom { get; private set; }
+    public RoomSpawnerEnemy battleTrigger { get; private set; }
+
+
+    private void Awake()
+    {
+        battleTrigger = GetComponent<RoomSpawnerEnemy>();
+    }
+
+
+
+
+
 
 
     private void OnTriggerEnter2D(Collider2D collision)

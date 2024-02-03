@@ -5,13 +5,17 @@ using UnityEngine;
 public class PlayerSingleton : Singleton<PlayerSingleton>
 {
 
-    public PlayerScript playerScript { get; private set; }
+    private PlayerScript playerScript;
+    public PlayerScript GetPlayerScript { get { return playerScript; } }
 
 
     protected override void Awake()
     {
         base.Awake();
-
         playerScript = GetComponent<PlayerScript>();
+    }
+    private void Start()
+    {
+
     }
 }

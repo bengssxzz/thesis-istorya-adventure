@@ -66,7 +66,7 @@ public class AbilityInventory : UIPages
     private void DoneEditAbilities()
     {
         //Done edit ability
-        PlayerSingleton.Instance.playerScript.GetAbility_Controller.ListOfCurrentAbilities = currentUsedAbilities.ToList(); //Update the ability of the player
+        PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities = currentUsedAbilities.ToList(); //Update the ability of the player
         
         UI_Manager.Instance.CloseMenu("Ability Inventory UI");
         UI_Manager.Instance.ActivateID_OpenMenu("game_ui");

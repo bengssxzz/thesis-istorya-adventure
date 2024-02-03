@@ -41,15 +41,17 @@ public class UI_Manager : Singleton<UI_Manager>
 
     
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode) //Every new scene execute this
     {
-        ClearMenuList(); //Clear menu list on every new loaded scene
+        //ClearMenuList(); //Clear menu list on every new loaded scene
 
-        menus = GetAllUIMenus();
-        buttons = GetAllUIButtons();
+        //menus = GetAllUIMenus();
+        //buttons = GetAllUIButtons();
 
-        ActivateOnStartMenu(); //Activate all the OnStartMenu
-        CallOnStart(); 
+        //ActivateOnStartMenu(); //Activate all the OnStartMenu
+        //CallOnStart(); 
+
+        StartCoroutine(TryFindMenus());
     }
     private void OnSceneUnloaded(Scene scene)
     {
@@ -65,7 +67,23 @@ public class UI_Manager : Singleton<UI_Manager>
         
     }
 
+    private IEnumerator TryFindMenus()
+    {
+        ClearMenuList(); //Clear menu list on every new loaded scene
 
+        do
+        {
+            this.menus = GetAllUIMenus();
+            this.buttons = GetAllUIButtons();
+
+            Debug.LogWarning("FINDING MENUS");
+            yield return new WaitForEndOfFrame();
+
+        } while (menus.Count == 0 || menus == null);
+
+        ActivateOnStartMenu(); //Activate all the OnStartMenu
+        CallOnStart();
+    }
 
     private void CallOnStart()
     {
@@ -98,6 +116,12 @@ public class UI_Manager : Singleton<UI_Manager>
     private void ClearMenuList() => menus?.Clear(); //Clear the list menu
     private void CloseAllMenu() //Close all the menus active in the scene
     {
+        if (menus.Count < 0)
+        {
+            Debug.LogWarning("THERE ARE NO MENUS IN THE SYSTEM");
+            return;
+        }
+
         var menuWithActiveID = menus.Where(x => x.IsGlobalMenu == false);
 
 
@@ -128,9 +152,16 @@ public class UI_Manager : Singleton<UI_Manager>
 
     //}
 
+
     public void OpenMenu(string menuID) //Find the page with the same ID and open it
     {
-        if(menus.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
+        if (menus.Count < 0 || menus == null)
+        {
+            Debug.LogWarning("THERE ARE NO MENUS TO OPEN IN THE SYSTEM");
+            return;
+        }
+
+        if (menus.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
         {
             var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
 
@@ -154,6 +185,12 @@ public class UI_Manager : Singleton<UI_Manager>
     }
     public void CloseMenu(string menuID) //Find the page with the same ID and close it
     {
+        if(menus.Count < 0 || menus == null)
+        {
+            Debug.LogWarning("THERE ARE NO MENUS TO CLOSE IN THE SYSTEM");
+            return;
+        }
+
         var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
 
         if (selectedMenu != null)

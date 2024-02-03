@@ -32,7 +32,7 @@ public class UpgradeStatsSystem : MonoBehaviour
     private void Awake()
     {
         currentAvailablePoints = maxAvailablePoints;
-        player = PlayerSingleton.Instance.playerScript;
+        player = PlayerSingleton.Instance.GetPlayerScript;
     }
     private void OnEnable()
     {

@@ -39,7 +39,8 @@ public class PlayerInteractHandler : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("UpdateInteractButton", 0, 0.1f); //Invoke repeat the UpdateInteractButton()
+        //InvokeRepeating("UpdateInteractButton", 0.1f, 0.2f); //Invoke repeat the UpdateInteractButton()
+        StartCoroutine(UpdateInteractButton1());
     }
 
     private void InteractObject()
@@ -61,6 +62,7 @@ public class PlayerInteractHandler : MonoBehaviour
     {
         this.pickupObject = pickObject;
         pickObject.GetUsablePixelCrushers.enabled = false;
+        pickObject.IsItemPickup = true;
         pickObject.transform.SetParent(itemHolder);
         pickObject.transform.localPosition = Vector3.zero;
     }
@@ -68,9 +70,10 @@ public class PlayerInteractHandler : MonoBehaviour
 
     public void DropItem() //Drop the item
     {
-        var itemObject = Instantiate(pickupObject, transform.position, Quaternion.identity); //Drop the object in player position
-        itemObject.name = pickupObject.name;
-        itemObject.GetUsablePixelCrushers.enabled = true;
+        var pickObject = Instantiate(pickupObject, transform.position, Quaternion.identity); //Drop the object in player position
+        pickObject.name = pickupObject.name;
+        pickObject.GetUsablePixelCrushers.enabled = true;
+        pickObject.IsItemPickup = false;
         Destroy(pickupObject.gameObject);
         pickupObject = null;
 
@@ -121,6 +124,35 @@ public class PlayerInteractHandler : MonoBehaviour
         }
     }
 
+    private IEnumerator UpdateInteractButton1()
+    {
+        while (true)
+        {
+            if (proximitySelector.usablesInRange.Count > 0) //Check if usable object is in range
+            {
+                UI_Manager.Instance.OpenMenu("Interact Button");
+            }
+            else
+            {
+                //Check if holding something
+                if (isHoldingSomething)
+                {
+                    UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
+                }
+                else
+                {
+                    UI_Manager.Instance.CloseMenu("Interact Button");
+                }
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+
+
+
+        
+        
+    }
 
 
 
