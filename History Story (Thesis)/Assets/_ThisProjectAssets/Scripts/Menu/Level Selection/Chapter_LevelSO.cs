@@ -9,7 +9,8 @@ public class Chapter_LevelSO : ScriptableObject
     public string chapterTitle;
 
     [Space(10)]
-    public string sceneName;
+    public string sceneFolderName;
+    public string defaultSceneName;
 
     [Space(15)]
     [Header("Chapter Info")]

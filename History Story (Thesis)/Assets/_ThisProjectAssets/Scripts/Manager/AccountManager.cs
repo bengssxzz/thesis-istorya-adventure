@@ -40,7 +40,7 @@ public static class AccountManager
         {
             //not log out
             Debug.Log($"Stay login {GetPlayerID}");
-            SceneTransitionManager.Instance.GoToScene("MainMenu");
+            SceneTransitionManager.Instance.SceneTransitionInGame("MainMenu");
         }
     }
 

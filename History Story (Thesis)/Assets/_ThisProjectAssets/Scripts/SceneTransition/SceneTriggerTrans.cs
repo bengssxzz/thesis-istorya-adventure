@@ -44,7 +44,7 @@ public class SceneTriggerTrans : MonoBehaviour
 
     public void ForceGoToScene() //Force to go to another scene with unity events
     {
-        SceneTransitionManager.Instance.GoToScene(sceneName, transitionID);
+        SceneTransitionManager.Instance.SceneTransitionInGame(sceneName, transitionID);
     }
 
 
@@ -56,7 +56,7 @@ public class SceneTriggerTrans : MonoBehaviour
             if (state == TransitionState.OnTrigger)
             {
                 LevelManager.Instance.SaveSceneLevel(); //Save the scene
-                SceneTransitionManager.Instance.GoToScene(sceneName, transitionID);
+                SceneTransitionManager.Instance.SceneTransitionInGame(sceneName, transitionID);
             }
         }
     }
