@@ -15,12 +15,12 @@ public class RoomSpawnerEnemy : MonoBehaviour
         public float statsMultiplier = 0f;
     }
 
-    private enum BattleStartState { None, OnEnterRoom, OnTrigger}
+    private enum BattleStartState { None, Idle, OnEnterRoom, OnTrigger}
 
     private PolygonCollider2D roomAreaCollider;
     private RoomArea roomArea;
 
-    [SerializeField] private BattleStartState battleMode = BattleStartState.None;
+    [SerializeField] private BattleStartState battleMode = BattleStartState.Idle;
     [SerializeField] private bool chanceToBattle = false;
 
     [Space(25)]
@@ -73,7 +73,9 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
     private void Start()
     {
-        if(battleMode == BattleStartState.None)
+        if(battleMode == BattleStartState.None) { return; } //Do nothing when it set to none
+
+        if(battleMode == BattleStartState.Idle)
         {
             if (chanceToBattle)
                 RandomDesiredBattleInRoom();
@@ -92,6 +94,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
     private void OnPlayerEnterRooom() //When the player enter the room
     {
+        if (battleMode == BattleStartState.None) { return; } //Do nothing when it set to none
+
         if (battleMode == BattleStartState.OnEnterRoom)
         {
             if (!isAlreadyTrigger) //If the room is not yet trigger
@@ -107,7 +111,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
                     StartCoroutine(DelayStartBattle());
                 }
             }
-        }else if(battleMode == BattleStartState.None)
+        }else if(battleMode == BattleStartState.Idle)
         {
             if (chanceToBattle && desiredToBattleInRoom) //If the room has chance to battle
             {
@@ -120,7 +124,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         //Generate next battle when trigger the room again
         //Start time for timer
-        if(battleMode == BattleStartState.None)
+        if(battleMode == BattleStartState.Idle)
         {
             if (chanceToBattle) //If chance to battle is true and player exit the room
             {
@@ -333,7 +337,9 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player") && battleMode == BattleStartState.OnTrigger)
+        if (battleMode == BattleStartState.None) { return; } //Do nothing when it set to none
+
+        if (collision.CompareTag("Player") && battleMode == BattleStartState.OnTrigger)
         {
             if (!isAlreadyTrigger) //If not yet trigger 
             {

@@ -7,10 +7,9 @@ using UnityEngine;
 public class ChapterSceneSaveData
 {
     /*What to save in the scene?
-     * Save the pickup objects data
-     * Save the battle trigger
-     * Save the Cutscenes
-     * Save the players: Position, data for specific scene, where player last saved in the scene
+     * Save the pickup objects data //DONE
+     * Save the battle trigger //DONE
+     * Save the Cutscenes //DONE
      * Maybe other data
      */
 
@@ -20,5 +19,7 @@ public class ChapterSceneSaveData
     //Save the data of the room battle triggers
     public List<RoomBattleSaveData> roomBattleSaveDatas;
 
+    //Save the data of the timeline trigger
+    public List<TimelineCutscenesSaveData> timelineCutscenesSaveDatas;
 
 }

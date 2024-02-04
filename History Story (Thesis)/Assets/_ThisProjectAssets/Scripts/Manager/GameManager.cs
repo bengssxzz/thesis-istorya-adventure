@@ -8,6 +8,10 @@ using System;
 
 public class GameManager : Singleton<GameManager>
 {
+    const string playerDataFileName = "playerData";
+    const string playerKey = "player";
+
+
     private PlayerData playerData;
 
     private PlayerScript entity;
@@ -17,8 +21,14 @@ public class GameManager : Singleton<GameManager>
 
     private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
 
+    
+    public string GetPlayerKey { get { return playerKey; } }
     public PlayerData GetPlayerData { get { return playerData; } }
+    
+    
     public PlayerScript PlayerEntity { get; private set; }
+
+
     
     public List<AbilityScript> GetAllListOfAbility => listOfAllAbilities;
 
@@ -42,8 +52,7 @@ public class GameManager : Singleton<GameManager>
         
     }
 
-    public void IsPlayerCanMove(bool value) => playerCanMove = value;
-    public bool IsPlayerCanMove() { return playerCanMove; }
+
     private void LoadAbilitiesInFolder(string folderPath) // Get all abilities (Scriptable Objects) inside the folder
     {
         string[] files = Directory.GetFiles(folderPath, "*.asset");
@@ -52,6 +61,8 @@ public class GameManager : Singleton<GameManager>
         {
             // Load the Scriptable Object from the file
             AbilityScript ability = UnityEditor.AssetDatabase.LoadAssetAtPath<AbilityScript>(filePath);
+            //AbilityScript ability = Resources.Load<AbilityScript>(filePath);
+
 
             if (ability != null)
             {
@@ -88,9 +99,28 @@ public class GameManager : Singleton<GameManager>
 
 
 
+    #region SAVING PLAYER DATA
+
+
+    public void SavePlayerInSceneData(string filePath)
+    {
+
+    }
+
+    public void SavePlayerData()
+    {
+
+    }
 
 
 
+    #endregion
+
+    #region LOAD DATA
+
+
+
+    #endregion
 
 
 

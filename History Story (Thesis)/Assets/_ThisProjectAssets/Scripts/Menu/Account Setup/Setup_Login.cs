@@ -73,7 +73,7 @@ public class Setup_Login : UIPages
         Debug.Log("Login Success!!");
 
         //TODO: To go scene main menu
-        SceneTransitionManager.Instance.GoToScene("MainMenu");
+        SceneTransitionManager.Instance.SceneTransitionInGame("MainMenu");
     }
 
     private void PressLogin()

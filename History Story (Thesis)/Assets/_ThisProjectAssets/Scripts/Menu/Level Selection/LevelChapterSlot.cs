@@ -11,7 +11,7 @@ public class LevelChapterSlot : BaseSlot
     private Chapter_LevelSO chapterLevelSO;
 
     public event Action<LevelChapterSlot> OnPressSelectChapter;
-    public event Action<string> OnPressEnterLevelChapter;
+    public event Action<string, string> OnPressEnterLevelChapter;
 
     [SerializeField] private Image deselectedPanel;
 
@@ -19,19 +19,18 @@ public class LevelChapterSlot : BaseSlot
     [SerializeField] private TextMeshProUGUI chapterNameTxt;
     [SerializeField] private TextMeshProUGUI chapterTitleTxt;
 
+
     public Chapter_LevelSO GetChapterLevelSO { get { return chapterLevelSO; } }
-
-    private bool isLock = false;
-
-    private bool isSelected = false;
     public bool GetChapterLevelBtnIsSelected { get { return isSelected; } set { 
             isSelected = value;
             deselectedPanel.gameObject.SetActive(!value);
         } 
-    } 
+    }
 
+    private string chapterFilePath; //File path for loading data
 
-
+    private bool isLock = false;
+    private bool isSelected = false;
     public void InitializeChapterButton(Chapter_LevelSO chapterLevelSO)
     {
         this.chapterLevelSO = chapterLevelSO;
@@ -41,8 +40,16 @@ public class LevelChapterSlot : BaseSlot
         chapterTitleTxt.text = chapterLevelSO.chapterTitle;
 
         GetChapterLevelBtnIsSelected = false;
+
+        chapterFilePath = string.Format("{0}/{0}.thesis", chapterLevelSO.sceneFolderName); //File path for loading data
+
+        ChapterSlotInitializeStartFunc();
     }
 
+    private void ChapterSlotInitializeStartFunc() //Act as like a start function when instantiate
+    {
+        //Load a data from the file
+    }
 
     public void SelectChapterSlot(bool selected)
     {
@@ -62,7 +69,7 @@ public class LevelChapterSlot : BaseSlot
         }
         else //Then the second click will chance scene
         {
-            OnPressEnterLevelChapter?.Invoke(chapterLevelSO.sceneName);
+            OnPressEnterLevelChapter?.Invoke(chapterFilePath, chapterLevelSO.defaultSceneName);
             Debug.Log("Go to this scene");
         }
 

@@ -48,6 +48,7 @@ public class LevelManager : Singleton<LevelManager>
         sceneCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         player = PlayerSingleton.Instance?.GetPlayerScript;
 
+        LoadDataInCurrentScene();
     }
 
 
@@ -55,10 +56,6 @@ public class LevelManager : Singleton<LevelManager>
     {
         currentScene = SceneManager.GetActiveScene().name;
         SetCameraToPlayer();
-
-
-        LoadPickupObjects(); //Load the pickup in the scene
-        LoadRoomAreaInScene(); //Load the battle room in the scene
     }
 
     //Set the camera to player
@@ -84,7 +81,7 @@ public class LevelManager : Singleton<LevelManager>
 
 
 
-    #region Save Data in this scene
+    #region Save/Load Data in this scene
     public void SaveSceneLevel()
     {
         //SavePickUpObjects(); //Save the pickup objects
@@ -92,6 +89,7 @@ public class LevelManager : Singleton<LevelManager>
 
         ChapterSceneSaveData scenedata = new ChapterSceneSaveData()
         {
+            timelineCutscenesSaveDatas = SaveTriggerTimelineInScene(), //Save the timeline cutscenes trigger
             pickupObjectSaveDatas = SavePickUpObjects(), //Save the pickup objects
             roomBattleSaveDatas = SaveRoomAreaInScene()  //Save the battle trigger in the scene
         };
@@ -99,9 +97,61 @@ public class LevelManager : Singleton<LevelManager>
         ES3.Save(GetKeyName(), scenedata, filePath: GetFilePath());
         Debug.Log($"SAVING A FILE OF {GetKeyName()} IN {GetFilePath()}");
     }
+    private void LoadDataInCurrentScene()
+    {
+        LoadPickupObjects(); //Load the pickup in the scene
+        LoadRoomAreaInScene(); //Load the battle room in the scene
+        LoadTriggerTimelineInScene(); //Load the timeline cutscene trigger
+    }
+
+    #region SAVE/LOAD TIMELINE CUTSCENES
+    private List<TriggerTimeLine> FindAllTriggerTimelineInScene() //Find all the trigger timeline in the scene
+    {
+        IEnumerable<TriggerTimeLine> triggerTimeLines = FindObjectsOfType<TriggerTimeLine>();
+        return new List<TriggerTimeLine>(triggerTimeLines);
+    }
+    private List<TimelineCutscenesSaveData> SaveTriggerTimelineInScene()
+    {
+        List<TimelineCutscenesSaveData> saveCutscenes = new List<TimelineCutscenesSaveData>();
+
+        foreach (var item in FindAllTriggerTimelineInScene())
+        {
+            TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
+            {
+                id = item.GetInstanceID(),
+                isAlreadyTrigger = item.IsTimelinePlayOnce
+            };
+
+            saveCutscenes.Add(data);
+        }
+
+        return saveCutscenes;
+    }
+    private void LoadTriggerTimelineInScene()
+    {
+        if (IsKeyExist())
+        {
+            ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Get the scene load
+            
+            if(sceneData != null)
+            {
+                List<TimelineCutscenesSaveData> timelineDatas = sceneData.timelineCutscenesSaveDatas; //load the list of the timeline triggers from file
+
+                foreach (var item in FindAllTriggerTimelineInScene())
+                {
+                    TimelineCutscenesSaveData data = timelineDatas.FirstOrDefault(x => x.id == item.GetInstanceID()); //Find the timeline with the same instance id
+
+                    if(data != null)
+                    {
+                        item.IsTimelinePlayOnce = data.isAlreadyTrigger;
+                    }
+                }
+            }
+        }
+    }
 
 
-
+    #endregion
 
     #region SAVE/LOAD PICK UP OBJECTS IN THE SCENE
     //To save the pickup objects in the scene
@@ -253,7 +303,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         return (ES3.KeyExists(GetKeyName(), filePath: GetFilePath()));
     }
-    private string GetFilePath() //Get the file name
+    public string GetFilePath() //Get the file name
     {
         // Get the full path of the current scene
         string scenePath = SceneManager.GetActiveScene().path;

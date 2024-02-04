@@ -85,9 +85,40 @@ public class ChapterSelection : MonoBehaviour
 
         chapterInfo.ShowChapterInfos(chapterSlotInfo.GetChapterLevelSO); //Show info
     }
-    private void OnPressEnterScene(string sceneName) //Go to the scene
+
+    private void OnPressEnterScene(string filePath, string defaultSceneName) //Go to the scene
     {
-        SceneManager.LoadScene(sceneName);
+        //Check if the selected chapter file exist
+        if (ES3.FileExists(filePath))
+        {
+            //If file exist
+
+            var playerKey = GameManager.Instance.GetPlayerKey; //Player key
+            if (ES3.KeyExists(playerKey, filePath))
+            {
+                var playerData = ES3.Load<PlayerSceneSaveData>(playerKey, filePath: filePath); //Get the player data
+
+                var _sceneName = playerData.sceneName; //Player's last scene
+
+                //TODO: Spawn to the save position
+
+                SceneTransitionManager.Instance.SceneTransitionInstant(_sceneName);
+            }
+            else
+            {
+                Debug.LogError("FILE EXIST BUT THERE ARE NO PLAYER KEY. GO TO DEFAULT SCENE");
+                SceneTransitionManager.Instance.SceneTransitionInstant(defaultSceneName);
+            }
+        }
+        else
+        {
+            //If file is not exit
+            Debug.LogWarning("THERE ARE NO SCENE FILE FOR THIS LEVEL PATH. GO TO DEFAULT SCENE FOR THIS LEVEL");
+            SceneTransitionManager.Instance.SceneTransitionInstant(defaultSceneName);
+        }
+
+
+        //SceneManager.LoadScene(defaultSceneName);
     }
 
 

@@ -22,9 +22,12 @@ public class TriggerTimeLine : MonoBehaviour
 
     [SerializeField] private bool playOnce = true;
 
-    private bool isInside;
     private bool alreadyPlayOnce = false;
 
+    /// <summary>
+    /// For Saving and loading only
+    /// </summary>
+    public bool IsTimelinePlayOnce { get { return alreadyPlayOnce; } set { alreadyPlayOnce = value; } }
 
     private void Awake()
     {
@@ -33,8 +36,10 @@ public class TriggerTimeLine : MonoBehaviour
 
     private void Start()
     {
-        if(triggerState == TriggerState.AwakeTrigger)
+        if (triggerState == TriggerState.AwakeTrigger)
+        {
             PlayDirectorTimeline();
+        }
     }
 
 
@@ -48,13 +53,13 @@ public class TriggerTimeLine : MonoBehaviour
         }
 
         //Play director timeline
-        DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
-
-
         if (playOnce && !alreadyPlayOnce)
         {
-            this.enabled = false; //Disable this script para di na matrigger ulit
+            DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
             alreadyPlayOnce = true; 
+        }else if (!playOnce)
+        {
+            DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
         }
     }
 
@@ -66,20 +71,9 @@ public class TriggerTimeLine : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            isInside = true;
-
             if(triggerState == TriggerState.OnEnterTrigger) //Play director when on enter trigger
                 PlayDirectorTimeline();
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            isInside = false;
-        }
-    }
-
-
 
 }
