@@ -23,7 +23,6 @@ public class GameManager : Singleton<GameManager>
 
     
     public string GetPlayerKey { get { return playerKey; } }
-    public PlayerData GetPlayerData { get { return playerData; } }
     
     
     public PlayerScript PlayerEntity { get; private set; }

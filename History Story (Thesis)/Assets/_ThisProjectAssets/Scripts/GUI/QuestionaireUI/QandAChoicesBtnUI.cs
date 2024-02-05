@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using MoreMountains.Tools;
 
 public class QandAChoicesBtnUI : MonoBehaviour
 {
-    private Button button;
-    private TextMeshProUGUI choiceText;
+    private MMTouchButton button;
+    [SerializeField] private TextMeshProUGUI choiceText;
 
     private string choiceValue;
 
@@ -16,13 +17,12 @@ public class QandAChoicesBtnUI : MonoBehaviour
 
     private void Awake()
     {
-        button = GetComponent<Button>();
-        choiceText = GetComponentInChildren<TextMeshProUGUI>();
+        button = GetComponent<MMTouchButton>();
     }
 
     private void Start()
     {
-        button.onClick.AddListener(ButtonPressed);
+        button.ButtonReleased.AddListener(ButtonPressed);
     }
 
     private void ButtonPressed()

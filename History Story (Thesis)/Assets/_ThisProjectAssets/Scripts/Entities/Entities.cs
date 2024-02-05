@@ -12,6 +12,7 @@ public class Entities : MonoBehaviour, IDamageable
 {
     protected Rigidbody2D rb;
     protected Animator animator_controller;
+    private DropLoot dropLoot;
 
     [Header("Entity Base")]
     [SerializeField] protected bool debugMode = false;
@@ -55,6 +56,9 @@ public class Entities : MonoBehaviour, IDamageable
         GetAbility_Controller?.InitializedComponent(this, entityStatsSO.abilities);
 
         GetEntityStats = new EntityStatistics(entityStatsSO, this);
+
+        TryGetComponent<DropLoot>(out dropLoot);
+
     }
     protected virtual void OnEnable()
     {
@@ -228,7 +232,10 @@ public class Entities : MonoBehaviour, IDamageable
     }
     protected virtual void DeathBehaviour() // Entity death behaviour
     {
-        
+        if(dropLoot != null)
+        {
+            dropLoot.LootDrop();
+        }
     }
 
 

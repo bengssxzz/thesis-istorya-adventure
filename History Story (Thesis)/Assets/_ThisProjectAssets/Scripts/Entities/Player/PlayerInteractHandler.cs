@@ -31,10 +31,17 @@ public class PlayerInteractHandler : MonoBehaviour
     private void OnEnable()
     {
         InputManager.Instance.OnInteractObject += InteractObject;
+
+        //Register a function for quest system
+        Lua.RegisterFunction(nameof(GetHoldingSomething), this, SymbolExtensions.GetMethodInfo(() => GetHoldingSomething(string.Empty)));
+        Lua.RegisterFunction(nameof(GetTheItemHolding), this, SymbolExtensions.GetMethodInfo(() => GetTheItemHolding()));
     }
     private void OnDisable()
     {
         InputManager.Instance.OnInteractObject -= InteractObject;
+
+        Lua.UnregisterFunction(nameof(GetHoldingSomething));
+        Lua.UnregisterFunction(nameof(GetTheItemHolding));
     }
 
     private void Start()
@@ -43,6 +50,28 @@ public class PlayerInteractHandler : MonoBehaviour
         StartCoroutine(UpdateInteractButton1());
     }
 
+    #region LUA Functions
+    public bool GetHoldingSomething(string requiredItemId) //Check the id of the item
+    {
+        //var getItemId = pickupObject.GetItemSo.itemID;
+        var getItemId = "";
+
+        if(pickupObject != null)
+        {
+            getItemId = pickupObject.GetItemId;
+        }
+
+        return getItemId == requiredItemId;
+    }
+    public void GetTheItemHolding() //Remove the pickup item
+    {
+        if(isHoldingSomething && pickupObject != null)
+        {
+            Destroy(pickupObject.gameObject);
+            pickupObject = null;
+        }
+    }
+    #endregion
     private void InteractObject()
     {
         Debug.Log("SELECTING USABLE OBJECT");
@@ -67,7 +96,6 @@ public class PlayerInteractHandler : MonoBehaviour
         pickObject.transform.localPosition = Vector3.zero;
     }
 
-
     public void DropItem() //Drop the item
     {
         var pickObject = Instantiate(pickupObject, transform.position, Quaternion.identity); //Drop the object in player position
@@ -79,7 +107,6 @@ public class PlayerInteractHandler : MonoBehaviour
 
         player.GetAttack_Controller.EnableAttacking = !isHoldingSomething;
     }
-
     public void PickUpObject(PickupObject pickObject) //Trigger interact
     {
         if (pickupObject == null) //Pick up the object

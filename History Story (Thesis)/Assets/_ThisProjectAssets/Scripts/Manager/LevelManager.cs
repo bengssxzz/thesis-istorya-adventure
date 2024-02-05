@@ -17,6 +17,7 @@ using System.Linq;
  */
 
 
+
 public class LevelManager : Singleton<LevelManager>
 {
 
@@ -90,7 +91,8 @@ public class LevelManager : Singleton<LevelManager>
         ChapterSceneSaveData scenedata = new ChapterSceneSaveData()
         {
             timelineCutscenesSaveDatas = SaveTriggerTimelineInScene(), //Save the timeline cutscenes trigger
-            pickupObjectSaveDatas = SavePickUpObjects(), //Save the pickup objects
+            //pickupObjectSaveDatas = SavePickUpObjects(), //Save the pickup objects
+            pickupObjectSaveDatas = FindAllPickupObjectInScene(), //Save the pickup objects
             roomBattleSaveDatas = SaveRoomAreaInScene()  //Save the battle trigger in the scene
         };
 
@@ -176,7 +178,19 @@ public class LevelManager : Singleton<LevelManager>
         foreach (var item in pickupObjects)
         {
             PickupObject pickObject = item.GetComponent<PickupObject>();
-            saveDataPickup.Add(new PickupObjectSaveData(pickObject));
+
+            PickupObjectSaveData newPickup = new PickupObjectSaveData()
+            {
+                //itemSO = pickObject.GetItemSo,
+                itemId = pickObject.GetItemId,
+                itemSprite = pickObject.GetItemSprite,
+                position = pickObject.transform.position,
+                rotation = pickObject.transform.rotation,
+                scale = pickObject.transform.localScale
+            };
+
+            saveDataPickup.Add(newPickup);
+            //saveDataPickup.Add(new PickupObjectSaveData(pickObject));
         }
 
         return saveDataPickup;
@@ -185,36 +199,76 @@ public class LevelManager : Singleton<LevelManager>
 
         //Debug.Log($"SAVING FILE IN {GetFilePath()}");
     }
+    //private void LoadPickupObjects() //Load data
+    //{
+    //    //If there are already a file
+    //    if (IsKeyExist())
+    //    {
+    //        //Load a new item
+    //        //List<PickupObjectSaveData> pickupData = ES3.Load(GetKeyName(), defaultValue: new List<PickupObjectSaveData>(), filePath: GetFilePath()); //Load a data from file
+
+    //        ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Load the data in current scene
+
+    //        if(sceneData != null)
+    //        {
+    //            List<PickupObjectSaveData> pickupData = sceneData.pickupObjectSaveDatas; //Get the list of pick up objects in the data
+
+    //            //Removing all the pickup object in the scene
+    //            foreach (var item in FindAllPickupObjectInScene())
+    //            {
+    //                item.SetActive(false);
+    //            }
+
+    //            foreach (var item in pickupData)
+    //            {
+    //                //Instantiate a new item and ibigay yung saved data in the new item
+    //                PickupObject obj = Instantiate(itemTemplate, item.position, item.rotation);
+    //                obj.transform.localScale = item.scale;
+    //                //obj.GetItemSo = item.itemSO;
+    //                obj.GetItemId = item.itemId;
+    //                obj.GetItemSprite = item.itemSprite;
+    //            }
+    //        }
+
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("THERE ARE NO FILE YET IN THIS SCENE");
+    //    }
+    //}
     private void LoadPickupObjects() //Load data
     {
         //If there are already a file
         if (IsKeyExist())
         {
-            //Removing all the pickup object in the scene
-            foreach (var item in FindAllPickupObjectInScene())
-            {
-                item.SetActive(false);
-            }
-
             //Load a new item
             //List<PickupObjectSaveData> pickupData = ES3.Load(GetKeyName(), defaultValue: new List<PickupObjectSaveData>(), filePath: GetFilePath()); //Load a data from file
 
             ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Load the data in current scene
 
-            if(sceneData != null)
+            if (sceneData != null)
             {
-                List<PickupObjectSaveData> pickupData = sceneData.pickupObjectSaveDatas; //Get the list of pick up objects in the data
+                List<GameObject> pickupData = sceneData.pickupObjectSaveDatas; //Get the list of pick up objects in the data
+
+                //Removing all the pickup object in the scene
+                //foreach (var item in FindAllPickupObjectInScene())
+                //{
+                //    item.SetActive(false);
+                //}
 
                 foreach (var item in pickupData)
                 {
-                    //Instantiate a new item and ibigay yung saved data in the new item
-                    PickupObject obj = Instantiate(itemTemplate, item.position, item.rotation);
-                    obj.transform.localScale = item.scale;
-                    obj.GetItemId = item.itemId;
-                    obj.GetItemSprite = item.itemSprite;
+                    var _item = Instantiate(item);
+                    _item.SetActive(true);
+                    ////Instantiate a new item and ibigay yung saved data in the new item
+                    //PickupObject obj = Instantiate(itemTemplate, item.position, item.rotation);
+                    //obj.transform.localScale = item.scale;
+                    ////obj.GetItemSo = item.itemSO;
+                    //obj.GetItemId = item.itemId;
+                    //obj.GetItemSprite = item.itemSprite;
                 }
             }
-            
+
         }
         else
         {

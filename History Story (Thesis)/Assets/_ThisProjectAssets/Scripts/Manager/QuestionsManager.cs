@@ -6,9 +6,17 @@ using System;
 using SimpleSQL;
 using ThesisLibrary;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class QuestionsManager : Singleton<QuestionsManager>
 {
+    [Serializable]
+    public class RegisterSceneQuestions
+    {
+        public string sceneName;
+        public string qandATable;
+    }
+
     public class QuestionsAnswer
     {
         // The PlayerID is the primary key and also autoincrements itself
@@ -19,126 +27,168 @@ public class QuestionsManager : Singleton<QuestionsManager>
         public string w_answers { get; set; }
     }
 
-    public event Action<int, string, string[]> OnQuestionTrigger;
+    public event Action<int, string, string[]> OnQuestionUITrigger;
+
+
+    [SerializeField] private List<RegisterSceneQuestions> registerSceneQandA = new List<RegisterSceneQuestions>();
 
 
     private SimpleSQLManager dbManager;
     private Dictionary<string, List<QuestionsAnswer>> questionList;
 
-    [SerializeField] private string[] questionTableName;
+    //[SerializeField] private string[] questionTableName;
 
-    public string CurrentQuestionTable { get; private set; } = "Chapter1";
-    public int CurrentIDQuestion { get; private set; }
+    private int currentQandAId = -1;
+    private string currentSceneTable;
+
+
+
+
 
     protected override void Awake()
     {
         base.Awake();
 
         dbManager = GetComponent<SimpleSQLManager>();
-        questionList = new Dictionary<string, List<QuestionsAnswer>>();
-    }
 
-    private void Start()
-    {
         InitializeQuestionAnswer();
     }
 
+
+
+  
     private void InitializeQuestionAnswer() //Get all the data in DB and put it inside the dictionary
     {
-        foreach (string name in questionTableName)
+        questionList = new Dictionary<string, List<QuestionsAnswer>>();
+
+        //Get the unique table name in the list
+        List<string> uniqueTables = registerSceneQandA.Select(x => x.qandATable).Distinct().ToList();
+
+        foreach (string tableName in uniqueTables)
         {
-            Debug.Log("TABLE " + name);
-            string sql = String.Format("SELECT * FROM {0}", name);
+            Debug.Log("TABLE NAME REGISTERED: " + tableName);
+            string sql = String.Format("SELECT * FROM {0}", tableName);
             List<QuestionsAnswer> qanda = dbManager.Query<QuestionsAnswer>(sql);
-            questionList.Add(name, qanda);
+
+            questionList.Add(tableName, qanda); //TableName Key : QandAInfo Value
         }
     }
-
-    public void TriggerQuestion(string questionFrom, int totalChoices = 2) //Trigger questions behaviour
+    private void SetCurrentTableScene()
     {
-        //UIManager.Instance.ChangeUIState = UIManager.GUIState.QandA;
-        UI_Manager.Instance.OpenMenu("Question UI");
+        var currentScene = SceneManager.GetActiveScene().name; //Get the name of the current scene
 
-        CurrentQuestionTable = questionFrom;
-        var info = GetQuestionFrom(questionFrom, totalChoices);
-        CurrentIDQuestion = info.Item1;
-        OnQuestionTrigger?.Invoke(info.Item1, info.Item2, info.Item3);
-    }
-
-    public (int, string, string[]) GetQuestionFrom(string tableName, int totalChoicesCount) //Return ID, question, and list of choices
-    {
-        int questionID;
-        string question = "";
-        string correctAns = "";
-        //[] wrongAns = new string[totalChoicesCount];
-        string[] wrongAnswerList;
-
-        //string[] choices;
-        List<string> choicesList = new List<string>();
-
-        var questionInfo = ThesisUtility.RandomGetObject(questionList[tableName].ToArray()); //Get random list
-
-        //The info of the question
-        questionID = questionInfo.id;
-        question = questionInfo.question;
-        correctAns = questionInfo.c_answer;
-
-
-        //Count choices
-        choicesList.Add(correctAns); //Add correct answer in the list
-
-        if(totalChoicesCount > 1)
+        //Check if the current is registered to have a table name
+        if (registerSceneQandA.Exists(x => x.sceneName == currentScene))
         {
-            //Add wrong answer in the list
-            wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
-
-            //If the wrong answer (including the correct answer) is above total choices count
-            if(wrongAnswerList.Length + 1 >= totalChoicesCount)
-            {
-                do
-                {
-                    var selected = "";
-                    selected = ThesisUtility.RandomGetObject(wrongAnswerList);
-
-                    if (!choicesList.Contains(selected))
-                    {
-                        choicesList.Add(selected);
-                    }
-                    //Loop until the count choices is the same as total choice count
-                } while (choicesList.Count != totalChoicesCount);
-            }
-            else
-            {
-                Debug.LogError(String.Format("question ID: {0}, doesnt have enough wrong answer array", questionID));
-            }
+            var _tablename = registerSceneQandA.FirstOrDefault(x => x.sceneName == currentScene).qandATable;
+            currentSceneTable = _tablename; //Set a current use table name
+        }
+        else
+        {
+            Debug.LogWarning($"THIS {currentScene} SCENE IS NOT REGISTERED TO HAVE A QUESTIONS");
         }
 
-        choicesList = ThesisUtility.Shuffle(choicesList.ToArray()).ToList();
+    }
 
-        return (questionID, question, choicesList.ToArray());
+    
+    public void QuestionTriggerUI() //Trigger the UI question
+    {
+        SetCurrentTableScene();
 
-        ////Wrong answer list
-        //string[] wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
+        var qandaInfos = RequestQandA(4);
 
-        //for (int i = 0; i < wrongAns.Length; i++)
-        //{
-        //    string selected = "";
+        UI_Manager.Instance.OpenMenu("Question UI");
+        OnQuestionUITrigger?.Invoke(qandaInfos.Item1, qandaInfos.Item2, qandaInfos.Item3);
+    }
 
-        //    //To prevent duplicating wrong answer
-        //    do
-        //    {
-        //        selected = ThesisUtility.RandomGetObject(wrongAnswerList);
 
-        //    } while (wrongAns[i] == selected);
+    public delegate void QandAInfos((int, string, string[]) info);
+    //public void TriggerQuestion(string questionFrom, int totalChoices = 2) //Trigger questions behaviour
+    //{
+    //    //UIManager.Instance.ChangeUIState = UIManager.GUIState.QandA;
+    //    UI_Manager.Instance.OpenMenu("Question UI");
 
-        //    wrongAns[i] = selected;
-        //}
+    //    CurrentQuestionTable = questionFrom;
+    //    var info = RequestQandA(questionFrom, totalChoices);
+    //    CurrentIDQuestion = info.Item1;
+    //    OnQuestionUITrigger?.Invoke(info.Item1, info.Item2, info.Item3);
+    //}
+    
 
-        //// Merge correctAns and wrongAns into choices
-        //choices = new string[] { correctAns }.Concat(wrongAns).ToArray();
-        //choices = ThesisUtility.Shuffle(choices);
+    public (int, string, string[]) RequestQandA(string desiredTableName, int totalChoicesCount = 2) //Request a question with desired table
+    {
+        if (questionList.ContainsKey(desiredTableName))
+        {
+            //Table exist
 
-        //return (questionID, question, choices);
+            currentSceneTable = desiredTableName;
+
+            int questionID;
+            string question = "";
+            string correctAns = "";
+            string[] wrongAnswerList;
+
+            List<string> choicesList = new List<string>();
+
+            var questionInfo = ThesisUtility.RandomGetObject(questionList[desiredTableName].ToArray()); //Get random list
+
+            currentQandAId = questionInfo.id; //Set the id
+
+            //The info of the question
+            questionID = questionInfo.id;
+            question = questionInfo.question;
+            correctAns = questionInfo.c_answer;
+
+
+            //Count choices
+            choicesList.Add(correctAns); //Add correct answer in the list
+
+            if (totalChoicesCount > 1)
+            {
+                //Add wrong answer in the list
+                wrongAnswerList = questionInfo.w_answers.Split(";", StringSplitOptions.RemoveEmptyEntries);
+
+                //If the wrong answer (including the correct answer) is above total choices count
+                if (wrongAnswerList.Length + 1 >= totalChoicesCount)
+                {
+                    do
+                    {
+                        var selected = "";
+                        selected = ThesisUtility.RandomGetObject(wrongAnswerList);
+
+                        if (!choicesList.Contains(selected))
+                        {
+                            choicesList.Add(selected);
+                        }
+                        //Loop until the count choices is the same as total choice count
+                    } while (choicesList.Count != totalChoicesCount);
+                }
+                else
+                {
+                    Debug.LogError(String.Format("question ID: {0}, doesnt have enough wrong answer array", questionID));
+                }
+            }
+
+
+            choicesList = ThesisUtility.Shuffle(choicesList.ToArray()).ToList();
+
+
+            return (questionID, question, choicesList.ToArray());
+
+        }
+        else
+        {
+
+            return default;
+        }
+
+        
+    }
+    public (int, string, string[]) RequestQandA(int totalChoicesCount = 2) //Request a question with current table
+    {
+        SetCurrentTableScene();
+
+        return RequestQandA(currentSceneTable, totalChoicesCount);
     }
     public bool CheckQuestionAnswer(int QuestionId, string tableName, string user_answer) //Checking the answer
     {
@@ -167,6 +217,81 @@ public class QuestionsManager : Singleton<QuestionsManager>
             return false;
         }
     }
+    public bool CheckQuestionAnswer(string user_answer)
+    {
+        // Find the QuestionsAnswer object with the specified QuestionId
+        QuestionsAnswer questInfo = questionList[currentSceneTable].Find(x => x.id == currentQandAId);
+
+
+        if (questInfo != null)
+        {
+            // Check if the user's answer matches the correct answer
+            return user_answer == questInfo.c_answer;
+        }
+        else
+        {
+            // Handle the case where the QuestionId is not found
+            Debug.LogError("Checking answer to table question ID is null");
+        }
+
+        Debug.Log($"CorrentAnswer: {questInfo.c_answer}");
+        return false;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    private string GetCurrentTable()
+    {
+        switch (GetCurrentFolderName())
+        {
+            case "_Introduction":
+                return "";
+            case "Chapter 1":
+                return "Chapter1";
+            case "Chapter 2":
+                return "Chapter2";
+            case "Chapter 3":
+                return "Chapter3";
+            case "Chapter 4":
+                return "Chapter4";
+            case "Chapter 5":
+                return "Chapter5";
+            default:
+                return "";
+        }
+    }
+
+    private string GetCurrentFolderName() //Get the folder name of the current scene
+    {
+        // Get the full path of the current scene
+        string scenePath = SceneManager.GetActiveScene().path;
+
+        // Get the directory (folder) name from the path
+        string folderName = Path.GetDirectoryName(scenePath);
+
+        // Extract just the folder name without the path
+        string folderNameOnly = Path.GetFileName(folderName);
+
+        return folderNameOnly;
+    }
+
+
+
+
+
+
+
+
+
 
 
 }

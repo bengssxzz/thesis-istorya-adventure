@@ -8,6 +8,7 @@ public class PickupObject : MonoBehaviour
 {
     private PlayerScript player;
 
+    //[SerializeField] private ItemInfoSO itemSO;
     [SerializeField] private string itemID;
 
     [Space(10)]
@@ -17,6 +18,8 @@ public class PickupObject : MonoBehaviour
     private bool isPickup = false;
 
     public Usable GetUsablePixelCrushers { get { return selector.GetVisualUsable; } }
+
+    //public ItemInfoSO GetItemSo { get { return itemSO; } set { itemSO = value; } }
     public string GetItemId { get { return itemID; } set { itemID = value; } }
     public Sprite GetItemSprite { get { return spriteRender.sprite; } set { spriteRender.sprite = value; } }
     public bool IsItemPickup { get { return isPickup; } set { isPickup = value; } }
@@ -39,7 +42,8 @@ public class PickupObject : MonoBehaviour
     private void Start()
     {
         player = PlayerSingleton.Instance.GetPlayerScript;
-
+        //spriteRender.sprite = itemSO.itemSprite;
+        
     }
 
 

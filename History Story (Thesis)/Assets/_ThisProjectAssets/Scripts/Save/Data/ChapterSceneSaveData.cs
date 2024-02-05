@@ -14,7 +14,8 @@ public class ChapterSceneSaveData
      */
 
     //Save the data of the pick up objects
-    public List<PickupObjectSaveData> pickupObjectSaveDatas;
+    //public List<PickupObjectSaveData> pickupObjectSaveDatas;
+    public List<GameObject> pickupObjectSaveDatas;
 
     //Save the data of the room battle triggers
     public List<RoomBattleSaveData> roomBattleSaveDatas;

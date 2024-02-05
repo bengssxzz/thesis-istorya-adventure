@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 3719126659226642804}
   - component: {fileID: 3719126659226642805}
   - component: {fileID: 3719126659226642803}
+  - component: {fileID: 7376364347714267823}
   m_Layer: 7
   m_Name: Enemy Template
   m_TagString: Enemy
@@ -332,10 +333,12 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 67592
-  attackStates: []
+  canAttack: 1
   attackHolder: {fileID: 0}
   fireRate: 0.1
   rangedAttackDistance: 0.24
+  attackStates: []
+  meleeAttackDistance: 0
 --- !u!114 &3719126659226642794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,7 +367,6 @@ MonoBehaviour:
   debugMode: 1
   entityStatsSO: {fileID: 11400000, guid: e0b3c1533d3c2974691b67059df6bd54, type: 2}
   entitySpriteRenderer: {fileID: 0}
-  _canAttack: 1
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
   moveBehaviour: 0
@@ -420,3 +422,16 @@ SortingGroup:
   m_SortingLayerID: -1014085095
   m_SortingLayer: 4
   m_SortingOrder: 0
+--- !u!114 &7376364347714267823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listOfDropLoot: []

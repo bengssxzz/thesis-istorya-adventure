@@ -1340,7 +1340,6 @@ MonoBehaviour:
   debugMode: 1
   entityStatsSO: {fileID: 11400000, guid: e0b3c1533d3c2974691b67059df6bd54, type: 2}
   entitySpriteRenderer: {fileID: 0}
-  _canAttack: 1
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
   moveBehaviour: 0
@@ -1411,6 +1410,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 2056
+  canAttack: 1
   attackHolder: {fileID: 2747393039596332295}
   fireRate: 0.1
   rangedAttackDistance: 1.4
@@ -1444,7 +1444,6 @@ MonoBehaviour:
   debugMode: 1
   entityStatsSO: {fileID: 11400000, guid: e0b3c1533d3c2974691b67059df6bd54, type: 2}
   entitySpriteRenderer: {fileID: 0}
-  _canAttack: 1
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
   moveBehaviour: 0
@@ -1455,7 +1454,12 @@ MonoBehaviour:
   moveType: 0
   canFly: 0
   isBoss: 0
-  listOfDropLoot: []
+  listOfDropLoot:
+  - lootPrefab: {fileID: 0}
+    randomAmountDrop: 0
+    minAmount: 0
+    maxAmount: 0
+    dropChance: 0
 --- !u!1 &2747393040369921150
 GameObject:
   m_ObjectHideFlags: 0
