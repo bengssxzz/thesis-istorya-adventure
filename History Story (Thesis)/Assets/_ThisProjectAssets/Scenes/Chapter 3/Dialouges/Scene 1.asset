@@ -1124,7 +1124,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Our  objective here now is to secure the Manila and the independence
+        value: Our objective here now is to secure the Manila and the independence
           of the Philippines!
         type: 0
         typeString: 
@@ -6210,9 +6210,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: "Ah, young one, you seek the heart of our struggle\u2014the tangled
-          roots of rebellion. Listen well, for history weaves its threads in blood
-          and ink."
+        value: When the Spanish grip tightened, we fought tooth and nail. The Katipunan,
+          our secret brotherhood, started the rebellion.
         type: 0
         typeString: 
       - title: Sequence
@@ -6241,7 +6240,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 158.63245
-        y: 343.6481
+        y: 342.739
         width: 160
         height: 30
     - id: 15
@@ -6267,10 +6266,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: "When the Spanish grip tightened, we fought tooth and nail. The Katipunan,
-          our secret brotherhood, ignited flames of rebellion. But then came whispers
-          of change across the seas\u2014the Americans, they said, would sweep away
-          the Spanish tyranny."
+        value: But then the Americans came, they said, would sweep away the Spanish
+          tyranny.
         type: 0
         typeString: 
       - title: Sequence
@@ -6353,7 +6350,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 157.41293
+        x: 158.32204
         y: 465.59933
         width: 160
         height: 30
@@ -6380,8 +6377,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: We did. Aguinaldo, our lion-hearted leader, returned from exile. The
-          air crackled with hope. But hope, my friend, can be a treacherous companion.
+        value: We did.
         type: 0
         typeString: 
       - title: Sequence
@@ -6402,6 +6398,12 @@ MonoBehaviour:
         destinationDialogueID: 11
         isConnector: 0
         priority: 2
+      - originConversationID: 25
+        originDialogueID: 17
+        destinationConversationID: 25
+        destinationDialogueID: 18
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -6413,9 +6415,59 @@ MonoBehaviour:
         y: 532.0553
         width: 160
         height: 30
+    - id: 18
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 13
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: Aguinaldo, returned from exile. The air smelt with hope. But hope,
+          my friend, can be a treacherous companion.
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 25
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 156.1471
+        y: 583.8735
+        width: 160
+        height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 25.582542, y: 43.665764}
-    canvasZoom: 0.5800004
+    canvasScrollPosition: {x: 73.522644, y: 93.08403}
+    canvasZoom: 1.1
   - id: 26
     fields:
     - title: Title
@@ -6540,8 +6592,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: "I am General Mariano Noriel, a member of a war council, a soldier
-          who fought for our nation\u2019s freedom during the Philippine Revolution."
+        value: "I am General Mariano Noriel, a member of the war council, and a soldier
+          who fights for our nation\u2019s freedom."
         type: 0
         typeString: 
       - title: Sequence
@@ -6624,8 +6676,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 157.5
-        y: 155
+        x: 161.5
+        y: 151
         width: 160
         height: 30
     - id: 8
@@ -6651,7 +6703,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Excuse me General Noriel I am a soldier who heard your tales.
+        value: Excuse me General, I am a soldier who have heard of your tales.
         type: 0
         typeString: 
       - title: Sequence
@@ -6680,7 +6732,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 157.5
-        y: 206
+        y: 205
         width: 160
         height: 30
     - id: 9
@@ -6706,7 +6758,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: They say you led Filipino troops against the American forces during
+        value: They say you led the Filipino troops against the American forces during
           the siege of Intramuros. Is it true?
         type: 0
         typeString: 
@@ -6762,9 +6814,64 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: yes, I stood on those ancient walls, watching as the American ships
-          approached Manila Bay. The air crackled with uncertainty, and our hearts
-          beat in sync with the cannons.
+        value: Yes, I stood on those  walls, watching as the American ships approached
+          Manila Bay.
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 26
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 26
+        originDialogueID: 10
+        destinationConversationID: 26
+        destinationDialogueID: 11
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 158.5
+        y: 325
+        width: 160
+        height: 30
+    - id: 11
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 12
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: The air felt with uncertainty, and our hearts beat in sync with the
+          cannons.
         type: 0
         typeString: 
       - title: Sequence
@@ -6786,8 +6893,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 158.5
-        y: 325
+        x: 159.5
+        y: 375
         width: 160
         height: 30
     entryGroups: []
@@ -6973,7 +7080,7 @@ MonoBehaviour:
         typeString: 
       - title: Dialogue Text
         value: I was the only high-ranking Filipino officer north of Manila when
-          the shooting started on February 4, 1899
+          the shooting started yesterday...
         type: 0
         typeString: 
       - title: Sequence
@@ -7028,64 +7135,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: The Battle of Manila was just the beginning. Even after the battle,
-          we continued to resist, to fight.
-        type: 0
-        typeString: 
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: 
-      conversationID: 27
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 27
-        originDialogueID: 8
-        destinationConversationID: 27
-        destinationDialogueID: 9
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 163.5
-        y: 244
-        width: 160
-        height: 30
-    - id: 9
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: 
-      - title: Description
-        value: 
-        type: 0
-        typeString: 
-      - title: Actor
-        value: 14
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Dialogue Text
-        value: The battle was fierce and bloody. We fought with everything we had,
-          but the Americans were relentless.
+        value: This battle for Manila is just the beginning. Even after the battle,
+          we must continued to resist, to fight.
         type: 0
         typeString: 
       - title: Sequence
@@ -7107,8 +7158,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 162.5
-        y: 319
+        x: 163.5
+        y: 244
         width: 160
         height: 30
     entryGroups: []
