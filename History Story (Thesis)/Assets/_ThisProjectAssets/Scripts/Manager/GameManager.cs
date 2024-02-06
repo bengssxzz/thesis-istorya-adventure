@@ -8,10 +8,6 @@ using System;
 
 public class GameManager : Singleton<GameManager>
 {
-    const string playerDataFileName = "playerData";
-    const string playerKey = "player";
-
-
     private PlayerData playerData;
 
     private PlayerScript entity;
@@ -21,9 +17,6 @@ public class GameManager : Singleton<GameManager>
 
     private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
 
-    
-    public string GetPlayerKey { get { return playerKey; } }
-    
     
     public PlayerScript PlayerEntity { get; private set; }
 

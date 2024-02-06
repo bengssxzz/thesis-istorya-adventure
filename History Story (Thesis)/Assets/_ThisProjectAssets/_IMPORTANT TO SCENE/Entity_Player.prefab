@@ -7190,16 +7190,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
-      propertyPath: m_Intensity
-      value: 0.79
-      objectReference: {fileID: 0}
-    - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_FalloffIntensity
       value: 0.766
-      objectReference: {fileID: 0}
-    - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
-      propertyPath: m_OverlapOperation
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2779354075033337834, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
       propertyPath: m_PointLightInnerRadius
@@ -7366,7 +7358,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugMode: 0
   entityStatsSO: {fileID: 11400000, guid: c9615d63cf78e854b83275ab28d790e1, type: 2}
-  entitySpriteRenderer: {fileID: 3728808543865051950}
   actorTransform: {fileID: 7332668966398437175}
   hurtFeedback: {fileID: 7083957338772371100}
   diedFeedback: {fileID: 0}
@@ -7383,10 +7374,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listOfUnlockedAbilities:
+  - {fileID: 11400000, guid: c7e18bd8699697d4e8f7b2fef877cb3a, type: 2}
+  - {fileID: 11400000, guid: ce2131ab500c5ad4798dd53e06246972, type: 2}
+  - {fileID: 11400000, guid: d998f239560709e2b9d6e537a23401c9, type: 2}
   - {fileID: 11400000, guid: 4b1a7227656ac1b4db897d51f5555db2, type: 2}
-  - {fileID: 11400000, guid: 8bcd37f6fc77bf649a6576e3554c2fad, type: 2}
-  - {fileID: 11400000, guid: a47575ccb14829144a039dcb5041d0ca, type: 2}
   - {fileID: 11400000, guid: e187f6b54d709a447a369eab1fee4031, type: 2}
+  - {fileID: 11400000, guid: 928b829db78e82949a65bf54f2b1945d, type: 2}
+  - {fileID: 11400000, guid: d3743ba21bfae474a8432ebafb86d500, type: 2}
+  - {fileID: 11400000, guid: a47575ccb14829144a039dcb5041d0ca, type: 2}
+  - {fileID: 11400000, guid: 820e02d9adbe464479a25a26a0aeeb7c, type: 2}
 --- !u!114 &7083957337534718310
 MonoBehaviour:
   m_ObjectHideFlags: 0

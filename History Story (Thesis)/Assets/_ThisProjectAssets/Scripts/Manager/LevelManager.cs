@@ -38,10 +38,10 @@ public class LevelManager : Singleton<LevelManager>
     private string currentScene;
 
 
-    private void OnApplicationQuit() // TEMPORARY
-    {
-        SaveSceneLevel();
-    }
+    //private void OnApplicationQuit() // TEMPORARY
+    //{
+    //    SaveSceneLevel();
+    //}
 
     protected override void Awake()
     {
@@ -49,7 +49,7 @@ public class LevelManager : Singleton<LevelManager>
         sceneCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         player = PlayerSingleton.Instance?.GetPlayerScript;
 
-        LoadDataInCurrentScene();
+        //LoadDataInCurrentScene();
     }
 
 
@@ -83,122 +83,159 @@ public class LevelManager : Singleton<LevelManager>
 
 
     #region Save/Load Data in this scene
-    public void SaveSceneLevel()
-    {
-        //SavePickUpObjects(); //Save the pickup objects
-        //SaveRoomAreaInScene(); //Save the battle trigger in the scene
+    //public void SaveSceneLevel()
+    //{
+    //    //SavePickUpObjects(); //Save the pickup objects
+    //    //SaveRoomAreaInScene(); //Save the battle trigger in the scene
 
-        ChapterSceneSaveData scenedata = new ChapterSceneSaveData()
-        {
-            timelineCutscenesSaveDatas = SaveTriggerTimelineInScene(), //Save the timeline cutscenes trigger
-            //pickupObjectSaveDatas = SavePickUpObjects(), //Save the pickup objects
-            pickupObjectSaveDatas = FindAllPickupObjectInScene(), //Save the pickup objects
-            roomBattleSaveDatas = SaveRoomAreaInScene()  //Save the battle trigger in the scene
-        };
+    //    ChapterSceneSaveData scenedata = new ChapterSceneSaveData()
+    //    {
+    //        timelineCutscenesSaveDatas = SaveTriggerTimelineInScene(), //Save the timeline cutscenes trigger
+    //        //pickupObjectSaveDatas = SavePickUpObjects(), //Save the pickup objects
+    //        pickupObjectSaveDatas = FindAllPickupObjectInScene(), //Save the pickup objects
+    //        roomBattleSaveDatas = SaveRoomAreaInScene()  //Save the battle trigger in the scene
+    //    };
 
-        ES3.Save(GetKeyName(), scenedata, filePath: GetFilePath());
-        Debug.Log($"SAVING A FILE OF {GetKeyName()} IN {GetFilePath()}");
-    }
-    private void LoadDataInCurrentScene()
-    {
-        LoadPickupObjects(); //Load the pickup in the scene
-        LoadRoomAreaInScene(); //Load the battle room in the scene
-        LoadTriggerTimelineInScene(); //Load the timeline cutscene trigger
-    }
+    //    ES3.Save(GetKeyName(), scenedata, filePath: GetFilePath());
+    //    Debug.Log($"SAVING A FILE OF {GetKeyName()} IN {GetFilePath()}");
+    //}
+    //private void LoadDataInCurrentScene()
+    //{
+    //    LoadPickupObjects(); //Load the pickup in the scene
+    //    LoadRoomAreaInScene(); //Load the battle room in the scene
+    //    LoadTriggerTimelineInScene(); //Load the timeline cutscene trigger
+    //}
 
-    #region SAVE/LOAD TIMELINE CUTSCENES
-    private List<TriggerTimeLine> FindAllTriggerTimelineInScene() //Find all the trigger timeline in the scene
-    {
-        IEnumerable<TriggerTimeLine> triggerTimeLines = FindObjectsOfType<TriggerTimeLine>();
-        return new List<TriggerTimeLine>(triggerTimeLines);
-    }
-    private List<TimelineCutscenesSaveData> SaveTriggerTimelineInScene()
-    {
-        List<TimelineCutscenesSaveData> saveCutscenes = new List<TimelineCutscenesSaveData>();
+    //#region SAVE/LOAD TIMELINE CUTSCENES
+    //private List<TriggerTimeLine> FindAllTriggerTimelineInScene() //Find all the trigger timeline in the scene
+    //{
+    //    IEnumerable<TriggerTimeLine> triggerTimeLines = FindObjectsOfType<TriggerTimeLine>();
+    //    return new List<TriggerTimeLine>(triggerTimeLines);
+    //}
+    //private List<TimelineCutscenesSaveData> SaveTriggerTimelineInScene()
+    //{
+    //    List<TimelineCutscenesSaveData> saveCutscenes = new List<TimelineCutscenesSaveData>();
 
-        foreach (var item in FindAllTriggerTimelineInScene())
-        {
-            TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
-            {
-                id = item.GetInstanceID(),
-                isAlreadyTrigger = item.IsTimelinePlayOnce
-            };
+    //    foreach (var item in FindAllTriggerTimelineInScene())
+    //    {
+    //        TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
+    //        {
+    //            id = item.GetInstanceID(),
+    //            isAlreadyTrigger = item.IsTimelinePlayOnce
+    //        };
 
-            saveCutscenes.Add(data);
-        }
+    //        saveCutscenes.Add(data);
+    //    }
 
-        return saveCutscenes;
-    }
-    private void LoadTriggerTimelineInScene()
-    {
-        if (IsKeyExist())
-        {
-            ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Get the scene load
+    //    return saveCutscenes;
+    //}
+    //private void LoadTriggerTimelineInScene()
+    //{
+    //    if (IsKeyExist())
+    //    {
+    //        ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Get the scene load
             
-            if(sceneData != null)
-            {
-                List<TimelineCutscenesSaveData> timelineDatas = sceneData.timelineCutscenesSaveDatas; //load the list of the timeline triggers from file
+    //        if(sceneData != null)
+    //        {
+    //            List<TimelineCutscenesSaveData> timelineDatas = sceneData.timelineCutscenesSaveDatas; //load the list of the timeline triggers from file
 
-                foreach (var item in FindAllTriggerTimelineInScene())
-                {
-                    TimelineCutscenesSaveData data = timelineDatas.FirstOrDefault(x => x.id == item.GetInstanceID()); //Find the timeline with the same instance id
+    //            foreach (var item in FindAllTriggerTimelineInScene())
+    //            {
+    //                TimelineCutscenesSaveData data = timelineDatas.FirstOrDefault(x => x.id == item.GetInstanceID()); //Find the timeline with the same instance id
 
-                    if(data != null)
-                    {
-                        item.IsTimelinePlayOnce = data.isAlreadyTrigger;
-                    }
-                }
-            }
-        }
-    }
+    //                if(data != null)
+    //                {
+    //                    item.IsTimelinePlayOnce = data.isAlreadyTrigger;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
 
-    #endregion
+    //#endregion
 
-    #region SAVE/LOAD PICK UP OBJECTS IN THE SCENE
-    //To save the pickup objects in the scene
-    public List<GameObject> FindAllPickupObjectInScene() //Find all the pickup object in the scene
-    {
-        PickupObject[] pickupObjects = FindObjectsOfType<PickupObject>().Where(x => !x.IsItemPickup).ToArray(); //Find the object that is not pick up by player
-        List<GameObject> pickupObjectGameObjects = new List<GameObject>();
+    //#region SAVE/LOAD PICK UP OBJECTS IN THE SCENE
+    ////To save the pickup objects in the scene
+    //public List<GameObject> FindAllPickupObjectInScene() //Find all the pickup object in the scene
+    //{
+    //    PickupObject[] pickupObjects = FindObjectsOfType<PickupObject>().Where(x => !x.IsItemPickup).ToArray(); //Find the object that is not pick up by player
+    //    List<GameObject> pickupObjectGameObjects = new List<GameObject>();
 
-        foreach (var pickupObject in pickupObjects)
-        {
-            pickupObjectGameObjects.Add(pickupObject.gameObject);
-        }
+    //    foreach (var pickupObject in pickupObjects)
+    //    {
+    //        pickupObjectGameObjects.Add(pickupObject.gameObject);
+    //    }
 
-        return new List<GameObject>(pickupObjectGameObjects);
-    }
+    //    return new List<GameObject>(pickupObjectGameObjects);
+    //}
 
-    private List<PickupObjectSaveData> SavePickUpObjects() //Save 
-    {
-        List<PickupObjectSaveData> saveDataPickup = new List<PickupObjectSaveData>();
-        var pickupObjects = FindAllPickupObjectInScene();
+    //private List<PickupObjectSaveData> SavePickUpObjects() //Save 
+    //{
+    //    List<PickupObjectSaveData> saveDataPickup = new List<PickupObjectSaveData>();
+    //    var pickupObjects = FindAllPickupObjectInScene();
 
-        foreach (var item in pickupObjects)
-        {
-            PickupObject pickObject = item.GetComponent<PickupObject>();
+    //    foreach (var item in pickupObjects)
+    //    {
+    //        PickupObject pickObject = item.GetComponent<PickupObject>();
 
-            PickupObjectSaveData newPickup = new PickupObjectSaveData()
-            {
-                //itemSO = pickObject.GetItemSo,
-                itemId = pickObject.GetItemId,
-                itemSprite = pickObject.GetItemSprite,
-                position = pickObject.transform.position,
-                rotation = pickObject.transform.rotation,
-                scale = pickObject.transform.localScale
-            };
+    //        PickupObjectSaveData newPickup = new PickupObjectSaveData()
+    //        {
+    //            //itemSO = pickObject.GetItemSo,
+    //            itemId = pickObject.GetItemId,
+    //            itemSprite = pickObject.GetItemSprite,
+    //            position = pickObject.transform.position,
+    //            rotation = pickObject.transform.rotation,
+    //            scale = pickObject.transform.localScale
+    //        };
 
-            saveDataPickup.Add(newPickup);
-            //saveDataPickup.Add(new PickupObjectSaveData(pickObject));
-        }
+    //        saveDataPickup.Add(newPickup);
+    //        //saveDataPickup.Add(new PickupObjectSaveData(pickObject));
+    //    }
 
-        return saveDataPickup;
+    //    return saveDataPickup;
 
-        //ES3.Save(GetKeyName(), saveDataPickup, filePath: GetFilePath());
+    //    //ES3.Save(GetKeyName(), saveDataPickup, filePath: GetFilePath());
 
-        //Debug.Log($"SAVING FILE IN {GetFilePath()}");
-    }
+    //    //Debug.Log($"SAVING FILE IN {GetFilePath()}");
+    //}
+    ////private void LoadPickupObjects() //Load data
+    ////{
+    ////    //If there are already a file
+    ////    if (IsKeyExist())
+    ////    {
+    ////        //Load a new item
+    ////        //List<PickupObjectSaveData> pickupData = ES3.Load(GetKeyName(), defaultValue: new List<PickupObjectSaveData>(), filePath: GetFilePath()); //Load a data from file
+
+    ////        ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Load the data in current scene
+
+    ////        if(sceneData != null)
+    ////        {
+    ////            List<PickupObjectSaveData> pickupData = sceneData.pickupObjectSaveDatas; //Get the list of pick up objects in the data
+
+    ////            //Removing all the pickup object in the scene
+    ////            foreach (var item in FindAllPickupObjectInScene())
+    ////            {
+    ////                item.SetActive(false);
+    ////            }
+
+    ////            foreach (var item in pickupData)
+    ////            {
+    ////                //Instantiate a new item and ibigay yung saved data in the new item
+    ////                PickupObject obj = Instantiate(itemTemplate, item.position, item.rotation);
+    ////                obj.transform.localScale = item.scale;
+    ////                //obj.GetItemSo = item.itemSO;
+    ////                obj.GetItemId = item.itemId;
+    ////                obj.GetItemSprite = item.itemSprite;
+    ////            }
+    ////        }
+
+    ////    }
+    ////    else
+    ////    {
+    ////        Debug.Log("THERE ARE NO FILE YET IN THIS SCENE");
+    ////    }
+    ////}
     //private void LoadPickupObjects() //Load data
     //{
     //    //If there are already a file
@@ -209,24 +246,26 @@ public class LevelManager : Singleton<LevelManager>
 
     //        ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Load the data in current scene
 
-    //        if(sceneData != null)
+    //        if (sceneData != null)
     //        {
-    //            List<PickupObjectSaveData> pickupData = sceneData.pickupObjectSaveDatas; //Get the list of pick up objects in the data
+    //            List<GameObject> pickupData = sceneData.pickupObjectSaveDatas; //Get the list of pick up objects in the data
 
     //            //Removing all the pickup object in the scene
-    //            foreach (var item in FindAllPickupObjectInScene())
-    //            {
-    //                item.SetActive(false);
-    //            }
+    //            //foreach (var item in FindAllPickupObjectInScene())
+    //            //{
+    //            //    item.SetActive(false);
+    //            //}
 
     //            foreach (var item in pickupData)
     //            {
-    //                //Instantiate a new item and ibigay yung saved data in the new item
-    //                PickupObject obj = Instantiate(itemTemplate, item.position, item.rotation);
-    //                obj.transform.localScale = item.scale;
-    //                //obj.GetItemSo = item.itemSO;
-    //                obj.GetItemId = item.itemId;
-    //                obj.GetItemSprite = item.itemSprite;
+    //                var _item = Instantiate(item);
+    //                _item.SetActive(true);
+    //                ////Instantiate a new item and ibigay yung saved data in the new item
+    //                //PickupObject obj = Instantiate(itemTemplate, item.position, item.rotation);
+    //                //obj.transform.localScale = item.scale;
+    //                ////obj.GetItemSo = item.itemSO;
+    //                //obj.GetItemId = item.itemId;
+    //                //obj.GetItemSprite = item.itemSprite;
     //            }
     //        }
 
@@ -236,111 +275,72 @@ public class LevelManager : Singleton<LevelManager>
     //        Debug.Log("THERE ARE NO FILE YET IN THIS SCENE");
     //    }
     //}
-    private void LoadPickupObjects() //Load data
-    {
-        //If there are already a file
-        if (IsKeyExist())
-        {
-            //Load a new item
-            //List<PickupObjectSaveData> pickupData = ES3.Load(GetKeyName(), defaultValue: new List<PickupObjectSaveData>(), filePath: GetFilePath()); //Load a data from file
+    //#endregion
 
-            ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Load the data in current scene
+    //#region SAVE/LOAD BATTLE TRIGGER IN THE SCENE
+    ////To Save the battle trigger in the scene
+    //public List<RoomArea> FindAllRoomAreaInScene() //Find all room area in the scene
+    //{
+    //    IEnumerable<RoomArea> roomAreas = FindObjectsOfType<RoomArea>();
+    //    return new List<RoomArea>(roomAreas);
+    //}
 
-            if (sceneData != null)
-            {
-                List<GameObject> pickupData = sceneData.pickupObjectSaveDatas; //Get the list of pick up objects in the data
+    //private List<RoomBattleSaveData> SaveRoomAreaInScene()
+    //{
+    //    List<RoomBattleSaveData> saveRoomArea = new List<RoomBattleSaveData>();
 
-                //Removing all the pickup object in the scene
-                //foreach (var item in FindAllPickupObjectInScene())
-                //{
-                //    item.SetActive(false);
-                //}
+    //    foreach (var item in FindAllRoomAreaInScene())
+    //    {
+    //        //saveRoomArea.Add(new RoomBattleSaveData(item.GetBattleTrigger));
 
-                foreach (var item in pickupData)
-                {
-                    var _item = Instantiate(item);
-                    _item.SetActive(true);
-                    ////Instantiate a new item and ibigay yung saved data in the new item
-                    //PickupObject obj = Instantiate(itemTemplate, item.position, item.rotation);
-                    //obj.transform.localScale = item.scale;
-                    ////obj.GetItemSo = item.itemSO;
-                    //obj.GetItemId = item.itemId;
-                    //obj.GetItemSprite = item.itemSprite;
-                }
-            }
+    //        RoomBattleSaveData data = new RoomBattleSaveData()
+    //        {
+    //            roomId = item.GetBattleTrigger.GetInstanceID(),
+    //            desiredBattleNextEnter = item.GetBattleTrigger.GetNextDesiredBattleTrigger,
+    //            isAlreadyTrigger = item.GetBattleTrigger.IsAlreadyTriggerArea
+    //        };
 
-        }
-        else
-        {
-            Debug.Log("THERE ARE NO FILE YET IN THIS SCENE");
-        }
-    }
-    #endregion
+    //        saveRoomArea.Add(data);
+    //    }
 
-    #region SAVE/LOAD BATTLE TRIGGER IN THE SCENE
-    //To Save the battle trigger in the scene
-    public List<RoomArea> FindAllRoomAreaInScene() //Find all room area in the scene
-    {
-        IEnumerable<RoomArea> roomAreas = FindObjectsOfType<RoomArea>();
-        return new List<RoomArea>(roomAreas);
-    }
+    //    return saveRoomArea;
+    //    //ES3.Save<List<RoomBattleSaveData>>(GetKeyName(), saveRoomArea, filePath: GetFilePath());
+    //    //Debug.Log("SAVING BATTLE AREA");
+    //}
+    //private void LoadRoomAreaInScene()
+    //{
+    //    if (IsKeyExist())
+    //    {
 
-    private List<RoomBattleSaveData> SaveRoomAreaInScene()
-    {
-        List<RoomBattleSaveData> saveRoomArea = new List<RoomBattleSaveData>();
+    //        ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath());
 
-        foreach (var item in FindAllRoomAreaInScene())
-        {
-            //saveRoomArea.Add(new RoomBattleSaveData(item.GetBattleTrigger));
+    //        //var loadedData = ES3.Load<List<RoomBattleSaveData>>(GetKeyName(), defaultValue: new List<RoomBattleSaveData>(), filePath: GetFilePath());
 
-            RoomBattleSaveData data = new RoomBattleSaveData()
-            {
-                roomId = item.GetBattleTrigger.GetInstanceID(),
-                desiredBattleNextEnter = item.GetBattleTrigger.GetNextDesiredBattleTrigger,
-                isAlreadyTrigger = item.GetBattleTrigger.IsAlreadyTriggerArea
-            };
+    //        if (sceneData != null)
+    //        {
+    //            List<RoomBattleSaveData> roomDatas = sceneData.roomBattleSaveDatas;
 
-            saveRoomArea.Add(data);
-        }
+    //            foreach (RoomArea room in FindAllRoomAreaInScene())
+    //            {
+    //                //RoomBattleSaveData data = loadedData.FirstOrDefault(x => x.roomId == room.GetInstanceID()); //Find the object with the same ID
+    //                RoomBattleSaveData data = roomDatas.FirstOrDefault(x => x.roomId == room.GetBattleTrigger.GetInstanceID());
 
-        return saveRoomArea;
-        //ES3.Save<List<RoomBattleSaveData>>(GetKeyName(), saveRoomArea, filePath: GetFilePath());
-        //Debug.Log("SAVING BATTLE AREA");
-    }
-    private void LoadRoomAreaInScene()
-    {
-        if (IsKeyExist())
-        {
-
-            ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath());
-
-            //var loadedData = ES3.Load<List<RoomBattleSaveData>>(GetKeyName(), defaultValue: new List<RoomBattleSaveData>(), filePath: GetFilePath());
-
-            if (sceneData != null)
-            {
-                List<RoomBattleSaveData> roomDatas = sceneData.roomBattleSaveDatas;
-
-                foreach (RoomArea room in FindAllRoomAreaInScene())
-                {
-                    //RoomBattleSaveData data = loadedData.FirstOrDefault(x => x.roomId == room.GetInstanceID()); //Find the object with the same ID
-                    RoomBattleSaveData data = roomDatas.FirstOrDefault(x => x.roomId == room.GetBattleTrigger.GetInstanceID());
-
-                    if (data != null)
-                    {
-                        //Loaded the data
-                        Debug.Log($"ID: {room.GetInstanceID()} || {data.isAlreadyTrigger}");
-                        room.GetBattleTrigger.IsAlreadyTriggerArea = data.isAlreadyTrigger;
-                        room.GetBattleTrigger.GetNextDesiredBattleTrigger = data.desiredBattleNextEnter;
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"THERE ARE NO ROOM WITH ID {data.roomId} IN THE SCENE");
-                    }
-                }
-            }
-        }
-    }
-    #endregion
+    //                if (data != null)
+    //                {
+    //                    //Loaded the data
+    //                    Debug.Log($"ID: {room.GetInstanceID()} || {data.isAlreadyTrigger}");
+    //                    room.GetBattleTrigger.IsAlreadyTriggerArea = data.isAlreadyTrigger;
+    //                    room.GetBattleTrigger.GetNextDesiredBattleTrigger = data.desiredBattleNextEnter;
+    //                }
+    //                else
+    //                {
+    //                    Debug.LogWarning($"THERE ARE NO ROOM WITH ID {data.roomId} IN THE SCENE");
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+    //#endregion
 
 
 

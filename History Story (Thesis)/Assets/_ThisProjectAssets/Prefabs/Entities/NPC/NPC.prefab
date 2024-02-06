@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8764149005723321443}
   - component: {fileID: 6852243496946772617}
-  - component: {fileID: 6615504171951595136}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -88,17 +87,6 @@ MonoBehaviour:
     m_Bits: 83992
   loopState: 1
   moveSpeed: 0
---- !u!210 &6615504171951595136
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2365506080340139434}
-  m_Enabled: 1
-  m_SortingLayerID: -1014085095
-  m_SortingLayer: 4
-  m_SortingOrder: 0
 --- !u!1 &3366715277448331022
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +166,7 @@ GameObject:
   - component: {fileID: 6471598002959953700}
   - component: {fileID: 798526269928765552}
   - component: {fileID: 2077896071914944234}
+  - component: {fileID: 6674253596142301012}
   m_Layer: 0
   m_Name: Actor
   m_TagString: Untagged
@@ -517,6 +506,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selector: {fileID: 5167402668523107294}
+--- !u!210 &6674253596142301012
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8731687991914652491}
+  m_Enabled: 1
+  m_SortingLayerID: -1014085095
+  m_SortingLayer: 4
+  m_SortingOrder: 0
 --- !u!1001 &456464051651605268
 PrefabInstance:
   m_ObjectHideFlags: 0

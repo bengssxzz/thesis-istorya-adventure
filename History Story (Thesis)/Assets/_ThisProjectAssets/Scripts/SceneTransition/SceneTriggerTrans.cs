@@ -55,7 +55,8 @@ public class SceneTriggerTrans : MonoBehaviour
         {
             if (state == TransitionState.OnTrigger)
             {
-                LevelManager.Instance.SaveSceneLevel(); //Save the scene
+                //LevelManager.Instance.SaveSceneLevel(); //Save the scene
+                SaveGameDataManager.Instance.SaveChapterScene(); //Save the scene
                 SceneTransitionManager.Instance.SceneTransitionInGame(sceneName, transitionID);
             }
         }
