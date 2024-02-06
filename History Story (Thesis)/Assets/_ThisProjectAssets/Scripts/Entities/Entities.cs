@@ -157,6 +157,25 @@ public class Entities : MonoBehaviour, IDamageable
         //Movement behaviour
     }
 
+    public (float, bool) GetCalculatedDamage()
+    {
+        var plainDamage = GetEntityStats.currentDamage; //Current damage
+
+        //Calculate if this is critical damage
+        var isCritical = ThesisUtility.RandomGetChanceBool(GetEntityStats.currentCriticalChance);
+
+        if (isCritical)
+        {
+            //Critical Damage
+            //float criticalDamage = damage * sourceDamage.GetEntityStats.maxCriticalDamage / 100f;
+            //damage += criticalDamage;
+            plainDamage += ThesisUtility.ComputeAddedValueWithPercentage(plainDamage, GetEntityStats.maxCriticalDamage);
+        }
+
+
+        return (plainDamage, isCritical);
+    }
+
     public void GenerateHealth(float healthAmount)// Generating health
     {
         GetEntityStats.SetCurrentHealth(healthAmount);

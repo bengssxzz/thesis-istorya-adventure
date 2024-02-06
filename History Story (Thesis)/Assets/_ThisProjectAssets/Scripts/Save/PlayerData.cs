@@ -14,7 +14,6 @@ public class PlayerData
 
     //Save the unlocked chapters
     public List<GameObject> unlockedChapters = new List<GameObject>();
-
     //Save the score each chapter
     public Dictionary<string, int> chapterScores = new Dictionary<string, int> {
         {"Chapter 1", 0},

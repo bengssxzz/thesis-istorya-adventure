@@ -10,7 +10,8 @@ using UnityEditor;
 
 public class AttackController : DetectMyEnemies
 {
-    [System.Serializable] public class AttackState
+    [System.Serializable]
+    public class AttackState
     {
         public List<BaseAttackBehaviour> attackTypes = new List<BaseAttackBehaviour>();
         public float delayCast;
@@ -20,7 +21,7 @@ public class AttackController : DetectMyEnemies
         {
             foreach (var item in attackTypes)
             {
-                if(item.attackIsPlaying)
+                if (item.attackIsPlaying)
                     return false; //Not all behaviour is done;
             }
 
@@ -51,13 +52,13 @@ public class AttackController : DetectMyEnemies
     [Space(20)]
     [Header("Melee")]
     [SerializeField] [Range(0f, 50f)] private float meleeAttackDistance;
-
-    
+    [SerializeField] private float delayAttack = 1f;
+    private bool meleeAttackOnCooldown = false;
 
     private float _fireRate = 0;
     private int currentAttackState = 0;
 
-   // public Transform EnemyInsideArea;
+    // public Transform EnemyInsideArea;
 
 
     //[Space(20)]
@@ -107,25 +108,27 @@ public class AttackController : DetectMyEnemies
     }
     private void Update()
     {
-        if(EnableAttacking == false) { return; } //
+        if (EnableAttacking == false) { return; } //
 
 
         Aiming(); //Aim the holder
 
 
-        if(GetNearestEnemy != null &&  distanceToNearestEnemy < rangedAttackDistance)
+        if (GetNearestEnemy != null && distanceToNearestEnemy < rangedAttackDistance)
         {
             //StartCoroutine(TriggerAttack());
             if (isAlreadyTriggerAttack == false)
             {
-                //if (timer.TimerNode(fireRate))
-                //{
-                //    //Trigger attack state
-                //    StartCoroutine(TriggerAttackStates());
-                //}
-                //isAlreadyTriggerAttack = true;
-                //StartCoroutine(TriggerAttack());
                 StartCoroutine(TriggerAttack());
+            }
+        }
+
+        if (GetNearestEnemy != null && distanceToNearestEnemy < meleeAttackDistance)
+        {
+            if (!meleeAttackOnCooldown)
+            {
+                StartCoroutine(MeleeAttack());
+                Debug.Log("MELEE ATTACK");
             }
         }
 
@@ -158,6 +161,7 @@ public class AttackController : DetectMyEnemies
     }
 
 
+    #region RangeAttack
     private void Aiming() //Controll the aiming of the entity toward to nearest enemy
     {
         Quaternion q;
@@ -213,7 +217,7 @@ public class AttackController : DetectMyEnemies
                 _fireRate = Time.time + 1 / fireRate;
 
                 //Debug.Log("Done state attack: " + Time.time + " :: " + _fireRate);
-                
+
 
             }
         }
@@ -249,7 +253,7 @@ public class AttackController : DetectMyEnemies
 
         }
 
-        
+
         while (!attackStates[previousStateIndex].IsAllBehaviourIsDone()) //Wait to finish before continue
         {
             Debug.Log("WAITING FOR STATE TO FINISH");
@@ -418,9 +422,30 @@ public class AttackController : DetectMyEnemies
     {
         return attackStates[currentAttackState].IsAllBehaviourIsDone();
     }
+    #endregion
 
 
 
+    private IEnumerator MeleeAttack()
+    {
+        meleeAttackOnCooldown = true;
+        Collider2D[] myEnemy = Physics2D.OverlapCircleAll(transform.position, meleeAttackDistance, GetMyEnemyLayer);
+        foreach (var item in myEnemy)
+        {
+            IDamageable entity = item.GetComponent<IDamageable>();
+
+            var damage_critical = GetThisEntity.GetCalculatedDamage();
+            var calculatedDamage = damage_critical.Item1;
+            var isCritical = damage_critical.Item2;
+
+            entity.TakeDamage(calculatedDamage, GetThisEntity, isCritical);
+
+        }
+
+        yield return new WaitForSeconds(delayAttack);
+
+        meleeAttackOnCooldown = false;
+    }
 
 
 

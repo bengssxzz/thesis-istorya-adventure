@@ -11,6 +11,8 @@ using UnityEditor;
 
 public class SaveGameDataManager : Singleton<SaveGameDataManager>
 {
+    const string playerDataFile = "PlayerData.thesis";
+
     const string sceneFileNamePD = "PlayerSceneData";
     const string sceneKeyNamePD = "player_scene_data";
 
@@ -29,7 +31,10 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
 
     //Player stats saving
+    private void SavePlayerData()
+    {
 
+    }
 
 
     //Chapter scene saving

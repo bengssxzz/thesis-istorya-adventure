@@ -12,7 +12,7 @@ public class DetectMyEnemies : MonoBehaviour
     [Header("Detecting my enemy")]
     [SerializeField] private bool ignoreObstacle = false; //Ignore obstacle
     [SerializeField] protected float detectRadius = 0.5f; //If -1 iba-based ng radius nito sa entity's ranged attack field
-    [SerializeField] protected LayerMask myEnemyLayer, obstacleLayer;
+    [SerializeField] private LayerMask myEnemyLayer, obstacleLayer;
     private LayerMask raycastCanSee => myEnemyLayer + obstacleLayer;//Combined layer
 
     protected float distanceToNearestEnemy; //Get the distance between gameobject to nearest enemy
