@@ -27,6 +27,7 @@ public enum CategoryStats
     Regeneration
 }
 
+
 [System.Serializable]
 public class EntityStatistics
 {
@@ -35,75 +36,111 @@ public class EntityStatistics
     public Action<float, float> OnCurrentHealthChange;
 
 
-    //Main Stats
-    public float maxHealth { get; private set; }
-    public float currentHealth { get; private set; }
+    private float _lifeSteal;
+
+    #region Max Value
+    //Max Value
+    private float _maxHealth;
+    private float _maxDamage;
+    private float _maxDefense;
+    private float _maxMoveSpeed;
+    private float _maxAttackSpeed;
+    private float _maxCriticalDamage;
+    private float _maxDodgeChance;
+    private float _maxCriticalChance;
+    #endregion
+
+    #region Current Value
+    //Current Value
+    private float _currentHealth;
+    private float _currentDamage;
+    private float _currentDefense;
+    private float _currentMoveSpeed;
+    private float _currentAttackSpeed;
+    private float _currentCriticalDamage;
+    private float _currentDodgeChance;
+    private float _currentCriticalChance;
+    #endregion
+
+    #region Bound Value
+    //Bound value
     private float maxHealthBoundValue = float.PositiveInfinity; //Bound to infinite
-
-    public float maxDamage { get; private set; }
-    public float currentDamage { get; private set; }
     private float maxDamageBoundValue = float.PositiveInfinity; //Bound to infinite
-
-
-    public float maxDefense { get; private set; }
-    public float currentDefense { get; private set; }
     private float maxDefenseBoundValue = 75;
-
-    //Speed
-    public float maxMoveSpeed { get; private set; }
-    public float currentMoveSpeed { get; private set; }
     private float maxMoveSpeedBoundValue = 150;
-
-    public float maxAttackSpeed { get; private set; }
-    public float currentAttackSpeed { get; private set; }
     private float maxAttackSpeedBoundValue = 50;
-
-    //Accuracy
-    public float maxCriticalDamage { get; private set; }
-    public float currentCriticalDamage { get; private set; }
     private float maxCriticalDamageBoundValue = float.PositiveInfinity; //Bound to infinite
-
-    public float maxDodgeChance { get; private set; }
-    public float currentDodgeChance { get; private set; }
     private float maxDodgeChanceBoundValue = 70;
-
-    //Sight
-    public float maxCriticalChance { get; private set; }
-    public float currentCriticalChance { get; private set; }
     private float maxCriticalChanceBoundValue = 70;
-
-    //Regeneration
-    public float lifeSteal { get; private set; } //Every kill absorb health
     private float lifeStealBoundValue = 40;
+    #endregion
+
+    #region Getter Setter 
+    public float maxHealth { get { return _maxHealth; } private set { _maxHealth = value; } }
+    public float currentHealth { get { return _currentHealth; } private set { _currentHealth = value; } }
+
+
+    public float maxDamage { get { return _maxDamage; } private set { _maxDamage = value; } }
+    public float currentDamage { get { return _currentDamage; } private set { _currentDamage = value; } }
+    
+
+
+    public float maxDefense { get { return _maxDefense; } private set { _maxDefense = value; } }
+    public float currentDefense { get { return _currentDefense; } private set { _currentDefense = value; } }
+   
+
+    public float maxMoveSpeed { get { return _maxMoveSpeed; } private set { _maxMoveSpeed = value; } }
+    public float currentMoveSpeed { get { return _currentMoveSpeed; } private set { _currentMoveSpeed = value; } }
+    
+
+    public float maxAttackSpeed { get { return _maxAttackSpeed; } private set { _maxAttackSpeed = value; } }
+    public float currentAttackSpeed { get { return _currentAttackSpeed; } private set { _currentAttackSpeed = value; } }
+   
+
+    public float maxCriticalDamage { get { return _maxCriticalDamage; } private set { _maxCriticalDamage = value; } }
+    public float currentCriticalDamage { get { return _currentCriticalDamage; } private set { _currentCriticalDamage = value; } }
+  
+
+    public float maxDodgeChance{ get { return _maxDodgeChance; } private set { _maxDodgeChance = value; } }
+    public float currentDodgeChance { get { return _currentDodgeChance; } private set { _currentDodgeChance = value; } }
+   
+
+    public float maxCriticalChance { get { return _maxCriticalChance; } private set { _maxCriticalChance = value; } }
+    public float currentCriticalChance{ get { return _currentCriticalChance; } private set { _currentCriticalChance = value; } }
+   
+
+    public float lifeSteal { get { return _lifeSteal; } private set { _lifeSteal = value; } } //Every kill absorb health
+    #endregion
 
 
 
 
 
-    public EntityStatistics(EntityStatsSO entityStatsSO, Entities entity){
-        maxHealth = entityStatsSO.maxHealth;
-        currentHealth = maxHealth;
+    public EntityStatistics(EntityStatsSO entityStatsSO, Entities entity)
+    {
+        _maxHealth = entityStatsSO.maxHealth;
+        _currentHealth = maxHealth;
 
-        maxDamage = entityStatsSO.damage;
-        currentDamage = maxDamage;
+        _maxDamage = entityStatsSO.damage;
+        _currentDamage = maxDamage;
 
-        maxDefense = entityStatsSO.defense;
-        currentDefense = maxDefense;
+        _maxDefense = entityStatsSO.defense;
+        _currentDefense = maxDefense;
 
-        maxAttackSpeed = entityStatsSO.attackSpeed;
-        currentAttackSpeed = maxAttackSpeed;
+        _maxAttackSpeed = entityStatsSO.attackSpeed;
+        _currentAttackSpeed = maxAttackSpeed;
 
-        maxMoveSpeed = entityStatsSO.maxMoveSpeed;
-        currentMoveSpeed = maxMoveSpeed;
+        _maxMoveSpeed = entityStatsSO.maxMoveSpeed;
+        _currentMoveSpeed = maxMoveSpeed;
 
-        maxCriticalDamage = entityStatsSO.criticalDamage;
-        currentCriticalDamage = maxCriticalDamage;
+        _maxCriticalDamage = entityStatsSO.criticalDamage;
+        _currentCriticalDamage = maxCriticalDamage;
 
-        maxDodgeChance = entityStatsSO.dodgingChance;
-        currentDodgeChance = maxDodgeChance;
+        _maxDodgeChance = entityStatsSO.dodgingChance;
+        _currentDodgeChance = maxDodgeChance;
 
-        maxCriticalChance = entityStatsSO.criticalChance;
-        currentCriticalChance = maxCriticalChance;
+        _maxCriticalChance = entityStatsSO.criticalChance;
+        _currentCriticalChance = maxCriticalChance;
 
 
         lifeSteal = entityStatsSO.lifeSteal;
@@ -276,6 +313,7 @@ public class EntityStatistics
         OnCurrentHealthChange?.Invoke(currentHealth, maxHealth);
     }
 
+
     public void UpgradeCategoryStats(CategoryStats categoryStats)
     {
         switch (categoryStats)
@@ -303,9 +341,6 @@ public class EntityStatistics
                 break;
         }
     }
-
-
-
     public void UpgradeMaxHealth(int amount)
     {
         maxHealth += amount;
@@ -391,7 +426,7 @@ public class EntityStatistics
                 break;
         }
 
-        return remainValue; 
+        return remainValue;
     }
     public float GetMaxBoundStats(EntityStats stats)
     {

@@ -63,6 +63,12 @@ public class PlayerScript : Entities, IDataPersistenceObject
         }
     }
 
+    protected override void Update()
+    {
+        base.Update();
+        FlipEntity(rb.velocity);
+    }
+
     private void ButtonInputEvent_Subscribe()
     {
         InputManager.Instance.OnPlayerMove += MovementDirection;

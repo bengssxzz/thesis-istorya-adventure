@@ -6,12 +6,13 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using MoreMountains.Tools;
+using ThesisLibrary;
 
 public class QuestionaireUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI questionText;
 
-    [SerializeField] private Animator QandAAnimator;
+    [SerializeField] private Animator qandAAnimator;
 
     private QandAChoicesBtnUI[] buttonChoices;
 
@@ -90,20 +91,27 @@ public class QuestionaireUI : MonoBehaviour
         {
             //Correct answer
             Debug.Log("Correct Answer");
+            UI_Manager.Instance.CloseMenu("Question UI");
+
+            //Open the upgrade stats
+            int amountUpgrade = ThesisUtility.RandomGetAmount(3, 7);
+            UI_Manager.Instance.OpenMenu("UpgradeStats UI");
+            UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(amountUpgrade);
         }
         else
         {
             //Wrong answer
             Debug.Log("Wrong Answer");
+            qandAAnimator?.SetTrigger("Wrong");
+
         }
-
+        
+    }
+    public void CloseQandA()
+    {
+        Debug.Log("Animation has finished");
         UI_Manager.Instance.CloseMenu("Question UI");
-
-        //StartCoroutine(CheckStatus(checkedAnswer));
     }
 
 
-
-
-    
 }

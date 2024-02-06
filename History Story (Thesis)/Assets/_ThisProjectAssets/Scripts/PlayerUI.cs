@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using MoreMountains.Tools;
 
-public class PlayerUI : UIPages
+public class PlayerUI : MonoBehaviour
 {
     private Entities entity;
 
@@ -15,7 +15,7 @@ public class PlayerUI : UIPages
 
     private void Start()
     {
-        entity = GameManager.Instance.PlayerEntity;
+        entity = PlayerSingleton.Instance.GetPlayerScript;
 
         healthBarUI.SetBar(entity.GetEntityStats.currentHealth, 0, entity.GetEntityStats.maxHealth);
 
@@ -26,13 +26,5 @@ public class PlayerUI : UIPages
     public void ChangeHealth(float currentHealth, float maxHealth)
     {
         healthBarUI.UpdateBar(currentHealth, 0, maxHealth);
-    }
-
-    public override void ShowBehavior()
-    {
-    }
-
-    public override void HideBehavior()
-    {
     }
 }

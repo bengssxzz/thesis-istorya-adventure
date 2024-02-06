@@ -18,8 +18,8 @@ public class Entities : MonoBehaviour, IDamageable
     [SerializeField] protected bool debugMode = false;
 
     [SerializeField] private EntityStatsSO entityStatsSO;
-    [SerializeField] private SpriteRenderer entitySpriteRenderer;
-
+    //[SerializeField] private SpriteRenderer entitySpriteRenderer;
+    [SerializeField] private Transform actorTransform;
     //[SerializeField] private bool _canAttack = true;
 
     [Space(15)]
@@ -80,7 +80,7 @@ public class Entities : MonoBehaviour, IDamageable
     protected virtual void Update()
     {
         //GetAttack_Controller.EnableAttacking = _canAttack;
-        FlipEntity();
+        //FlipEntity(rb.velocity);
     }
     protected virtual void FixedUpdate()
     {
@@ -88,20 +88,50 @@ public class Entities : MonoBehaviour, IDamageable
     }
 
 
-    private void FlipEntity()
+    protected void FlipEntity(Vector2 velocity)
     {
-        if (entitySpriteRenderer == null) { return; }
+        //if (entitySpriteRenderer == null) { return; }
 
-        if (rb.velocity.x > 0 && facingLeft)
+        //if (direction.x > 0 && facingLeft)
+        //{
+        //    facingLeft = !facingLeft;
+        //    entitySpriteRenderer.flipX = facingLeft;
+        //}
+        //else if (direction.x < 0 && !facingLeft)
+        //{
+        //    facingLeft = !facingLeft;
+        //    entitySpriteRenderer.flipX = facingLeft;
+        //}
+
+        //if (entitySpriteRenderer == null) { return; }
+
+        if(actorTransform == null)
         {
-            facingLeft = !facingLeft;
-            entitySpriteRenderer.flipX = facingLeft;
+            Debug.LogWarning($"IT WONT FLIP BECAUSE THERE ARE NO ACTOR TRANSFORM ATTACH IN {gameObject.name}'s ENTITY SCRIPT");
+            return;
         }
-        else if (rb.velocity.x < 0 && !facingLeft)
+
+        if (velocity.x > 0 && facingLeft)
         {
+            //Facing Left
+            var localScale = actorTransform.localScale;
+            localScale.x *= -1;
+            actorTransform.localScale = localScale;
+
             facingLeft = !facingLeft;
-            entitySpriteRenderer.flipX = facingLeft;
+            //entitySpriteRenderer.flipX = facingLeft;
         }
+        else if (velocity.x < 0 && !facingLeft)
+        {
+            //Facing Right
+            var localScale = actorTransform.localScale;
+            localScale.x *= -1;
+            actorTransform.localScale = localScale;
+
+            facingLeft = !facingLeft;
+            //entitySpriteRenderer.flipX = facingLeft;
+        }
+
     }
 
     public virtual void StopMovement(bool canMove)

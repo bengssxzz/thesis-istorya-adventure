@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 3719126659226642805}
   - component: {fileID: 3719126659226642803}
   - component: {fileID: 7376364347714267823}
+  - component: {fileID: 8780504999550975509}
   m_Layer: 7
   m_Name: Enemy Template
   m_TagString: Enemy
@@ -366,7 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugMode: 1
   entityStatsSO: {fileID: 11400000, guid: e0b3c1533d3c2974691b67059df6bd54, type: 2}
-  entitySpriteRenderer: {fileID: 0}
+  actorTransform: {fileID: 0}
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
   moveBehaviour: 0
@@ -435,3 +436,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listOfDropLoot: []
+--- !u!114 &8780504999550975509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560112f876f5746c780eca0d404e7139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 2
+  radiusBackingField: 0.5
+  heightBackingField: 2
+  centerBackingField: 1
+  locked: 0
+  lockWhenNotMoving: 1
+  agentTimeHorizon: 2
+  obstacleTimeHorizon: 2
+  maxNeighbours: 10
+  layer: 1
+  collidesWith: -1
+  wallAvoidForce: 1
+  wallAvoidFalloff: 1
+  priority: 0.5
+  debug: 0

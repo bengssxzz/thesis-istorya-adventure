@@ -7340,7 +7340,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3272832204859969409, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
   m_PrefabInstance: {fileID: 2221413786969204713}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7083957338074783352
+--- !u!114 &1234495529721341892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7349,11 +7349,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3728808542503135336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03a59a136a5728a43a219894b9729f3d, type: 3}
+  m_Script: {fileID: 11500000, guid: 071098aa620008049988d55e1e83bfc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  proximitySelector: {fileID: 7083957337906818334}
-  itemHolder: {fileID: 7083957339380387658}
 --- !u!114 &7083957337534718304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7369,6 +7367,7 @@ MonoBehaviour:
   debugMode: 0
   entityStatsSO: {fileID: 11400000, guid: c9615d63cf78e854b83275ab28d790e1, type: 2}
   entitySpriteRenderer: {fileID: 3728808543865051950}
+  actorTransform: {fileID: 7332668966398437175}
   hurtFeedback: {fileID: 7083957338772371100}
   diedFeedback: {fileID: 0}
 --- !u!114 &7083957337534718305
@@ -7419,7 +7418,7 @@ MonoBehaviour:
     delayCast: 0
     movingWhileCasting: 0
   meleeAttackDistance: 0
---- !u!114 &1234495529721341892
+--- !u!114 &7083957338074783352
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7428,9 +7427,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3728808542503135336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 071098aa620008049988d55e1e83bfc3, type: 3}
+  m_Script: {fileID: 11500000, guid: 03a59a136a5728a43a219894b9729f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  proximitySelector: {fileID: 7083957337906818334}
+  itemHolder: {fileID: 7083957339380387658}
 --- !u!4 &3728808542503135339 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3272832204859969410, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
@@ -7523,5 +7524,10 @@ SpriteRenderer:
 --- !u!4 &6173406280591513408 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5438189304426197161, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+  m_PrefabInstance: {fileID: 2221413786969204713}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7332668966398437175 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8869509075524763870, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
   m_PrefabInstance: {fileID: 2221413786969204713}
   m_PrefabAsset: {fileID: 0}

@@ -60,13 +60,14 @@ public class AIEntity : Entities
 
         FleeBehaviour();
 
+        FlipEntity(aiPath.velocity.normalized);
     }
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-
-        
     }
+
+
 
 
     protected override void MovementBehaviour()
