@@ -375,7 +375,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: I am General Alejandrino. An engineer of the Philippine Army.
+        value: I am General Alejandrino. An engineer of the Philippine Army. I am
+          also the one who gives orders around here.
         type: 0
         typeString: 
       - title: Sequence
@@ -403,8 +404,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 342.4279
-        y: 176.72946
+        x: 345.1676
+        y: 175.35956
         width: 160
         height: 30
     - id: 4
@@ -499,7 +500,13 @@ MonoBehaviour:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
-      outgoingLinks: []
+      outgoingLinks:
+      - originConversationID: 2
+        originDialogueID: 6
+        destinationConversationID: 2
+        destinationDialogueID: 7
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -509,6 +516,56 @@ MonoBehaviour:
         serializedVersion: 2
         x: 349.27704
         y: 316.60596
+        width: 160
+        height: 30
+    - id: 7
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 8
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: Anyways, I think I can give you a task for you to do. Talk to me after
+          you have talked to everyone around camp. Get to know each one of them...
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 2
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 349.27704
+        y: 366.60596
         width: 160
         height: 30
     entryGroups: []
@@ -916,7 +973,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Ask the soldiers around to find out why Aguinaldo did such a thing!
+        value: Make sure to talk to everyone, then see where it goes!
         type: 0
         typeString: 
       - title: Sequence
@@ -945,7 +1002,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 156.11652
-        y: 369.80585
+        y: 370.77673
         width: 160
         height: 30
     - id: 7
@@ -1484,7 +1541,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 150.63284, y: 0}
+    canvasScrollPosition: {x: 15.189819, y: 15.18988}
     canvasZoom: 0.7900002
   - id: 7
     fields:
@@ -5955,8 +6012,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 161
-        y: 33
+        x: 80
+        y: 50
         width: 160
         height: 30
     - id: 10
@@ -6011,8 +6068,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 543.63745
-        y: 90.6082
+        x: 80
+        y: 134
         width: 160
         height: 30
     - id: 11
@@ -6066,8 +6123,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 526.83704
-        y: 142.48233
+        x: 80
+        y: 218
         width: 160
         height: 30
     - id: 12
@@ -6121,8 +6178,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 564.0117
-        y: 199.96677
+        x: 80
+        y: 302
         width: 160
         height: 30
     - id: 13
@@ -6177,8 +6234,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 639.21704
-        y: 276.69107
+        x: 80
+        y: 386
         width: 160
         height: 30
     - id: 14
@@ -6233,8 +6290,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 682.44196
-        y: 339.56442
+        x: 80
+        y: 470
         width: 160
         height: 30
     - id: 15
@@ -6289,8 +6346,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 657.4129
-        y: 402.6686
+        x: 80
+        y: 554
         width: 160
         height: 30
     - id: 16
@@ -6344,8 +6401,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 672.6078
-        y: 486.23428
+        x: 80
+        y: 638
         width: 160
         height: 30
     - id: 17
@@ -6399,8 +6456,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 602.17883
-        y: 566.97595
+        x: 80
+        y: 722
         width: 160
         height: 30
     - id: 18
@@ -6449,8 +6506,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 156.1471
-        y: 583.8735
+        x: 80
+        y: 806
         width: 160
         height: 30
     entryGroups: []
