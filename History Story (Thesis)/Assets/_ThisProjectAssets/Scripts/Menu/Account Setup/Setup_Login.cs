@@ -21,17 +21,17 @@ public class Setup_Login : UIPages
     {
         LoginBtn.onClick.AddListener(PressLogin);
 
-        signupBtn.onClick.AddListener(() => { 
-            signupPage.UIEnabled();
-            this.UIDisabled();
+        //signupBtn.onClick.AddListener(() => { 
+        //    signupPage.UIEnabled();
+        //    this.UIDisabled();
         
-        });
+        //});
 
-        guestBtn.onClick.AddListener(() => {
-            guestPage.UIEnabled();
-            this.UIDisabled();
+        //guestBtn.onClick.AddListener(() => {
+        //    guestPage.UIEnabled();
+        //    this.UIDisabled();
 
-        });
+        //});
 
         //PlayfabManager.Instance.OnSuccessLogin += OnSuccessLogin;
         //PlayfabManager.Instance.OnError += OnErrorThrow;
@@ -40,8 +40,6 @@ public class Setup_Login : UIPages
     public override void HideBehavior()
     {
         LoginBtn.onClick.RemoveAllListeners();
-        signupBtn.onClick.RemoveAllListeners();
-        guestBtn.onClick.RemoveAllListeners();
 
         //PlayfabManager.Instance.OnSuccessLogin -= OnSuccessLogin;
         //PlayfabManager.Instance.OnError -= OnErrorThrow;
@@ -78,7 +76,9 @@ public class Setup_Login : UIPages
 
     private void PressLogin()
     {
-        AccountManager.LoginAccount(userEmail.text, password.text);
+        Debug.Log("PRESSING LOGIN BTN");
+
+        //AccountManager.LoginAccount(userEmail.text, password.text);
         //PlayfabManager.Instance.LoginAccount(userEmail.text, password.text);
     }
 

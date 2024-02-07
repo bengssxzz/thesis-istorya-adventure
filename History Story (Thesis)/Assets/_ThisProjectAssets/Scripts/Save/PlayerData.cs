@@ -4,25 +4,23 @@ using UnityEngine;
 
 public class PlayerData
 {
+    //Character name
+    public string characterName;
+
+    public EntityStatistics playerStats;
 
     //Save the artifacts collected
-    public List<GameObject> artifactsCollected = new List<GameObject>();
+    public List<ArtifactsSO> artifactsCollected;
 
     //Save the unlocked abilities and current used ability
-    public List<AbilityScript> unlockedAbilities = new List<AbilityScript>();
-    public List<AbilityScript> usedCurrentAbilities = new List<AbilityScript>();
+    public List<AbilityScript> unlockedAbilities;
+    public List<AbilityScript> usedCurrentAbilities;
 
     //Save the unlocked chapters
-    public List<GameObject> unlockedChapters = new List<GameObject>();
-    //Save the score each chapter
-    public Dictionary<string, int> chapterScores = new Dictionary<string, int> {
-        {"Chapter 1", 0},
-        {"Chapter 2", 0},
-        {"Chapter 3", 0},
-        {"Chapter 4", 0},
-        {"Chapter 5", 0},
+    public Dictionary<Chapter_LevelSO, bool> unlockedChapters;
 
-    };
+    //Save the score each chapter
+    public Dictionary<string, int> chapterScores;
 
     /* This to save
      * Abilities unlocked
@@ -33,18 +31,5 @@ public class PlayerData
      * the player's stats
      * Player score
      */
-
-
-    public PlayerData()
-    {
-        
-    }
-
-
-    public void SaveChapterScore(string chapterName, int score)
-    {
-        chapterScores[chapterName] += score;
-    }
-
 
 }

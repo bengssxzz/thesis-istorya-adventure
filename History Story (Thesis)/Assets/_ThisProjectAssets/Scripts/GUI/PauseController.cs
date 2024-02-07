@@ -33,13 +33,11 @@ public class PauseController : MonoBehaviour
     private void ShowPause()
     {
         pauseUI.SetActive(true);
-        GameManager.Instance.SetPauseValue(true);
         pauseBtn.gameObject.SetActive(false);
     }
     private void HidePause()
     {
         pauseUI.SetActive(false);
-        GameManager.Instance.SetPauseValue(false);
         pauseBtn.gameObject.SetActive(true);
     }
 }

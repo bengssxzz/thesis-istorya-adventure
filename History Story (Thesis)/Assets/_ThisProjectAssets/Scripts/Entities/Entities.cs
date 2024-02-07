@@ -8,10 +8,10 @@ using MoreMountains.Feedbacks;
 [RequireComponent(typeof(AttackController))]
 [RequireComponent(typeof(AbilityController))]
 
-public class Entities : MonoBehaviour, IDamageable
+public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 {
     protected Rigidbody2D rb;
-    protected Animator animator_controller;
+    //protected Animator animator_controller;
     private DropLoot dropLoot;
 
     [Header("Entity Base")]
@@ -20,7 +20,7 @@ public class Entities : MonoBehaviour, IDamageable
     [SerializeField] private EntityStatsSO entityStatsSO;
     //[SerializeField] private SpriteRenderer entitySpriteRenderer;
     [SerializeField] private Transform actorTransform;
-    //[SerializeField] private bool _canAttack = true;
+    [SerializeField] private Animator animator_controller;
 
     [Space(15)]
     [Header("Entity Feedback")]
@@ -49,7 +49,6 @@ public class Entities : MonoBehaviour, IDamageable
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator_controller = GetComponent<Animator>();
 
         GetAttack_Controller = GetComponent<AttackController>();
         GetAbility_Controller = GetComponent<AbilityController>();
@@ -145,10 +144,7 @@ public class Entities : MonoBehaviour, IDamageable
             return; } //If can move is false, the code will not run
 
         //Animation
-        if(animator_controller != null)
-        {
-            animator_controller.SetFloat("move_speed", rb.velocity.magnitude);
-        }
+        PlayMoveAnimation(rb.velocity);
 
         MovementBehaviour();
     }
@@ -156,7 +152,14 @@ public class Entities : MonoBehaviour, IDamageable
     {
         //Movement behaviour
     }
-
+    protected  void PlayMoveAnimation(Vector3 velocity)
+    {
+        var magnitude = velocity.magnitude;
+        if (animator_controller != null)
+        {
+            animator_controller.SetFloat("move_speed", magnitude);
+        }
+    }
     public (float, bool) GetCalculatedDamage()
     {
         var plainDamage = GetEntityStats.currentDamage; //Current damage
@@ -263,7 +266,10 @@ public class Entities : MonoBehaviour, IDamageable
     {
         //Taking damage behaviour
     }
-
+    public void RegenHealth(float healthAmount)
+    {
+        GetEntityStats.SetCurrentHealth(healthAmount);
+    }
 
     private void Died(Entities sourceDamage) // Entity died
     {
@@ -287,9 +293,5 @@ public class Entities : MonoBehaviour, IDamageable
         }
     }
 
-
-
-
-
-
+    
 }

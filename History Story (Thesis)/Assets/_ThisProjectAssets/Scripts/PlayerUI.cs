@@ -11,7 +11,20 @@ public class PlayerUI : MonoBehaviour
     private Entities entity;
 
     [SerializeField] private MMProgressBar healthBarUI;
-    
+    [SerializeField] private TextMeshProUGUI pointsTxt;
+
+
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnChangeChapterPoints += OnChangePoints;
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.OnChangeChapterPoints -= OnChangePoints;
+
+    }
+
 
     private void Start()
     {
@@ -27,4 +40,13 @@ public class PlayerUI : MonoBehaviour
     {
         healthBarUI.UpdateBar(currentHealth, 0, maxHealth);
     }
+
+    private void OnChangePoints(int points)
+    {
+        pointsTxt.text = points.ToString("D10");
+    }
+
+
+
+
 }

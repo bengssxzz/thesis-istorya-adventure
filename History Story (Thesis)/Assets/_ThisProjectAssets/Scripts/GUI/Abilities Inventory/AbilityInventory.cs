@@ -41,7 +41,8 @@ public class AbilityInventory : UIPages
 
     private void Awake()
     {
-        entity = GameManager.Instance.PlayerEntity;
+        //entity = GameManager.Instance.PlayerEntity;
+        entity = PlayerSingleton.Instance.GetPlayerScript;
         InitializedHolder();
 
         listOfAllAbilities = GameManager.Instance.GetAllListOfAbility;
@@ -313,7 +314,6 @@ public class AbilityInventory : UIPages
         UpdateUnlockAbilityInList();
         UpdateHolderVisual();
         oldCurrentAbilities = currentUsedAbilities;
-        GameManager.Instance.SetPauseValue(true);
     }
 
     public override void HideBehavior()
@@ -322,7 +322,6 @@ public class AbilityInventory : UIPages
         UpdateHolderVisual();
 
         entity.GetAbility_Controller.ListOfCurrentAbilities = currentUsedAbilities.ToList();
-        GameManager.Instance.SetPauseValue(false);
     }
 
 

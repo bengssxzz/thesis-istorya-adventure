@@ -72,7 +72,7 @@ public class AIEntity : Entities
 
     protected override void MovementBehaviour()
     {
-
+        PlayMoveAnimation(aiPath.velocity.normalized);
         //aiPath.destination = targetEntity.position;
     }
 

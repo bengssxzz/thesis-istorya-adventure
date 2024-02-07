@@ -20,6 +20,7 @@ public class NPCBehaviour : MonoBehaviour
     private AIPath aiPath;
     private Seeker seek;
     [SerializeField] private Transform NPCActor;
+    [SerializeField] private Animator npcAnimator;
     [SerializeField] private Transform positions;
 
 
@@ -95,8 +96,16 @@ public class NPCBehaviour : MonoBehaviour
     private void Update()
     {
         FlipEntity();
+        PlayMoveAnimation(aiPath.velocity.normalized);
     }
-
+    protected void PlayMoveAnimation(Vector3 velocity)
+    {
+        var magnitude = velocity.magnitude;
+        if (npcAnimator != null)
+        {
+            npcAnimator.SetFloat("move_speed", magnitude);
+        }
+    }
     private void FlipEntity()
     {
         //if (entitySpriteRenderer == null) { return; }

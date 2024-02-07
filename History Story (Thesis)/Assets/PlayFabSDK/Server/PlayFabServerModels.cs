@@ -1978,6 +1978,10 @@ namespace PlayFab.ServerModels
         LeaderboardColumnLengthMismatch,
         InvalidStatisticScore,
         LeaderboardColumnsNotSpecified,
+        LeaderboardMaxSizeTooLarge,
+        InvalidAttributeStatisticsSpecified,
+        LeaderboardNotFound,
+        TokenSigningKeyNotFound,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2021,6 +2025,7 @@ namespace PlayFab.ServerModels
         CatalogItemTypeInvalid,
         CatalogBadRequest,
         CatalogTooManyRequests,
+        InvalidCatalogItemConfiguration,
         ExportInvalidStatusUpdate,
         ExportInvalidPrefix,
         ExportBlobContainerDoesNotExist,
@@ -2152,6 +2157,8 @@ namespace PlayFab.ServerModels
         EventSinkAadNotFound,
         EventSinkDatabaseNotFound,
         EventSinkTitleUnauthorized,
+        EventSinkInsufficientRoleAssignment,
+        EventSinkContainerNotFound,
         OperationCanceled,
         InvalidDisplayNameRandomSuffixLength,
         AllowNonUniquePlayerDisplayNamesDisableNotAllowed,
@@ -2174,7 +2181,23 @@ namespace PlayFab.ServerModels
         AddonDoesntExist,
         CopilotDisabled,
         CopilotInvalidRequest,
-        TrueSkillUnauthorized
+        TrueSkillUnauthorized,
+        TrueSkillBadRequest,
+        TrueSkillMatchResultAlreadySubmitted,
+        TrueSkillDuplicatePlayerInMatchResult,
+        TrueSkillInvalidRanksInMatchResult,
+        TrueSkillNoWinnerInMatchResult,
+        TrueSkillMissingRequiredConditionInMatchResult,
+        TrueSkillMissingRequiredEventInMatchResult,
+        TrueSkillUnknownEventInMatchResult,
+        TrueSkillUnknownConditionName,
+        TrueSkillUnknownConditionValue,
+        TrueSkillUnknownScenarioId,
+        TrueSkillUnknownModelId,
+        TrueSkillNoActiveModelInScenario,
+        StateShareUnauthorized,
+        StateShareStateNotFound,
+        StateShareLinkNotFound
     }
 
     [Serializable]
@@ -3178,6 +3201,32 @@ namespace PlayFab.ServerModels
         /// Mapping of PlayStation :tm: Network identifiers to PlayFab identifiers.
         /// </summary>
         public List<PSNAccountPlayFabIdPair> Data;
+    }
+
+    [Serializable]
+    public class GetPlayFabIDsFromPSNOnlineIDsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Id of the PlayStation :tm: Network issuer environment. If null, defaults to production environment.
+        /// </summary>
+        public int? IssuerId;
+        /// <summary>
+        /// Array of unique PlayStation :tm: Network identifiers for which the title needs to get PlayFab identifiers. The array
+        /// cannot exceed 2,000 in length.
+        /// </summary>
+        public List<string> PSNOnlineIDs;
+    }
+
+    /// <summary>
+    /// For PlayStation :tm: Network identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
+    [Serializable]
+    public class GetPlayFabIDsFromPSNOnlineIDsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Mapping of PlayStation :tm: Network identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<PSNOnlinePlayFabIdPair> Data;
     }
 
     [Serializable]
@@ -5011,6 +5060,20 @@ namespace PlayFab.ServerModels
         /// Unique PlayStation :tm: Network identifier for a user.
         /// </summary>
         public string PSNAccountId;
+    }
+
+    [Serializable]
+    public class PSNOnlinePlayFabIdPair : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the PlayStation :tm: Network
+        /// identifier.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// Unique PlayStation :tm: Network identifier for a user.
+        /// </summary>
+        public string PSNOnlineId;
     }
 
     [Serializable]

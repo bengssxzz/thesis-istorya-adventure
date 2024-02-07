@@ -31,48 +31,48 @@ public enum CategoryStats
 [System.Serializable]
 public class EntityStatistics
 {
-    private Entities entity;
+    [ES3NonSerializable] private Entities entity;
 
-    public Action<float, float> OnCurrentHealthChange;
+    [ES3NonSerializable] public Action<float, float> OnCurrentHealthChange;
 
 
-    private float _lifeSteal;
+    [ES3Serializable] private float _lifeSteal;
 
     #region Max Value
     //Max Value
-    private float _maxHealth;
-    private float _maxDamage;
-    private float _maxDefense;
-    private float _maxMoveSpeed;
-    private float _maxAttackSpeed;
-    private float _maxCriticalDamage;
-    private float _maxDodgeChance;
-    private float _maxCriticalChance;
+    [ES3Serializable] private float _maxHealth;
+    [ES3Serializable] private float _maxDamage;
+    [ES3Serializable] private float _maxDefense;
+    [ES3Serializable] private float _maxMoveSpeed;
+    [ES3Serializable] private float _maxAttackSpeed;
+    [ES3Serializable] private float _maxCriticalDamage;
+    [ES3Serializable] private float _maxDodgeChance;
+    [ES3Serializable] private float _maxCriticalChance;
     #endregion
 
     #region Current Value
     //Current Value
-    private float _currentHealth;
-    private float _currentDamage;
-    private float _currentDefense;
-    private float _currentMoveSpeed;
-    private float _currentAttackSpeed;
-    private float _currentCriticalDamage;
-    private float _currentDodgeChance;
-    private float _currentCriticalChance;
+    [ES3Serializable] private float _currentHealth;
+    [ES3Serializable] private float _currentDamage;
+    [ES3Serializable] private float _currentDefense;
+    [ES3Serializable] private float _currentMoveSpeed;
+    [ES3Serializable] private float _currentAttackSpeed;
+    [ES3Serializable] private float _currentCriticalDamage;
+    [ES3Serializable] private float _currentDodgeChance;
+    [ES3Serializable] private float _currentCriticalChance;
     #endregion
 
     #region Bound Value
     //Bound value
-    private float maxHealthBoundValue = float.PositiveInfinity; //Bound to infinite
-    private float maxDamageBoundValue = float.PositiveInfinity; //Bound to infinite
-    private float maxDefenseBoundValue = 75;
-    private float maxMoveSpeedBoundValue = 150;
-    private float maxAttackSpeedBoundValue = 50;
-    private float maxCriticalDamageBoundValue = float.PositiveInfinity; //Bound to infinite
-    private float maxDodgeChanceBoundValue = 70;
-    private float maxCriticalChanceBoundValue = 70;
-    private float lifeStealBoundValue = 40;
+    const float maxHealthBoundValue = float.PositiveInfinity; //Bound to infinite
+    const float maxDamageBoundValue = float.PositiveInfinity; //Bound to infinite
+    const float maxDefenseBoundValue = 75;
+    const float maxMoveSpeedBoundValue = 150;
+    const float maxAttackSpeedBoundValue = 50;
+    const float maxCriticalDamageBoundValue = float.PositiveInfinity; //Bound to infinite
+    const float maxDodgeChanceBoundValue = 70;
+    const float maxCriticalChanceBoundValue = 70;
+    const float lifeStealBoundValue = 40;
     #endregion
 
     #region Getter Setter 
