@@ -95,8 +95,12 @@ public class QuestionaireUI : MonoBehaviour
 
             //Open the upgrade stats
             int amountUpgrade = ThesisUtility.RandomGetAmount(3, 7);
+            int amountPoints = ThesisUtility.RandomGetAmount(500, 1000);
+
             UI_Manager.Instance.OpenMenu("UpgradeStats UI");
             UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(amountUpgrade);
+
+            GameManager.Instance.AddCurrentChapterScore(amountPoints);
         }
         else
         {

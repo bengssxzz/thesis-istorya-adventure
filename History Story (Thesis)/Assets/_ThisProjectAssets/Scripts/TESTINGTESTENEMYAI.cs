@@ -11,7 +11,7 @@ public class TESTINGTESTENEMYAI : MonoBehaviour
 
     private void Start()
     {
-        entity = GameManager.Instance.PlayerEntity;
+        //entity = GameManager.Instance.PlayerEntity;
     }
 
     //private void OnDrawGizmos()

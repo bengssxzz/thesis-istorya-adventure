@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using System;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
 
 public class PlayerScript : Entities, IDataPersistenceObject
 {
@@ -53,6 +54,17 @@ public class PlayerScript : Entities, IDataPersistenceObject
     protected override void Start()
     {
         base.Start();
+
+        var playerData = SaveGameDataManager.Instance.LoadPlayerData();
+        if(playerData != null)
+        {
+            Debug.Log("SET CURRENT ABILITY FROM LOCAL SAVED FILE");
+            GetAbility_Controller.ListOfCurrentAbilities = playerData.usedCurrentAbilities;
+        }
+        else
+        {
+            Debug.LogWarning("THERE ARE NO PLAYER FILE EXIST");
+        }
 
 
 

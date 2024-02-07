@@ -4,130 +4,143 @@ using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
 using System;
+using Newtonsoft.Json;
+using UnityEngine.Events;
+
 
 public class PlayfabManager : Singleton<PlayfabManager>
 {
-    public event Action<LoginResult> OnSuccessLogin;
-    public event Action<RegisterPlayFabUserResult> OnSuccessRegister;
-    public event Action<string> OnError;
 
-    private bool isCharacterNameSet = false;
 
-    public void RegisterAccount(string username, string email, string password)
+
+
+    public void SignInWithDevice() //Sign in using device id
     {
-        //Register account
-
-        var request = new RegisterPlayFabUserRequest
+        if (GetDeviceId(out string android_id, out string ios_id, out string custom_id))
         {
-            Username = username,
-            DisplayName = username,
-            Email = email,
-            Password = password,
-            RequireBothUsernameAndEmail = false
-        };
-
-        PlayFabClientAPI.RegisterPlayFabUser(request, SuccessRegister, ErrorThrow);
-
-
-    }
-
-    public void LoginAccount(string username, string password)
-    {
-        //Login account
-
-        username = username.Trim();
-        if (username.Contains("@") && username.Contains("."))
-        {
-            //User input their email
-            var request = new LoginWithEmailAddressRequest
+            //Android ID sign in
+            if (!string.IsNullOrEmpty(android_id))
             {
-                Email = username,
-                Password = password
-            };
+                Debug.Log("Using Android Device ID: " + android_id);
+                var androidRequest = new LoginWithAndroidDeviceIDRequest()
+                {
+                    AndroidDeviceId = android_id,
+                    CreateAccount = true
+                };
 
-            PlayFabClientAPI.LoginWithEmailAddress(request, SuccessLogin, ErrorThrow);
+                PlayFabClientAPI.LoginWithAndroidDeviceID(androidRequest, CheckCharacterName, ErrorThrow);
+            }
+
+            //Iphone ID sign in
+            else if (!string.IsNullOrEmpty(ios_id))
+            {
+                Debug.Log("Using IOS Device ID: " + ios_id);
+                var iosRequest = new LoginWithIOSDeviceIDRequest()
+                {
+                    DeviceId = ios_id,
+                    CreateAccount = true
+                };
+
+                PlayFabClientAPI.LoginWithIOSDeviceID(iosRequest, CheckCharacterName, ErrorThrow);
+            }
         }
         else
         {
-            //User input their username
-            LoginWithPlayFabRequest request = new LoginWithPlayFabRequest
+            Debug.Log("Using custom device ID: " + custom_id);
+
+            var customIdRequest = new LoginWithCustomIDRequest()
             {
-                Username = username,
-                Password = password
+                CustomId = custom_id,
+                CreateAccount = true
             };
 
-            PlayFabClientAPI.LoginWithPlayFab(request, SuccessLogin, ErrorThrow);
+            PlayFabClientAPI.LoginWithCustomID(customIdRequest, CheckCharacterName, ErrorThrow);
         }
     }
 
-
-
-    public void ResetPassword(string username, string emailAddress)
+    private void CheckCharacterName(LoginResult obj)
     {
-        //Forgot account
+        Debug.Log("SUCCESS LOGIN");
     }
 
-
-
-    private void SuccessRegister(RegisterPlayFabUserResult result)
+    public void SaveDataOnPlayfab(Dictionary<string, string> saveData, UnityEvent<UpdateUserDataResult> resultCallBack = null )
     {
-        //When successfuly registered account
-        OnSuccessRegister?.Invoke(result);
-    }
-
-    private void SuccessLogin(LoginResult result)
-    {
-        //When successfuly login using email and username
-        GetUserDataRequest request = new GetUserDataRequest()
+        var requestData = new UpdateUserDataRequest
         {
-            PlayFabId = result.PlayFabId
+            Data = saveData
         };
 
-        Debug.Log("SUCCESS LOGIN");
-        PlayFabClientAPI.GetUserData(request, OnGetUserDataSuccess, ErrorThrow);
-
-        //OnSuccessLogin?.Invoke(result);
+        PlayFabClientAPI.UpdateUserData(requestData, 
+            (result) => 
+            {
+                if (resultCallBack != null)
+                {
+                    resultCallBack?.Invoke(result);
+                }
+                else
+                {
+                    Debug.Log($"SUCCESS UPDATE DATA");
+                }
+            },
+            ErrorThrow);
     }
 
     private void ErrorThrow(PlayFabError error)
     {
-        //Error
-        Debug.Log(error);
-
-        OnError?.Invoke(error.ToString());
+        Debug.LogError(error);
     }
 
 
 
 
-    //check if the login player has character name saved in the cloud.
-    //If not exist then direct them to set character name page
-    private void OnGetUserDataSuccess(GetUserDataResult result)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    bool CheckForSupportedMobilePlatform() //Check if the current platform is mobile or not
     {
-        // Check if the player has a cloud key indicating their name is set
-        if (result.Data.ContainsKey("PlayerName"))
+        return Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
+    }
+    bool GetDeviceId(out string android_id, out string ios_id, out string custom_id) //Getting the device id
+    {
+        android_id = string.Empty;
+        ios_id = string.Empty;
+        custom_id = string.Empty;
+
+        if (CheckForSupportedMobilePlatform())
         {
-            isCharacterNameSet = true;
-            Debug.Log("Player name is already set.");
-            // Proceed with the game
+#if UNITY_ANDROID
+            AndroidJavaClass clsUnity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject objActivity = clsUnity.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject objResolver = objActivity.Call<AndroidJavaObject>("getContentResolver");
+            AndroidJavaClass clsSecure = new AndroidJavaClass("android.provider.Settings$Secure");
+            android_id = clsSecure.CallStatic<string>("getString", objResolver, "android_id");
+#endif
+
+#if UNITY_IPHONE
+            ios_id = UnityEngine.iOS.Device.vendorIdentifier;
+#endif
+            return true;
         }
         else
         {
-            Debug.Log("Player name is not set.");
-            // Redirect the player to set their name
+            custom_id = SystemInfo.deviceUniqueIdentifier;
+            return false;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

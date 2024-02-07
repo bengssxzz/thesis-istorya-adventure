@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using System.Linq;
 using UnityEditor;
+using Newtonsoft.Json;
 
 
 
@@ -16,6 +17,18 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     const string sceneFileNamePD = "PlayerSceneData";
     const string sceneKeyNamePD = "player_scene_data";
 
+
+    private void Start()
+    {
+        PlayfabManager.Instance.SignInWithDevice();
+        //ES3.Save("player_stats", PlayerSingleton.Instance.GetPlayerScript.GetEntityStats, "PlayerData.thesis");
+        //ES3.Save("player", SavePlayerData(), "TESTDATA.thesis");
+    }
+    private void OnApplicationQuit()
+    {
+        ES3.Save("player", SavePlayerData(), "TESTDATA.thesis");
+        SavePlayerDataCloud();
+    }
 
     #region LOCAL SAVING
     public void SaveChapterScene()
@@ -30,14 +43,44 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     }
 
 
-    //Player stats saving
-    private void SavePlayerData()
+    #region Save/Load Player Data
+    public PlayerData SavePlayerData()
     {
+        var player = PlayerSingleton.Instance.GetPlayerScript;
 
+        PlayerData p_data = new PlayerData()
+        {
+            unlockedAbilities = player.GetAbility_Controller.GetListOfUnlockedAbilities(),
+            usedCurrentAbilities = player.GetAbility_Controller.ListOfCurrentAbilities,
+            playerStats = player.GetEntityStats,
+
+            characterName = GameManager.Instance.GetCharacterName,
+            artifactsCollected = GameManager.Instance.GetListOfCollectedArtifacts,
+
+            chapterScores = GameManager.Instance.GetChapterScores,
+            unlockedChapters = GameManager.Instance.GetChapterUnlocked
+        };
+        return p_data;
     }
+    public PlayerData LoadPlayerData()
+    {
+        PlayerData getPlayerData = ES3.Load<PlayerData>("player", filePath: "TESTDATA.thesis");
+
+        if(getPlayerData != null)
+        {
+            return getPlayerData;
+        }
+        else
+        {
+            Debug.LogWarning("THE PLAYER DATA FILE IS NOT YET EXIST");
+
+            //TODO: When the file is not yet exist, then direct the player to account set up
+            return null;
+        }
+    }
+    #endregion
 
 
-    //Chapter scene saving
     #region SAVE/LOAD PLAYER IN CHAPTER
     public void SavePlayerScene(Vector3 spawnPosition) //Saving the player in this chapter level
     {
@@ -83,6 +126,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     }
     #endregion
 
+    //Chapter scene saving
     #region SAVE/LOAD BATTLE TRIGGER IN THE SCENE
     //To Save the battle trigger in the scene
     private List<RoomArea> FindAllRoomAreaInScene() //Find all room area in the scene
@@ -202,13 +246,32 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
     //TODO: SAVE/LOAD FOR OBJECTS IN THE SCENE
 
-
     #endregion
 
 
 
+    #region CLOUD SAVING
+    public void SavePlayerDataCloud()
+    {
+        var jsonPlayerData = ES3.LoadRawString(filePath: "TESTDATA.thesis");
+        var saveData = new Dictionary<string, string>()
+        {
+            {"player_data",  jsonPlayerData}
+        };
+
+        PlayfabManager.Instance.SaveDataOnPlayfab(saveData);
+
+    }
 
 
+
+
+    #endregion
+
+    public void CheckIfFileExist()
+    {
+        //TODO: Check if the local file is exist, if not then download the cloud save to local data
+    }
 
 
 

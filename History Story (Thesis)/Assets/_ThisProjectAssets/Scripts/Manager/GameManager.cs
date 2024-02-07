@@ -5,45 +5,67 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System;
+using System.Linq;
 
 public class GameManager : Singleton<GameManager>
 {
     private PlayerData playerData;
 
-    private PlayerScript entity;
+    private string characterName;
 
-
-    private bool playerCanMove = true;
-
+    private List<ArtifactsSO> listOfArtifactsCollected = new List<ArtifactsSO>();
     private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
 
+    //private List<AbilityScript> TESTlistOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
     
-    public PlayerScript PlayerEntity { get; private set; }
+    private Dictionary<Chapter_LevelSO, bool> dictChapterUnlocked; //List of all chapters
+    private Dictionary<string, int> dictChapterScores = new Dictionary<string, int>(); //List of all chapters
 
 
-    
-    public List<AbilityScript> GetAllListOfAbility => listOfAllAbilities;
+    [SerializeField] private List<Chapter_LevelSO> listOfChapters = new List<Chapter_LevelSO>();
 
-    public bool IsPause { get; set; } = false;
+
+    public event Action<int> OnChangeChapterPoints;
+
+    #region Getters and Setters
+    public PlayerData GetPlayerData { get { return playerData; } set { playerData = value; } }
+    public string GetCharacterName { get { return characterName; } }
+    public List<Chapter_LevelSO> GetListOfChapters { get { return listOfChapters; } }
+    public List<AbilityScript> GetAllListOfAbility { get { return listOfAllAbilities; } }
+    public List<ArtifactsSO> GetListOfCollectedArtifacts { get { return listOfArtifactsCollected; } }
+    public Dictionary<Chapter_LevelSO, bool> GetChapterUnlocked { get { return dictChapterUnlocked; } }
+    public Dictionary<string, int> GetChapterScores { get { return dictChapterScores; } }
+    #endregion
+
+
 
     protected override void Awake()
     {
         base.Awake();
-
+        //Load all the ability from the asset folder
         playerData = new PlayerData();
-
-        listOfAllAbilities = new List<AbilityScript>();
+        
         LoadAbilitiesInFolder("Assets/_ThisProjectAssets/Scriptable Object/Abilities");
 
-        PlayerEntity = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerScript>();
+        SetUpUnlockedChapters();
     }
 
 
     private void Start()
     {
-        
     }
 
+    /* THIS THE ONE
+    private void TESTINGLOADING() // Get all abilities (Scriptable Objects) inside the folder
+    {
+        //string[] files = Directory.GetFiles(folderPath, "*.asset");
+        AbilityScript[] abilityObjects = Resources.LoadAll<AbilityScript>("Abilities");
+
+        foreach (var filePath in abilityObjects)
+        {
+            TESTlistOfAllAbilities.Add(filePath);
+        }
+    }*/
 
     private void LoadAbilitiesInFolder(string folderPath) // Get all abilities (Scriptable Objects) inside the folder
     {
@@ -74,50 +96,97 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void SetPauseValue(bool pause)
+    private void SetUpUnlockedChapters() //Set up the chapters
     {
-        if (pause == true)
+        if(listOfChapters.Count == 0 || listOfChapters == null)
         {
-            Time.timeScale = 0;
-            IsPause = true;
+            Debug.LogError("THERE ARE NO CHAPTER LEVEL REGISTERED IN THE GAME MANAGER");
+            return;
+        }
+
+
+        dictChapterUnlocked = new Dictionary<Chapter_LevelSO, bool>();
+
+        foreach (var chapters in listOfChapters)
+        {
+            dictChapterUnlocked.Add(chapters, false);
+        }
+        dictChapterUnlocked[listOfChapters[0]] = true; //Set the first chapter to unlock
+
+    }
+
+    public void CollectArtifacts(ArtifactsSO artifacts)
+    {
+        listOfArtifactsCollected.Add(artifacts);
+    }
+    public void LoadCollectedArtifacts(List<ArtifactsSO> _listOfArtifacts)
+    {
+        if(_listOfArtifacts != null)
+        {
+            listOfArtifactsCollected = _listOfArtifacts;
+        }
+    }
+
+    public PlayerData SavePlayerData()
+    {
+        var data = new PlayerData()
+        {
+            characterName = characterName,
+            unlockedChapters = dictChapterUnlocked,
+            playerStats = PlayerSingleton.Instance.GetPlayerScript.GetEntityStats,
+
+            unlockedAbilities = PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.GetListOfUnlockedAbilities(),
+            usedCurrentAbilities = PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities
+        };
+
+        return data;
+    }
+
+    
+    public void AddCurrentChapterScore(int scoreToAdd) //Adding scores to current chapter
+    {
+        var currentFolder = GetCurrentFolderName();
+        Debug.Log($"YOU ARE ADDING POINT TO CURRENT FOLDER: {currentFolder}");
+
+        if (dictChapterScores.ContainsKey(currentFolder))
+        {
+            //If key exist in the dictionary
+            dictChapterScores[currentFolder] += scoreToAdd;
         }
         else
         {
-            Time.timeScale = 1;
-            IsPause = false;
+            //If not, then add the key and the value
+            dictChapterScores.Add(currentFolder, scoreToAdd);
         }
+
+        OnChangeChapterPoints?.Invoke(dictChapterScores[currentFolder]);
     }
-
-
-
-
-    #region SAVING PLAYER DATA
-
-
-    public void SavePlayerInSceneData(string filePath)
+    public int GetTotalScoreInChapterLevels()
     {
-
+         return dictChapterScores.Values.Sum();
     }
 
-    public void SavePlayerData()
+
+
+
+
+    private string GetCurrentFolderName() //Get the current scene folder
     {
+        // Get the full path of the current scene
+        string scenePath = SceneManager.GetActiveScene().path;
 
+        // Get the directory (folder) name from the path
+        string folderName = Path.GetDirectoryName(scenePath);
+
+        // Extract just the folder name without the path
+        string folderNameOnly = Path.GetFileName(folderName);
+
+        return folderNameOnly;
     }
-
-
-
-    #endregion
-
-    #region LOAD DATA
-
-
-
-    #endregion
-
-
-
-
-
+    private string GetCurrentSceneName() //Get the key
+    {
+        return SceneManager.GetActiveScene().name;
+    }
 
 
 

@@ -79,7 +79,7 @@ public class Setup_Login : UIPages
         Debug.Log("PRESSING LOGIN BTN");
 
         //AccountManager.LoginAccount(userEmail.text, password.text);
-        PlayfabManager.Instance.LoginAccount(userEmail.text, password.text);
+        //PlayfabManager.Instance.LoginAccount(userEmail.text, password.text);
     }
 
 }
