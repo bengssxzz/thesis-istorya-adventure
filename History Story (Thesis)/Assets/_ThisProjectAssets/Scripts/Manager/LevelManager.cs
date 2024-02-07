@@ -8,6 +8,7 @@ using Cinemachine;
 using System;
 using System.IO;
 using System.Linq;
+using PixelCrushers.DialogueSystem;
 
 
 /*Save all pickup object in the scene
@@ -52,6 +53,15 @@ public class LevelManager : Singleton<LevelManager>
         //LoadDataInCurrentScene();
     }
 
+    private void OnEnable()
+    {
+        Lua.RegisterFunction(nameof(ShowAlertUI), this, SymbolExtensions.GetMethodInfo(() => ShowAlertUI(string.Empty, (double)0)));
+    }
+    private void OnDisable()
+    {
+        Lua.UnregisterFunction(nameof(ShowAlertUI));
+    }
+
 
     private void Start()
     {
@@ -80,7 +90,11 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-
+    //Show alert
+    public void ShowAlertUI(string message, double delay)
+    {
+        DialogueManager.ShowAlert(message, (float)delay);
+    }
 
     #region Save/Load Data in this scene
     //public void SaveSceneLevel()
@@ -134,7 +148,7 @@ public class LevelManager : Singleton<LevelManager>
     //    if (IsKeyExist())
     //    {
     //        ChapterSceneSaveData sceneData = ES3.Load<ChapterSceneSaveData>(GetKeyName(), filePath: GetFilePath()); //Get the scene load
-            
+
     //        if(sceneData != null)
     //        {
     //            List<TimelineCutscenesSaveData> timelineDatas = sceneData.timelineCutscenesSaveDatas; //load the list of the timeline triggers from file

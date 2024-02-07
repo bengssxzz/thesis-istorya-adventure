@@ -11,7 +11,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
     public event Action<RegisterPlayFabUserResult> OnSuccessRegister;
     public event Action<string> OnError;
 
-
+    private bool isCharacterNameSet = false;
 
     public void RegisterAccount(string username, string email, string password)
     {
@@ -78,14 +78,58 @@ public class PlayfabManager : Singleton<PlayfabManager>
     private void SuccessLogin(LoginResult result)
     {
         //When successfuly login using email and username
-        OnSuccessLogin?.Invoke(result);
+        GetUserDataRequest request = new GetUserDataRequest()
+        {
+            PlayFabId = result.PlayFabId
+        };
+
+        Debug.Log("SUCCESS LOGIN");
+        PlayFabClientAPI.GetUserData(request, OnGetUserDataSuccess, ErrorThrow);
+
+        //OnSuccessLogin?.Invoke(result);
     }
 
     private void ErrorThrow(PlayFabError error)
     {
         //Error
+        Debug.Log(error);
+
         OnError?.Invoke(error.ToString());
     }
+
+
+
+
+    //check if the login player has character name saved in the cloud.
+    //If not exist then direct them to set character name page
+    private void OnGetUserDataSuccess(GetUserDataResult result)
+    {
+        // Check if the player has a cloud key indicating their name is set
+        if (result.Data.ContainsKey("PlayerName"))
+        {
+            isCharacterNameSet = true;
+            Debug.Log("Player name is already set.");
+            // Proceed with the game
+        }
+        else
+        {
+            Debug.Log("Player name is not set.");
+            // Redirect the player to set their name
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
