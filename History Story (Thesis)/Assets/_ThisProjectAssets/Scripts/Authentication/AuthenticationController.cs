@@ -37,11 +37,6 @@ public class AuthenticationController : MonoBehaviour
 
 
 
-
-
-
-    private bool isCharacterNameSet = false;
-
     private void Awake()
     {
         signin_signInBtn.ButtonReleased.AddListener(SignInBtnPressed);
@@ -54,32 +49,10 @@ public class AuthenticationController : MonoBehaviour
 
   
 
-
-    //private void OnDisable()
-    //{
-    //    signin_signInBtn.ButtonReleased.RemoveListener(SignInBtnPressed);
-    //    guestSigninBtn.ButtonReleased.RemoveListener(GuestSignInBtnPressed);
-    //}
-
     private void Start()
     {
         signin_errorMessage.gameObject.SetActive(false);
         signup_errorMessage.gameObject.SetActive(false);
-
-        // Check if authentication token exists
-        //if (PlayerPrefs.HasKey(PLAYER_AUTHTOKENKEY))
-        //{
-        //    Debug.Log("ACCESS TOKEN EXIST IN THIS DEVICE");
-        //    string authToken = PlayerPrefs.GetString(PLAYER_AUTHTOKENKEY);
-        //    // Use stored authentication token to automatically log in
-        //    //SignInWithAccessToken(authToken);
-        //}
-        //else
-        //{
-        //    // Perform traditional login
-        //    Debug.Log("THERE ARE NO ACCESS TOKEN SAVE IN THIS DEVICE");
-        //}
-
     }
 
 
@@ -101,12 +74,14 @@ public class AuthenticationController : MonoBehaviour
         {
             //User input their email
             //SignInWithEmail(userIdentifier, password);
-            PlayfabManager.Instance.SignInWithEmail(userIdentifier, password);
+            //PlayfabManager.Instance.SignInWithEmail(userIdentifier, password);
+            PlayfabManager.Instance.LoginUsingEmail(userIdentifier, password);
         }
         else
         {
             //User input their username
-            PlayfabManager.Instance.SignInWithUsername(userIdentifier, password);
+            //PlayfabManager.Instance.SignInWithUsername(userIdentifier, password);
+            PlayfabManager.Instance.LoginUsingUsername(userIdentifier, password);
         }
     }
 
@@ -157,7 +132,8 @@ public class AuthenticationController : MonoBehaviour
         }
 
 
-        PlayfabManager.Instance.SignUpNewAccount(email, username, password, (x) => { }, (x) => { });
+        //PlayfabManager.Instance.SignUpNewAccount(email, username, password, (x) => { }, (x) => { });
+        PlayfabManager.Instance.CreateNewAccount(username, email, password);
 
 
     }
@@ -329,7 +305,6 @@ public class AuthenticationController : MonoBehaviour
             // Check if the player has a cloud key indicating their name is set
             if (userDataResult.Data.ContainsKey("PlayerName"))
             {
-                isCharacterNameSet = true;
                 Debug.Log("Player name is already set.");
                 UI_Manager.Instance.OpenMenu("MainPage Menu");
 

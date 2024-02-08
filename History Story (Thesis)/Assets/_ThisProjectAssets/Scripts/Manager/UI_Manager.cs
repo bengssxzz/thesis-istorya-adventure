@@ -154,6 +154,28 @@ public class UI_Manager : Singleton<UI_Manager>
 
     //}
 
+    public bool IsMenuOpened(string menuID)
+    {
+        if (menus.Count < 0 || menus == null)
+        {
+            Debug.LogWarning($"THERE ARE NO MENUS TO CHECK IF {menuID} IS OPEN IN THE SYSTEM");
+            return false;
+        }
+
+        if (menus.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
+        {
+            var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
+
+            return selectedMenu.GetMenuPage.gameObject.activeInHierarchy;
+        }
+        else
+        {
+            Debug.LogError($"MENU ID ({menuID}) IS MISSPELLED/NOT EXIST IN THE PROJECT");
+            return false;
+        }
+
+
+    }
 
     public void OpenMenu(string menuID) //Find the page with the same ID and open it
     {

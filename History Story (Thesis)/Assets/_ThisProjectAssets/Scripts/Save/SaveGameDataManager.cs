@@ -7,29 +7,46 @@ using System;
 using System.Linq;
 using UnityEditor;
 using Newtonsoft.Json;
-
-
+using PlayFab.ClientModels;
 
 public class SaveGameDataManager : Singleton<SaveGameDataManager>
 {
+    //For player data (stats, collections, unlockables)
     const string PLAYER_DATA_FILE = "PlayerData.thesis";
     const string PLAYER_DATA_KEY = "player_key";
 
+    //For player scene status (position, scene name)
     const string sceneFileNamePD = "PlayerSceneData";
     const string sceneKeyNamePD = "player_scene_data";
 
+    //For saving scene data
+    const string SCENE_FILE_PATH = "Scene_Path/";
 
-    private void Start()
-    {
-        PlayfabManager.Instance.SignInWithDevice();
-        //ES3.Save("player_stats", PlayerSingleton.Instance.GetPlayerScript.GetEntityStats, "PlayerData.thesis");
-        //ES3.Save("player", SavePlayerData(), "TESTDATA.thesis");
-    }
-    private void OnApplicationQuit()
-    {
-        ES3.Save(PLAYER_DATA_KEY, SavePlayerData(), PLAYER_DATA_FILE);
-        SavePlayerDataCloud();
-    }
+
+
+    //protected override void Awake()
+    //{
+    //    base.Awake();
+    //    PlayfabManager.Instance.LoginOnStart();
+
+    //}
+    //private void OnEnable()
+    //{
+    //    LoadPlayerDataCloud();
+    //}
+    //private void Start()
+    //{
+    //    //TESTING PURPOSES
+    //    ES3.Save(PLAYER_DATA_KEY, SavePlayerData(), PLAYER_DATA_FILE);
+    //    SavePlayerDataCloud();
+    //    //ES3.Save("player_stats", PlayerSingleton.Instance.GetPlayerScript.GetEntityStats, "PlayerData.thesis");
+    //    //ES3.Save("player", SavePlayerData(), "TESTDATA.thesis");
+    //}
+    //private void OnApplicationQuit()
+    //{
+    //    //ES3.Save(PLAYER_DATA_KEY, SavePlayerData(), PLAYER_DATA_FILE);
+    //    //SavePlayerDataCloud();
+    //}
 
     #region LOCAL SAVING
     public void SaveChapterScene()
@@ -44,7 +61,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     }
 
 
-    #region Save/Load Player Data
+    #region Save/Load Player Data (Statistics)
     public PlayerData SavePlayerData()
     {
         var player = PlayerSingleton.Instance.GetPlayerScript;
@@ -82,7 +99,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     #endregion
 
 
-    #region SAVE/LOAD PLAYER IN CHAPTER
+    #region SAVE/LOAD PLAYER IN CHAPTER (Like Position, Kung nasan yung last ni player na scene)
     public void SavePlayerScene(Vector3 spawnPosition) //Saving the player in this chapter level
     {
         var playerData = new PlayerSceneSaveData()
@@ -127,7 +144,6 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     }
     #endregion
 
-    //Chapter scene saving
     #region SAVE/LOAD BATTLE TRIGGER IN THE SCENE
     //To Save the battle trigger in the scene
     private List<RoomArea> FindAllRoomAreaInScene() //Find all room area in the scene
@@ -193,6 +209,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     #endregion
 
     #region SAVE/LOAD TIMELINE CUTSCENES
+    //Chapter scene saving
     private List<TriggerTimeLine> FindAllTriggerTimelineInScene() //Find all the trigger timeline in the scene
     {
         IEnumerable<TriggerTimeLine> triggerTimeLines = FindObjectsOfType<TriggerTimeLine>();
@@ -252,39 +269,57 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
 
     #region CLOUD SAVING
-    public void SavePlayerDataCloud()
+    public void SavePlayerDataCloud() //Save player data in cloud
     {
         var jsonPlayerData = ES3.LoadRawString(filePath: PLAYER_DATA_FILE);
-        var saveData = new Dictionary<string, string>()
+
+        PlayfabManager.Instance.SetCloudUserData(PLAYER_DATA_KEY, jsonPlayerData);
+    }
+    public void RequestRetrievePlayerData() //Request for retrieving data in cloud
+    {
+        PlayfabManager.Instance.GetCloudUserData(PLAYER_DATA_KEY, (key, value) =>
         {
-            {PLAYER_DATA_KEY,  jsonPlayerData}
-        };
-
-        PlayfabManager.Instance.SaveDataOnPlayfab(saveData);
-
+            Debug.Log($"SUCCESS RETRIEVE: KEY: {key}");
+            ES3.SaveRaw(value, PLAYER_DATA_FILE);
+        });
     }
     public void LoadPlayerDataCloud()
     {
+        Debug.Log("LOAD DATA CALL");
+        //PlayfabManager.Instance.LoadDataFromPlayfab(PLAYER_DATA_KEY, OnUserDataLoaded);
+        PlayfabManager.Instance.GetCloudUserData(PLAYER_DATA_KEY, (key, value) => 
+        {
+            Debug.Log($"SUCCESS RETRIEVE: KEY: {key}");
+            ES3.SaveRaw(value, "TESTINGCLOUDLOAD.thesis");
+        });
 
+    }
+
+    private void OnUserDataLoaded(GetUserDataResult dataResult)
+    {
+        Debug.Log("LOADED DATA");
+        if (dataResult != null && dataResult.Data.ContainsKey(PLAYER_DATA_KEY))
+        {
+            Debug.LogError("THERE ARE RESULT IN THE CLOUD");
+
+            var resultValue = dataResult.Data["PLAYER_DATA_KEY"].Value;
+
+            ES3.SaveRaw(resultValue, "TESTINGCLOUDLOAD.thesis");
+            
+        }
+        else
+        {
+            Debug.LogError("THERE ARE NO RESULT");
+            return;
+        }
     }
 
 
 
     #endregion
 
-    public void CheckLocalFileExist()
-    {
-        //TODO: Check if the local file is exist, if not then download the cloud save to local data
-        if (ES3.FileExists(PLAYER_DATA_FILE))
-        {
-            //Player data exist, save the local 
-        }
-        else
-        {
-            //Not exist
-            ES3.SaveRaw("", filePath: PLAYER_DATA_FILE);
-        }
-    }
+
+
 
 
 
