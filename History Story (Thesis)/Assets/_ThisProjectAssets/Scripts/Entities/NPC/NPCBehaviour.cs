@@ -20,6 +20,7 @@ public class NPCBehaviour : MonoBehaviour
     private AIPath aiPath;
     private Seeker seek;
     [SerializeField] private Transform NPCActor;
+    [SerializeField] private Transform NPCActorToFlip;
     [SerializeField] private Animator npcAnimator;
     [SerializeField] private Transform positions;
 
@@ -96,26 +97,31 @@ public class NPCBehaviour : MonoBehaviour
     private void Update()
     {
         FlipEntity();
-        PlayMoveAnimation(aiPath.velocity.normalized);
+        PlayMoveAnimation(aiPath.velocity);
     }
     protected void PlayMoveAnimation(Vector3 velocity)
     {
-        var magnitude = velocity.magnitude;
+        var magnitude = velocity.normalized.magnitude;
+
+        if (aiPath.reachedDestination) { magnitude = 0; }
+
         if (npcAnimator != null)
         {
             npcAnimator.SetFloat("move_speed", magnitude);
         }
+        Debug.Log($"NPC name: {gameObject.name}, Velocity: {magnitude}");
     }
     private void FlipEntity()
     {
         //if (entitySpriteRenderer == null) { return; }
+        if(NPCActorToFlip == null) { return; }
 
         if (aiPath.velocity.normalized.x < 0 && facingLeft)
         {
             //Facing Left
-            var localScale = NPCActor.localScale;
+            var localScale = NPCActorToFlip.localScale;
             localScale.x *= -1;
-            NPCActor.localScale = localScale;
+            NPCActorToFlip.localScale = localScale;
 
             facingLeft = !facingLeft;
             //entitySpriteRenderer.flipX = facingLeft;
@@ -123,9 +129,9 @@ public class NPCBehaviour : MonoBehaviour
         else if (aiPath.velocity.normalized.x > 0 && !facingLeft)
         {
             //Facing Right
-            var localScale = NPCActor.localScale;
+            var localScale = NPCActorToFlip.localScale;
             localScale.x *= -1;
-            NPCActor.localScale = localScale;
+            NPCActorToFlip.localScale = localScale;
 
             facingLeft = !facingLeft;
             //entitySpriteRenderer.flipX = facingLeft;

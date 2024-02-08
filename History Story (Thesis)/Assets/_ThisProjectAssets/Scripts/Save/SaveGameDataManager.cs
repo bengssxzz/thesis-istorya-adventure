@@ -12,7 +12,8 @@ using Newtonsoft.Json;
 
 public class SaveGameDataManager : Singleton<SaveGameDataManager>
 {
-    const string playerDataFile = "PlayerData.thesis";
+    const string PLAYER_DATA_FILE = "PlayerData.thesis";
+    const string PLAYER_DATA_KEY = "player_key";
 
     const string sceneFileNamePD = "PlayerSceneData";
     const string sceneKeyNamePD = "player_scene_data";
@@ -26,7 +27,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     }
     private void OnApplicationQuit()
     {
-        ES3.Save("player", SavePlayerData(), "TESTDATA.thesis");
+        ES3.Save(PLAYER_DATA_KEY, SavePlayerData(), PLAYER_DATA_FILE);
         SavePlayerDataCloud();
     }
 
@@ -64,7 +65,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     }
     public PlayerData LoadPlayerData()
     {
-        PlayerData getPlayerData = ES3.Load<PlayerData>("player", filePath: "TESTDATA.thesis");
+        PlayerData getPlayerData = ES3.Load<PlayerData>(PLAYER_DATA_KEY, filePath: PLAYER_DATA_FILE);
 
         if(getPlayerData != null)
         {
@@ -253,24 +254,36 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     #region CLOUD SAVING
     public void SavePlayerDataCloud()
     {
-        var jsonPlayerData = ES3.LoadRawString(filePath: "TESTDATA.thesis");
+        var jsonPlayerData = ES3.LoadRawString(filePath: PLAYER_DATA_FILE);
         var saveData = new Dictionary<string, string>()
         {
-            {"player_data",  jsonPlayerData}
+            {PLAYER_DATA_KEY,  jsonPlayerData}
         };
 
         PlayfabManager.Instance.SaveDataOnPlayfab(saveData);
 
     }
+    public void LoadPlayerDataCloud()
+    {
 
+    }
 
 
 
     #endregion
 
-    public void CheckIfFileExist()
+    public void CheckLocalFileExist()
     {
         //TODO: Check if the local file is exist, if not then download the cloud save to local data
+        if (ES3.FileExists(PLAYER_DATA_FILE))
+        {
+            //Player data exist, save the local 
+        }
+        else
+        {
+            //Not exist
+            ES3.SaveRaw("", filePath: PLAYER_DATA_FILE);
+        }
     }
 
 

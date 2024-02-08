@@ -10,10 +10,27 @@ using UnityEngine.Events;
 
 public class PlayfabManager : Singleton<PlayfabManager>
 {
+    public void SignInWithEmail(string email, string password) //Sign in using email address
+    {
+        var request = new LoginWithEmailAddressRequest
+        {
+            Email = email,
+            Password = password
+        };
 
+        PlayFabClientAPI.LoginWithEmailAddress(request, CheckCharacterName, ErrorThrow);
+    }
+    public void SignInWithUsername(string username, string password) //Sign in using username
+    {
+        //User input their username
+        LoginWithPlayFabRequest request = new LoginWithPlayFabRequest
+        {
+            Username = username,
+            Password = password
+        };
 
-
-
+        PlayFabClientAPI.LoginWithPlayFab(request, CheckCharacterName, ErrorThrow);
+    }
     public void SignInWithDevice() //Sign in using device id
     {
         if (GetDeviceId(out string android_id, out string ios_id, out string custom_id))
@@ -58,6 +75,9 @@ public class PlayfabManager : Singleton<PlayfabManager>
         }
     }
 
+
+
+
     private void CheckCharacterName(LoginResult obj)
     {
         Debug.Log("SUCCESS LOGIN");
@@ -84,6 +104,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
             },
             ErrorThrow);
     }
+    
 
     private void ErrorThrow(PlayFabError error)
     {
