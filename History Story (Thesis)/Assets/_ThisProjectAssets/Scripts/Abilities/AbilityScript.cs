@@ -36,9 +36,9 @@ public class AbilityScript : ScriptableObject
 
     [Space(10)]
     [Header("Feedbacks")]
-    [SerializeField] private MMF_Player precastingAtStartFeedback;
-    [SerializeField] private MMF_Player castingAtStartFeedback;
-    [SerializeField] private MMF_Player finishedAtStartFeedback;
+    [SerializeField] protected MMF_Player precastingAtStartFeedback;
+    [SerializeField] protected MMF_Player castingAtStartFeedback;
+    [SerializeField] protected MMF_Player finishedAtStartFeedback;
 
 
     public bool OnCoolDown { get => isOnCoolDown; }
@@ -123,10 +123,20 @@ public class AbilityScript : ScriptableObject
         if (OnSetProperties != null)
             OnSetProperties(entity, feedbackPrefab);
 
+        ModifyPrecastingFeedback(entity, precastingAtStartFeedback);
+        ModifyCastingFeedback(entity, castingAtStartFeedback);
+        ModifyFinishedCastingFeedback(entity, finishedAtStartFeedback);
+
         MMF_Player newPlayerFeedback = ObjectPooling.Instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject).GetComponent<MMF_Player>();
+        
         newPlayerFeedback.PlayFeedbacks();
-        newPlayerFeedback.gameObject.SetActive(false);
+        //newPlayerFeedback.gameObject.SetActive(false);
     }
+
+    protected virtual void ModifyPrecastingFeedback(Entities entity, MMF_Player precastingFeedback) { }
+    protected virtual void ModifyCastingFeedback(Entities entity, MMF_Player castingFeedback) { }
+    protected virtual void ModifyFinishedCastingFeedback(Entities entity, MMF_Player finishFeedback) { }
+
 
     private IEnumerator CooldownTimer() //Cooldown timer
     {

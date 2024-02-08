@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 
 
@@ -44,4 +45,14 @@ public class DodgeAbility : AbilityScript
 
         entity.IsCanMove = true;
     }
+
+    protected override void ModifyCastingFeedback(Entities entity, MMF_Player castingFeedback)
+    {
+        var defaultRemapCurveOne = -360;
+        MMF_Rotation modifyingRotation = castingFeedback.GetFeedbackOfType<MMF_Rotation>();
+        modifyingRotation.AnimateRotationTarget = entity.transform;
+        modifyingRotation.RemapCurveOne = defaultRemapCurveOne * entity.GetActorTransform.localScale.x; 
+    }
+
+
 }

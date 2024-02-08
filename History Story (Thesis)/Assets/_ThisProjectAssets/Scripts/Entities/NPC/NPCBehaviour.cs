@@ -109,7 +109,6 @@ public class NPCBehaviour : MonoBehaviour
         {
             npcAnimator.SetFloat("move_speed", magnitude);
         }
-        Debug.Log($"NPC name: {gameObject.name}, Velocity: {magnitude}");
     }
     private void FlipEntity()
     {

@@ -10,6 +10,31 @@ using UnityEngine.Events;
 
 public class PlayfabManager : Singleton<PlayfabManager>
 {
+    public void SignUpNewAccount(string email, string username, string password, Action<RegisterPlayFabUserResult> resultCallBack, Action<PlayFabError> errorCallBack)
+    {
+        var request = new RegisterPlayFabUserRequest()
+        {
+            Email = email,
+            Password = username,
+            Username = password,
+            RequireBothUsernameAndEmail = true
+        };
+
+        PlayFabClientAPI.RegisterPlayFabUser(request, (result) =>
+        {
+            Debug.Log("CREATED NEW ACCOUNT");
+            resultCallBack?.Invoke(result);
+        }, 
+        (error) => 
+        {
+            errorCallBack?.Invoke(error);
+        });
+
+    }
+    
+    
+    
+    
     public void SignInWithEmail(string email, string password) //Sign in using email address
     {
         var request = new LoginWithEmailAddressRequest
@@ -76,7 +101,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
     }
 
 
-
+    
 
     private void CheckCharacterName(LoginResult obj)
     {
@@ -108,7 +133,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
     private void ErrorThrow(PlayFabError error)
     {
-        Debug.LogError(error);
+        Debug.LogError(error.ErrorMessage);
     }
 
 

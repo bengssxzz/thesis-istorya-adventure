@@ -25,7 +25,9 @@ public class AuthenticationController : MonoBehaviour
     [SerializeField] private RectTransform signup_page;
     [SerializeField] private TextMeshProUGUI signup_errorMessage;
     [SerializeField] private TMP_InputField signup_emailIF;
+    [SerializeField] private TMP_InputField signup_usernameIF;
     [SerializeField] private TMP_InputField signup_passwordIF;
+    [SerializeField] private TMP_InputField signup_confirmPasswordIF;
     [SerializeField] private MMTouchButton signup_signUpBtn;
     [SerializeField] private MMTouchButton signup_backSignInBtn;
 
@@ -43,12 +45,14 @@ public class AuthenticationController : MonoBehaviour
     private void Awake()
     {
         signin_signInBtn.ButtonReleased.AddListener(SignInBtnPressed);
+        signup_signUpBtn.ButtonReleased.AddListener(SignUpBtnPressed);
         guestSigninBtn.ButtonReleased.AddListener(GuestSignInBtnPressed);
 
         signin_goto_signUpBtn.ButtonPressed.AddListener(() => { OpenSignUpPage(); });
         signup_backSignInBtn.ButtonPressed.AddListener(() => { OpenSignInPage(); });
     }
 
+  
 
 
     //private void OnDisable()
@@ -60,20 +64,21 @@ public class AuthenticationController : MonoBehaviour
     private void Start()
     {
         signin_errorMessage.gameObject.SetActive(false);
+        signup_errorMessage.gameObject.SetActive(false);
 
         // Check if authentication token exists
-        if (PlayerPrefs.HasKey(PLAYER_AUTHTOKENKEY))
-        {
-            Debug.Log("ACCESS TOKEN EXIST IN THIS DEVICE");
-            string authToken = PlayerPrefs.GetString(PLAYER_AUTHTOKENKEY);
-            // Use stored authentication token to automatically log in
-            //SignInWithAccessToken(authToken);
-        }
-        else
-        {
-            // Perform traditional login
-            Debug.Log("THERE ARE NO ACCESS TOKEN SAVE IN THIS DEVICE");
-        }
+        //if (PlayerPrefs.HasKey(PLAYER_AUTHTOKENKEY))
+        //{
+        //    Debug.Log("ACCESS TOKEN EXIST IN THIS DEVICE");
+        //    string authToken = PlayerPrefs.GetString(PLAYER_AUTHTOKENKEY);
+        //    // Use stored authentication token to automatically log in
+        //    //SignInWithAccessToken(authToken);
+        //}
+        //else
+        //{
+        //    // Perform traditional login
+        //    Debug.Log("THERE ARE NO ACCESS TOKEN SAVE IN THIS DEVICE");
+        //}
 
     }
 
@@ -87,7 +92,6 @@ public class AuthenticationController : MonoBehaviour
 
         SignInAccount(email, password);
     }
-
     public void SignInAccount(string userIdentifier, string password)
     {
         //Login account
@@ -105,6 +109,64 @@ public class AuthenticationController : MonoBehaviour
             PlayfabManager.Instance.SignInWithUsername(userIdentifier, password);
         }
     }
+
+
+
+    private void SignUpBtnPressed()
+    {
+        var email = signup_emailIF.text;
+        var username = signup_usernameIF.text;
+        var password = signup_passwordIF.text;
+        var confirmPassword = signup_confirmPasswordIF.text;
+
+        if (email.Length < 5 || !email.Contains("@") && !email.Contains("."))
+        {
+            var error = "Invalid Email Address";
+            signup_errorMessage.text = error;
+            signup_errorMessage.gameObject.SetActive(true);
+            return;
+        }
+        else if (username.Length < 5)
+        {
+            var error = "Enter more than 5 characters in your user name";
+            signup_errorMessage.text = error;
+            signup_errorMessage.gameObject.SetActive(true);
+            return;
+        }
+
+        if (password.Length < 5)
+        {
+            var error = "Your password is weak. Enter more than 5 characters";
+            signup_errorMessage.text = error;
+
+            signup_passwordIF.text = "";
+            signup_confirmPasswordIF.text = "";
+            signup_errorMessage.gameObject.SetActive(true);
+            return;
+        }
+
+        if (password != confirmPassword)
+        {
+            var error = "Your password  is not the same";
+            signup_errorMessage.text = error;
+
+            signup_passwordIF.text = "";
+            signup_confirmPasswordIF.text = "";
+            signup_errorMessage.gameObject.SetActive(true);
+            return;
+        }
+
+
+        PlayfabManager.Instance.SignUpNewAccount(email, username, password, (x) => { }, (x) => { });
+
+
+    }
+
+
+
+
+
+
 
     private void GuestSignInBtnPressed()
     {
