@@ -265,8 +265,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Brothers, be careful for we are undecidedly at disadvantage with our
-          weapons.
+        value: Brother, be careful. The Guardia Sibil are no slouches.
         type: 0
         typeString: 
       - title: Sequence
@@ -395,62 +394,6 @@ MonoBehaviour:
       - originConversationID: 1
         originDialogueID: 3
         destinationConversationID: 1
-        destinationDialogueID: 4
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 80
-        y: 302
-        width: 160
-        height: 30
-    - id: 4
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: 
-      - title: Description
-        value: 
-        type: 0
-        typeString: 
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Dialogue Text
-        value: Brother, I wonder where you have gathered your cedulas earlier, but
-          you're unique, so survive this skirmish for KKK.
-        type: 0
-        typeString: 
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: 
-      conversationID: 1
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 1
-        originDialogueID: 4
-        destinationConversationID: 1
         destinationDialogueID: 5
         isConnector: 0
         priority: 2
@@ -462,7 +405,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 80
-        y: 352
+        y: 302
         width: 160
         height: 30
     - id: 5
@@ -488,10 +431,14 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Affirmative, President.
+        value: Affirmative, Supremo.
         type: 0
         typeString: 
       - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      - title: EventGuid
         value: 
         type: 0
         typeString: 

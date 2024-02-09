@@ -1528,7 +1528,7 @@ MonoBehaviour:
         destinationDialogueID: 19
         isConnector: 0
         priority: 2
-      conditionsString: Variable["GoldCollected"] >= 1 and (CurrentQuestState("GoldQuest")
+      conditionsString: Variable["GoldCollected"] >= 10 and (CurrentQuestState("GoldQuest")
         == "active")
       userScript: 
       onExecute:
@@ -1536,7 +1536,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 704
+        x: 705.25
         y: 134
         width: 160
         height: 30
@@ -2392,7 +2392,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 209.99994, y: 122.49997}
+    canvasScrollPosition: {x: 334.99994, y: 5}
     canvasZoom: 0.8000002
   - id: 2
     fields:
