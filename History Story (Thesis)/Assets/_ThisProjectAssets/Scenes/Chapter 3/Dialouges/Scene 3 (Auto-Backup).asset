@@ -60,7 +60,7 @@ MonoBehaviour:
   - id: 2
     fields:
     - title: Name
-      value: General MacArthur
+      value: General Arthur MacArthur
       type: 0
       typeString: 
     - title: Pictures
@@ -82,7 +82,7 @@ MonoBehaviour:
   - id: 3
     fields:
     - title: Name
-      value: General Noriel
+      value: General Pantaleon Garcia
       type: 0
       typeString: 
     - title: Pictures
@@ -144,7 +144,7 @@ MonoBehaviour:
   - id: 1
     fields:
     - title: Title
-      value: General Noriel
+      value: General Pantaleon Garcia
       type: 0
       typeString: 
     - title: Description
@@ -308,11 +308,11 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 1
+        value: 3
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 3
+        value: 1
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -320,8 +320,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: This is it. The Battle of Manila. Our chance to break free from foreign
-          rule.
+        value: For the Philippines! We will not be silenced!
         type: 0
         typeString: 
       - title: Sequence
@@ -349,7 +348,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
+        x: 159
         y: 158
         width: 160
         height: 30
@@ -376,7 +375,67 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: For the Philippines! We will not be silenced!
+        value: 'Push forward, we must secure the city! '
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      - title: EventGuid
+        value: 4b6d04d4-8772-4bee-8814-5d611bd7aff8
+        type: 0
+        typeString: 
+      conversationID: 1
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 1
+        originDialogueID: 3
+        destinationConversationID: 1
+        destinationDialogueID: 4
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 156
+        y: 228
+        width: 160
+        height: 30
+    - id: 4
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: This is it. The Battle of Manila. A chance to break free from foreign
+          rule
         type: 0
         typeString: 
       - title: Sequence
@@ -399,7 +458,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 156
-        y: 228
+        y: 277
         width: 160
         height: 30
     entryGroups: []
@@ -529,7 +588,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: 'Hold the line! Let them retake Manila
+        value: 'Hold the line! Don''t let them take Manila!
 
 '
         type: 0
@@ -553,7 +612,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
+        x: 162
         y: 80
         width: 160
         height: 30

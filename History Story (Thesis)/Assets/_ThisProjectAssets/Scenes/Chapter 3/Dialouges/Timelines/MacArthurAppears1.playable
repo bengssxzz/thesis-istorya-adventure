@@ -19,6 +19,28 @@ MonoBehaviour:
   dialogueUntil: -1
   retroactive: 0
   emitOnce: 0
+--- !u!114 &-7464520617428174423
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0e4c63550426b4d8353200eee9cc2e, type: 3}
+  m_Name: BarkClip
+  m_EditorClassIdentifier: 
+  template:
+    useConversation: 0
+    conversation: General MacArthur
+    barkSpecificEntry: 0
+    entryID: 0
+    text: Hold the line! Don't let them take Manila!
+    listener: {fileID: 0}
+  listener:
+    exposedName: 
+    defaultValue: {fileID: 0}
 --- !u!114 &-6290018821751881197
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,7 +165,7 @@ MonoBehaviour:
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
-    m_BlendOutDuration: 1.8166666666666667
+    m_BlendOutDuration: 1.0666666666666669
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -170,6 +192,57 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_MixOutCurve:
       serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: Global Virtual Camera
+  - m_Version: 1
+    m_Start: 6
+    m_ClipIn: 0
+    m_Asset: {fileID: 6499807085010008728}
+    m_Duration: 2.383333333333333
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -3155595740968291573}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 1.200000000000001
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -185,16 +258,16 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: Global Virtual Camera
   - m_Version: 1
-    m_Start: 1.6833333333333333
+    m_Start: 2.433333333333333
     m_ClipIn: 0
     m_Asset: {fileID: 7583322603184602156}
-    m_Duration: 3.0166666666666666
+    m_Duration: 4.7666666666666675
     m_TimeScale: 1
     m_ParentTrack: {fileID: -3155595740968291573}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 1.8166666666666667
-    m_BlendOutDuration: 0.8000000000000003
+    m_BlendInDuration: 1.0666666666666669
+    m_BlendOutDuration: 1.200000000000001
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -253,57 +326,6 @@ MonoBehaviour:
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
     m_DisplayName: CM vcam2
-  - m_Version: 1
-    m_Start: 3.9
-    m_ClipIn: 0
-    m_Asset: {fileID: 6499807085010008728}
-    m_Duration: 1.1
-    m_TimeScale: 1
-    m_ParentTrack: {fileID: -3155595740968291573}
-    m_EaseInDuration: 0
-    m_EaseOutDuration: 0
-    m_BlendInDuration: 0.8000000000000003
-    m_BlendOutDuration: -1
-    m_MixInCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_MixOutCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_BlendInCurveMode: 0
-    m_BlendOutCurveMode: 0
-    m_ExposedParameterNames: []
-    m_AnimationCurves: {fileID: 0}
-    m_Recordable: 0
-    m_PostExtrapolationMode: 0
-    m_PreExtrapolationMode: 0
-    m_PostExtrapolationTime: 0
-    m_PreExtrapolationTime: 0
-    m_DisplayName: Global Virtual Camera
   m_Markers:
     m_Objects: []
 --- !u!114 &-1553338618514399759
@@ -333,10 +355,9 @@ MonoBehaviour:
   m_Version: 0
   m_Tracks:
   - {fileID: 273918334960199229}
-  - {fileID: 4459105132134723897}
-  - {fileID: 6894654202274968817}
   - {fileID: -3155595740968291573}
   - {fileID: -6290018821751881197}
+  - {fileID: 1357648211738920719}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
@@ -435,7 +456,7 @@ MonoBehaviour:
     m_DisplayName: ScreenFaderClip
   m_Markers:
     m_Objects: []
---- !u!114 &2717365931816667255
+--- !u!114 &1357648211738920719
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -444,50 +465,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0445258a5c40b364ab21547784905327, type: 3}
-  m_Name: ScreenFaderClip
-  m_EditorClassIdentifier: 
-  template:
-    color: {r: 0, g: 0, b: 0, a: 1}
---- !u!114 &2950599546302012172
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fde0d25a170598d46a0b9dc16b4527a5, type: 3}
-  m_Name: ActivationPlayableAsset
-  m_EditorClassIdentifier: 
---- !u!114 &3382729690137877686
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90fb794a295e73545af71bcdb7375791, type: 3}
-  m_Name: CinemachineShot
-  m_EditorClassIdentifier: 
-  DisplayName: 
-  VirtualCamera:
-    exposedName: e4062acaf16fe7d49b03de67fe05e6c9
-    defaultValue: {fileID: 0}
---- !u!114 &4459105132134723897
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21bf7f712d84d26478ebe6a299f21738, type: 3}
-  m_Name: Activation Track
+  m_Script: {fileID: 11500000, guid: 3a2a3f2661708cb499eee7439c07d9f4, type: 3}
+  m_Name: Bark Track
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -499,12 +478,12 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 0
+    m_Start: 3.5
     m_ClipIn: 0
-    m_Asset: {fileID: 2950599546302012172}
+    m_Asset: {fileID: -7464520617428174423}
     m_Duration: 5
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 4459105132134723897}
+    m_ParentTrack: {fileID: 1357648211738920719}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: 0
@@ -566,10 +545,39 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Active
+    m_DisplayName: BarkClip
   m_Markers:
     m_Objects: []
-  m_PostPlaybackState: 0
+--- !u!114 &2717365931816667255
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0445258a5c40b364ab21547784905327, type: 3}
+  m_Name: ScreenFaderClip
+  m_EditorClassIdentifier: 
+  template:
+    color: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &3382729690137877686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90fb794a295e73545af71bcdb7375791, type: 3}
+  m_Name: CinemachineShot
+  m_EditorClassIdentifier: 
+  DisplayName: 
+  VirtualCamera:
+    exposedName: e4062acaf16fe7d49b03de67fe05e6c9
+    defaultValue: {fileID: 0}
 --- !u!114 &6499807085010008728
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -586,30 +594,6 @@ MonoBehaviour:
   VirtualCamera:
     exposedName: e2bcc94c2c3cf9142be66d74f2cbb23a
     defaultValue: {fileID: 0}
---- !u!114 &6894654202274968817
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb98af5e44ab9fa4093437fef7fea26a, type: 3}
-  m_Name: Conversation Track
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_AnimClip: {fileID: 0}
-  m_Locked: 0
-  m_Muted: 0
-  m_CustomPlayableFullTypename: 
-  m_Curves: {fileID: 0}
-  m_Parent: {fileID: 11400000}
-  m_Children: []
-  m_Clips: []
-  m_Markers:
-    m_Objects:
-    - {fileID: -8317454329438046701}
 --- !u!114 &7583322603184602156
 MonoBehaviour:
   m_ObjectHideFlags: 1

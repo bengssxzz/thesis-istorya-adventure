@@ -813,6 +813,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NPCActor: {fileID: 3851663602232176334}
+  NPCActorToFlip: {fileID: 0}
+  npcAnimator: {fileID: 0}
   positions: {fileID: 8730457613376819332}
   moveBehaviour: 0
   minWaitTime: 1
@@ -2631,7 +2633,7 @@ Transform:
   - {fileID: 5292594050338493672}
   - {fileID: 6177430270658329134}
   m_Father: {fileID: 8168387100337829835}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &2278826284638838873
 SortingGroup:
@@ -3648,8 +3650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64578247383140469c45370654a984a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: 
-  persistentDataName: Proffessor_Ian_251480
+  actor: Soldier
+  persistentDataName: 
   portrait: {fileID: 0}
   spritePortrait: {fileID: 0}
   barkUISettings:
@@ -3733,7 +3735,7 @@ MonoBehaviour:
   setAnotherQuestEntryState: 0
   anotherQuestEntryNumber: 1
   anotherQuestEntryState: 0
-  luaCode: 
+  luaCode: Variable["NpcsTalkedTo"] = Variable["NpcsTalkedTo"] + 1
   sequence: 
   sequenceSpeaker: {fileID: 0}
   sequenceListener: {fileID: 0}
@@ -3754,9 +3756,9 @@ MonoBehaviour:
   allowBarksDuringConversations: 0
   skipBarkIfNoValidEntries: 0
   cacheBarkLines: 0
-  conversation: ProfIanCalls1
+  conversation: Soldier3
   conversationConversant: {fileID: 0}
-  conversationActor: {fileID: 0}
+  conversationActor: {fileID: 3851663602232176334}
   startConversationEntryID: -1
   startConversationEntryTitle: 
   exclusive: 0
@@ -3769,17 +3771,29 @@ MonoBehaviour:
   maxConversationDistance: 5
   monitorConversationDistanceFrequency: 1
   showCursorDuringConversation: 0
-  pauseGameDuringConversation: 1
+  pauseGameDuringConversation: 0
   setActiveActions: []
   setEnabledActions: []
   setAnimatorStateActions: []
   onExecute:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 612543312204090619}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   useConversationTitlePicker: 1
   useBarkTitlePicker: 1
   useQuestNamePicker: 1
-  selectedDatabase: {fileID: 11400000, guid: 4c2fdd7f7316f5c4a875d4f10a573274, type: 2}
+  selectedDatabase: {fileID: 11400000, guid: 7589498a89e242b4d8e4fc740ecebd64, type: 2}
 --- !u!114 &892842761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4607,6 +4621,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3227058256300907544, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+--- !u!1 &612543312204090619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6755290643760329882, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+  m_PrefabInstance: {fileID: 6142819633040586849}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2683453715637995331 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8071056392437628706, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
@@ -4617,7 +4636,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1335845812455099327, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
   m_PrefabInstance: {fileID: 6142819633040586849}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 612543312204090619}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66021843185caef419f5ae292b18cf68, type: 3}
