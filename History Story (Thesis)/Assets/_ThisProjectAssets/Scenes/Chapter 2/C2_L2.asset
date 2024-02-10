@@ -293,8 +293,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 134
+        x: 78.82353
+        y: 132.82355
         width: 160
         height: 30
     - id: 2
@@ -839,7 +839,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: You. I have not seen such weapons and agility as yours.
+        value: You. I have not seen such skill and agility as yours.
         type: 0
         typeString: 
       - title: Sequence
@@ -894,8 +894,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Since back at Balintawak, I had my suspicions on you for being able
-          to collect lots of cedula.
+        value: Since back at Balintawak, I had my suspicions that you are not a mere
+          Katipunero.
         type: 0
         typeString: 
       - title: Sequence
@@ -950,7 +950,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Despite all your quirks and power, I commend you for our countrymen.
+        value: I commend you for serving the revolution
         type: 0
         typeString: 
       - title: Sequence
@@ -1061,7 +1061,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: But do not worry, KKK will prevail. For our countrymen.
+        value: But do not worry, the KKK will prevail. For our country!
         type: 0
         typeString: 
       - title: Sequence
@@ -1116,7 +1116,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Brother, there is not much time anymore. Thank you.
+        value: Here is my bolo. I do not know how it will benefit you, but please
+          take it.
         type: 0
         typeString: 
       - title: Sequence
@@ -1171,8 +1172,62 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Here is my bolo. I do not know how it will benefit you, but please
-          take it.
+        value: Go back to Tandang Sora's place. She may need some help from you...
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 4
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 4
+        originDialogueID: 7
+        destinationConversationID: 4
+        destinationDialogueID: 8
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 170.76923
+        y: 373.84616
+        width: 160
+        height: 30
+    - id: 8
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: Brother, there is not much time anymore. Thank you again.
         type: 0
         typeString: 
       - title: Sequence
@@ -1194,13 +1249,13 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 380
+        x: 170.76923
+        y: 423.84616
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 75.90192, y: 0}
-    canvasZoom: 1.3
+    canvasScrollPosition: {x: 63.56366, y: 57.279358}
+    canvasZoom: 1.24
   - id: 5
     fields:
     - title: Title

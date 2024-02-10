@@ -1851,6 +1851,7 @@ GameObject:
   - component: {fileID: 3719126659226642803}
   - component: {fileID: 7376364347714267823}
   - component: {fileID: 8780504999550975509}
+  - component: {fileID: 3626724141328304483}
   m_Layer: 7
   m_Name: Tikbalang
   m_TagString: Enemy
@@ -2096,6 +2097,19 @@ MonoBehaviour:
   wallAvoidFalloff: 1
   priority: 0.5
   debug: 0
+--- !u!114 &3626724141328304483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a597895f63aac304eab30efacaa6afab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossName: Tikbalang
 --- !u!1 &3735642411798469112
 GameObject:
   m_ObjectHideFlags: 0
