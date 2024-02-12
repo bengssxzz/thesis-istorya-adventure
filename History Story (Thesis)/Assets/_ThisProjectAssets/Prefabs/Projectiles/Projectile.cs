@@ -157,18 +157,17 @@ public class Projectile : MonoBehaviour
     //[Header("Bullet Damage")]
     //[SerializeField] private float additionalDamage = 0f;
     //[SerializeField] private float additionalCriticalDamage = 0f;
-    //[SerializeField] private bool canCritical = true;
+    //[SerializeField] private bool criticalForever = false;
 
-    //[Header("Distance")]
-    //[SerializeField] private bool useMaxLimitDistance = true;
 
 
     //private Vector2 startPosition;
     //private Vector2 targetPosition;
-    //private float maxLimitDistance = 0f;
+    //private float maxLimitDistance;
 
-    //private float bulletDamage;
-    //private float bulletCriticalDamage;
+    //private EntityStatistics entityStats;
+
+    //private float totalDamage;
     //private bool isCritical = false;
 
 
@@ -179,8 +178,7 @@ public class Projectile : MonoBehaviour
 
     //public void InitializeProjectile(Entities entityHost, Vector2 targetPosition, float maxDistance)
     //{
-    //    bulletDamage = entityHost.GetEntityStats.damage + additionalDamage;
-    //    bulletCriticalDamage = entityHost.GetEntityStats.criticalDamage + additionalCriticalDamage;
+    //    entityStats = entityHost.GetEntityStats;
 
     //    this.targetPosition = targetPosition;
     //    maxLimitDistance = maxDistance + OFFSET_MAX_LIMIT;
@@ -194,12 +192,28 @@ public class Projectile : MonoBehaviour
     //    ProjectileBehaviour();
     //}
 
+    //public virtual void ProjectileDamage() //Handle damage
+    //{
+    //    if(entityStats != null)
+    //    {
+
+    //    }
+    //}
+    //public virtual void ProjectileMovement() //Handle movement
+    //{
+
+    //}
+    //public virtual void ProjectileLifetime() //Handle the life of the bullet
+    //{
+
+    //}
+
 
     //public virtual void ProjectileBehaviour()
     //{
     //    if (useMaxLimitDistance)
     //    {
-    //        if(Vector2.Distance(startPosition, transform.position) < maxLimitDistance)
+    //        if (Vector2.Distance(startPosition, transform.position) < maxLimitDistance)
     //        {
     //            //If inside the range
     //        }

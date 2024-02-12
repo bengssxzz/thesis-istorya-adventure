@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using PixelCrushers.DialogueSystem;
-
+using Pathfinding;
 
 public class NPCInteractable : MonoBehaviour
 {
+    private AIBase aiBasePath;
     private DialogueSystemTrigger dialogTrigger;
 
-    [SerializeField] private VisualSelector selector;
 
+    [SerializeField] private VisualSelector selector;
+    [SerializeField] private Collider2D NPCCollider;
 
 
     private void Awake()
@@ -36,7 +38,22 @@ public class NPCInteractable : MonoBehaviour
         selector.OnTriggerExitSelectorRange -= OnTriggerExitSelector;
     }
 
- 
+    private void Update()
+    {
+        if(aiBasePath == null) { return; }
+        if(aiBasePath.velocity.magnitude > 0.1)
+        {
+            Debug.Log("MOVING");
+            NPCCollider.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("IDLE");
+            NPCCollider.gameObject.SetActive(true);
+        }
+    }
+
+
 
     private void InteractNPC()
     {

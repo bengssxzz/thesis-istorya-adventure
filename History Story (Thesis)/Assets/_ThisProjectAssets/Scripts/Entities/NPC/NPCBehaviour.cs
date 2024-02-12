@@ -103,7 +103,10 @@ public class NPCBehaviour : MonoBehaviour
     {
         var magnitude = velocity.normalized.magnitude;
 
-        if (aiPath.reachedDestination) { magnitude = 0; }
+        if (aiPath.reachedDestination) 
+        {
+            magnitude = 0;
+        }
 
         if (npcAnimator != null)
         {

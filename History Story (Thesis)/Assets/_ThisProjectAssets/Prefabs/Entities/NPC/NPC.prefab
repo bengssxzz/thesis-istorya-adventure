@@ -151,6 +151,54 @@ PolygonCollider2D:
       - {x: -0.95105654, y: 0.30901697}
       - {x: -0.9593329, y: -0.7780547}
       - {x: 0.96707404, y: -0.8554604}
+--- !u!1 &8564556702548242224
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6409213935838145550}
+  - component: {fileID: 1886146904143004178}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6409213935838145550
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8564556702548242224}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3851663602232176334}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1886146904143004178
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8564556702548242224}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &8731687991914652491
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +239,7 @@ Transform:
   - {fileID: 9139195661798378379}
   - {fileID: 2683453715637995331}
   - {fileID: 3116139296647478422}
+  - {fileID: 6409213935838145550}
   m_Father: {fileID: 8764149005723321443}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -363,7 +412,7 @@ MonoBehaviour:
   useConversationTitlePicker: 1
   useBarkTitlePicker: 1
   useQuestNamePicker: 1
-  selectedDatabase: {fileID: 0}
+  selectedDatabase: {fileID: 11400000, guid: 926fb6b4930d489469cb837ade2fad2b, type: 2}
 --- !u!114 &892842761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,6 +558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selector: {fileID: 5167402668523107294}
+  NPCCollider: {fileID: 1886146904143004178}
 --- !u!210 &6674253596142301012
 SortingGroup:
   m_ObjectHideFlags: 0
