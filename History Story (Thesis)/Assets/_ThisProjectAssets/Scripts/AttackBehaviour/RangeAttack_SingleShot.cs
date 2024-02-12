@@ -12,9 +12,10 @@ public class RangeAttack_SingleShot : BaseAttackBehaviour
 
     protected override IEnumerator FireBehaviourForLoop()
     {
-        GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
-        newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), 5, GetAttackController.GetMyEnemyLayer);
-        newBul.transform.position = transform.position;
+        //GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+        //newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), 5, GetAttackController.GetMyEnemyLayer);
+        //newBul.transform.position = transform.position;
+        InitializeProjectile(transform.position, GetAttackController.GetDirectionTowardsEnemy());
 
         fireFeedback?.PlayFeedbacks();
         yield return null;

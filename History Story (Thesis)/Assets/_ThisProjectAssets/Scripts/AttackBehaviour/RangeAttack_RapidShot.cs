@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RangeAttack_RapidShot : BaseAttackBehaviour
 {
-    private Vector2 bulletDir;
     private GameObject newBul;
 
     protected override IEnumerator FireBehaviourForLoop()
@@ -14,11 +13,13 @@ public class RangeAttack_RapidShot : BaseAttackBehaviour
         {
             yield return new WaitForSeconds(intervalShoot);
 
-            bulletDir = ((Vector2)PlayerSingleton.Instance.transform.position - (Vector2)transform.position).normalized;
 
-            newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
-            newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), 5, GetAttackController.GetMyEnemyLayer);
-            newBul.transform.position = transform.position;
+            //newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+            ////newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), 5, GetAttackController.GetMyEnemyLayer);
+            //newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), GetAttackController.GetRangedAttackDistance);
+            //newBul.transform.position = transform.position;
+
+            InitializeProjectile(transform.position, GetAttackController.GetDirectionTowardsEnemy());
         }
 
     }
@@ -32,11 +33,12 @@ public class RangeAttack_RapidShot : BaseAttackBehaviour
             Debug.Log("TIMER: " + startTimer);
             yield return new WaitForSeconds(intervalShoot);
 
-            bulletDir = ((Vector2)PlayerSingleton.Instance.transform.position - (Vector2)transform.position).normalized;
+            //newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+            ////newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), 5, GetAttackController.GetMyEnemyLayer);
+            //newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), GetAttackController.GetRangedAttackDistance);
+            //newBul.transform.position = transform.position;
 
-            newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
-            newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, GetAttackController.GetDirectionTowardsEnemy(), 5, GetAttackController.GetMyEnemyLayer);
-            newBul.transform.position = transform.position;
+            InitializeProjectile(transform.position, GetAttackController.GetDirectionTowardsEnemy());
 
         } while (!DoneTimer());
 

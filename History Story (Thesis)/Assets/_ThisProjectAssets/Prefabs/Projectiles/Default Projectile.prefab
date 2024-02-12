@@ -182,13 +182,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af18c337da7867546b6b3c76c3416945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  createSound: {fileID: 0}
+  projectileSpeed: 50
   additionalDamage: 0
-  _bulletSpeed: 50
-  rayRadius: 0.03
-  _whatToHit:
+  additionalCriticalDamage: 0
+  criticalForever: 0
+  bulletSize: 0
+  defaultHit:
     serializedVersion: 2
-    m_Bits: 83976
+    m_Bits: 83968
 --- !u!1 &4147876957729817263
 GameObject:
   m_ObjectHideFlags: 0

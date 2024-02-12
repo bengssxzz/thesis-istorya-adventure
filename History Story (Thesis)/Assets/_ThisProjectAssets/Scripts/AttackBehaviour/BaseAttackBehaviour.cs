@@ -48,6 +48,13 @@ public abstract class BaseAttackBehaviour : MonoBehaviour
         }
     }
 
+    protected void InitializeProjectile(Vector3 startPosition, Vector3 direction)
+    {
+        GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+        newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, direction, GetAttackController.GetRangedAttackDistance);
+        newBul.transform.position = startPosition;
+    }
+
     private IEnumerator ForLoopBehaviour()
     {
         attackIsPlaying = true;

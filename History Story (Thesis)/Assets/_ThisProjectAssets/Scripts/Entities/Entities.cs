@@ -173,7 +173,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
             //Critical Damage
             //float criticalDamage = damage * sourceDamage.GetEntityStats.maxCriticalDamage / 100f;
             //damage += criticalDamage;
-            plainDamage += ThesisUtility.ComputeAddedValueWithPercentage(plainDamage, GetEntityStats.maxCriticalDamage);
+            plainDamage += GetEntityStats.currentCriticalDamage;
         }
 
 
@@ -202,56 +202,21 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     {
         //Debug.Log("Victim: " + victimEntity.name + " :: Killer: " + killerEntity.name);
     }
-    
-    public void TakeDamage(float damage, Entities sourceDamage = null, bool canDodge = false, bool canCritical = true) //Taking damage
+    public void TakeDamage(float damage, Entities sourceDamage = null, bool isCritical = false)
     {
-        float computedDamage = 0;
-
-        //Dodge
-        if (canDodge == true)
-            if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) { return; } //if dodge is true, dont take damage
-
-        //Critical Computation
-        if (canCritical == true)
-        {
-            bool isCritical;
-
-            if (sourceDamage != null)
-            {
-                //Critical damage if the sourceDamage is not null
-
-                isCritical = ThesisUtility.RandomGetChanceBool(sourceDamage.GetEntityStats.maxCriticalChance.ConvertNumberToPercent());
-                if (isCritical)
-                {
-                    //float criticalDamage = damage * sourceDamage.GetEntityStats.maxCriticalDamage / 100f;
-                    //damage += criticalDamage;
-                    damage += ThesisUtility.ComputeAddedValueWithPercentage(damage, sourceDamage.GetEntityStats.maxCriticalDamage);
-                }
-            }
-            else
-            {
-                //Critical damage if the sourceDamage is null
-
-                isCritical = ThesisUtility.RandomGetChanceBool(0.5f); //Critical chance is 50%
-                if (isCritical)
-                {
-                    float criticalDamage = damage * ThesisUtility.RandomGetFloat(0.01f, 0.5f); //Min critical damage is 1% and Max critical damage is 50%
-                    damage += criticalDamage;
-                }
-            }
-
-        }
+        if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) { return; } //if dodge is true, dont take damage
 
         //Compute the total damage
         //Formula: Damage - defense %
         //computedDamage = (damage - (damage * GetEntityStats.maxDefense / 100f));
-        computedDamage = ThesisUtility.ComputeAddedValueWithPercentage(damage, -GetEntityStats.maxDefense); 
+        var computedDamage = ThesisUtility.ComputeAddedValueWithPercentage(damage, -GetEntityStats.maxDefense);
 
         GetEntityStats.SetCurrentHealth(-computedDamage);
         OnHit?.Invoke();
 
         if (debugMode)
-            Debug.Log(String.Format("{3} Taking Damage || Original: {0};  Defense: {1}; Computed: {2};", damage, GetEntityStats.maxDefense.ConvertNumberToPercent(), computedDamage, this.name));
+            Debug.Log($"{this.name} Taking Damage from {sourceDamage.name} || Critical: {isCritical}" +
+                $"Original: {damage};  Defense: {GetEntityStats.maxDefense.ConvertNumberToPercent()}; Computed: {computedDamage}");
 
         if (GetEntityStats.currentHealth <= 0)
         {
@@ -263,6 +228,67 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         hurtFeedback?.PlayFeedbacks();
         TakingDamageBehaviour();
     }
+    //public void TakeDamage(float damage, Entities sourceDamage = null, bool canDodge = false, bool canCritical = true) //Taking damage
+    //{
+    //    float computedDamage = 0;
+
+    //    //Dodge
+    //    if (canDodge == true)
+    //        if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) { return; } //if dodge is true, dont take damage
+
+    //    //Critical Computation
+    //    if (canCritical == true)
+    //    {
+    //        bool isCritical;
+
+    //        if (sourceDamage != null)
+    //        {
+    //            //Critical damage if the sourceDamage is not null
+
+    //            isCritical = ThesisUtility.RandomGetChanceBool(sourceDamage.GetEntityStats.maxCriticalChance.ConvertNumberToPercent());
+    //            if (isCritical)
+    //            {
+    //                //float criticalDamage = damage * sourceDamage.GetEntityStats.maxCriticalDamage / 100f;
+    //                //damage += criticalDamage;
+    //                damage += ThesisUtility.ComputeAddedValueWithPercentage(damage, sourceDamage.GetEntityStats.maxCriticalDamage);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            //Critical damage if the sourceDamage is null
+
+    //            isCritical = ThesisUtility.RandomGetChanceBool(0.5f); //Critical chance is 50%
+    //            if (isCritical)
+    //            {
+    //                float criticalDamage = damage * ThesisUtility.RandomGetFloat(0.01f, 0.5f); //Min critical damage is 1% and Max critical damage is 50%
+    //                damage += criticalDamage;
+    //            }
+    //        }
+
+    //    }
+
+    //    //Compute the total damage
+    //    //Formula: Damage - defense %
+    //    //computedDamage = (damage - (damage * GetEntityStats.maxDefense / 100f));
+    //    computedDamage = ThesisUtility.ComputeAddedValueWithPercentage(damage, -GetEntityStats.maxDefense); 
+
+    //    GetEntityStats.SetCurrentHealth(-computedDamage);
+    //    OnHit?.Invoke();
+
+    //    if (debugMode)
+    //        Debug.Log(String.Format("{3} Taking Damage || Original: {0};  Defense: {1}; Computed: {2};", damage, GetEntityStats.maxDefense.ConvertNumberToPercent(), computedDamage, this.name));
+
+    //    if (GetEntityStats.currentHealth <= 0)
+    //    {
+    //        Died(sourceDamage);
+    //        return;
+    //    }
+
+    //    //Do this behaviour if the entity is not yet died
+    //    hurtFeedback?.PlayFeedbacks();
+    //    TakingDamageBehaviour();
+    //}
+
     protected virtual void TakingDamageBehaviour() //Do this behaviour when taking damage
     {
         //Taking damage behaviour

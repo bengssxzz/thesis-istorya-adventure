@@ -82,6 +82,9 @@ public class AttackController : DetectMyEnemies
     public bool EnableAttacking { get { return canAttack; } set { canAttack = value; } }
     public Transform GetAttackHolder { get { return attackHolder; } }
 
+    public float GetRangedAttackDistance { get { return rangedAttackDistance; } }
+    public float GetMeleeAttackDistance { get { return meleeAttackDistance; } }
+
 
     //[Space]
     //private float rangedAttackField, meleeAttackField;
@@ -429,7 +432,7 @@ public class AttackController : DetectMyEnemies
     private IEnumerator MeleeAttack()
     {
         meleeAttackOnCooldown = true;
-        Collider2D[] myEnemy = Physics2D.OverlapCircleAll(transform.position, meleeAttackDistance, GetMyEnemyLayer);
+        Collider2D[] myEnemy = Physics2D.OverlapCircleAll(transform.position, meleeAttackDistance, GetMyEnemyLayer());
         foreach (var item in myEnemy)
         {
             IDamageable entity = item.GetComponent<IDamageable>();
@@ -446,7 +449,10 @@ public class AttackController : DetectMyEnemies
 
         meleeAttackOnCooldown = false;
     }
+    private void MeleeDamage()
+    {
 
+    }
 
 
     protected override void OnDrawGizmosSelected()

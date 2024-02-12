@@ -26,12 +26,13 @@ public class RangeAttack_CircleType2 : BaseAttackBehaviour
                 float dirY = transform.position.y + Mathf.Cos((angle * Mathf.PI) / 180f);
 
                 Vector2 bulletVector = new Vector2(dirX, dirY);
-                Vector2 bulletDir = (bulletVector - (Vector2)transform.position).normalized;
+                Vector2 dir = (bulletVector - (Vector2)transform.position).normalized;
 
-                GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
-                newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, bulletDir, 5, GetAttackController.GetMyEnemyLayer);
-                newBul.transform.position = GetAttackController.GetAttackHolder.position;
-                newBul.transform.rotation = GetAttackController.GetAttackHolder.rotation;
+                //GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+                //newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, dir, 5, GetAttackController.GetMyEnemyLayer);
+                //newBul.transform.position = GetAttackController.GetAttackHolder.position;
+                //newBul.transform.rotation = GetAttackController.GetAttackHolder.rotation;
+                InitializeProjectile(transform.position, dir);
 
                 angle += angleStep + rotationSpeed;
             }
@@ -52,12 +53,13 @@ public class RangeAttack_CircleType2 : BaseAttackBehaviour
                 float dirY = transform.position.y + Mathf.Cos((angle * Mathf.PI) / 180f);
 
                 Vector2 bulletVector = new Vector2(dirX, dirY);
-                Vector2 bulletDir = (bulletVector - (Vector2)transform.position).normalized;
+                Vector2 dir = (bulletVector - (Vector2)transform.position).normalized;
 
-                GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
-                newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, bulletDir, 5, GetAttackController.GetMyEnemyLayer);
-                newBul.transform.position = GetAttackController.GetAttackHolder.position;
-                newBul.transform.rotation = GetAttackController.GetAttackHolder.rotation;
+                //GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject);
+                //newBul.GetComponent<Projectile>().InitializeProjectile(GetAttackController.GetThisEntity, bulletDir, 5, GetAttackController.GetMyEnemyLayer);
+                //newBul.transform.position = GetAttackController.GetAttackHolder.position;
+                //newBul.transform.rotation = GetAttackController.GetAttackHolder.rotation;
+                InitializeProjectile(transform.position, dir);
 
                 angle += angleStep + rotationSpeed;
             }

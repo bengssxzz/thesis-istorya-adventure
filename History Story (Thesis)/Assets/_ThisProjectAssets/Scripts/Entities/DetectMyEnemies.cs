@@ -19,8 +19,8 @@ public class DetectMyEnemies : MonoBehaviour
     protected bool HasEnemyNearby; //Has enemy around
     
     public Transform GetNearestEnemy { get; protected set; } //Nearest enemy
-    public LayerMask GetMyEnemyLayer { get { return myEnemyLayer; } }
-    public LayerMask GetMyObstacleLayer { get { return obstacleLayer; } }
+    //public LayerMask GetMyEnemyLayer { get { return myEnemyLayer; } }
+    //public LayerMask GetMyObstacleLayer { get { return obstacleLayer; } }
 
 
     protected virtual void Start()
@@ -35,6 +35,15 @@ public class DetectMyEnemies : MonoBehaviour
             yield return new WaitForSeconds(executeTime);
             ScanNearestEnemies();
         }
+    }
+
+    public LayerMask GetMyEnemyLayer()
+    {
+        return myEnemyLayer;
+    }
+    public LayerMask GetMyObstacleLayer()
+    {
+        return obstacleLayer;
     }
 
     private void ScanNearestEnemies()
