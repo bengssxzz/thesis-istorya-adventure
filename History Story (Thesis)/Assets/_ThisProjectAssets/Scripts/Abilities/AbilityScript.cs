@@ -19,7 +19,7 @@ public class AbilityScript : ScriptableObject
     
     public Action<bool, float> OnAbilityTimeLapse;
 
-    public string abilityName => this.name;
+    public string abilityName;
 
     private AbilityState state = AbilityState.PreCasting;
 
@@ -178,5 +178,28 @@ public class AbilityScript : ScriptableObject
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void OnValidate()
+    {
+#if UNITY_EDITOR
+        abilityName = this.name;
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
 
 }

@@ -5,11 +5,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="Chapter Infos", menuName = "Chapters(Level)/Chapter Infos")]
 public class Chapter_LevelSO : ScriptableObject
 {
+    [System.Serializable]
+    public class Collectibles
+    {
+        public List<ArtifactsSO> artifacts;
+        public List<AbilityScript> abilities;
+    }
+
+
     public string chapterName;
     public string chapterTitle;
 
     [Space(10)]
     public string defaultSceneName;
+
+    [Space(10)]
+    [Header("Collection")]
+    public Collectibles collections;
 
     [Space(15)]
     [Header("Chapter Info")]

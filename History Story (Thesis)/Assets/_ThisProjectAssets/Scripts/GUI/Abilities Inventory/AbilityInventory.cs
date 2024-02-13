@@ -45,7 +45,7 @@ public class AbilityInventory : UIPages
         entity = PlayerSingleton.Instance.GetPlayerScript;
         InitializedHolder();
 
-        listOfAllAbilities = GameManager.Instance.GetAllListOfAbility;
+        listOfAllAbilities = GameManager.Instance.GetListOfAllAbility;
         listOfUnlockedAbilities = entity.GetAbility_Controller.GetListOfUnlockedAbilities();
     }
 

@@ -43,6 +43,11 @@ public class UI_Manager : Singleton<UI_Manager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode) //Every new scene execute this
     {
+        var loadingName = "IstoryaAdventureLoadingScreen";
+        var additiveLoadingName = "IstoryaAdventureAdditiveLoadingScreen";
+
+        if (scene.name == loadingName || scene.name == additiveLoadingName) { return; }
+
         //ClearMenuList(); //Clear menu list on every new loaded scene
 
         //menus = GetAllUIMenus();

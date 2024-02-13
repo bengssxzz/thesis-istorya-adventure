@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
+using PixelCrushers.DialogueSystem;
 
 public class PlayerScript : Entities
 {
@@ -30,12 +31,14 @@ public class PlayerScript : Entities
     {
         base.OnEnable();
 
+        LUASubscribe();
         ButtonInputEvent_Subscribe();
     }
     protected override void OnDisable()
     {
         base.OnDisable();
 
+        LUAUnsubscribe();
         ButtonInputEvent_Unsubscribe();
 
     }
@@ -70,6 +73,18 @@ public class PlayerScript : Entities
         FlipEntity(rb.velocity);
     }
 
+
+    private void LUASubscribe()
+    {
+        Lua.RegisterFunction(nameof(CollectArtifacts), this, SymbolExtensions.GetMethodInfo(() => CollectArtifacts(string.Empty)));
+        Lua.RegisterFunction(nameof(CollectAbilities), this, SymbolExtensions.GetMethodInfo(() => CollectAbilities(string.Empty)));
+    }
+    private void LUAUnsubscribe()
+    {
+        Lua.UnregisterFunction(nameof(CollectArtifacts));
+        Lua.UnregisterFunction(nameof(CollectAbilities));
+    }
+
     private void ButtonInputEvent_Subscribe()
     {
         InputManager.Instance.OnPlayerMove += MovementDirection;
@@ -90,6 +105,16 @@ public class PlayerScript : Entities
         InputManager.Instance.OnSkill3_Released -= Skill3Trigger;
     }
 
+    private void CollectArtifacts(string artifactsName)
+    {
+        Debug.Log($"ARTIFACT COLLECTED {artifactsName}");
+        GameManager.Instance.CollectArtifacts(artifactsName);
+    }
+    private void CollectAbilities(string abilityName)
+    {
+        Debug.Log($"ABILITY COLLECTED {abilityName}");
+        GameManager.Instance.CollectedAbilities(abilityName);
+    }
 
     protected override void MovementBehaviour()
     {
