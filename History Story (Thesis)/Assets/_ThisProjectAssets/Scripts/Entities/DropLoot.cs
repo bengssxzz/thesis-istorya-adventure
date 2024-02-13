@@ -56,7 +56,7 @@ public class DropLoot : MonoBehaviour
                     {
                         Vector2 randomDirection = ThesisUtility.RandomGetVector2Direction();
 
-                        const float addForce = 50f;
+                        const float addForce = 250;
 
                         lootItem.transform.position = transform.position;
                         Rigidbody2D rb = lootItem.GetComponent<Rigidbody2D>();

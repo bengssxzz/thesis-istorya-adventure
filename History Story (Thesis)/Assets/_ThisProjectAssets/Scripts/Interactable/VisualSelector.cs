@@ -52,6 +52,10 @@ public class VisualSelector : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) => OnTriggerEnterSelectorRange?.Invoke(collision);
     private void OnTriggerExit2D(Collider2D collision) => OnTriggerExitSelectorRange?.Invoke(collision);
 
+    public void ToggleSelector(bool toggle)
+    {
+        selector?.SetActive(toggle);
+    }
 
     private void OnUseObject()
     {
