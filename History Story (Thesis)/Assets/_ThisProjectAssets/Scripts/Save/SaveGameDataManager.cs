@@ -54,12 +54,15 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         ES3.Save("room_trigger", SaveRoomAreaInScene(), filePath: GetIdentifier());
         ES3.Save("timeline_trigger", SaveTriggerTimelineInScene(), filePath: GetIdentifier());
     }
-    public void LoadChapterSCene()
+    public void LoadChapterScene()
     {
         LoadRoomAreaInScene();
         LoadTriggerTimelineInScene();
     }
-
+    public void GetLatestSavedScene(out PlayerSceneSaveData playerSavedScene)
+    {
+        playerSavedScene = LoadPlayerScene(GetCurrentFolderName());
+    }
 
     #region Save/Load Player Data (Statistics)
     public PlayerData SavePlayerData()
@@ -137,11 +140,9 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             Debug.LogWarning("THERE ARE NO FILE OF PLAYER IN THIS CHAPTER");
             return null;
         }
-        
-
-        
-
     }
+
+    
     #endregion
 
     #region SAVE/LOAD BATTLE TRIGGER IN THE SCENE

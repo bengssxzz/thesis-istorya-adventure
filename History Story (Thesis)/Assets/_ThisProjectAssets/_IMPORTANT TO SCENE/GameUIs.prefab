@@ -109,10 +109,10 @@ RectTransform:
   m_Father: {fileID: 1546858419}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 154.535, y: -26.025}
+  m_SizeDelta: {x: 271.07, y: 42.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &137342277
 CanvasRenderer:
@@ -845,10 +845,10 @@ RectTransform:
   m_Father: {fileID: 1546858419}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 154.535, y: -68.075}
+  m_SizeDelta: {x: 271.07, y: 42.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &777076842
 CanvasRenderer:
@@ -1269,6 +1269,8 @@ MonoBehaviour:
   isGlobalUI: 1
   menuPage: {fileID: 0}
   isSubMenu: 0
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -1448,7 +1450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1546858419
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2919,6 +2921,42 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1693879559571305210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1237883613433341177}
+  m_Layer: 5
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1237883613433341177
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693879559571305210}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5377705615905465076}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1716433783244521505
 GameObject:
   m_ObjectHideFlags: 0
@@ -3160,6 +3198,70 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1908602152723326803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5377705615905465076}
+  - component: {fileID: 1266655285187414299}
+  m_Layer: 5
+  m_Name: Died UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5377705615905465076
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908602152723326803}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1237883613433341177}
+  m_Father: {fileID: 8508001966351162169}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1266655285187414299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908602152723326803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9681579ea24ba6c4a9231664a7266509, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateIDListener: 
+  uiID: Died UI
+  onStartActive: 0
+  isGlobalUI: 0
+  menuPage: {fileID: 1237883613433341177}
+  isSubMenu: 0
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
+  OnPageEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPageDisable:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2011942393513487821
 GameObject:
   m_ObjectHideFlags: 0
@@ -5955,6 +6057,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 450215803465752368}
   isSubMenu: 1
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -6094,6 +6198,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 6965687898524150759}
   isSubMenu: 1
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -10798,6 +10904,7 @@ RectTransform:
   - {fileID: 8508001968158060501}
   - {fileID: 8508001966849716018}
   - {fileID: 1374960841}
+  - {fileID: 5377705615905465076}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10923,6 +11030,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 5447962420536030910}
   isSubMenu: 0
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -10985,6 +11094,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 9037634232527551522}
   isSubMenu: 1
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -11702,6 +11813,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 6965687897084481054}
   isSubMenu: 0
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -11764,6 +11877,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 7019119699892220055}
   isSubMenu: 0
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -11949,6 +12064,8 @@ MonoBehaviour:
   isGlobalUI: 1
   menuPage: {fileID: 8508001966281555987}
   isSubMenu: 0
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -12223,6 +12340,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 8508001968009216425}
   isSubMenu: 1
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -13626,6 +13745,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 7056692721399459633}
   isSubMenu: 1
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []
@@ -13688,6 +13809,8 @@ MonoBehaviour:
   isGlobalUI: 0
   menuPage: {fileID: 8508001967298101029}
   isSubMenu: 1
+  enablePageFB: {fileID: 0}
+  disenablePageFB: {fileID: 0}
   OnPageEnable:
     m_PersistentCalls:
       m_Calls: []

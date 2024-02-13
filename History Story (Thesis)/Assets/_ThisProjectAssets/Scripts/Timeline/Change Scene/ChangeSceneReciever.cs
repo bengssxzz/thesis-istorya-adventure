@@ -21,6 +21,8 @@ public class ChangeSceneReciever : MonoBehaviour, INotificationReceiver
         if (notification is ChangeSceneMarker marker)
         {
             sceneName = marker.sceneName;
+            transitionID = marker.transitionID;
+
             loadingSceneMethod = marker.loadingMethod;
 
 

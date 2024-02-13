@@ -8,7 +8,7 @@ using System;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 
-public class PlayerScript : Entities, IDataPersistenceObject
+public class PlayerScript : Entities
 {
     public PlayerInteractHandler GetInteractHandler { get; private set; }
 
@@ -39,17 +39,6 @@ public class PlayerScript : Entities, IDataPersistenceObject
         ButtonInputEvent_Unsubscribe();
 
     }
-
-    public void LoadData(PlayerData data)
-    {
-        this.GetAbility_Controller.SetListOfUnlockedAbilities(data.unlockedAbilities);
-    }
-
-    public void SaveData(ref PlayerData data)
-    {
-        data.unlockedAbilities = GetAbility_Controller.GetListOfUnlockedAbilities();
-    }
-
 
     protected override void Start()
     {
@@ -126,6 +115,14 @@ public class PlayerScript : Entities, IDataPersistenceObject
             UIManager.Instance.ChangeUIState = UIManager.GUIState.Inventory;
         else if (uiState == UIManager.GUIState.Inventory)
             UIManager.Instance.ChangeUIState = UIManager.GUIState.InGame;
+
+    }
+
+    protected override void DeathBehaviour()
+    {
+        //Open deathscreen
+
+        UI_Manager.Instance.OpenMenu("Died UI");
 
     }
 

@@ -4,11 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using ThesisLibrary;
 using UnityEngine.Events;
+using MoreMountains.Feedbacks;
 
 public class UI_Menu : UIAbstract
 {
     [SerializeField] private RectTransform menuPage;
     [SerializeField] private bool isSubMenu = false;
+
+    [Space(10)]
+    [SerializeField] private MMF_Player enablePageFB;
+    [SerializeField] private MMF_Player disenablePageFB;
 
     public UnityEvent OnPageEnable;
     public UnityEvent OnPageDisable;
@@ -41,7 +46,15 @@ public class UI_Menu : UIAbstract
             Debug.LogError($"{gameObject.name}'s menu page is not assign");
             return;
         }
-        menuPage.gameObject.SetActive(true);
+
+        if(enablePageFB == null)
+        {
+            menuPage.gameObject.SetActive(true);
+        }
+        else
+        {
+            enablePageFB?.PlayFeedbacks();
+        }
     }
     public override void DisablePage() //Close the page
     {
@@ -50,6 +63,14 @@ public class UI_Menu : UIAbstract
             Debug.LogError($"{gameObject.name}'s menu page is not assign");
             return;
         }
-        menuPage.gameObject.SetActive(false);
+
+        if(disenablePageFB == null)
+        {
+            menuPage.gameObject.SetActive(false);
+        }
+        else
+        {
+            disenablePageFB?.PlayFeedbacks();
+        }
     }
 }

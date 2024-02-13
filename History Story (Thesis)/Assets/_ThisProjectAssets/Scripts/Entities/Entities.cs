@@ -308,9 +308,21 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
             sourceDamage.KillerReward(sourceDamage, this);
         }
 
-        diedFeedback?.PlayFeedbacks();
-        gameObject.SetActive(false);
+
+        if(diedFeedback != null)
+        {
+            diedFeedback?.PlayFeedbacks();
+        }
+        else
+        {
+            DiedEffects();
+        }
+
         DeathBehaviour();
+    }
+    protected virtual void DiedEffects()
+    {
+        gameObject.SetActive(false);
     }
     protected virtual void DeathBehaviour() // Entity death behaviour
     {
