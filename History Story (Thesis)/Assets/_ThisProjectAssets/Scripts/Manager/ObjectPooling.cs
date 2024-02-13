@@ -11,16 +11,19 @@ public class ObjectPooling : Singleton<ObjectPooling>
     private Dictionary<string, List<GameObject>> poolObjects = new Dictionary<string, List<GameObject>>();
 
 
-    public GameObject GetObjectInPool(string objectTag, GameObject prefabObject)
+    public GameObject GetObjectInPool(string objectTag, GameObject prefabObject, Vector3 setPosition, bool getActiveObject = false)
     {
         if (poolObjects.ContainsKey(objectTag))
         {
             // when tag is exist
             foreach (var item in poolObjects[objectTag])
             {
-                if (prefabObject.name == item.name && !item.activeInHierarchy)
+                bool validObject = item.activeInHierarchy == false || getActiveObject;
+
+                if (prefabObject.name == item.name && validObject)
                 {
                     // return when found one
+                    item.transform.position = setPosition;
                     item.SetActive(true);
                     return item;
                 }

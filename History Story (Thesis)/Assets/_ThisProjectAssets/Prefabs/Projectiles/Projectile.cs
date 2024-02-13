@@ -191,6 +191,10 @@ public class Projectile : MonoBehaviour
     {
         startPosition = transform.position; // Start position
     }
+    private void OnDisable()
+    {
+        layerToHit = 0; //Clear the layermask
+    }
 
     public void InitializeProjectile(Entities entityHost, Vector2 direction, float maxDistance)
     {

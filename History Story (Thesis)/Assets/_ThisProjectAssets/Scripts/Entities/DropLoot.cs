@@ -30,7 +30,7 @@ public class DropLoot : MonoBehaviour
 
         for (int i = 0; i < amount; i++)
         {
-            GameObject _loot = ObjectPooling.Instance.GetObjectInPool("loot", itemLoot.lootPrefab);
+            GameObject _loot = ObjectPooling.Instance.GetObjectInPool("loot", itemLoot.lootPrefab, transform.position);
             dropList.Add(_loot);
         }
 

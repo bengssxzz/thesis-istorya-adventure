@@ -33,7 +33,7 @@ public class SummonAbility : AbilityScript
             Vector2 spawnPosition = (Vector2) entity.transform.position + (ThesisUtility.RandomGetVector2Direction() * summoningArea);
 
             //To summon object
-            var _visualSpawner = ObjectPooling.Instance.GetObjectInPool("ability", visualSummon.gameObject);
+            var _visualSpawner = ObjectPooling.Instance.GetObjectInPool("ability", visualSummon.gameObject, Vector3.zero);
             _visualSpawner.transform.position = spawnPosition;
 
             //Set summon entity logic

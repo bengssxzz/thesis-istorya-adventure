@@ -127,7 +127,7 @@ public class AbilityScript : ScriptableObject
         ModifyCastingFeedback(entity, castingAtStartFeedback);
         ModifyFinishedCastingFeedback(entity, finishedAtStartFeedback);
 
-        MMF_Player newPlayerFeedback = ObjectPooling.Instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject).GetComponent<MMF_Player>();
+        MMF_Player newPlayerFeedback = ObjectPooling.Instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject, Vector3.zero, true).GetComponent<MMF_Player>();
         
         newPlayerFeedback.PlayFeedbacks();
         //newPlayerFeedback.gameObject.SetActive(false);

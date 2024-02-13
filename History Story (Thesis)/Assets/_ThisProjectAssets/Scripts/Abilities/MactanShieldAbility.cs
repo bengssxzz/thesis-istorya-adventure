@@ -56,7 +56,7 @@ public class MactanShieldAbility : AbilityScript
             Vector2 bulletDir = new Vector2(dirX, dirY);
 
             var dir = entity.GetAttack_Controller.GetAttackHolder.TransformDirection(bulletDir);
-            GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectile.gameObject);
+            GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectile.gameObject, entity.transform.position);
             //newBul.GetComponent<Projectile>().InitializeProjectile(entity, dir, 5, entity.GetAttack_Controller.GetMyEnemyLayer);
             newBul.GetComponent<Projectile>().InitializeProjectile(entity, dir, entity.GetAttack_Controller.GetRangedAttackDistance);
             newBul.transform.position = entity.transform.position;
