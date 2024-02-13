@@ -13,8 +13,8 @@ public class ChapterSelection : MonoBehaviour
     [SerializeField] private RectTransform content;
     [SerializeField] private ChapterInfos chapterInfo;
 
-    [Header("Chapter List")]
-    [SerializeField] private Chapter_LevelSO[] chapterLevelSO;
+    //[Header("Chapter List")]
+    //[SerializeField] private Chapter_LevelSO[] chapterLevelSO;
 
 
     private List<LevelChapterSlot> chapterSlots = new List<LevelChapterSlot>();
@@ -36,6 +36,8 @@ public class ChapterSelection : MonoBehaviour
                 itemSlot.OnPressEnterLevelChapter += OnPressEnterScene;
             }
         }
+
+        UpdateChapterButtons();
     }
     private void OnDisable()
     {
@@ -50,7 +52,11 @@ public class ChapterSelection : MonoBehaviour
     }
     private void Start()
     {
-        foreach (Chapter_LevelSO item in chapterLevelSO)
+        GameManager.Instance.CollectArtifacts("Magical Necklace");
+
+
+        var allScene = GameManager.Instance.GetListOfChapters;
+        foreach (Chapter_LevelSO item in allScene)
         {
             var newSlot = Instantiate(chapterSlotPrefab); //Create a new chapter button
             newSlot.gameObject.transform.SetParent(content);
@@ -63,9 +69,31 @@ public class ChapterSelection : MonoBehaviour
             slot.OnPressEnterLevelChapter += OnPressEnterScene;
 
             chapterSlots.Add(slot); //Add the button
+
+            //Detect if locked of not
+            //if(GameManager.Instance.IsChapterSceneExist(item, out var unlockedChapter))
+            //{
+            //    newSlot.IsLockChapter = !unlockedChapter;
+            //}
+            UpdateChapterButtons();
+
+        }
+
+    }
+    
+    private void UpdateChapterButtons()
+    {
+        foreach (var slot in chapterSlots)
+        {
+            slot.UpdateBtn();
+
+            //Detect if locked 
+            if (GameManager.Instance.IsChapterSceneExist(slot.GetChapterLevelSO, out var unlockedChapter))
+            {
+                slot.IsLockChapter = !unlockedChapter;
+            }
         }
     }
-
 
 
     public void DeselectAllChapterSlot() //Deselect all the chapter slots
