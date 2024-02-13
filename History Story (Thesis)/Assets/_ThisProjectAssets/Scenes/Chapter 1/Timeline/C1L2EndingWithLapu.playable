@@ -23,7 +23,7 @@ MonoBehaviour:
   m_Clips: []
   m_Markers:
     m_Objects:
-    - {fileID: 8912569183554729728}
+    - {fileID: -2836331850837650054}
 --- !u!114 &-4009024175295860313
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -38,6 +38,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template:
     color: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &-2836331850837650054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133313654d22c154e9c5e46a6db14099, type: 3}
+  m_Name: Change Scene Marker
+  m_EditorClassIdentifier: 
+  m_Time: 5.116666666666666
+  loadingMethod: 0
+  sceneName: chapter1_Level3
+  transitionID: beach
+  retroactive: 0
+  emitOnce: 0
 --- !u!114 &-657258846941073795
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,21 +169,3 @@ MonoBehaviour:
     m_ScenePreview: 1
   m_DurationMode: 0
   m_MarkerTrack: {fileID: -6997738657103679842}
---- !u!114 &8912569183554729728
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 133313654d22c154e9c5e46a6db14099, type: 3}
-  m_Name: Change Scene Marker
-  m_EditorClassIdentifier: 
-  m_Time: 5.133333333333334
-  loadingMethod: 0
-  sceneName: Chapter1_Level3
-  transitionID: beach
-  retroactive: 0
-  emitOnce: 0

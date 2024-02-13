@@ -34433,7 +34433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerState: 0
-  wrapMode: 0
+  wrapMode: 2
   playOnce: 0
 --- !u!61 &286529599
 BoxCollider2D:
@@ -35030,6 +35030,10 @@ PrefabInstance:
       propertyPath: transitionID
       value: Level2
       objectReference: {fileID: 0}
+    - target: {fileID: 4498907264768132564, guid: fd0a5d4929dd7a2488fb053fdaebccb2, type: 3}
+      propertyPath: indicatorShowRange
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4498907264768132565, guid: fd0a5d4929dd7a2488fb053fdaebccb2, type: 3}
       propertyPath: m_RootOrder
       value: 19
@@ -35096,11 +35100,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4498907265094441905, guid: fd0a5d4929dd7a2488fb053fdaebccb2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.281
+      value: 0.013
       objectReference: {fileID: 0}
     - target: {fileID: 4498907265094441905, guid: fd0a5d4929dd7a2488fb053fdaebccb2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.021
+      value: -0.121
       objectReference: {fileID: 0}
     - target: {fileID: 5603455865663093682, guid: fd0a5d4929dd7a2488fb053fdaebccb2, type: 3}
       propertyPath: m_IsActive
@@ -38070,7 +38074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerState: 0
-  wrapMode: 0
+  wrapMode: 2
   playOnce: 1
 --- !u!61 &1080440939
 BoxCollider2D:
@@ -39212,11 +39216,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1319702019 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5603455865663093682, guid: fd0a5d4929dd7a2488fb053fdaebccb2, type: 3}
-  m_PrefabInstance: {fileID: 441223811}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1338317180
 GameObject:
   m_ObjectHideFlags: 0
@@ -39399,8 +39398,6 @@ PlayableDirector:
     value: {fileID: 1954927090}
   - key: {fileID: -1046304913795370780, guid: cfd58e8aedfc3be409810c3d20084f78, type: 2}
     value: {fileID: 1229123465}
-  - key: {fileID: -2743338826054916060, guid: cfd58e8aedfc3be409810c3d20084f78, type: 2}
-    value: {fileID: 1319702019}
   m_ExposedReferences:
     m_References:
     - c340fce469ac91645a9cd9fb5505a712: {fileID: 191967338}
@@ -39477,7 +39474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerState: 1
-  wrapMode: 0
+  wrapMode: 2
   playOnce: 1
 --- !u!61 &1361447375
 BoxCollider2D:
