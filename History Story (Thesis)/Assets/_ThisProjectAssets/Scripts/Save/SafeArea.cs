@@ -43,6 +43,8 @@ public class SafeArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!collision.CompareTag("Player")) { return; }
+
         Debug.Log("PLAYER ENTER THE SAFE LOCATION");
         DialogueManager.ShowAlert(alertMessageEnterRoom, 2f);
 
@@ -53,6 +55,8 @@ public class SafeArea : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (!collision.CompareTag("Player")) { return; }
+
         Debug.Log("PLAYER EXIT THE SAFE LOCATION");
         DialogueManager.ShowAlert(alertMessageExitRoom, 2f);
 
