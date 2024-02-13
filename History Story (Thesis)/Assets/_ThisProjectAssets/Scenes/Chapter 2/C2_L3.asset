@@ -361,7 +361,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 161.21951
+        x: 165.76495
         y: 80
         width: 160
         height: 30
@@ -639,7 +639,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
+        x: 158.86363
         y: 331.2195
         width: 160
         height: 30
@@ -648,11 +648,11 @@ MonoBehaviour:
       - title: Title
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Description
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Actor
         value: 2
         type: 5
@@ -664,15 +664,15 @@ MonoBehaviour:
       - title: Menu Text
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: Talk to me again once you've treated 10 of your comrades...
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Sequence
         value: SetActive(Objects,true)
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       conversationID: 1
       isRoot: 0
       isGroup: 0
@@ -688,8 +688,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 163.65854
-        y: 381.2195
+        x: 177.29492
+        y: 393.7195
         width: 160
         height: 30
     - id: 8
@@ -697,11 +697,11 @@ MonoBehaviour:
       - title: Title
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Description
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Actor
         value: 2
         type: 5
@@ -713,15 +713,15 @@ MonoBehaviour:
       - title: Menu Text
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: Thank you child...
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Sequence
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       conversationID: 1
       isRoot: 0
       isGroup: 0
@@ -737,7 +737,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: (CurrentQuestState("HealKatipuneros") == "active") and (Variable["KatipunerosHealed"]
-        >= 1)
+        >= 3)
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -966,7 +966,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 89.331924, y: 0}
+    canvasScrollPosition: {x: 14.331924, y: 0}
     canvasZoom: 0.8800001
   - id: 2
     fields:
@@ -1138,14 +1138,15 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: Variable["KatipunerosHealed"] = Variable["KatipunerosHealed"] +
+        1
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 200
-        y: 30
+        x: 391.20874
+        y: 46.48352
         width: 160
         height: 30
     - id: 2
@@ -1187,14 +1188,15 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: Variable["KatipunerosHealed"] = Variable["KatipunerosHealed"] +
+        1
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 201.36984
-        y: 80
+        x: 432.13907
+        y: 128.35164
         width: 160
         height: 30
     - id: 3
@@ -1236,14 +1238,15 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: Variable["KatipunerosHealed"] = Variable["KatipunerosHealed"] +
+        1
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 200
-        y: 130
+        x: 575.82416
+        y: 227.8022
         width: 160
         height: 30
     - id: 4
@@ -1285,14 +1288,15 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: Variable["KatipunerosHealed"] = Variable["KatipunerosHealed"] +
+        1
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 200
-        y: 180
+        x: 416.48352
+        y: 280
         width: 160
         height: 30
     - id: 5
@@ -1334,14 +1338,15 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: Variable["KatipunerosHealed"] = Variable["KatipunerosHealed"] +
+        1
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 200
-        y: 230
+        x: 459.34064
+        y: 414.61536
         width: 160
         height: 30
     - id: 6
@@ -1383,19 +1388,20 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: 
+      userScript: Variable["KatipunerosHealed"] = Variable["KatipunerosHealed"] +
+        1
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 200
-        y: 280
+        x: 223.07693
+        y: 432.7472
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0.063165665, y: 5.4793987}
-    canvasZoom: 0.73000026
+    canvasScrollPosition: {x: 0, y: 0}
+    canvasZoom: 0.9100001
   - id: 3
     fields:
     - title: Title

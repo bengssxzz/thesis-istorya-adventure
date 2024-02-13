@@ -104,7 +104,7 @@ MonoBehaviour:
   - id: 9
     fields:
     - title: Name
-      value: Prof Ian
+      value: Walkie-Talkie
       type: 0
       typeString: 
     - title: Pictures
@@ -1062,7 +1062,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
+        x: 81.26582
         y: 470
         width: 160
         height: 30
@@ -1617,7 +1617,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 702.2095}
+    canvasScrollPosition: {x: 0, y: 884.80994}
     canvasZoom: 0.79
   - id: 3
     fields:
@@ -4632,7 +4632,7 @@ MonoBehaviour:
       type: 0
       typeString: 
     - title: Actor
-      value: 1
+      value: 29
       type: 5
       typeString: CustomFieldType_Actor
     - title: Conversant
@@ -4678,7 +4678,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 1
+        value: 29
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -5091,7 +5091,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 165.16812
+        x: 166.43396
         y: 186.7818
         width: 160
         height: 30
@@ -5118,8 +5118,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: KKK enrooted to defend the poor and the helpless. You've done it...
-          Lived through it.
+        value: The KKK is enrooted to defend the poor and the helpless, and to rise
+          up to our colonizers!. You've done it... Lived through it.
         type: 0
         typeString: 
       - title: Sequence
@@ -5550,10 +5550,7 @@ MonoBehaviour:
         typeString: 
       - title: Dialogue Text
         value: You remember the fate of our countrymen who were shot in Bagumbayan.
-          Should we return now to the towns, the Spaniards will only shoot us. Our
-          organization has been discovered and we are all marked men. If we don't
-          start the uprising, the Spaniards will get us anyway. What then, do you
-          say?
+          Should we return now to the towns, the Spaniards will only shoot us.
         type: 0
         typeString: 
       - title: Sequence
@@ -5596,11 +5593,11 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 31
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 2
+        value: 31
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -5608,7 +5605,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: REVOLT!
+        value: Our organization has been discovered and we are all marked men. If
+          we don't start the uprising, the Spaniards will get us anyway.
         type: 0
         typeString: 
       - title: Sequence
@@ -5663,7 +5661,117 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Katipuneros... Gather your cedulas!
+        value: What then, do you say?
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 22
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 22
+        originDialogueID: 7
+        destinationConversationID: 22
+        destinationDialogueID: 8
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160.68736
+        y: 594.2649
+        width: 160
+        height: 30
+    - id: 8
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 31
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: REVOLT!!!
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 22
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 22
+        originDialogueID: 8
+        destinationConversationID: 22
+        destinationDialogueID: 9
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160.68736
+        y: 644.2649
+        width: 160
+        height: 30
+    - id: 9
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 31
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: Katipuneros... Gather your cedulas and meet me back here!
         type: 0
         typeString: 
       - title: Sequence
@@ -5686,11 +5794,11 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160.68736
-        y: 594.2649
+        y: 694.2649
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 10.526306, y: 0}
+    canvasScrollPosition: {x: 46.052612, y: 336.84204}
     canvasZoom: 0.7600002
   - id: 23
     fields:
@@ -5816,7 +5924,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: How are you doing iho? Cedulas... A lock Spaniards used to chain us...
+        value: How are you doing iho? The Cedulas... it is a lock Spaniards use to
+          chain us...
         type: 0
         typeString: 
       - title: Sequence
@@ -5838,7 +5947,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
+        x: 162
         y: 110
         width: 160
         height: 30
@@ -5970,8 +6079,63 @@ MonoBehaviour:
         typeString: 
       - title: Dialogue Text
         value: Brothers, if it is true that you are ready to revolt... I want to
-          see you destroy your cedulas. It will be a sign that all of us have declared
-          our severance from the Spaniards!
+          see you destroy your cedulas.
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 24
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 24
+        originDialogueID: 1
+        destinationConversationID: 24
+        destinationDialogueID: 2
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 164
+        y: 123
+        width: 160
+        height: 30
+    - id: 2
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: ' It will be a sign that all of us have declared our severance from
+          the Spaniards!'
         type: 0
         typeString: 
       - title: Sequence
@@ -5994,7 +6158,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 161
-        y: 123
+        y: 173
         width: 160
         height: 30
     entryGroups: []
@@ -6164,7 +6328,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160.86365
+        x: 162
         y: 117
         width: 160
         height: 30
@@ -6275,8 +6439,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 175.12535
-        y: 322.13437
+        x: 134.21626
+        y: 318.72528
         width: 160
         height: 30
     - id: 4
@@ -6324,8 +6488,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 372.49994
-        y: 119.77272
+        x: 482.7272
+        y: 95.90907
         width: 160
         height: 30
     - id: 5
@@ -6379,8 +6543,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 341.81815
-        y: 199.31818
+        x: 371.36362
+        y: 210.6818
         width: 160
         height: 30
     - id: 6
@@ -6434,8 +6598,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 341.81815
-        y: 249.31818
+        x: 394.09085
+        y: 293.63635
         width: 160
         height: 30
     - id: 7
@@ -6487,8 +6651,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 342.9545
-        y: 299.31818
+        x: 377.0454
+        y: 378.86365
         width: 160
         height: 30
     entryGroups: []
