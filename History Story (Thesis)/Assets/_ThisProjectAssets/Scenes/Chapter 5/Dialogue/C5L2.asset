@@ -313,8 +313,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 107.522934
+        x: 161.26582
+        y: 108.78876
         width: 160
         height: 30
     - id: 2
@@ -712,7 +712,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 90.27524
-        y: 562.1101
+        y: 560.84424
         width: 160
         height: 30
     - id: 9
@@ -754,7 +754,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: SetQuestState("TalkToAll", "unassigned")
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -787,7 +787,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Great! Here are the materials... Food, water... And of course, tell
+        value: Great! Here are the materials... food, water... And of course, tell
           them of them what's about to happen later!
         type: 0
         typeString: 
@@ -848,7 +848,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Sequence
-        value: 
+        value: SetActive(Main NPCs,true)
         type: 0
         typeString: 
       conversationID: 1
@@ -909,15 +909,15 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: CurrentQuestState("TalkToAll") == "active" and (Variable["Supported
-        Person"] < 2)
+      conditionsString: (CurrentQuestState("TalkToAll") == "active") and (Variable["Supported_Person"]
+        ~= 7)
       userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 371.37698
+        x: 373.90863
         y: 160.98929
         width: 160
         height: 30
@@ -965,15 +965,15 @@ MonoBehaviour:
         destinationDialogueID: 14
         isConnector: 0
         priority: 2
-      conditionsString: CurrentQuestState("TalkToAll") == "active" and (Variable["Supported
-        Person"] >= 2)
+      conditionsString: (CurrentQuestState("TalkToAll") == "active") and (Variable["Supported_Person"]
+        >= 7)
       userScript: SetQuestState("TalkToAll", "success")
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 570.5882
+        x: 571.85406
         y: 152.9412
         width: 160
         height: 30
@@ -1062,6 +1062,10 @@ MonoBehaviour:
         value: 
         type: 0
         typeString: 
+      - title: EventGuid
+        value: 32143b6e-364b-4fd0-9f85-21b092f21258
+        type: 0
+        typeString: 
       conversationID: 1
       isRoot: 0
       isGroup: 0
@@ -1082,7 +1086,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 215.1898, y: 0}
+    canvasScrollPosition: {x: 29.113922, y: 2.5316467}
     canvasZoom: 0.7900002
   - id: 2
     fields:
@@ -1099,7 +1103,7 @@ MonoBehaviour:
       type: 5
       typeString: CustomFieldType_Actor
     - title: Conversant
-      value: 3
+      value: 2
       type: 5
       typeString: CustomFieldType_Actor
     overrideSettings:
@@ -1145,7 +1149,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -1244,7 +1248,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1268,18 +1272,18 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "active"
-      userScript: Variable["Supported Person"] = Variable["Supported Person"] + 1
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
         x: 410
-        y: 405
+        y: 409
         width: 160
         height: 30
     - id: 2
@@ -1293,7 +1297,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1318,18 +1322,18 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "active"
-      userScript: Variable["Supported Person"] = Variable["Supported Person"] + 1
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 462
-        y: 331
+        x: 464
+        y: 334
         width: 160
         height: 30
     - id: 3
@@ -1343,7 +1347,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1367,18 +1371,18 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "active"
-      userScript: Variable["Supported Person"] = Variable["Supported Person"] + 1
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 484
-        y: 241
+        x: 483
+        y: 246
         width: 160
         height: 30
     - id: 4
@@ -1392,7 +1396,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1416,17 +1420,17 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "active"
-      userScript: Variable["Supported Person"] = Variable["Supported Person"] + 1
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 508
+        x: 510
         y: 149
         width: 160
         height: 30
@@ -1441,7 +1445,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1453,7 +1457,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Biscuits and sugra, just what I needed. Thank you.
+        value: Biscuits and sugar, just what I needed. Thank you.
         type: 0
         typeString: 
       - title: Sequence
@@ -1465,18 +1469,18 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "active"
-      userScript: Variable["Supported Person"] = Variable["Supported Person"] + 1
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
         x: 530
-        y: 78
+        y: 77
         width: 160
         height: 30
     - id: 6
@@ -1490,7 +1494,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1514,7 +1518,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "unassigned"
@@ -1524,7 +1528,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 23
+        x: 24
         y: 180
         width: 160
         height: 30
@@ -1539,7 +1543,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1563,7 +1567,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "unassigned"
@@ -1574,7 +1578,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 18
-        y: 262
+        y: 263
         width: 160
         height: 30
     - id: 8
@@ -1588,7 +1592,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1613,7 +1617,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "unassigned"
@@ -1638,7 +1642,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Actor
-        value: 3
+        value: 2
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
@@ -1663,7 +1667,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: Passthrough
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: CurrentQuestState("TalkToAll") == "unassigned"
@@ -1678,7 +1682,160 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 11, y: 0}
+    canvasScrollPosition: {x: 90, y: 0}
+    canvasZoom: 1
+  - id: 3
+    fields:
+    - title: Title
+      value: New Conversation 3
+      type: 0
+      typeString: 
+    - title: Description
+      value: 
+      type: 0
+      typeString: 
+    - title: Actor
+      value: 1
+      type: 5
+      typeString: CustomFieldType_Actor
+    - title: Conversant
+      value: 3
+      type: 5
+      typeString: CustomFieldType_Actor
+    overrideSettings:
+      useOverrides: 0
+      overrideSubtitleSettings: 0
+      showNPCSubtitlesDuringLine: 1
+      showNPCSubtitlesWithResponses: 1
+      showPCSubtitlesDuringLine: 0
+      skipPCSubtitleAfterResponseMenu: 0
+      subtitleCharsPerSecond: 30
+      minSubtitleSeconds: 2
+      continueButton: 0
+      overrideSequenceSettings: 0
+      defaultSequence: 
+      defaultPlayerSequence: 
+      defaultResponseMenuSequence: 
+      overrideInputSettings: 0
+      alwaysForceResponseMenu: 1
+      includeInvalidEntries: 0
+      responseTimeout: 0
+      emTagForOldResponses: 0
+      emTagForInvalidResponses: 0
+      cancelSubtitle:
+        key: 27
+        buttonName: 
+      cancelConversation:
+        key: 27
+        buttonName: 
+    nodeColor: 
+    dialogueEntries:
+    - id: 0
+      fields:
+      - title: Title
+        value: START
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: None()
+        type: 0
+        typeString: 
+      conversationID: 3
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 3
+        originDialogueID: 0
+        destinationConversationID: 3
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 30
+        width: 160
+        height: 30
+    - id: 1
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: They're here! Captain Sotelo!
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 3
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 79
+        width: 160
+        height: 30
+    entryGroups: []
+    canvasScrollPosition: {x: 0, y: 0}
     canvasZoom: 1
   syncInfo:
     syncActors: 0
