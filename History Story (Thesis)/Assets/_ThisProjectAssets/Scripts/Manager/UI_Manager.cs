@@ -258,8 +258,15 @@ public class UI_Manager : Singleton<UI_Manager>
         if (menus.Exists(x => x.GetUI_ID == menuID))
         {
             var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
-
-            return selectedMenu.GetMenuPage;
+            if(selectedMenu != null)
+            {
+                return selectedMenu.GetMenuPage;
+            }
+            else
+            {
+                Debug.Log($"THERE ARE NO ASSIGN MENU IN {menuID} PAGE MENU");
+                return null;
+            }
         }
         else
         {

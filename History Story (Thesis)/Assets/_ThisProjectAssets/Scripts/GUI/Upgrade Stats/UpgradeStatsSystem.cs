@@ -8,10 +8,12 @@ using UnityEngine.Events;
 using System.Linq;
 using ThesisLibrary;
 using MoreMountains.Tools;
+using MoreMountains.Feedbacks;
 
 public class UpgradeStatsSystem : MonoBehaviour
 {
     private PlayerScript player;
+    private CanvasGroup canvasGroup;
 
     private int maxAvailablePoints = 0;
     private int currentAvailablePoints = 0;
@@ -28,11 +30,16 @@ public class UpgradeStatsSystem : MonoBehaviour
 
     [SerializeField] private MMTouchButton powerupBtn;
 
+    [Space(15)]
+    [SerializeField] private MMF_Player clickFeedback;
+    [SerializeField] private MMF_Player powerUpFeedback;
+
 
     private void Awake()
     {
         currentAvailablePoints = maxAvailablePoints;
         player = PlayerSingleton.Instance.GetPlayerScript;
+        canvasGroup = GetComponent<CanvasGroup>();
     }
     private void OnEnable()
     {
@@ -41,6 +48,7 @@ public class UpgradeStatsSystem : MonoBehaviour
         powerupBtn?.ButtonReleased.AddListener(SuccessfulUpgrade);
         foreach (var item in upgradeStats)
         {
+            item.SetClickFeedback = clickFeedback;
             item.OnAddAmountValue += OnAddPressed;
             item.OnReductAmountValue += OnMinusPressed;
         }
@@ -48,6 +56,7 @@ public class UpgradeStatsSystem : MonoBehaviour
     }
     private void OnDisable()
     {
+        canvasGroup.alpha = 1;
         powerupBtn?.ButtonReleased.RemoveListener(SuccessfulUpgrade);
         foreach (var item in upgradeStats)
         {
@@ -133,6 +142,8 @@ public class UpgradeStatsSystem : MonoBehaviour
     }
     private void SuccessfulUpgrade() //
     {
+        powerUpFeedback?.PlayFeedbacks();
+
         foreach (KeyValuePair<string, float> item in updaterTextValue)
         {
             if(item.Value == 0) { continue; }

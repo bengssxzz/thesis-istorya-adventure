@@ -19,7 +19,7 @@ public class PlayerUI : MonoBehaviour
     {
         entity = PlayerSingleton.Instance.GetPlayerScript;
 
-        healthBarUI.SetBar(entity.GetEntityStats.currentHealth, 0, entity.GetEntityStats.maxHealth);
+        healthBarUI?.SetBar(entity.GetEntityStats.currentHealth, 0, entity.GetEntityStats.maxHealth);
 
         GameManager.Instance.OnChangeChapterPoints += OnChangePoints;
         entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;

@@ -14,10 +14,13 @@ public class QuestionaireUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questionText;
 
     [SerializeField] private Animator qandAAnimator;
+    [SerializeField] private MMF_Player openingFeedback;
     [SerializeField] private MMF_Player correctFeedback;
+    [SerializeField] private MMF_Player wrongFeedback;
 
     private QandAChoicesBtnUI[] buttonChoices;
 
+    private CanvasGroup canvasGroup;
 
     private int qandaId = -1;
     private string tableName = "";
@@ -29,19 +32,23 @@ public class QuestionaireUI : MonoBehaviour
     private void Awake()
     {
         buttonChoices = GetComponentsInChildren<QandAChoicesBtnUI>();
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
     private void OnEnable()
     {
+        openingFeedback?.PlayFeedbacks();
+
         SubscribeBtn();
         ResetQuestionPanel();
     }
     private void OnDisable()
     {
+
         selectedAnswer = "";
         correctAnswer = "";
         UnsubscribeBtn();
-
+        canvasGroup.alpha = 1;
         foreach (var btn in buttonChoices)
         {
             btn.ResetChoiceBtn();
@@ -103,33 +110,6 @@ public class QuestionaireUI : MonoBehaviour
         //Check the answer on button press
         Debug.Log("PRESSING " + selectedAnswer + " CHOICE BTN");
         this.selectedAnswer = selectedAnswer;
-
-
-        //var checkedAnswer = QuestionsManager.Instance.CheckQuestionAnswer(selectedAnswer);
-
-        //if (checkedAnswer)
-        //{
-        //    //Correct answer
-        //    Debug.Log("Correct Answer");
-        //    UI_Manager.Instance.CloseMenu("Question UI");
-
-        //    //Open the upgrade stats
-        //    int amountUpgrade = ThesisUtility.RandomGetAmount(3, 7);
-        //    int amountPoints = ThesisUtility.RandomGetAmount(500, 1000);
-
-        //    UI_Manager.Instance.OpenMenu("UpgradeStats UI");
-        //    UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(amountUpgrade);
-
-        //    GameManager.Instance.AddCurrentChapterScore(amountPoints);
-        //}
-        //else
-        //{
-        //    //Wrong answer
-        //    Debug.Log("Wrong Answer");
-        //    qandAAnimator?.SetTrigger("Wrong");
-
-        //}
-        
     }
 
     public void FadeOutChoices()
@@ -160,19 +140,10 @@ public class QuestionaireUI : MonoBehaviour
 
             //UI_Manager.Instance.OpenMenu("UpgradeStats UI");
             var upgradeMenu = UI_Manager.Instance.GetMenu("UpgradeStats UI"); //Menu
-            var questionUIMenu = UI_Manager.Instance.GetMenu("Question UI"); //Menu
-
-            //Modifying mmf scale
-            MMF_Scale mmfScale = correctFeedback?.GetFeedbackOfType<MMF_Scale>("UpgradeStats");
-            mmfScale.AnimateScaleTarget = upgradeMenu;
-
-            //Modifying mmf setactive upgrade
-            MMF_SetActive mmfsetActiveUpgrade = correctFeedback?.GetFeedbackOfType<MMF_SetActive>("SetActiveUpgrade");
-            mmfsetActiveUpgrade.TargetGameObject = upgradeMenu.gameObject;
-
-            //Modifying mmf setactive question ui
-            MMF_SetActive mmfsetActiveQuestionUI = correctFeedback?.GetFeedbackOfType<MMF_SetActive>("SetActiveUpgrade");
-            mmfsetActiveQuestionUI.TargetGameObject = questionUIMenu.gameObject;
+            
+            //Modifying mmf canvas group
+            MMF_CanvasGroup mmfScale = correctFeedback?.GetFeedbackOfType<MMF_CanvasGroup>("SetUpgradeCanvas");
+            mmfScale.TargetCanvasGroup = upgradeMenu.GetComponent<CanvasGroup>();
 
             //Rewards
             UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(amountUpgrade);
@@ -186,8 +157,11 @@ public class QuestionaireUI : MonoBehaviour
         {
             //Wrong answer
             Debug.Log("Wrong Answer");
-            qandAAnimator?.SetTrigger("Wrong");
-
+            //qandAAnimator?.SetTrigger("Wrong");
+            MMF_Animation animator = wrongFeedback?.GetFeedbackOfType<MMF_Animation>("QandA_Anim");
+            animator.BoundAnimator = qandAAnimator;
+            animator.TriggerParameterName = "Wrong";
+            wrongFeedback?.PlayFeedbacks();
         }
     }
 
