@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using MoreMountains.Tools;
+using MoreMountains.Feedbacks;
 using ThesisLibrary;
 
 public class QuestionaireUI : MonoBehaviour
@@ -13,6 +14,7 @@ public class QuestionaireUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questionText;
 
     [SerializeField] private Animator qandAAnimator;
+    [SerializeField] private MMF_Player correctFeedback;
 
     private QandAChoicesBtnUI[] buttonChoices;
 
@@ -150,16 +152,35 @@ public class QuestionaireUI : MonoBehaviour
         {
             //Correct answer
             Debug.Log("Correct Answer");
-            UI_Manager.Instance.CloseMenu("Question UI");
+            //UI_Manager.Instance.CloseMenu("Question UI");
 
             //Open the upgrade stats
             int amountUpgrade = ThesisUtility.RandomGetAmount(3, 7);
             int amountPoints = ThesisUtility.RandomGetAmount(500, 1000);
 
-            UI_Manager.Instance.OpenMenu("UpgradeStats UI");
-            UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(amountUpgrade);
+            //UI_Manager.Instance.OpenMenu("UpgradeStats UI");
+            var upgradeMenu = UI_Manager.Instance.GetMenu("UpgradeStats UI"); //Menu
+            var questionUIMenu = UI_Manager.Instance.GetMenu("Question UI"); //Menu
 
+            //Modifying mmf scale
+            MMF_Scale mmfScale = correctFeedback?.GetFeedbackOfType<MMF_Scale>("UpgradeStats");
+            mmfScale.AnimateScaleTarget = upgradeMenu;
+
+            //Modifying mmf setactive upgrade
+            MMF_SetActive mmfsetActiveUpgrade = correctFeedback?.GetFeedbackOfType<MMF_SetActive>("SetActiveUpgrade");
+            mmfsetActiveUpgrade.TargetGameObject = upgradeMenu.gameObject;
+
+            //Modifying mmf setactive question ui
+            MMF_SetActive mmfsetActiveQuestionUI = correctFeedback?.GetFeedbackOfType<MMF_SetActive>("SetActiveUpgrade");
+            mmfsetActiveQuestionUI.TargetGameObject = questionUIMenu.gameObject;
+
+            //Rewards
+            UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(amountUpgrade);
             GameManager.Instance.AddCurrentChapterScore(amountPoints);
+
+            //Play the correct feedback
+            correctFeedback?.PlayFeedbacks();
+
         }
         else
         {

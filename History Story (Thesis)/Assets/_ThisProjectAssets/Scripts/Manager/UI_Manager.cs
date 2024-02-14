@@ -253,6 +253,21 @@ public class UI_Manager : Singleton<UI_Manager>
         }
     }
 
+    public RectTransform GetMenu(string menuID)
+    {
+        if (menus.Exists(x => x.GetUI_ID == menuID))
+        {
+            var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
+
+            return selectedMenu.GetMenuPage;
+        }
+        else
+        {
+            Debug.LogError($"MENU ID ({menuID}) IS MISSPELLED/NOT EXIST IN THE PROJECT");
+            return null;
+        }
+    }
+
     public T FindComponentInUIMenu<T>(string menuID) //Find object in menu
     {
         if(menus.Exists(x => x.GetUI_ID == menuID))
