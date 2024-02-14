@@ -5,13 +5,24 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using MoreMountains.Tools;
+
 
 public class ChapterSelection : MonoBehaviour
 {
+    [Header("Pages")]
+    [SerializeField] private ChapterInfos artifactDescription;
+    [SerializeField] private ArtifactsPage artifactPage;
+
+    [Header("SubMenus")]
+    [SerializeField] private MMTouchButton descriptionBtn;
+    [SerializeField] private MMTouchButton artifactsCollectionBtn;
+    [SerializeField] private MMTouchButton abilitiesCollectionBtn;
+
+    [Space(20)]
     [Header("Prefab Info")]
     [SerializeField] private LevelChapterSlot chapterSlotPrefab;
     [SerializeField] private RectTransform content;
-    [SerializeField] private ChapterInfos chapterInfo;
 
     //[Header("Chapter List")]
     //[SerializeField] private Chapter_LevelSO[] chapterLevelSO;
@@ -36,7 +47,7 @@ public class ChapterSelection : MonoBehaviour
                 itemSlot.OnPressEnterLevelChapter += OnPressEnterScene;
             }
         }
-
+        SubMenusBtn_Subscribe();
         UpdateChapterButtons();
     }
     private void OnDisable()
@@ -46,13 +57,13 @@ public class ChapterSelection : MonoBehaviour
             itemSlot.OnPressSelectChapter -= OnPressChapterBtn;
             itemSlot.OnPressEnterLevelChapter -= OnPressEnterScene;
         }
-
+        SubMenusBtn_Unsubscribe();
         DeselectAllChapterSlot(); //Deselect the chapter
-        chapterInfo.ResetInfos(); //Reset
+        artifactDescription.ResetInfos(); //Reset
     }
     private void Start()
     {
-        GameManager.Instance.CollectArtifacts("Magical Necklace");
+        GameManager.Instance.CollectArtifacts("Hunters Insignia");
 
 
         var allScene = GameManager.Instance.GetListOfChapters;
@@ -70,17 +81,25 @@ public class ChapterSelection : MonoBehaviour
 
             chapterSlots.Add(slot); //Add the button
 
-            //Detect if locked of not
-            //if(GameManager.Instance.IsChapterSceneExist(item, out var unlockedChapter))
-            //{
-            //    newSlot.IsLockChapter = !unlockedChapter;
-            //}
             UpdateChapterButtons();
 
         }
 
     }
     
+    private void SubMenusBtn_Subscribe()
+    {
+        descriptionBtn.ButtonReleased.AddListener(ShowDescriptionPage);
+        artifactsCollectionBtn.ButtonReleased.AddListener(ShowArtifactsCollectionPage);
+    }
+    private void SubMenusBtn_Unsubscribe()
+    {
+        descriptionBtn.ButtonReleased.RemoveListener(ShowDescriptionPage);
+        artifactsCollectionBtn.ButtonReleased.RemoveListener(ShowArtifactsCollectionPage);
+    }
+
+    
+
     private void UpdateChapterButtons()
     {
         foreach (var slot in chapterSlots)
@@ -116,7 +135,12 @@ public class ChapterSelection : MonoBehaviour
         var chapterSlotInfo = chapterSlots[index]; //
         chapterSlotInfo.SelectChapterSlot(true);
 
-        chapterInfo.ShowChapterInfos(chapterSlotInfo.GetChapterLevelSO); //Show info
+        var chapterSO = chapterSlotInfo.GetChapterLevelSO;
+
+        ShowDescriptionPage();
+
+        artifactDescription.ShowChapterInfos(chapterSO); //Show info
+        artifactPage.SetListOfArtifacts(chapterSO.collections.artifacts);
     }
     private void OnPressEnterScene(string defaultSceneName) //Go to the scene
     {
@@ -185,6 +209,29 @@ public class ChapterSelection : MonoBehaviour
         ////SceneManager.LoadScene(defaultSceneName);
     }
 
+
+    private void ShowDescriptionPage()
+    {
+        UI_Manager.Instance.OpenMenu("DescriptionMenu");
+
+        UI_Manager.Instance.CloseMenu("ArtifactsMenu");
+        UI_Manager.Instance.CloseMenu("AbilityMenu");
+    }
+
+    private void ShowArtifactsCollectionPage()
+    {
+        UI_Manager.Instance.OpenMenu("ArtifactsMenu");
+
+        UI_Manager.Instance.CloseMenu("DescriptionMenu");
+        UI_Manager.Instance.CloseMenu("AbilityMenu");
+    }
+    private void ShowAbilitiesCollectionPage()
+    {
+        UI_Manager.Instance.OpenMenu("AbilityMenu");
+
+        UI_Manager.Instance.CloseMenu("DescriptionMenu");
+        UI_Manager.Instance.CloseMenu("ArtifactsMenu");
+    }
 
 
 

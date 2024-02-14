@@ -164,9 +164,10 @@ public class GameManager : Singleton<GameManager>
 
 
     #region FOR ARTIFACTS
-    public void CollectArtifacts(ArtifactsSO artifacts)
+    public void CollectArtifacts
+        (ArtifactsSO artifacts)
     {
-        if (GetListOfAllArtifacts.Contains(artifacts)){
+        if (GetListOfCollectedArtifacts.Contains(artifacts)){
             Debug.Log($"{artifacts.artifactName} IS ALREADY COLLECTED");
             return; }
 
@@ -174,7 +175,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void CollectArtifacts(string artifactName)
     {
-        if(GetListOfAllArtifacts.Any(x => x.artifactName == artifactName)) {
+        if(GetListOfCollectedArtifacts.Any(x => x.artifactName == artifactName)) {
             Debug.Log($"{artifactName} IS ALREADY COLLECTED");
             return; }
 
