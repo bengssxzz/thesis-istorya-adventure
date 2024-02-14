@@ -975,7 +975,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 38, y: 492}
+    canvasScrollPosition: {x: 2, y: 133}
     canvasZoom: 1
   - id: 2
     fields:
@@ -3525,9 +3525,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: GetHoldingSomething("SantoNino")  == true
-      userScript: 'GetTheItemHolding();
-
-'
+      userScript: "CollectArtifacts(\"Santo Ni\xF1o\");\nGetTheItemHolding()"
       onExecute:
         m_PersistentCalls:
           m_Calls: []
