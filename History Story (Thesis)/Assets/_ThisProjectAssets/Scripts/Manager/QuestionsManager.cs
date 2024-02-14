@@ -8,6 +8,25 @@ using ThesisLibrary;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
+
+
+
+
+
+
+
+[Serializable]
+public class QuestionsAnswer
+{
+    // The PlayerID is the primary key and also autoincrements itself
+    // the SQLite database so we reflect that here with these attributes.
+    [PrimaryKey, AutoIncrement] public int id { get; set; }
+    public string question { get; set; }
+    public string c_answer { get; set; }
+    public string w_answers { get; set; }
+}
+
+
 public class QuestionsManager : Singleton<QuestionsManager>
 {
     [Serializable]
@@ -17,15 +36,7 @@ public class QuestionsManager : Singleton<QuestionsManager>
         public string qandATable;
     }
 
-    public class QuestionsAnswer
-    {
-        // The PlayerID is the primary key and also autoincrements itself
-        // the SQLite database so we reflect that here with these attributes.
-        [PrimaryKey, AutoIncrement] public int id { get; set; }
-        public string question { get; set; }
-        public string c_answer { get; set; }
-        public string w_answers { get; set; }
-    }
+    
 
     public event Action<int, string, string[]> OnQuestionUITrigger;
 
@@ -54,9 +65,6 @@ public class QuestionsManager : Singleton<QuestionsManager>
         InitializeQuestionAnswer();
     }
 
-
-
-  
     private void InitializeQuestionAnswer() //Get all the data in DB and put it inside the dictionary
     {
         questionList = new Dictionary<string, List<QuestionsAnswer>>();
@@ -73,6 +81,7 @@ public class QuestionsManager : Singleton<QuestionsManager>
             questionList.Add(tableName, qanda); //TableName Key : QandAInfo Value
         }
     }
+
     private void SetCurrentTableScene()
     {
         var currentScene = SceneManager.GetActiveScene().name; //Get the name of the current scene
@@ -101,6 +110,20 @@ public class QuestionsManager : Singleton<QuestionsManager>
         OnQuestionUITrigger?.Invoke(qandaInfos.Item1, qandaInfos.Item2, qandaInfos.Item3);
     }
 
+    public QuestionsAnswer GetQandAInfo(int questionID)
+    {
+        SetCurrentTableScene();
+
+        var questionInfo = questionList[currentSceneTable].FirstOrDefault(x => x.id == questionID);
+
+        if(questionInfo != null)
+        {
+            return questionInfo;
+        }
+
+        Debug.LogError($"QUESTION ID {questionID} IS NOT EXIST IN {currentSceneTable} TABLE");
+        return null;
+    }
 
     public delegate void QandAInfos((int, string, string[]) info);
     //public void TriggerQuestion(string questionFrom, int totalChoices = 2) //Trigger questions behaviour

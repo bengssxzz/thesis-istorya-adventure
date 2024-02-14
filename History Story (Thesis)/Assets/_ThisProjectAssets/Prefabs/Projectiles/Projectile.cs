@@ -153,7 +153,7 @@ public class Projectile : MonoBehaviour
 
     ////CONTINUE NEXT TIME
 
-    private const float OFFSET_MAX_LIMIT = 0.3f;
+    private const float OFFSET_MAX_LIMIT = 0.5f;
 
     [Header("Bullet Damage")]
     [SerializeField] private float projectileSpeed = 1f;
@@ -228,8 +228,23 @@ public class Projectile : MonoBehaviour
     }
 
 
+    public void OverrideProjectileSpeed(float overrideSpeed)
+    {
+        projectileSpeed = overrideSpeed;
+    }
+    public void OverrideProjectileMaxDistance(float overrideMaxDistance)
+    {
+        var randomLimit = ThesisUtility.RandomGetFloat(0, OFFSET_MAX_LIMIT);
+        maxLimitDistance = overrideMaxDistance + randomLimit;
+    }
+    public void OverrideProjectileDamage(float overrideDamage)
+    {
+        totalDamage = overrideDamage;
+        isCritical = false;
+    }
 
-    public virtual void ProjectileDamage() //Handle damage
+
+    protected virtual void ProjectileDamage() //Handle damage
     {
         if (entityStats != null)
         {
@@ -246,12 +261,12 @@ public class Projectile : MonoBehaviour
 
         }
     }
-    public virtual void ProjectileMovement() //Handle movement
+    protected virtual void ProjectileMovement() //Handle movement
     {
         //Bullet movement
         rb.velocity = directionVelocity * projectileSpeed * Time.deltaTime;
     }
-    public virtual void ProjectileLifetime() //Handle the life of the bullet
+    protected virtual void ProjectileLifetime() //Handle the life of the bullet
     {
         if (Vector2.Distance(startPosition, transform.position) < maxLimitDistance)
         {
@@ -279,11 +294,11 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public virtual void ProjectileHit() //Projectile behaviour when hit the assign layer
+    protected virtual void ProjectileHit() //Projectile behaviour when hit the assign layer
     {
         gameObject.SetActive(false);
     }
-    public virtual void ProjectileOnMaxLimit() //Projectile behaviour when outside the range
+    protected virtual void ProjectileOnMaxLimit() //Projectile behaviour when outside the range
     {
         gameObject.SetActive(false);
     }

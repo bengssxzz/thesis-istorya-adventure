@@ -20,6 +20,9 @@ public class QuestionaireUI : MonoBehaviour
     private int qandaId = -1;
     private string tableName = "";
 
+    private string selectedAnswer = "";
+    private string correctAnswer = "";
+
 
     private void Awake()
     {
@@ -33,8 +36,14 @@ public class QuestionaireUI : MonoBehaviour
     }
     private void OnDisable()
     {
+        selectedAnswer = "";
+        correctAnswer = "";
         UnsubscribeBtn();
 
+        foreach (var btn in buttonChoices)
+        {
+            btn.ResetChoiceBtn();
+        }
     }
 
     private void SubscribeBtn()
@@ -80,11 +89,61 @@ public class QuestionaireUI : MonoBehaviour
         {
             buttonChoices[i].UpdateBtn(choices[i]);
         }
+
+        var info = QuestionsManager.Instance.GetQandAInfo(id);
+        correctAnswer = info.c_answer;
+        Debug.Log($"THIS QUESTION's ID IS {id}, AND THE ANSWER IS {info.c_answer}");
+
     }
 
     private void ChoicePressed(string selectedAnswer) //Reciever from each buttons
     {
         //Check the answer on button press
+        Debug.Log("PRESSING " + selectedAnswer + " CHOICE BTN");
+        this.selectedAnswer = selectedAnswer;
+
+
+        //var checkedAnswer = QuestionsManager.Instance.CheckQuestionAnswer(selectedAnswer);
+
+        //if (checkedAnswer)
+        //{
+        //    //Correct answer
+        //    Debug.Log("Correct Answer");
+        //    UI_Manager.Instance.CloseMenu("Question UI");
+
+        //    //Open the upgrade stats
+        //    int amountUpgrade = ThesisUtility.RandomGetAmount(3, 7);
+        //    int amountPoints = ThesisUtility.RandomGetAmount(500, 1000);
+
+        //    UI_Manager.Instance.OpenMenu("UpgradeStats UI");
+        //    UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(amountUpgrade);
+
+        //    GameManager.Instance.AddCurrentChapterScore(amountPoints);
+        //}
+        //else
+        //{
+        //    //Wrong answer
+        //    Debug.Log("Wrong Answer");
+        //    qandAAnimator?.SetTrigger("Wrong");
+
+        //}
+        
+    }
+
+    public void FadeOutChoices()
+    {
+        QandAChoicesBtnUI[] fadeOtherBtn;
+
+        fadeOtherBtn = buttonChoices.Where(choices => choices.GetChoiceValue != selectedAnswer && choices.GetChoiceValue != correctAnswer).ToArray();
+
+        foreach (var btn in fadeOtherBtn)
+        {
+            btn.FadeChoiceButton();
+        }
+
+    }
+    public void CheckAnswer()
+    {
         var checkedAnswer = QuestionsManager.Instance.CheckQuestionAnswer(selectedAnswer);
 
         if (checkedAnswer)
@@ -109,8 +168,9 @@ public class QuestionaireUI : MonoBehaviour
             qandAAnimator?.SetTrigger("Wrong");
 
         }
-        
     }
+
+
     public void CloseQandA()
     {
         Debug.Log("Animation has finished");

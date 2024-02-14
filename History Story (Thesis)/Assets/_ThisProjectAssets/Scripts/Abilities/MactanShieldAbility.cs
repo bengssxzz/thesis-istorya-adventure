@@ -12,7 +12,10 @@ public class MactanShieldAbility : AbilityScript
     [Space(15)]
     [Header("Mactan Shield Ability")]
     [SerializeField] private Projectile projectile;
-
+    [SerializeField] private float projectileMaxDistance = 1f;
+    [SerializeField] private float projectileSpeed = 55f;
+    [SerializeField] private float projectileAdditionalDamage = 55f;
+    
     [Range(0, 100)]public float addDefensePercentage;
     public float time;
     private int circleRayCount = 30;
@@ -57,9 +60,16 @@ public class MactanShieldAbility : AbilityScript
 
             var dir = entity.GetAttack_Controller.GetAttackHolder.TransformDirection(bulletDir);
             GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectile.gameObject, entity.transform.position);
-            //newBul.GetComponent<Projectile>().InitializeProjectile(entity, dir, 5, entity.GetAttack_Controller.GetMyEnemyLayer);
-            newBul.GetComponent<Projectile>().InitializeProjectile(entity, dir, entity.GetAttack_Controller.GetRangedAttackDistance);
-            newBul.transform.position = entity.transform.position;
+            
+            var projectileSettings = newBul.GetComponent<Projectile>();
+            projectileSettings.InitializeProjectile(entity, dir, entity.GetAttack_Controller.GetRangedAttackDistance);
+            projectileSettings.OverrideProjectileSpeed(projectileSpeed);
+            projectileSettings.OverrideProjectileMaxDistance(projectileMaxDistance);
+            projectileSettings.OverrideProjectileDamage(entity.GetEntityStats.currentDamage + projectileAdditionalDamage);
+
+
+            //newBul.GetComponent<Projectile>().InitializeProjectile(entity, dir, entity.GetAttack_Controller.GetRangedAttackDistance);
+            //newBul.transform.position = entity.transform.position;
 
 
             currentAngle += 360f / circleRayCount;

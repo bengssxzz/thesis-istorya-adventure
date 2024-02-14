@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 881601993695927231}
-  - component: {fileID: 1590849696390544010}
+  - component: {fileID: 4437665349160744117}
   - component: {fileID: 881601993695927230}
   m_Layer: 0
   m_Name: Questions Manager
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1590849696390544010
+--- !u!114 &4437665349160744117
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -50,7 +50,7 @@ MonoBehaviour:
   overridePathMode: 0
   changeWorkingName: 0
   workingName: 
-  overwriteIfExists: 1
+  overwriteIfExists: 0
   debugTrace: 0
 --- !u!114 &881601993695927230
 MonoBehaviour:
@@ -64,9 +64,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7c0416b2870ba4e8bcecc71998624d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questionTableName:
-  - Chapter1
-  - Chapter2
-  - Chapter3
-  - Chapter4
-  - Chapter5
+  registerSceneQandA: []
