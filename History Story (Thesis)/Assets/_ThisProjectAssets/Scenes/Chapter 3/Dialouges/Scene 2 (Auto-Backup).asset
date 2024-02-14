@@ -60,7 +60,7 @@ MonoBehaviour:
   - id: 7
     fields:
     - title: Name
-      value: Prof. Ian
+      value: Walkie-Talkie
       type: 0
       typeString: 
     - title: Pictures
@@ -76,7 +76,7 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     portrait: {fileID: 0}
-    spritePortrait: {fileID: 0}
+    spritePortrait: {fileID: 21300000, guid: 4916b8f4d82e65c4aba4fa2b311cf428, type: 3}
     alternatePortraits: []
     spritePortraits: []
   - id: 6
@@ -120,7 +120,7 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     portrait: {fileID: 0}
-    spritePortrait: {fileID: 0}
+    spritePortrait: {fileID: 21300000, guid: d00834c15977c0142bfa51e3e1da3896, type: 3}
     alternatePortraits: []
     spritePortraits: []
   - id: 12
@@ -143,7 +143,7 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     portrait: {fileID: 0}
-    spritePortrait: {fileID: 0}
+    spritePortrait: {fileID: 21300000, guid: d1c4cd17176493f4db043c017fccdbbf, type: 3}
     alternatePortraits: []
     spritePortraits: []
   - id: 2
@@ -165,7 +165,7 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     portrait: {fileID: 0}
-    spritePortrait: {fileID: 0}
+    spritePortrait: {fileID: 21300000, guid: b445c60ff06268d4e98010c60b663df7, type: 3}
     alternatePortraits: []
     spritePortraits: []
   - id: 13
@@ -187,7 +187,7 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     portrait: {fileID: 0}
-    spritePortrait: {fileID: 0}
+    spritePortrait: {fileID: 21300000, guid: 644af52c1efc20140b4c7beebc14c376, type: 3}
     alternatePortraits: []
     spritePortraits: []
   - id: 9
@@ -260,7 +260,7 @@ MonoBehaviour:
       type: 0
       typeString: 
     - title: Entry 1
-      value: Collect 20 crates by killing enemies
+      value: Collect 20 crates by getting it from other soldiers
       type: 0
       typeString: 
   locations: []
@@ -771,6 +771,12 @@ MonoBehaviour:
         destinationDialogueID: 7
         isConnector: 0
         priority: 2
+      - originConversationID: 5
+        originDialogueID: 0
+        destinationConversationID: 5
+        destinationDialogueID: 10
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -778,8 +784,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 30
+        x: 392
+        y: 50
         width: 160
         height: 30
     - id: 1
@@ -834,8 +840,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160.17648
-        y: 98
+        x: 81.13637
+        y: 134
         width: 160
         height: 30
     - id: 2
@@ -889,8 +895,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 166
+        x: 80
+        y: 218
         width: 160
         height: 30
     - id: 3
@@ -944,8 +950,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 156.90721
-        y: 238.68042
+        x: 80
+        y: 302
         width: 160
         height: 30
     - id: 4
@@ -1000,8 +1006,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 163.67496
-        y: 290.91208
+        x: 72.045456
+        y: 389.4091
         width: 160
         height: 30
     - id: 5
@@ -1049,8 +1055,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 141.32199
-        y: 357.3827
+        x: 80
+        y: 468.86365
         width: 160
         height: 30
     - id: 6
@@ -1076,7 +1082,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Great work, go ahead and talk to General Pio del Pilar.
+        value: Great work, now go ahead and talk to General Pio del Pilar.
         type: 0
         typeString: 
       - title: Sequence
@@ -1098,8 +1104,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 352.94113
-        y: 89.41177
+        x: 289.13638
+        y: 134
         width: 160
         height: 30
     - id: 7
@@ -1141,20 +1147,126 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: CurrentQuestState("CollectResource") == "active"
+      conditionsString: (CurrentQuestState("CollectResource") == "active") and (Variable["CratesCollected"]
+        < 1)
       userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 569.4116
-        y: 98.82352
+        x: 501.72192
+        y: 133.99998
+        width: 160
+        height: 30
+    - id: 10
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 11
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: You've gotten all of them? Good.
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 5
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 5
+        originDialogueID: 10
+        destinationConversationID: 5
+        destinationDialogueID: 11
+        isConnector: 0
+        priority: 2
+      conditionsString: CurrentQuestState("CollectResource") == "active" and (Variable["CratesCollected"]
+        >= 1)
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 711.9947
+        y: 134
+        width: 160
+        height: 30
+    - id: 11
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 11
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: Go ahead and talk to General Pio del Pilar now.
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 5
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: SetQuestState("CollectResource", "success")
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 704
+        y: 218
         width: 160
         height: 30
     entryGroups: []
     canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.85000014
+    canvasZoom: 0.8800001
   - id: 6
     fields:
     - title: Title
@@ -1249,6 +1361,12 @@ MonoBehaviour:
         originDialogueID: 0
         destinationConversationID: 6
         destinationDialogueID: 3
+        isConnector: 0
+        priority: 2
+      - originConversationID: 6
+        originDialogueID: 0
+        destinationConversationID: 6
+        destinationDialogueID: 4
         isConnector: 0
         priority: 2
       conditionsString: 
@@ -1347,6 +1465,10 @@ MonoBehaviour:
         value: 
         type: 0
         typeString: 
+      - title: EventGuid
+        value: adae0584-eed2-42f0-94c2-8d9c25e97cf1
+        type: 0
+        typeString: 
       conversationID: 6
       isRoot: 0
       isGroup: 0
@@ -1411,8 +1533,57 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 401.7582
-        y: 97.58241
+        x: 346.81317
+        y: 137.14285
+        width: 160
+        height: 30
+    - id: 4
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 12
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: Do what you're set out to do, soldier!
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 6
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: CurrentQuestState("CollectResource") == "active"
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 449.01093
+        y: 54.72529
         width: 160
         height: 30
     entryGroups: []
@@ -1527,8 +1698,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 160
-        y: 29
+        x: 288
+        y: 50
         width: 160
         height: 30
     - id: 1
@@ -1583,8 +1754,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 159
-        y: 81
+        x: 80
+        y: 134
         width: 160
         height: 30
     - id: 2
@@ -1638,8 +1809,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 164
-        y: 153
+        x: 80
+        y: 218
         width: 160
         height: 30
     - id: 3
@@ -1694,8 +1865,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 161
-        y: 223
+        x: 80
+        y: 302
         width: 160
         height: 30
     - id: 4
@@ -1743,8 +1914,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 161
-        y: 271
+        x: 80
+        y: 386
         width: 160
         height: 30
     - id: 5
@@ -1793,8 +1964,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 426
-        y: 80
+        x: 288
+        y: 134
         width: 160
         height: 30
     - id: 6
@@ -1842,8 +2013,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 538
-        y: 29
+        x: 503
+        y: 137
         width: 160
         height: 30
     entryGroups: []

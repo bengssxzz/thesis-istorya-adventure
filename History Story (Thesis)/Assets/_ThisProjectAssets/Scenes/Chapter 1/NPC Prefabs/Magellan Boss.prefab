@@ -2171,7 +2171,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfDropLoot: []
+  listOfDropLoot:
+  - lootPrefab: {fileID: 7720255052265319275, guid: 169182babb56f924fbad12e0a9552186, type: 3}
+    randomAmountDrop: 0
+    minAmount: 1
+    maxAmount: 1
+    dropChance: 100
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
