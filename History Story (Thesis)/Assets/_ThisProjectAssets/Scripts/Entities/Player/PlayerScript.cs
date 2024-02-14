@@ -11,11 +11,10 @@ using PixelCrushers.DialogueSystem;
 
 public class PlayerScript : Entities
 {
+    [Space(15)]
+    [SerializeField] private Transform playerVisuals;
+
     public PlayerInteractHandler GetInteractHandler { get; private set; }
-
-    //private InputAction move;
-    GameObject playerr;
-
 
 
     protected override void Awake()
@@ -56,14 +55,6 @@ public class PlayerScript : Entities
         else
         {
             Debug.LogWarning("THERE ARE NO PLAYER FILE EXIST");
-        }
-
-
-
-        if (playerr != null)
-        {
-            Debug.Log("PLAYER CREATED");
-            Instantiate(playerr);
         }
     }
 
@@ -114,6 +105,13 @@ public class PlayerScript : Entities
     {
         Debug.Log($"ABILITY COLLECTED {abilityName}");
         GameManager.Instance.CollectedAbilities(abilityName);
+    }
+
+    public void SetPlayerVisual(bool state)
+    {
+        playerVisuals.gameObject.SetActive(state);
+        IsCanMove = state;
+        GetAttack_Controller.EnableAttacking = state;
     }
 
     protected override void MovementBehaviour()

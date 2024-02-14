@@ -51,6 +51,7 @@ public class AttackController : DetectMyEnemies
 
     [Space(20)]
     [Header("Melee")]
+    [SerializeField] private Vector2 offsetPosition;
     [SerializeField] [Range(0f, 50f)] private float meleeAttackDistance;
     [SerializeField] private float delayAttack = 1f;
     private bool meleeAttackOnCooldown = false;
@@ -432,26 +433,26 @@ public class AttackController : DetectMyEnemies
     private IEnumerator MeleeAttack()
     {
         meleeAttackOnCooldown = true;
-        Collider2D[] myEnemy = Physics2D.OverlapCircleAll(transform.position, meleeAttackDistance, GetMyEnemyLayer());
+
+        Collider2D[] myEnemy = Physics2D.OverlapCircleAll(transform.position + (Vector3)offsetPosition, meleeAttackDistance, GetMyEnemyLayer());
         foreach (var item in myEnemy)
         {
             IDamageable entity = item.GetComponent<IDamageable>();
 
-            var damage_critical = GetThisEntity.GetCalculatedDamage();
-            var calculatedDamage = damage_critical.Item1;
-            var isCritical = damage_critical.Item2;
+            //var damage_critical = GetThisEntity.GetCalculatedDamage();
+            //var calculatedDamage = damage_critical.Item1;
+            //var isCritical = damage_critical.Item2;
 
-            entity.TakeDamage(calculatedDamage, GetThisEntity, isCritical);
+            var calculatedDamage = GetThisEntity.GetCalculatedDamage(out var isCriticalHit);
+
+            entity.TakeDamage(calculatedDamage, GetThisEntity, isCriticalHit);
 
         }
 
         yield return new WaitForSeconds(delayAttack);
 
-        meleeAttackOnCooldown = false;
-    }
-    private void MeleeDamage()
-    {
 
+        meleeAttackOnCooldown = false;
     }
 
 
@@ -467,7 +468,7 @@ public class AttackController : DetectMyEnemies
         Handles.DrawWireDisc(transform.position, transform.forward, rangedAttackDistance);
 
         Handles.color = Color.red;
-        Handles.DrawWireDisc(transform.position, transform.forward, meleeAttackDistance);
+        Handles.DrawWireDisc(transform.position + (Vector3)offsetPosition, transform.forward, meleeAttackDistance);
 #endif
 
 

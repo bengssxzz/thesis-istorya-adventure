@@ -113,6 +113,10 @@ public class RoomSpawnerEnemy : MonoBehaviour
         OnPlayerExitRoom().Forget();
     }
 
+    public void TriggerBattle()
+    {
+        TriggerBattleStart().Forget();
+    }
 
     private async UniTaskVoid OnPlayerEnterRooom() //When the player enter the room
     {
@@ -299,11 +303,12 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         var timer = 0f;
 
-        timer = ThesisUtility.RandomGetFloat(1.2f, 1.7f);
+        timer = ThesisUtility.RandomGetFloat(1.5f, 2f);
         await UniTask.Delay(TimeSpan.FromSeconds(timer));
 
         if (!roomArea.isPlayerInsideRoom)
         {
+            onPendingBattle = false;
             return;
         }
 
