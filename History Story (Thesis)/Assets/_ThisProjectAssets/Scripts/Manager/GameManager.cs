@@ -115,13 +115,13 @@ public class GameManager : Singleton<GameManager>
             return false;
         }
     }
-    public void UnlockSceneChapter(string sceneName) //Unlock the chapter scene
+    public void UnlockSceneChapter(string chapterName) //Unlock the chapter scene
     {
-        var selectedScene = dictChapterUnlocked.FirstOrDefault(x => x.Key.chapterName == sceneName);
+        var selectedScene = dictChapterUnlocked.FirstOrDefault(x => x.Key.chapterName == chapterName);
 
         if (!EqualityComparer<KeyValuePair<Chapter_LevelSO, bool>>.Default.Equals(selectedScene, default))
         {
-            Debug.Log($"{sceneName} EXIST IN THE GAME");
+            Debug.Log($"{chapterName} EXIST IN THE GAME");
             var dictKey = selectedScene.Key;
             var dictValue = selectedScene.Value;
 
@@ -129,13 +129,12 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            Debug.Log($"THERE ARE NO {sceneName} REGISTERED IN THE GAME MANAGER");
+            Debug.Log($"THERE ARE NO {chapterName} REGISTERED IN THE GAME MANAGER");
         }
 
         OnUnlockedScene?.Invoke();
 
     }
-
 
     public void AddCurrentChapterScore(int scoreToAdd) //Adding scores to current chapter
     {

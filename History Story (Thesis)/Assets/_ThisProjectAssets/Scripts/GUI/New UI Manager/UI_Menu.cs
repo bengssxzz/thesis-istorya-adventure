@@ -13,8 +13,13 @@ public class UI_Menu : UIAbstract
 
     [Space(10)]
     [SerializeField] private MMF_Player enablePageFB;
-    [SerializeField] private MMF_Player disenablePageFB;
+    [SerializeField] private bool playOnStart_Enable = true;
 
+    [Space(5)]
+    [SerializeField] private MMF_Player disenablePageFB;
+    [SerializeField] private bool playOnStart_disenable = true;
+
+    [Space(15)]
     public UnityEvent OnPageEnable;
     public UnityEvent OnPageDisable;
 
@@ -53,6 +58,18 @@ public class UI_Menu : UIAbstract
         }
         else
         {
+            if(UI_Manager.Instance.GetManagerState == UI_ManagerState.Start)
+            {
+                if (playOnStart_Enable)
+                {
+                     Debug.Log("ENABLE ON START PLAYING");
+                    enablePageFB?.PlayFeedbacks();
+                }
+
+                return;
+            }
+
+            Debug.Log("ENABLE ON START DONE");
             enablePageFB?.PlayFeedbacks();
         }
     }
@@ -70,6 +87,18 @@ public class UI_Menu : UIAbstract
         }
         else
         {
+            if (UI_Manager.Instance.GetManagerState == UI_ManagerState.Start)
+            {
+                if (playOnStart_disenable)
+                {
+                    Debug.Log("ONSTART PLAYING");
+                    disenablePageFB?.PlayFeedbacks();
+                }
+
+                return;
+            }
+
+            Debug.Log("ONSTART DONE");
             disenablePageFB?.PlayFeedbacks();
         }
     }

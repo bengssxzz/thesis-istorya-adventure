@@ -5,6 +5,11 @@ using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
+
+public enum UI_ManagerState
+{
+    Start, Running, End
+}
 public class UI_Manager : Singleton<UI_Manager>
 {
     [Serializable]
@@ -14,6 +19,8 @@ public class UI_Manager : Singleton<UI_Manager>
         public string[] CallActivateID;
     }
 
+    private UI_ManagerState managerState = UI_ManagerState.Start;
+
     private List<UI_Menu> menus;
     private List<UI_ButtonMenu> buttons;
 
@@ -22,6 +29,7 @@ public class UI_Manager : Singleton<UI_Manager>
 
     [SerializeField] private CallMenuOnStart callOnStart;
 
+    public UI_ManagerState GetManagerState { get { return managerState; } }
 
     protected override void Awake()
     {
@@ -48,6 +56,8 @@ public class UI_Manager : Singleton<UI_Manager>
 
         if (scene.name == loadingName || scene.name == additiveLoadingName) { return; }
 
+        managerState = UI_ManagerState.Start;
+
         //ClearMenuList(); //Clear menu list on every new loaded scene
 
         //menus = GetAllUIMenus();
@@ -60,6 +70,8 @@ public class UI_Manager : Singleton<UI_Manager>
     }
     private void OnSceneUnloaded(Scene scene)
     {
+        managerState = UI_ManagerState.End;
+
         previousMenuActive = null;
         newMenuActive = null;
 
@@ -90,6 +102,8 @@ public class UI_Manager : Singleton<UI_Manager>
 
         ActivateOnStartMenu(); //Activate all the OnStartMenu
         CallOnStart();
+
+        managerState = UI_ManagerState.Running;
     }
 
     private void CallOnStart()

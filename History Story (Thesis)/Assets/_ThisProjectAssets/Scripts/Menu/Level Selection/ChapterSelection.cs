@@ -11,8 +11,9 @@ using MoreMountains.Tools;
 public class ChapterSelection : MonoBehaviour
 {
     [Header("Pages")]
-    [SerializeField] private ChapterInfos artifactDescription;
+    [SerializeField] private ChapterInfos chapterDescription;
     [SerializeField] private ArtifactsPage artifactPage;
+    [SerializeField] private AbilityPageUI abilityPage;
 
     [Header("SubMenus")]
     [SerializeField] private MMTouchButton descriptionBtn;
@@ -59,12 +60,15 @@ public class ChapterSelection : MonoBehaviour
         }
         SubMenusBtn_Unsubscribe();
         DeselectAllChapterSlot(); //Deselect the chapter
-        artifactDescription.ResetInfos(); //Reset
+        chapterDescription.ResetInfos(); //Reset
     }
     private void Start()
     {
+        //TESTING
+        Debug.Log("TESTING");
         GameManager.Instance.CollectArtifacts("Hunters Insignia");
-
+        GameManager.Instance.CollectedAbilities("Dodge");
+        GameManager.Instance.UnlockSceneChapter("Chapter 2");
 
         var allScene = GameManager.Instance.GetListOfChapters;
         foreach (Chapter_LevelSO item in allScene)
@@ -91,11 +95,13 @@ public class ChapterSelection : MonoBehaviour
     {
         descriptionBtn.ButtonReleased.AddListener(ShowDescriptionPage);
         artifactsCollectionBtn.ButtonReleased.AddListener(ShowArtifactsCollectionPage);
+        abilitiesCollectionBtn.ButtonReleased.AddListener(ShowAbilitiesCollectionPage);
     }
     private void SubMenusBtn_Unsubscribe()
     {
         descriptionBtn.ButtonReleased.RemoveListener(ShowDescriptionPage);
         artifactsCollectionBtn.ButtonReleased.RemoveListener(ShowArtifactsCollectionPage);
+        abilitiesCollectionBtn.ButtonReleased.RemoveListener(ShowAbilitiesCollectionPage);
     }
 
     
@@ -139,8 +145,9 @@ public class ChapterSelection : MonoBehaviour
 
         ShowDescriptionPage();
 
-        artifactDescription.ShowChapterInfos(chapterSO); //Show info
-        artifactPage.SetListOfArtifacts(chapterSO.collections.artifacts);
+        SetUpInfos(chapterSO);
+
+
     }
     private void OnPressEnterScene(string defaultSceneName) //Go to the scene
     {
@@ -209,6 +216,13 @@ public class ChapterSelection : MonoBehaviour
         ////SceneManager.LoadScene(defaultSceneName);
     }
 
+
+    private void SetUpInfos(Chapter_LevelSO infoSO)
+    {
+        chapterDescription.ShowChapterInfos(infoSO); //Show info
+        artifactPage.SetListOfArtifacts(infoSO.collections.artifacts);
+        abilityPage.SetListOfAbility(infoSO.collections.abilities);
+    }
 
     private void ShowDescriptionPage()
     {
