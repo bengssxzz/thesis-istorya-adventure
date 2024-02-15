@@ -27,7 +27,7 @@ public class Chapter_LevelSO : ScriptableObject
     [Header("Chapter Info")]
     public Sprite chapter_img;
 
-    [Multiline(20)]
+    [TextArea(5,10)]
     public string description;
 
 

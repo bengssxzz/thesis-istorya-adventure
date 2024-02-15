@@ -16,9 +16,9 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        lvlSelectBtn.ButtonReleased.AddListener(lvlSelectPressed);
-        accountBtn.ButtonReleased.AddListener(accountPressed);
-        settingsBtn.ButtonReleased.AddListener(settingsPressed);
+        lvlSelectBtn.ButtonReleased.AddListener(LevelSelectPressed);
+        accountBtn.ButtonReleased.AddListener(AccountPressed);
+        settingsBtn.ButtonReleased.AddListener(SettingsPressed);
 
         PlayfabManager.Instance.OnLoginSuccess += LoginSuccess;
     }
@@ -26,9 +26,9 @@ public class MainMenu : MonoBehaviour
 
     private void OnDisable()
     {
-        lvlSelectBtn.ButtonReleased.RemoveListener(lvlSelectPressed);
-        accountBtn.ButtonReleased.RemoveListener(accountPressed);
-        settingsBtn.ButtonReleased.RemoveListener(settingsPressed);
+        lvlSelectBtn.ButtonReleased.RemoveListener(LevelSelectPressed);
+        accountBtn.ButtonReleased.RemoveListener(AccountPressed);
+        settingsBtn.ButtonReleased.RemoveListener(SettingsPressed);
 
         PlayfabManager.Instance.OnLoginSuccess -= LoginSuccess;
     }
@@ -39,16 +39,16 @@ public class MainMenu : MonoBehaviour
         PlayfabManager.Instance.LoginOnStart();
     }
 
-    private void lvlSelectPressed()
+    private void LevelSelectPressed()
     {
         UI_Manager.Instance.OpenMenu("LevelSelectPage");
     }
-    private void settingsPressed()
+    private void SettingsPressed()
     {
         UI_Manager.Instance.OpenMenu("SettingPage");
     }
 
-    private void accountPressed()
+    private void AccountPressed()
     {
         if (PlayfabManager.Instance.IsUserLogin())
         {
