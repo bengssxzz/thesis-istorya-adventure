@@ -77,7 +77,7 @@ public class QuestionsManager : Singleton<QuestionsManager>
             Debug.Log("TABLE NAME REGISTERED: " + tableName);
             string sql = String.Format("SELECT * FROM {0}", tableName);
             List<QuestionsAnswer> qanda = dbManager.Query<QuestionsAnswer>(sql);
-
+            
             questionList.Add(tableName, qanda); //TableName Key : QandAInfo Value
         }
     }

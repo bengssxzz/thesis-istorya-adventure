@@ -6,24 +6,106 @@ using PlayFab.ClientModels;
 using System;
 using Newtonsoft.Json;
 using UnityEngine.Events;
+using SimpleSQL;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using UnityEngine.Networking;
 
 [Serializable]
 public class PlayerUserData
 {
     public string userId;
+    public string displayerName;
+
     public string userIdentifier;
     public string password;
 }
 
+[Serializable]
+public class LeaderboardFields
+{
+    [PrimaryKey, Unique] public int id { get; set; }
+    public string p_name { get; set; }
+    public int p_score { get; set; }
+}
+
+
 public class PlayfabManager : Singleton<PlayfabManager>
 {
     public event Action<LoginResult> OnLoginSuccess;
-
+    public event Action OnUpdateLeaderboard;
     public event Action OnGetDataResultSuccess;
 
 
+    [SerializeField] private SimpleSQLManager sqlManagerLeaderboard;
 
-    private void SaveUserData(PlayerUserData userData)
+
+    private void CheckIfLogIn()
+    {
+        if (!PlayFabClientAPI.IsClientLoggedIn())
+        {
+            var playerData = GetUserDataAccount();
+            //LoginUsingUsername(GetUserDataAccount().userIdentifier, GetUserDataAccount().password);
+            LoginUsingUsername(playerData.userIdentifier, playerData.password);
+        }
+    }
+    public bool IsUserLogin()
+    {
+        var getuserData = GetUserDataAccount();
+
+        if (getuserData == null || !PlayFabClientAPI.IsClientLoggedIn())
+        {
+            return false;
+        }
+        return true;
+    }
+    public void LoginOnStart()
+    {
+        var playerData = GetUserDataAccount();
+
+        if (playerData == null)
+        {
+            //Go to login page
+            Debug.Log("THERE ARE NO USERDATA SAVED IN LOCAL DATA");
+        }
+        else
+        {
+            LoginUsingUsername(playerData.userIdentifier, playerData.password);
+        }
+    }
+
+
+
+    #region SAVE/LOAD/DELETE SAVE USER DATA ACCOUNT (LOCAL)
+    //private void SaveUserDataAccount(PlayerUserData userData)
+    //{
+    //    ES3Settings settings = new ES3Settings()
+    //    {
+    //        encryptionPassword = "secret_key",
+    //        encryptionType = ES3.EncryptionType.AES
+    //    };
+
+    //    ES3.Save("user_data", userData, "Secretkey.keys", settings);
+    //}
+    //public PlayerUserData GetUserDataAccount()
+    //{
+    //    ES3Settings settings = new ES3Settings()
+    //    {
+    //        encryptionPassword = "secret_key",
+    //        encryptionType = ES3.EncryptionType.AES
+    //    };
+
+    //    if (ES3.FileExists("Secretkey.keys"))
+    //    {
+    //        Debug.Log("FILE EXIST");
+    //        PlayerUserData u_data = ES3.Load<PlayerUserData>("user_data", filePath: "Secretkey.keys", settings);
+
+    //        return u_data;
+    //    }
+    //    Debug.LogError("USER DATA DOESNT EXIST");
+    //    return null;
+    //}
+    private async UniTask SaveUserDataAccount(PlayerUserData userData)
     {
         ES3Settings settings = new ES3Settings()
         {
@@ -31,9 +113,9 @@ public class PlayfabManager : Singleton<PlayfabManager>
             encryptionType = ES3.EncryptionType.AES
         };
 
-        ES3.Save("user_data", userData, "Secretkey.keys", settings);
+        await UniTask.RunOnThreadPool(() => ES3.Save("user_data", userData, "Secretkey.keys", settings));
     }
-    public PlayerUserData GetUserData()
+    public PlayerUserData GetUserDataAccount()
     {
         ES3Settings settings = new ES3Settings()
         {
@@ -43,45 +125,35 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
         if (ES3.FileExists("Secretkey.keys"))
         {
-            Debug.Log("FILE EXIST");
-            PlayerUserData u_data = ES3.Load<PlayerUserData>("user_data", filePath: "Secretkey.keys", settings);
-
-            return u_data;
-        }
-        Debug.LogError("USER DATA DOESNT EXIST");
-        return null;
-    }
-
-    private void CheckIfLogIn()
-    {
-        if (!PlayFabClientAPI.IsClientLoggedIn())
-        {
-            LoginUsingUsername(GetUserData().userIdentifier, GetUserData().password);
-        }
-    }
-    public bool IsUserLogin()
-    {
-        if(GetUserData() == null || !PlayFabClientAPI.IsClientLoggedIn())
-        {
-            return false;
-        }
-
-        return true;
-    }
-    public void LoginOnStart()
-    {
-        if(GetUserData() == null)
-        {
-            //Go to login page
-            Debug.Log("THERE ARE NO USERDATA SAVED IN LOCAL DATA");
+            Debug.Log("FILE EXISTS");
+            // Use UniTask to load the data asynchronously
+            return ES3.Load<PlayerUserData>("user_data", filePath: "Secretkey.keys", settings);
         }
         else
         {
-            LoginUsingUsername(GetUserData().userIdentifier, GetUserData().password);
+            Debug.LogError("USER DATA DOES NOT EXIST");
+            return null;
         }
     }
 
 
+    public void DeleteUserDataAccount()
+    {
+        if (ES3.FileExists("Secretkey.keys"))
+        {
+            ES3.DeleteFile("Secretkey.keys");
+            Debug.Log("DELETING A SAVE DATA FILE: SUCCESS");
+        }
+        else
+        {
+            Debug.LogWarning("THERE NO FILE TO BE DELETED");
+        }
+    }
+
+
+    #endregion
+
+    #region PLAYER CREATE/LOGIN/LOGOUT ACCOUNT
     //Creating a new account
     public void CreateNewAccount(string username, string email, string password)
     {
@@ -90,6 +162,8 @@ public class PlayfabManager : Singleton<PlayfabManager>
             Username = username,
             Email = email,
             Password = password,
+            DisplayName = username,
+            
             RequireBothUsernameAndEmail = true
         };
 
@@ -119,17 +193,32 @@ public class PlayfabManager : Singleton<PlayfabManager>
         };
 
         PlayFabClientAPI.LoginWithPlayFab(userName_Login,
-            (result) =>
+            async (result) =>
             {
                 Debug.Log("LOGIN USING USERNAME SUCCESS");
-                SaveUserData(new PlayerUserData()
+
+                var profileInfo = await GetProfileInfo(result.PlayFabId);
+
+                var savePlayerData = new PlayerUserData
                 {
                     userId = result.PlayFabId,
+                    displayerName = profileInfo.PlayerProfile.DisplayName,
                     userIdentifier = username,
                     password = password
-                });
+                };
 
-                OnLoginSuccess?.Invoke(result);
+                try
+                {
+                    await SaveUserDataAccount(savePlayerData);
+                    Debug.Log("USER DATA IS SAVED SUCCESSFULLY.");
+
+                    OnLoginSuccess?.Invoke(result);
+                }
+                catch(Exception ex)
+                {
+                    Debug.LogError("FAILED TO SAVE USER DATA: " + ex.Message);
+                }
+                
             },
             (error) =>
             {
@@ -145,17 +234,31 @@ public class PlayfabManager : Singleton<PlayfabManager>
         };
 
         PlayFabClientAPI.LoginWithEmailAddress(email_Login,
-            (result) =>
+            async (result) =>
             {
                 Debug.Log("LOGIN USING EMAIL SUCCESS");
-                SaveUserData(new PlayerUserData()
+
+                var profileInfo = await GetProfileInfo(result.PlayFabId);
+
+                var savePlayerData = new PlayerUserData
                 {
                     userId = result.PlayFabId,
+                    displayerName = profileInfo.PlayerProfile.DisplayName,
                     userIdentifier = email,
                     password = password
-                });
+                };
 
-                OnLoginSuccess?.Invoke(result);
+                try
+                {
+                    await SaveUserDataAccount(savePlayerData);
+                    Debug.Log("USER DATA IS SAVED SUCCESSFULLY.");
+
+                    OnLoginSuccess?.Invoke(result);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("FAILED TO SAVE USER DATA: " + ex.Message);
+                }
             },
             (error) =>
             {
@@ -163,8 +266,14 @@ public class PlayfabManager : Singleton<PlayfabManager>
             });
     }
 
+    public void LogoutAccount()
+    {
+        PlayFabClientAPI.ForgetAllCredentials();
+        DeleteUserDataAccount();
+    }
+    #endregion
 
-
+    #region PLAYER CLOUD DATA
     //Get data
     public void GetCloudUserData(string key, UnityAction<string, string> resultCallback)
     {
@@ -172,7 +281,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
         GetUserDataRequest userdata_request = new GetUserDataRequest()
         {
-            PlayFabId = GetUserData().userId,
+            PlayFabId = GetUserDataAccount().userId,
             Keys = new List<string>() { key }
         };
 
@@ -218,22 +327,186 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
     }
 
+    #endregion
+
+    #region LEADERBOARD
+    //Leaderboard
+    public async UniTask SetLeaderboardPlayfab(int points)
+    {
+        var request = new UpdatePlayerStatisticsRequest()
+        {
+            Statistics = new List<StatisticUpdate>
+            {
+                new StatisticUpdate
+                {
+                    StatisticName = "Istorya Adventure Leaderboard",
+                    Value = points
+                }
+            }
+        };
+
+        var taskToComplete = new UniTaskCompletionSource<UpdatePlayerStatisticsResult>();
+
+        PlayFabClientAPI.UpdatePlayerStatistics(request, 
+            result => taskToComplete.TrySetResult(result), 
+            error =>taskToComplete.TrySetException(new Exception(error.ErrorMessage)));
+
+
+        try
+        {
+            var result = await taskToComplete.Task;
+
+            Debug.Log("LEADER BOARD IS UPDATED SUCCESSFULLY");
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError("FAILED TO UPDATE ERROR: " + ex);
+        }
 
 
 
+    }
+    public async UniTask UpdateLeaderboardInSqlite()
+    {
+        Debug.Log("GETLEADERBOARD EXECUTED");
+        var request = new GetLeaderboardRequest
+        {
+            StatisticName = "Istorya Adventure Leaderboard",
+            StartPosition = 0,
+            MaxResultsCount = 10
+        };
+
+        var tcs = new UniTaskCompletionSource<GetLeaderboardResult>();
+
+        PlayFabClientAPI.GetLeaderboard(request,
+            result => tcs.TrySetResult(result),
+            error => tcs.TrySetException(new Exception(error.ErrorMessage)));
+
+        try
+        {
+            var result = await tcs.Task;
+            Debug.Log("Leaderboard fetched successfully.");
+            
+            foreach (var item in result.Leaderboard)
+            {
+                //Debug.Log($"Position:{item.Position} || PLayer ID: {item.PlayFabId} || PlayerSCore: {item.StatValue}");
+
+                string sql = "UPDATE Leaderboard SET p_name = ?, p_score = ? WHERE id = ? ";
+
+                int playerPosition = item.Position + 1;
+                string playerName = string.IsNullOrEmpty(item.DisplayName) ? item.PlayFabId : item.DisplayName;
+
+                sqlManagerLeaderboard.Execute(sql, playerName, item.StatValue, playerPosition);
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to fetch leaderboard: {ex.Message}");
+        }
+    }
+
+    public async UniTaskVoid UpdateLeaderboard()
+    {
+        var internetConnection = await CheckInternetConnectionAsync();
+
+        if (IsUserLogin())
+        {
+            if (internetConnection)
+            {
+                //There are internet connection
+                Debug.Log("THERE ARE INTERNET CONNECTION");
+                int playerTotalScore = GameManager.Instance.GetTotalScoreInChapterLevels();
+
+                Debug.Log("SET THE PLAYER SCORE TO LEADERBOARD");
+                await SetLeaderboardPlayfab(playerTotalScore);
+
+                await UniTask.Delay(1000);
+
+                Debug.Log("UPDATE THE SCORE TO LEADERBOARD");
+                await UpdateLeaderboardInSqlite();
+
+                OnUpdateLeaderboard?.Invoke();
+            }
+            else
+            {
+                Debug.LogError("THERE ARE NO INTERNET CONNECTION");
+
+            }
+        }
+        else
+        {
+            Debug.LogError("THERE ARE NO ACCOUNT SIGN IN");
+        }
+
+    }
+
+    public List<LeaderboardFields> RequestLeaderboardSQLDatabase()
+    {
+        string sql = "SELECT * FROM Leaderboard";
+
+        List<LeaderboardFields> leaderBoardList = sqlManagerLeaderboard.Query<LeaderboardFields>(sql);
+
+        return new List<LeaderboardFields>(leaderBoardList);
+    }
+
+
+    #endregion
+
+    #region GET USER DATA
+
+    private async UniTask<GetPlayerProfileResult> GetProfileInfo(string playerID)
+    {
+        var request = new GetPlayerProfileRequest
+        {
+            PlayFabId = playerID,
+            ProfileConstraints = new PlayerProfileViewConstraints
+            {
+                ShowDisplayName = true
+            }
+        };
+
+        var taskToComplete = new UniTaskCompletionSource<GetPlayerProfileResult>();
+
+        PlayFabClientAPI.GetPlayerProfile
+            (
+                request,
+                result => taskToComplete.TrySetResult(result),
+                error => taskToComplete.TrySetException(new Exception(error.ErrorMessage))
+            );
+
+        try
+        {
+            var result = await taskToComplete.Task;
+            Debug.Log("PLAYER PROFILE INFO IS SUCCESSFULY RETRIEVED");
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Debug.Log("FAILED TO RETRIEVE PLAYER PROFILE: " + ex);
+            return null;
+        }
+    }
+
+
+    #endregion
 
 
 
+    private static async UniTask<bool> CheckInternetConnectionAsync()
+    {
+        const string echoServer = "http://google.com";
 
+        bool result;
+        using (var request = UnityWebRequest.Head(echoServer))
+        {
+            request.timeout = 5;
+            await request.SendWebRequest();
 
-
-
-
-
-
-
-
-
+            result = request.result == UnityWebRequest.Result.Success && request.responseCode == 200;
+        }
+        return result;
+    }
 
 
 

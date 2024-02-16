@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 2536570246814557820}
   - component: {fileID: 7269791941974114944}
   - component: {fileID: 3060749092161643296}
+  - component: {fileID: 2689930005491408628}
   m_Layer: 5
   m_Name: LB_PositionSlot
   m_TagString: Untagged
@@ -213,6 +214,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.5
+--- !u!114 &2689930005491408628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818065828642815392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4bc98e057e7064eb99f73a1971601d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LB_playerPosition: {fileID: 6434659270989735824}
+  LB_playerName: {fileID: 5918756149722840965}
+  LB_playerScore: {fileID: 1644356254108847653}
 --- !u!1 &1065017943652726818
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +414,7 @@ GameObject:
   - component: {fileID: 1795402129897892039}
   - component: {fileID: 6434659270989735824}
   m_Layer: 5
-  m_Name: PositionNumver
+  m_Name: PositionNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7964100580416355061}
   - component: {fileID: 4831046440324676475}
   - component: {fileID: 4831046440324676476}
+  - component: {fileID: 5243131242435796587}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -102,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07c94cd1d023c14c99bb89de2e7391b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sqlManagerLeaderboard: {fileID: 0}
 --- !u!114 &4831046440324676476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,3 +116,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4490e959d6531424f947035b6981f72c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5243131242435796587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8052354834864684064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1705125264, guid: 8382d7f8352b70544aa11f6729f875f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  databaseFile: {fileID: 4900000, guid: 28269a6768716e44395e3f4c1a9031ed, type: 3}
+  overrideBasePath: 
+  overridePathMode: 0
+  changeWorkingName: 0
+  workingName: 
+  overwriteIfExists: 0
+  debugTrace: 0

@@ -9,10 +9,6 @@ using System.Linq;
 
 public class GameManager : Singleton<GameManager>
 {
-    private PlayerData playerData;
-
-    private string characterName;
-
     [SerializeField] private List<Chapter_LevelSO> listOfAllChapters = new List<Chapter_LevelSO>(); //List of all chapter scene
 
     [SerializeField] private List<ArtifactsSO> listOfArtifacts = new List<ArtifactsSO>(); //List of all artifacts in the game
@@ -32,8 +28,6 @@ public class GameManager : Singleton<GameManager>
 
 
     #region Getters and Setters
-    public PlayerData GetPlayerData { get { return playerData; } set { playerData = value; } }
-    public string GetCharacterName { get { return characterName; } }
 
     public List<Chapter_LevelSO> GetListOfChapters { get { return listOfAllChapters; } }
 
@@ -43,8 +37,8 @@ public class GameManager : Singleton<GameManager>
     public List<ArtifactsSO> GetListOfAllArtifacts { get { return listOfArtifacts; } }
     public List<ArtifactsSO> GetListOfCollectedArtifacts { get { return listOfCollectedArtifacts; } }
 
-    public Dictionary<Chapter_LevelSO, bool> GetChapterUnlocked { get { return dictChapterUnlocked; } }
-    public Dictionary<string, int> GetChapterScores { get { return dictChapterScores; } }
+    public Dictionary<Chapter_LevelSO, bool> GetDictUnlockedChapters { get { return dictChapterUnlocked; } }
+    public Dictionary<string, int> GetDictEachChapterScores { get { return dictChapterScores; } }
     #endregion
 
 
@@ -53,9 +47,8 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         //Load all the ability from the asset folder
-        playerData = new PlayerData();
-        
         LoadAbilitiesInFolder("Assets/_ThisProjectAssets/Scriptable Object/Abilities");
+
 
         InitializeSceneChapter();
     }
@@ -63,7 +56,40 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        PlayfabManager.Instance.LoginOnStart();
+
+
+
+        //Debug.Log("DELETE LATER");
+        //PlayfabManager.Instance.RequestLeaderboardSQLDatabase();
+        //AddCurrentChapterScore("Chapter 1", 20000000);
+
+        //Debug.Log("CURRENT SCORE: " + GetTotalScoreInChapterLevels());
+
+        //PlayfabManager.Instance.OnLoginSuccess += Instance_OnLoginSuccess;
     }
+
+    //private void Instance_OnLoginSuccess(PlayFab.ClientModels.LoginResult obj)
+    //{
+    //    Debug.Log("ACTION CALL LOGIN SUCCESS");
+    //    PlayfabManager.Instance.UpdateLeaderboard().Forget();
+    //}
+
+    //private void Update()
+    //{
+    //    Debug.Log("DELETE THIS LATER");
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        var score = (int)Time.time * 999;
+    //        Debug.Log("UPDATE LEADERBOARD SCORE: " + score);
+    //        PlayfabManager.Instance.SetLeaderboardPlayfab(score).Forget();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.P))
+    //    {
+    //        Debug.Log("PRINT LEADERBOARD");
+    //        PlayfabManager.Instance.UpdateLeaderboardInSqlite().Forget();
+    //    }
+    //}
 
     /* THIS THE ONE
     private void TESTINGLOADING() // Get all abilities (Scriptable Objects) inside the folder
@@ -136,6 +162,24 @@ public class GameManager : Singleton<GameManager>
 
     }
 
+
+    public void AddCurrentChapterScore(string chapterFolder, int scoreToAdd) //Adding scores to current chapter
+    {
+        Debug.Log($"YOU ARE ADDING POINT TO CURRENT FOLDER: {chapterFolder}");
+
+        if (dictChapterScores.ContainsKey(chapterFolder))
+        {
+            //If key exist in the dictionary
+            dictChapterScores[chapterFolder] += scoreToAdd;
+        }
+        else
+        {
+            //If not, then add the key and the value
+            dictChapterScores.Add(chapterFolder, scoreToAdd);
+        }
+
+        OnChangeChapterPoints?.Invoke(dictChapterScores[chapterFolder]);
+    }
     public void AddCurrentChapterScore(int scoreToAdd) //Adding scores to current chapter
     {
         var currentFolder = GetCurrentFolderName();
@@ -269,21 +313,6 @@ public class GameManager : Singleton<GameManager>
     
 
     
-    public PlayerData SavePlayerData()
-    {
-        var data = new PlayerData()
-        {
-            characterName = characterName,
-            unlockedChapters = dictChapterUnlocked,
-            playerStats = PlayerSingleton.Instance.GetPlayerScript.GetEntityStats,
-
-            unlockedAbilities = PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.GetListOfUnlockedAbilities(),
-            usedCurrentAbilities = PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities
-        };
-
-        return data;
-    }
-
     
     
 

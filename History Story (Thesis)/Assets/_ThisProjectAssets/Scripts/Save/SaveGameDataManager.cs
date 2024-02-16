@@ -8,6 +8,7 @@ using System.Linq;
 using UnityEditor;
 using Newtonsoft.Json;
 using PlayFab.ClientModels;
+using Cysharp.Threading.Tasks;
 
 public class SaveGameDataManager : Singleton<SaveGameDataManager>
 {
@@ -65,37 +66,37 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     }
 
     #region Save/Load Player Data (Statistics)
-    public PlayerData SavePlayerData()
+    public async UniTask SavePlayerData()
     {
-        var player = PlayerSingleton.Instance.GetPlayerScript;
-
-        PlayerData p_data = new PlayerData()
+        Entities player = PlayerSingleton.Instance.GetPlayerScript;
+        PlayerData playerData = new PlayerData
         {
-            unlockedAbilities = player.GetAbility_Controller.GetListOfUnlockedAbilities(),
-            usedCurrentAbilities = player.GetAbility_Controller.ListOfCurrentAbilities,
             playerStats = player.GetEntityStats,
 
-            characterName = GameManager.Instance.GetCharacterName,
             artifactsCollected = GameManager.Instance.GetListOfCollectedArtifacts,
+            abilitiesCollected = GameManager.Instance.GetListOfCollectedAbility,
+            unlockedChapters = GameManager.Instance.GetDictUnlockedChapters,
 
-            chapterScores = GameManager.Instance.GetChapterScores,
-            unlockedChapters = GameManager.Instance.GetChapterUnlocked
+            chapterScores = GameManager.Instance.GetDictEachChapterScores,
+            usedCurrentAbilities = player.GetAbility_Controller.ListOfCurrentAbilities
         };
-        return p_data;
+
+        await UniTask.RunOnThreadPool(() => ES3.Save(PLAYER_DATA_KEY, playerData, filePath: PLAYER_DATA_FILE));
+
     }
     public PlayerData LoadPlayerData()
     {
-        PlayerData getPlayerData = ES3.Load<PlayerData>(PLAYER_DATA_KEY, filePath: PLAYER_DATA_FILE);
-
-        if(getPlayerData != null)
+        if (ES3.FileExists(PLAYER_DATA_FILE))
         {
-            return getPlayerData;
+            //There's a player data
+            
+            Debug.Log("THERE'S A FILE OF PLAYER DATA");
+            return ES3.Load<PlayerData>(PLAYER_DATA_KEY, filePath: PLAYER_DATA_FILE);
         }
         else
         {
-            Debug.LogWarning("THE PLAYER DATA FILE IS NOT YET EXIST");
-
-            //TODO: When the file is not yet exist, then direct the player to account set up
+            //There are no player data
+            Debug.LogError("THERE'S NO FILE OF PLAYER DATA FOUND");
             return null;
         }
     }
@@ -325,6 +326,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
 
 
+
+
     private bool IsKeyExist(string findKey, string overrideFile = "") //To check if this scene is already saved
     {
         if (string.IsNullOrEmpty(overrideFile))
@@ -337,8 +340,6 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         }
     }
-
-
     private string GetIdentifier(string overrideFileName = "") 
     {
         if (string.IsNullOrEmpty(overrideFileName))

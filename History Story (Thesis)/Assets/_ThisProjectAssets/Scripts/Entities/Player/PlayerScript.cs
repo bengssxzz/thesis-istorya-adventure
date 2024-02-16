@@ -47,6 +47,7 @@ public class PlayerScript : Entities
         base.Start();
 
         var playerData = SaveGameDataManager.Instance.LoadPlayerData();
+
         if(playerData != null)
         {
             Debug.Log("SET CURRENT ABILITY FROM LOCAL SAVED FILE");
