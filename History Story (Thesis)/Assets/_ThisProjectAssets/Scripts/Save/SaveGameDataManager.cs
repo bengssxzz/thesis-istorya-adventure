@@ -50,15 +50,18 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     //}
 
     #region LOCAL SAVING
-    public void SaveChapterScene()
+    public async UniTaskVoid SaveChapterScene()
     {
-        ES3.Save("room_trigger", SaveRoomAreaInScene(), filePath: GetIdentifier());
-        ES3.Save("timeline_trigger", SaveTriggerTimelineInScene(), filePath: GetIdentifier());
+        var saveRoomArea = await SaveRoomAreaInScene();
+        var saveTriggerTimeline = await SaveTriggerTimelineInScene();
+
+        ES3.Save("room_trigger", saveRoomArea, filePath: GetIdentifier());
+        ES3.Save("timeline_trigger", saveTriggerTimeline, filePath: GetIdentifier());
     }
-    public void LoadChapterScene()
+    public async void LoadChapterScene()
     {
-        LoadRoomAreaInScene();
-        LoadTriggerTimelineInScene();
+        await LoadRoomAreaInScene();
+        await LoadTriggerTimelineInScene();
     }
     public void GetLatestSavedScene(out PlayerSceneSaveData playerSavedScene)
     {
@@ -104,7 +107,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
 
     #region SAVE/LOAD PLAYER IN CHAPTER (Like Position, Kung nasan yung last ni player na scene)
-    public void SavePlayerScene(Vector3 spawnPosition) //Saving the player in this chapter level
+    public async UniTaskVoid SavePlayerScene(Vector3 spawnPosition)
     {
         var playerData = new PlayerSceneSaveData()
         {
@@ -112,10 +115,23 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             spawnPosition = spawnPosition
         };
 
-        ES3.Save(sceneKeyNamePD, playerData, filePath: GetIdentifier(sceneFileNamePD)); //Save the player
+        ES3.Save(sceneKeyNamePD, playerData, filePath: GetIdentifier(sceneFileNamePD));
 
-        SaveChapterScene(); //Save the changes in the scene
+        await UniTask.Delay(1000);
     }
+
+    //public void SavePlayerScene(Vector3 spawnPosition) //Saving the player in this chapter level
+    //{
+    //    var playerData = new PlayerSceneSaveData()
+    //    {
+    //        sceneName = GetCurrentSceneName(),
+    //        spawnPosition = spawnPosition
+    //    };
+
+    //    ES3.Save(sceneKeyNamePD, playerData, filePath: GetIdentifier(sceneFileNamePD)); //Save the player
+
+    //    SaveChapterScene(); //Save the changes in the scene
+    //}
     public PlayerSceneSaveData LoadPlayerScene(string folderName) //Load the player in chapter scene
     {
         var filePlayerPathData = string.Format("{0}/{1}.thesis", folderName, sceneFileNamePD);
@@ -143,59 +159,53 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         }
     }
 
-    
+
     #endregion
 
     #region SAVE/LOAD BATTLE TRIGGER IN THE SCENE
     //To Save the battle trigger in the scene
-    private List<RoomArea> FindAllRoomAreaInScene() //Find all room area in the scene
+    private List<RoomArea> FindAllRoomAreaInScene()
     {
-        IEnumerable<RoomArea> roomAreas = FindObjectsOfType<RoomArea>();
+        RoomArea[] roomAreas = FindObjectsOfType<RoomArea>();
         return new List<RoomArea>(roomAreas);
     }
 
-    private List<RoomBattleSaveData> SaveRoomAreaInScene()
+    private async UniTask<List<RoomBattleSaveData>> SaveRoomAreaInScene()
     {
-        List<RoomBattleSaveData> saveRoomArea = new List<RoomBattleSaveData>();
+        var saveRoomArea = new List<RoomBattleSaveData>();
+        var roomAreas = FindAllRoomAreaInScene();
 
-        foreach (var item in FindAllRoomAreaInScene())
+        foreach (var room in roomAreas)
         {
-            //saveRoomArea.Add(new RoomBattleSaveData(item.GetBattleTrigger));
-
             RoomBattleSaveData data = new RoomBattleSaveData()
             {
-                roomId = item.GetBattleTrigger.GetInstanceID(),
-                desiredBattleNextEnter = item.GetBattleTrigger.GetNextDesiredBattleTrigger,
-                isAlreadyTrigger = item.GetBattleTrigger.IsAlreadyTriggerArea
+                roomId = room.GetBattleTrigger.GetInstanceID(),
+                desiredBattleNextEnter = room.GetBattleTrigger.GetNextDesiredBattleTrigger,
+                isAlreadyTrigger = room.GetBattleTrigger.IsAlreadyTriggerArea
             };
 
             saveRoomArea.Add(data);
         }
 
+        await UniTask.Yield();
+
         return saveRoomArea;
-        //ES3.Save<List<RoomBattleSaveData>>(GetKeyName(), saveRoomArea, filePath: GetFilePath());
-        //Debug.Log("SAVING BATTLE AREA");
     }
-    private void LoadRoomAreaInScene()
+    private async UniTask LoadRoomAreaInScene()
     {
         if (IsKeyExist("room_trigger"))
         {
-            List<RoomBattleSaveData> roomAreaData = ES3.Load<List<RoomBattleSaveData>>("room_trigger", filePath: GetIdentifier());
-
-            //var loadedData = ES3.Load<List<RoomBattleSaveData>>(GetKeyName(), defaultValue: new List<RoomBattleSaveData>(), filePath: GetFilePath());
+            var roomAreaData = ES3.Load<List<RoomBattleSaveData>>("room_trigger", filePath: GetIdentifier());
 
             if (roomAreaData != null)
             {
-                //List<RoomBattleSaveData> roomDatas = roomAreaData.roomBattleSaveDatas;
+                var roomAreas = FindAllRoomAreaInScene();
 
-                foreach (RoomArea room in FindAllRoomAreaInScene())
+                foreach (var room in roomAreas)
                 {
-                    //RoomBattleSaveData data = loadedData.FirstOrDefault(x => x.roomId == room.GetInstanceID()); //Find the object with the same ID
-                    //RoomBattleSaveData data = roomAreaData.FirstOrDefault(x => x.roomId == room.GetBattleTrigger.GetInstanceID());
-                    RoomBattleSaveData roomData = roomAreaData.FirstOrDefault(x => x.roomId == room.GetBattleTrigger.GetInstanceID());
+                    var roomData = roomAreaData.FirstOrDefault(x => x.roomId == room.GetBattleTrigger.GetInstanceID());
                     if (roomData != null)
                     {
-                        //Loaded the data
                         Debug.Log($"ID: {room.GetInstanceID()} || {roomData.isAlreadyTrigger}");
                         room.GetBattleTrigger.IsAlreadyTriggerArea = roomData.isAlreadyTrigger;
                         room.GetBattleTrigger.GetNextDesiredBattleTrigger = roomData.desiredBattleNextEnter;
@@ -207,6 +217,9 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
                 }
             }
         }
+
+        await UniTask.Yield();
+
     }
     #endregion
 
@@ -214,14 +227,15 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     //Chapter scene saving
     private List<TriggerTimeLine> FindAllTriggerTimelineInScene() //Find all the trigger timeline in the scene
     {
-        IEnumerable<TriggerTimeLine> triggerTimeLines = FindObjectsOfType<TriggerTimeLine>();
+        TriggerTimeLine[] triggerTimeLines = FindObjectsOfType<TriggerTimeLine>();
         return new List<TriggerTimeLine>(triggerTimeLines);
     }
-    private List<TimelineCutscenesSaveData> SaveTriggerTimelineInScene()
+    private async UniTask<List<TimelineCutscenesSaveData>> SaveTriggerTimelineInScene()
     {
         List<TimelineCutscenesSaveData> saveCutscenes = new List<TimelineCutscenesSaveData>();
+        var triggerTimelines = FindAllTriggerTimelineInScene();
 
-        foreach (TriggerTimeLine item in FindAllTriggerTimelineInScene())
+        foreach (TriggerTimeLine item in triggerTimelines)
         {
             TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
             {
@@ -232,9 +246,10 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             saveCutscenes.Add(data);
         }
 
+        await UniTask.Yield();
         return saveCutscenes;
     }
-    private void LoadTriggerTimelineInScene()
+    private async UniTask LoadTriggerTimelineInScene()
     {
         if (IsKeyExist("timeline_trigger"))
         {
@@ -243,8 +258,9 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             if (sceneData != null)
             {
                 //List<TimelineCutscenesSaveData> timelineDatas = sceneData.timelineCutscenesSaveDatas; //load the list of the timeline triggers from file
+                var triggerTimelines = FindAllTriggerTimelineInScene();
 
-                foreach (var item in FindAllTriggerTimelineInScene())
+                foreach (var item in triggerTimelines)
                 {
                     TimelineCutscenesSaveData data = sceneData.FirstOrDefault(x => x.id == item.GetInstanceID()); //Find the timeline with the same instance id
 
@@ -259,6 +275,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
                 }
             }
         }
+
+        await UniTask.Yield();
     }
 
 
@@ -269,56 +287,6 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     #endregion
 
 
-
-    //#region CLOUD SAVING
-    //public void SavePlayerDataCloud() //Save player data in cloud
-    //{
-    //    var jsonPlayerData = ES3.LoadRawString(filePath: PLAYER_DATA_FILE);
-
-    //    PlayfabManager.Instance.SetCloudUserData(PLAYER_DATA_KEY, jsonPlayerData);
-    //}
-    //public void RequestRetrievePlayerData() //Request for retrieving data in cloud
-    //{
-    //    PlayfabManager.Instance.GetCloudUserData(PLAYER_DATA_KEY, (key, value) =>
-    //    {
-    //        Debug.Log($"SUCCESS RETRIEVE: KEY: {key}");
-    //        ES3.SaveRaw(value, PLAYER_DATA_FILE);
-    //    });
-    //}
-    //public void LoadPlayerDataCloud()
-    //{
-    //    Debug.Log("LOAD DATA CALL");
-    //    //PlayfabManager.Instance.LoadDataFromPlayfab(PLAYER_DATA_KEY, OnUserDataLoaded);
-    //    PlayfabManager.Instance.GetCloudUserData(PLAYER_DATA_KEY, (key, value) => 
-    //    {
-    //        Debug.Log($"SUCCESS RETRIEVE: KEY: {key}");
-    //        ES3.SaveRaw(value, "TESTINGCLOUDLOAD.thesis");
-    //    });
-
-    //}
-
-    //private void OnUserDataLoaded(GetUserDataResult dataResult)
-    //{
-    //    Debug.Log("LOADED DATA");
-    //    if (dataResult != null && dataResult.Data.ContainsKey(PLAYER_DATA_KEY))
-    //    {
-    //        Debug.LogError("THERE ARE RESULT IN THE CLOUD");
-
-    //        var resultValue = dataResult.Data["PLAYER_DATA_KEY"].Value;
-
-    //        ES3.SaveRaw(resultValue, "TESTINGCLOUDLOAD.thesis");
-            
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("THERE ARE NO RESULT");
-    //        return;
-    //    }
-    //}
-
-
-
-    //#endregion
 
 
 

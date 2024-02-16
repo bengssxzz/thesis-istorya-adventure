@@ -143,7 +143,6 @@ public class AccountPageUI : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogError("Error retrieving player data: " + ex.Message);
-            // Handle the error appropriately
         }
     }
     #endregion

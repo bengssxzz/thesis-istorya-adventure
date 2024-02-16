@@ -48,10 +48,8 @@ public class SafeArea : MonoBehaviour
         Debug.Log("PLAYER ENTER THE SAFE LOCATION");
         DialogueManager.ShowAlert(alertMessageEnterRoom, 2f);
 
-        SaveGameDataManager.Instance.SavePlayerScene(spawnPosition.position);
-
-        //Save player progress
-        //SavePlayerScene();
+        SaveGameDataManager.Instance.SaveChapterScene().Forget(); //Save the changes in the level scene
+        SaveGameDataManager.Instance.SavePlayerScene(spawnPosition.position).Forget(); //Save the player in the scene
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -60,9 +58,8 @@ public class SafeArea : MonoBehaviour
         Debug.Log("PLAYER EXIT THE SAFE LOCATION");
         DialogueManager.ShowAlert(alertMessageExitRoom, 2f);
 
-        SaveGameDataManager.Instance.SavePlayerScene(spawnPosition.position);
-        //Save player progress
-        //SavePlayerScene();
+        SaveGameDataManager.Instance.SaveChapterScene().Forget(); //Save the scene
+        SaveGameDataManager.Instance.SavePlayerScene(spawnPosition.position).Forget();
     }
 
 
