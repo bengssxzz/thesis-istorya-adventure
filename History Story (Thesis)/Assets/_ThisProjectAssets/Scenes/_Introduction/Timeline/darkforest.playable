@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Markers:
     m_Objects:
     - {fileID: 2184278983903149700}
+    - {fileID: 5512704491314051446}
 --- !u!74 &-6105869251784804184
 AnimationClip:
   m_ObjectHideFlags: 0
@@ -200,7 +201,16 @@ AnimationClip:
         time: 3.55
         value: {x: 0.0000009536743, y: 0, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0, y: 10.081547, z: 0}
+        outSlope: {x: 0, y: 10.08156, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 3.7333333
+        value: {x: 0.0000009536743, y: 1.8482866, z: 0}
+        inSlope: {x: -0, y: 10.08156, z: -0}
+        outSlope: {x: 0, y: 10.081511, z: 0}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
@@ -208,7 +218,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 3.8
         value: {x: 0.0000009536743, y: 2.5203867, z: 0}
-        inSlope: {x: -0, y: 10.081547, z: -0}
+        inSlope: {x: -0, y: 10.081511, z: -0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
         weightedMode: 0
@@ -270,6 +280,15 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
+        time: 3.7333333
+        value: 0.0000009536743
+        inSlope: -0
+        outSlope: 0
+        tangentMode: 69
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 3.8
         value: 0.0000009536743
         inSlope: -0
@@ -292,7 +311,16 @@ AnimationClip:
         time: 3.55
         value: 0
         inSlope: 0
-        outSlope: 10.081547
+        outSlope: 10.08156
+        tangentMode: 69
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 3.7333333
+        value: 1.8482866
+        inSlope: 10.08156
+        outSlope: 10.081511
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
@@ -300,7 +328,7 @@ AnimationClip:
       - serializedVersion: 3
         time: 3.8
         value: 2.5203867
-        inSlope: 10.081547
+        inSlope: 10.081511
         outSlope: 0
         tangentMode: 69
         weightedMode: 0
@@ -320,6 +348,15 @@ AnimationClip:
         time: 3.55
         value: 0
         inSlope: 0
+        outSlope: 0
+        tangentMode: 69
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 3.7333333
+        value: 0
+        inSlope: -0
         outSlope: 0
         tangentMode: 69
         weightedMode: 0
@@ -848,6 +885,25 @@ MonoBehaviour:
     m_DisplayName: CM vcam2
   m_Markers:
     m_Objects: []
+--- !u!114 &5512704491314051446
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e90e618837131468e6827960d1cfd2, type: 3}
+  m_Name: Conversation Marker
+  m_EditorClassIdentifier: 
+  m_Time: 3.7333333333333334
+  conversation: New Conversation 8
+  dialogueEntry: 0
+  showChoiceMenu: 0
+  dialogueUntil: 0
+  retroactive: 0
+  emitOnce: 0
 --- !u!114 &5630836550214058742
 MonoBehaviour:
   m_ObjectHideFlags: 1
