@@ -97,6 +97,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c562f92f3b8b435d98ac3b65547b755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &56136084193202596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5732136673019527166}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5732136673019527166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56136084193202596}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.052954655, y: 0.09087291, z: -0.0012699962}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3719126659226642806}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &425014730409121061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1693,6 +1724,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3719126659225698073}
+  - {fileID: 5732136673019527166}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1788,11 +1820,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 83976
   canAttack: 1
-  attackHolder: {fileID: 0}
+  attackHolder: {fileID: 5732136673019527166}
   fireRate: 0.1
   rangedAttackDistance: 0
   attackStates: []
-  meleeAttackDistance: 0.16
+  offsetPosition: {x: 0, y: 0.028}
+  meleeAttackDistance: 0.18
   delayAttack: 0.5
 --- !u!114 &3719126659226642794
 MonoBehaviour:
@@ -1864,8 +1897,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0009774864, y: 0.010851562}
-  m_Size: {x: 0.17650965, y: 0.28936476}
+  m_Offset: {x: -0.0009774864, y: 0.035845086}
+  m_Size: {x: 0.17650965, y: 0.31135908}
   m_Direction: 0
 --- !u!210 &3719126659226642803
 SortingGroup:

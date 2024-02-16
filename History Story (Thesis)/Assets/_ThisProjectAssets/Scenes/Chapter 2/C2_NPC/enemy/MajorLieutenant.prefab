@@ -32,6 +32,37 @@ Transform:
   m_Father: {fileID: 7847790646544124083}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &379631156671082477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7199604090227339779}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7199604090227339779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379631156671082477}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.06535472, y: 0.011162735, z: 0.0030347705}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3719126659226642806}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &594688776460719624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,11 +1842,11 @@ GameObject:
   - component: {fileID: 3719126659226642794}
   - component: {fileID: 3719126659226642795}
   - component: {fileID: 3719126659226642804}
-  - component: {fileID: 3719126659226642805}
   - component: {fileID: 3719126659226642803}
   - component: {fileID: 7376364347714267823}
   - component: {fileID: 8780504999550975509}
   - component: {fileID: -8115236816656020749}
+  - component: {fileID: 4237691407849884289}
   m_Layer: 7
   m_Name: MajorLieutenant
   m_TagString: Enemy
@@ -1836,6 +1867,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3719126659225698073}
+  - {fileID: 7199604090227339779}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1931,11 +1963,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 67592
   canAttack: 1
-  attackHolder: {fileID: 0}
+  attackHolder: {fileID: 7199604090227339779}
   fireRate: 0.1
   rangedAttackDistance: 0
   attackStates: []
-  meleeAttackDistance: 0.24
+  offsetPosition: {x: 0, y: 0.05}
+  meleeAttackDistance: 0.3
   delayAttack: 0.5
 --- !u!114 &3719126659226642794
 MonoBehaviour:
@@ -1994,22 +2027,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &3719126659226642805
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3719126659226642796}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.0059439614, y: -0.076582596}
-  serializedVersion: 2
-  m_Radius: 0.097149506
 --- !u!210 &3719126659226642803
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -2074,6 +2091,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossName: Lieutenant Manuel Ros
+--- !u!70 &4237691407849884289
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0022166297, y: 0.025491223}
+  m_Size: {x: 0.18967171, y: 0.40372643}
+  m_Direction: 0
 --- !u!1 &3735795774933696482
 GameObject:
   m_ObjectHideFlags: 0

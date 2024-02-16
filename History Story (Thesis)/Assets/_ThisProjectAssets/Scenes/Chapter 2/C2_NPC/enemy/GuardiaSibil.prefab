@@ -2021,10 +2021,10 @@ GameObject:
   - component: {fileID: 3719126659226642794}
   - component: {fileID: 3719126659226642795}
   - component: {fileID: 3719126659226642804}
-  - component: {fileID: 3719126659226642805}
   - component: {fileID: 3719126659226642803}
   - component: {fileID: 7376364347714267823}
   - component: {fileID: 8780504999550975509}
+  - component: {fileID: 3575912214776758357}
   m_Layer: 7
   m_Name: GuardiaSibil
   m_TagString: Enemy
@@ -2144,7 +2144,8 @@ MonoBehaviour:
   fireRate: 0.1
   rangedAttackDistance: 0
   attackStates: []
-  meleeAttackDistance: 0.16
+  offsetPosition: {x: 0, y: 0.03}
+  meleeAttackDistance: 0.2
   delayAttack: 0.5
 --- !u!114 &3719126659226642794
 MonoBehaviour:
@@ -2203,22 +2204,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &3719126659226642805
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3719126659226642796}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.024960577}
-  serializedVersion: 2
-  m_Radius: 0.10448009
 --- !u!210 &3719126659226642803
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -2270,6 +2255,22 @@ MonoBehaviour:
   wallAvoidFalloff: 1
   priority: 0.5
   debug: 0
+--- !u!70 &3575912214776758357
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0015763417, y: 0.05044329}
+  m_Size: {x: 0.15004958, y: 0.32532084}
+  m_Direction: 0
 --- !u!1 &3816278106701158378
 GameObject:
   m_ObjectHideFlags: 0
