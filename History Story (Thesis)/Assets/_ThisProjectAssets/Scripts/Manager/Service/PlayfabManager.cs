@@ -32,6 +32,9 @@ public class LeaderboardFields
 
 public class PlayfabManager : Singleton<PlayfabManager>
 {
+    const string PLAYER_DATA_FILE = "PlayerData.thesis";
+    const string PLAYER_DATA_KEY = "player_key";
+
     public event Action<LoginResult> OnLoginSuccess;
     public event Action OnUpdateLeaderboard;
     public event Action OnGetDataResultSuccess;
@@ -273,11 +276,19 @@ public class PlayfabManager : Singleton<PlayfabManager>
     }
     #endregion
 
-    #region PLAYER CLOUD DATA
+    #region PLAYER GET/SET DATA IN CLOUD
     //Get data
-    public void GetCloudUserData(string key, UnityAction<string, string> resultCallback)
+    public async UniTask<string> GetDataInUserCloud(string key)
     {
-        CheckIfLogIn();
+        var checkInternet = await CheckInternetConnectionAsync();
+
+        if (!checkInternet) 
+        {
+            Debug.LogWarning("THERE ARE NO INTERNET CONNECTION");
+            return null; 
+        }
+
+        var tcs = new UniTaskCompletionSource<string>();
 
         GetUserDataRequest userdata_request = new GetUserDataRequest()
         {
@@ -285,47 +296,86 @@ public class PlayfabManager : Singleton<PlayfabManager>
             Keys = new List<string>() { key }
         };
 
-
         PlayFabClientAPI.GetUserData(userdata_request,
             (result) =>
             {
-                //Get data success
-                Debug.Log("RETRIEVE USER DATA SUCCESS");
+            // Get data success
+            Debug.Log("RETRIEVE USER DATA SUCCESS");
                 if (result.Data.ContainsKey(key))
                 {
-                    resultCallback?.Invoke(key, result.Data[key].Value);
+                    tcs.TrySetResult(result.Data[key].Value);
+                }
+                else
+                {
+                    tcs.TrySetResult(null);
                 }
             },
             (error) =>
             {
                 Debug.Log("COULD NOT RETRIEVE USER DATA: " + error.ErrorMessage);
-                resultCallback?.Invoke(key, null);
+                tcs.TrySetException(new Exception(error.ErrorMessage));
             });
 
-
+        return await tcs.Task;
     }
-    public void SetCloudUserData(string key, string value)
+    public async UniTaskVoid SetDataInUserCloud(string key, string value)
     {
-        CheckIfLogIn();
+        var checkInternet = await CheckInternetConnectionAsync();
 
+        if (!checkInternet)
+        {
+            Debug.LogWarning("THERE IS NO INTERNET CONNECTION");
+            return;
+        }
+
+        var tcs = new UniTaskCompletionSource<bool>();
 
         UpdateUserDataRequest updatedata_request = new UpdateUserDataRequest()
         {
             Data = new Dictionary<string, string>() { { key, value } }
         };
 
-
         PlayFabClientAPI.UpdateUserData(updatedata_request,
             (result) =>
             {
                 Debug.Log($"{key} KEY IS SUCCESSFULLY SAVED IN CLOUD");
+                tcs.TrySetResult(true);
             },
             (error) =>
             {
-                Debug.LogError($"{key} KEY SAVE UNSUCCESSFUL, ERROR: " + error.ErrorMessage);
+                Debug.LogError($"{key} KEY SAVE UNSUCCESSFUL, ERROR: {error.ErrorMessage}");
+                tcs.TrySetException(new Exception(error.ErrorMessage));
             });
 
+        await tcs.Task; // This line is removed
     }
+
+    #endregion
+
+    #region CREATE BACKUP/RETREIVE DATA IN CLOUD
+
+    public void SavePlayerDataCloud() //Save player data in cloud
+    {
+        var jsonPlayerData = ES3.LoadRawString(filePath: PLAYER_DATA_FILE);
+
+        SetDataInUserCloud(PLAYER_DATA_KEY, jsonPlayerData).Forget();
+    }
+    public async UniTask RequestRetrievePlayerData() //Request for retrieving data in cloud
+    {
+        try
+        {
+            var getData = await GetDataInUserCloud(PLAYER_DATA_KEY);
+
+            Debug.Log($"SUCCESS RETRIEVE: KEY: {PLAYER_DATA_KEY}");
+            ES3.SaveRaw(getData, PLAYER_DATA_FILE);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("FAILED GETTING A DATA: " + ex.Message);
+            throw; // Rethrow the exception to be caught by the caller
+        }
+    }
+
 
     #endregion
 
@@ -497,7 +547,8 @@ public class PlayfabManager : Singleton<PlayfabManager>
     {
         const string echoServer = "http://google.com";
 
-        bool result;
+        bool result = false;
+
         using (var request = UnityWebRequest.Head(echoServer))
         {
             request.timeout = 5;
@@ -505,6 +556,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
             result = request.result == UnityWebRequest.Result.Success && request.responseCode == 200;
         }
+
         return result;
     }
 

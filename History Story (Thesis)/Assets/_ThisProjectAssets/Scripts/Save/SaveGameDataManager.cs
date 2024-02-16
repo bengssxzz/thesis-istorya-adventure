@@ -270,55 +270,55 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
 
 
-    #region CLOUD SAVING
-    public void SavePlayerDataCloud() //Save player data in cloud
-    {
-        var jsonPlayerData = ES3.LoadRawString(filePath: PLAYER_DATA_FILE);
+    //#region CLOUD SAVING
+    //public void SavePlayerDataCloud() //Save player data in cloud
+    //{
+    //    var jsonPlayerData = ES3.LoadRawString(filePath: PLAYER_DATA_FILE);
 
-        PlayfabManager.Instance.SetCloudUserData(PLAYER_DATA_KEY, jsonPlayerData);
-    }
-    public void RequestRetrievePlayerData() //Request for retrieving data in cloud
-    {
-        PlayfabManager.Instance.GetCloudUserData(PLAYER_DATA_KEY, (key, value) =>
-        {
-            Debug.Log($"SUCCESS RETRIEVE: KEY: {key}");
-            ES3.SaveRaw(value, PLAYER_DATA_FILE);
-        });
-    }
-    public void LoadPlayerDataCloud()
-    {
-        Debug.Log("LOAD DATA CALL");
-        //PlayfabManager.Instance.LoadDataFromPlayfab(PLAYER_DATA_KEY, OnUserDataLoaded);
-        PlayfabManager.Instance.GetCloudUserData(PLAYER_DATA_KEY, (key, value) => 
-        {
-            Debug.Log($"SUCCESS RETRIEVE: KEY: {key}");
-            ES3.SaveRaw(value, "TESTINGCLOUDLOAD.thesis");
-        });
+    //    PlayfabManager.Instance.SetCloudUserData(PLAYER_DATA_KEY, jsonPlayerData);
+    //}
+    //public void RequestRetrievePlayerData() //Request for retrieving data in cloud
+    //{
+    //    PlayfabManager.Instance.GetCloudUserData(PLAYER_DATA_KEY, (key, value) =>
+    //    {
+    //        Debug.Log($"SUCCESS RETRIEVE: KEY: {key}");
+    //        ES3.SaveRaw(value, PLAYER_DATA_FILE);
+    //    });
+    //}
+    //public void LoadPlayerDataCloud()
+    //{
+    //    Debug.Log("LOAD DATA CALL");
+    //    //PlayfabManager.Instance.LoadDataFromPlayfab(PLAYER_DATA_KEY, OnUserDataLoaded);
+    //    PlayfabManager.Instance.GetCloudUserData(PLAYER_DATA_KEY, (key, value) => 
+    //    {
+    //        Debug.Log($"SUCCESS RETRIEVE: KEY: {key}");
+    //        ES3.SaveRaw(value, "TESTINGCLOUDLOAD.thesis");
+    //    });
 
-    }
+    //}
 
-    private void OnUserDataLoaded(GetUserDataResult dataResult)
-    {
-        Debug.Log("LOADED DATA");
-        if (dataResult != null && dataResult.Data.ContainsKey(PLAYER_DATA_KEY))
-        {
-            Debug.LogError("THERE ARE RESULT IN THE CLOUD");
+    //private void OnUserDataLoaded(GetUserDataResult dataResult)
+    //{
+    //    Debug.Log("LOADED DATA");
+    //    if (dataResult != null && dataResult.Data.ContainsKey(PLAYER_DATA_KEY))
+    //    {
+    //        Debug.LogError("THERE ARE RESULT IN THE CLOUD");
 
-            var resultValue = dataResult.Data["PLAYER_DATA_KEY"].Value;
+    //        var resultValue = dataResult.Data["PLAYER_DATA_KEY"].Value;
 
-            ES3.SaveRaw(resultValue, "TESTINGCLOUDLOAD.thesis");
+    //        ES3.SaveRaw(resultValue, "TESTINGCLOUDLOAD.thesis");
             
-        }
-        else
-        {
-            Debug.LogError("THERE ARE NO RESULT");
-            return;
-        }
-    }
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("THERE ARE NO RESULT");
+    //        return;
+    //    }
+    //}
 
 
 
-    #endregion
+    //#endregion
 
 
 

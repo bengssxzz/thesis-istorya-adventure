@@ -41,29 +41,57 @@ public class AccountPageUI : MonoBehaviour
         PlayerUserData userData = PlayfabManager.Instance.GetUserDataAccount();
         PlayerData gameSavedFile = SaveGameDataManager.Instance.LoadPlayerData();
 
-        Debug.Log($"NAME: {userData.displayerName} || ID: {userData.userId}");
+        if(userData != null)
+        {
+            playerName.text = userData.displayerName;
+            playerId.text = userData.userId;
+        }
+        else
+        {
+            Debug.LogError("FAILED TO OPEN THE ACCOUNT PAGE: THERE ARE NO SAVED USER DATA");
+            PlayfabManager.Instance.LogoutAccount();
+        }
 
-        playerName.text = userData.displayerName;
-        playerId.text = userData.userId;
+        if (gameSavedFile != null)
+        {
+            characterStatsInfo.text = SetPlayerStats(gameSavedFile.playerStats);
+            artifactsCollected.text = SetPlayerTotalArtifactsCollected(gameSavedFile.artifactsCollected.Count);
+            abilitiesCollected.text = SetPlayerTotalAbilitiesCollected(gameSavedFile.abilitiesCollected.Count);
+            totalPoints.text = SetPlayerTotalScore(gameSavedFile.chapterScores.Values.Sum());
+        }
+        else
+        {
+            characterStatsInfo.text = SetPlayerStats(null);
+            artifactsCollected.text = SetPlayerTotalArtifactsCollected(0);
+            abilitiesCollected.text = SetPlayerTotalAbilitiesCollected(0);
+            totalPoints.text = SetPlayerTotalScore(0);
+        }
 
-        characterStatsInfo.text = SetPlayerStats(gameSavedFile.playerStats);
-        artifactsCollected.text = SetPlayerTotalArtifactsCollected(gameSavedFile.artifactsCollected.Count);
-        abilitiesCollected.text = SetPlayerTotalAbilitiesCollected(gameSavedFile.abilitiesCollected.Count);
-        totalPoints.text = SetPlayerTotalScore(gameSavedFile.chapterScores.Values.Sum());
+        
     }
 
     #region SETTING A TEXT
     private string SetPlayerStats(EntityStatistics entityStats)
     {
-        var setText = $"Health: {entityStats.maxHealth}\n" +
-              $"Damage: {entityStats.maxDamage}\n" +
-              $"Defense: {entityStats.maxDefense}\n" +
-              $"Move Speed: {entityStats.maxMoveSpeed}\n" +
-              $"Attack Speed: {entityStats.maxAttackSpeed}\n" +
-              $"Critical Damage: {entityStats.maxCriticalDamage}\n" +
-              $"Dodge Chance: {entityStats.maxDodgeChance}\n" +
-              $"Critical Chance: {entityStats.maxCriticalChance}\n" +
-              $"Life Steal: {entityStats.lifeSteal}";
+        float maxHealth = entityStats != null ? entityStats.maxHealth : 0;
+        float maxDamage = entityStats != null ? entityStats.maxDamage : 0;
+        float maxDefense = entityStats != null ? entityStats.maxDefense : 0;
+        float maxMoveSpeed = entityStats != null ? entityStats.maxMoveSpeed : 0;
+        float maxAttackSpeed = entityStats != null ? entityStats.maxAttackSpeed : 0;
+        float maxCriticalDamage = entityStats != null ? entityStats.maxCriticalDamage : 0;
+        float maxDodgeChance = entityStats != null ? entityStats.maxDodgeChance : 0;
+        float maxCriticalChance = entityStats != null ? entityStats.maxCriticalChance : 0;
+        float lifeSteal = entityStats != null ? entityStats.lifeSteal : 0;
+
+        var setText = $"Health: {maxHealth}\n" +
+                      $"Damage: {maxDamage}\n" +
+                      $"Defense: {maxDefense}\n" +
+                      $"Move Speed: {maxMoveSpeed}\n" +
+                      $"Attack Speed: {maxAttackSpeed}\n" +
+                      $"Critical Damage: {maxCriticalDamage}\n" +
+                      $"Dodge Chance: {maxDodgeChance}\n" +
+                      $"Critical Chance: {maxCriticalChance}\n" +
+                      $"Life Steal: {lifeSteal}";
 
         return setText;
     }
@@ -102,17 +130,21 @@ public class AccountPageUI : MonoBehaviour
 
     private void CreateBackUpData()
     {
-        SaveGameDataManager.Instance.SavePlayerDataCloud();
-
-        //SceneTransitionManager.Instance.SceneTransitionInstant(SceneManager.GetActiveScene().name);
+        PlayfabManager.Instance.SavePlayerDataCloud();
     }
 
-    private void RetriveData()
+    private async void RetriveData()
     {
-        SaveGameDataManager.Instance.RequestRetrievePlayerData();
-
-        SceneTransitionManager.Instance.SceneTransitionInstant(SceneManager.GetActiveScene().name);
-
+        try
+        {
+            await PlayfabManager.Instance.RequestRetrievePlayerData();
+            SceneTransitionManager.Instance.SceneTransitionInstant(SceneManager.GetActiveScene().name);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error retrieving player data: " + ex.Message);
+            // Handle the error appropriately
+        }
     }
     #endregion
 
