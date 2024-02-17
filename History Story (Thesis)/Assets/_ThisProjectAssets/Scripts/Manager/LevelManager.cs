@@ -21,28 +21,15 @@ using PixelCrushers.DialogueSystem;
 
 public class LevelManager : Singleton<LevelManager>
 {
-
     private CinemachineVirtualCamera sceneCamera;
-
-
-    [Header("Scene Info")]
-    [SerializeField] private PickupObject itemTemplate;
-
-    [SerializeField] private string questionChapter = "Chapter 1";
 
 
     public PlayerScript player { get; private set; }
     public PlayableDirector currentDirector { get; private set; }
-    public string GetQuestionChapter { get { return questionChapter; } }
 
 
     private string currentScene;
 
-
-    //private void OnApplicationQuit() // TEMPORARY
-    //{
-    //    SaveSceneLevel();
-    //}
 
     protected override void Awake()
     {
@@ -50,7 +37,6 @@ public class LevelManager : Singleton<LevelManager>
         sceneCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         player = PlayerSingleton.Instance?.GetPlayerScript;
 
-        //LoadDataInCurrentScene();
     }
 
     private void OnEnable()

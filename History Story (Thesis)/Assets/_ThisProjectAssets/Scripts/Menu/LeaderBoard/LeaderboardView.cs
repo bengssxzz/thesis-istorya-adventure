@@ -5,8 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using MoreMountains.Tools;
 using System;
-
-
+using PlayFab.ClientModels;
 
 public class LeaderboardView : MonoBehaviour
 {
@@ -17,10 +16,12 @@ public class LeaderboardView : MonoBehaviour
     [SerializeField] private MMTouchButton refreshBtn;
 
 
-    [Header("Account Panel")]
+    [Header("User Position")]
+    [SerializeField] private RectTransform LB_RectTransform;
     [SerializeField] private TextMeshProUGUI LB_playerPosition;
     [SerializeField] private TextMeshProUGUI LB_playerName;
     [SerializeField] private TextMeshProUGUI LB_playerScore;
+
 
     private List<LeaderboardSlotUI> listOfLBSlotUI = new List<LeaderboardSlotUI>();
 
@@ -29,6 +30,9 @@ public class LeaderboardView : MonoBehaviour
     {
         refreshBtn.ButtonReleased.AddListener(RefreshLeaderboard);
         PlayfabManager.Instance.OnUpdateLeaderboard += UpdatedLeaderboard;
+
+        PlayfabManager.Instance.OnLoginSuccess += LoginAccount;
+        PlayfabManager.Instance.OnLogoutSuccess += LogoutAccount;
     }
 
    
@@ -38,16 +42,29 @@ public class LeaderboardView : MonoBehaviour
         refreshBtn.ButtonReleased.RemoveListener(RefreshLeaderboard);
         PlayfabManager.Instance.OnUpdateLeaderboard -= UpdatedLeaderboard;
 
+        PlayfabManager.Instance.OnLoginSuccess -= LoginAccount;
+        PlayfabManager.Instance.OnLogoutSuccess -= LogoutAccount;
     }
+
+   
 
     private void Start()
     {
-        UpdateLeaderboardView();
+        if (PlayfabManager.Instance.IsUserLogin())
+        {
+            PlayfabManager.Instance.UpdateLeaderboard().Forget();
+            EnableLeaderboardView();
+        }
+        else
+        {
+            DienableLeaderboardView();
+        }
+
     }
 
-    private void UpdateLeaderboardView()
+    private async void UpdateLeaderboardView()
     {
-        var dataList = PlayfabManager.Instance.RequestLeaderboardSQLDatabase();
+        var dataList = await PlayfabManager.Instance.RequestLeaderboardSQLDatabase(10);
 
         for (int i = 0; i < dataList.Count; i++)
         {
@@ -57,6 +74,7 @@ public class LeaderboardView : MonoBehaviour
 
                 if (listOfLBSlotUI.Count > i && listOfLBSlotUI[i] != null)
                 {
+                    listOfLBSlotUI[i].gameObject.SetActive(true);
                     listOfLBSlotUI[i].SetLeaderboardSlot(userInfo.id.ToString(), userInfo.p_name, userInfo.p_score.ToString());
                 }
                 else
@@ -71,14 +89,72 @@ public class LeaderboardView : MonoBehaviour
                 
             }
         }
+
+       
     }
+    private async void UpdatePlayerInfo_LB()
+    {
+        var userData = PlayfabManager.Instance.GetUserDataAccount();
+        var playerInfo = await PlayfabManager.Instance.GetPlayerInfoInLeaderboard(userData.userId);
+
+        if(playerInfo != null)
+        {
+            LB_playerPosition.text = playerInfo.id.ToString();
+            LB_playerName.text = playerInfo.p_name;
+            LB_playerScore.text = playerInfo.p_score.ToString();
+
+            Debug.Log("PLAYER INFO PANEL IS UPDATED");
+        }
+        else
+        {
+            LB_playerPosition.text = "";
+            LB_playerName.text = "";
+            LB_playerScore.text = "";
+        }
+        
+    }
+
+
+
+
     private void RefreshLeaderboard()
     {
         PlayfabManager.Instance.UpdateLeaderboard().Forget();
     }
+
+    private void EnableLeaderboardView()
+    {
+        lockPanelView?.gameObject.SetActive(false);
+        LB_RectTransform?.gameObject.SetActive(true);
+    }
+    private void DienableLeaderboardView()
+    {
+        lockPanelView?.gameObject.SetActive(true);
+        LB_RectTransform?.gameObject.SetActive(false);
+
+        foreach (var slot in listOfLBSlotUI)
+        {
+            slot.gameObject.SetActive(false);
+        }
+
+    }
+
+    //Invokes
     private void UpdatedLeaderboard() //When the update is success
     {
         UpdateLeaderboardView();
+        UpdatePlayerInfo_LB();
+    }
+
+    private void LoginAccount(LoginResult obj) //Login success
+    {
+        PlayfabManager.Instance.UpdateLeaderboard().Forget();
+
+        EnableLeaderboardView();
+    }
+    private void LogoutAccount() //Logout success
+    {
+        DienableLeaderboardView();
     }
 
 

@@ -10,6 +10,7 @@ using SimpleSQL;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Networking;
+using System.Linq;
 
 [Serializable]
 public class PlayerUserData
@@ -27,6 +28,7 @@ public class LeaderboardFields
     [PrimaryKey, Unique] public int id { get; set; }
     public string p_name { get; set; }
     public int p_score { get; set; }
+    public string p_playfab_id { get; set; }
 }
 
 
@@ -36,6 +38,8 @@ public class PlayfabManager : Singleton<PlayfabManager>
     const string PLAYER_DATA_KEY = "player_key";
 
     public event Action<LoginResult> OnLoginSuccess;
+    public event Action OnLogoutSuccess;
+
     public event Action OnUpdateLeaderboard;
     public event Action OnGetDataResultSuccess;
 
@@ -273,6 +277,8 @@ public class PlayfabManager : Singleton<PlayfabManager>
     {
         PlayFabClientAPI.ForgetAllCredentials();
         DeleteUserDataAccount();
+
+        OnLogoutSuccess?.Invoke();
     }
     #endregion
 
@@ -418,12 +424,10 @@ public class PlayfabManager : Singleton<PlayfabManager>
     }
     public async UniTask UpdateLeaderboardInSqlite()
     {
-        Debug.Log("GETLEADERBOARD EXECUTED");
         var request = new GetLeaderboardRequest
         {
             StatisticName = "Istorya Adventure Leaderboard",
-            StartPosition = 0,
-            MaxResultsCount = 10
+            StartPosition = 0
         };
 
         var tcs = new UniTaskCompletionSource<GetLeaderboardResult>();
@@ -436,17 +440,20 @@ public class PlayfabManager : Singleton<PlayfabManager>
         {
             var result = await tcs.Task;
             Debug.Log("Leaderboard fetched successfully.");
-            
+
+            var deleteTableSQL = "DELETE FROM Leaderboard";
+            sqlManagerLeaderboard.Execute(deleteTableSQL);
+
             foreach (var item in result.Leaderboard)
             {
-                //Debug.Log($"Position:{item.Position} || PLayer ID: {item.PlayFabId} || PlayerSCore: {item.StatValue}");
+                var updateTableSQL = "INSERT INTO Leaderboard (id, p_name, p_score, p_playfab_id) VALUES (?, ?, ?, ?)";
 
-                string sql = "UPDATE Leaderboard SET p_name = ?, p_score = ? WHERE id = ? ";
+                int playerPosition = item.Position + 1; //id
+                string playerName = string.IsNullOrEmpty(item.DisplayName) ? item.PlayFabId : item.DisplayName; //p_name
+                int playerScore = item.StatValue; //p_score
+                string playerPlayfabId = item.PlayFabId; //p_playfab_id
 
-                int playerPosition = item.Position + 1;
-                string playerName = string.IsNullOrEmpty(item.DisplayName) ? item.PlayFabId : item.DisplayName;
-
-                sqlManagerLeaderboard.Execute(sql, playerName, item.StatValue, playerPosition);
+                sqlManagerLeaderboard.Execute(updateTableSQL, playerPosition, playerName, playerScore, playerPlayfabId);
 
             }
         }
@@ -491,13 +498,42 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
     }
 
-    public List<LeaderboardFields> RequestLeaderboardSQLDatabase()
+
+    //SQLite
+    public async UniTask<List<LeaderboardFields>> RequestLeaderboardSQLDatabase(int requestRowsCount)
     {
-        string sql = "SELECT * FROM Leaderboard";
+        // Construct the SQL query
+        string sql = string.Format("SELECT * FROM Leaderboard LIMIT {0}", requestRowsCount);
 
-        List<LeaderboardFields> leaderBoardList = sqlManagerLeaderboard.Query<LeaderboardFields>(sql);
+        // Execute the query on a background thread
+        List<LeaderboardFields> leaderBoardList = await UniTask.RunOnThreadPool(() =>
+        {
+            return sqlManagerLeaderboard.Query<LeaderboardFields>(sql);
+        });
 
+        // Return the result
         return new List<LeaderboardFields>(leaderBoardList);
+    }
+    public async UniTask<LeaderboardFields> GetPlayerInfoInLeaderboard(string playfabID)
+    {
+        string sql = string.Format("SELECT * FROM Leaderboard", playfabID);
+        
+        //LeaderboardFields playerInfo = sqlManagerLeaderboard.Query<LeaderboardFields>(sql).FirstOrDefault(x => x.p_playfab_id == playfabID);
+        List<LeaderboardFields> leaderboard = await UniTask.RunOnThreadPool(() => sqlManagerLeaderboard.Query<LeaderboardFields>(sql));
+
+        var playerInfo = leaderboard.FirstOrDefault(x => x.p_playfab_id == playfabID);
+
+
+        if (playerInfo != null)
+        {
+            return playerInfo;
+        }
+        else
+        {
+            Debug.LogWarning($"THERE ARE NO {playfabID} PLAYFAB ID FOUND IN THE LEADERBOARD");
+            return null;
+
+        }
     }
 
 
