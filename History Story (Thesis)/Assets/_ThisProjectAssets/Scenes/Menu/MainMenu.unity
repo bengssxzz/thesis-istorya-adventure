@@ -16298,17 +16298,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &1493513403 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5243131242435796587, guid: acec55d818692cd4391f38437804f182, type: 3}
-  m_PrefabInstance: {fileID: 2061627286}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1705125264, guid: 8382d7f8352b70544aa11f6729f875f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1497804083
 GameObject:
   m_ObjectHideFlags: 0
@@ -23730,21 +23719,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4831046440324676475, guid: acec55d818692cd4391f38437804f182, type: 3}
-      propertyPath: sqlManagerLeaderboard
-      value: 
-      objectReference: {fileID: 1493513403}
-    - target: {fileID: 5243131242435796587, guid: acec55d818692cd4391f38437804f182, type: 3}
-      propertyPath: overwriteIfExists
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8052354834864684064, guid: acec55d818692cd4391f38437804f182, type: 3}
       propertyPath: m_Name
       value: Game Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 8052354834864684064, guid: acec55d818692cd4391f38437804f182, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8052354834864684065, guid: acec55d818692cd4391f38437804f182, type: 3}
       propertyPath: m_RootOrder
@@ -23791,9 +23768,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8052354834864684066, guid: acec55d818692cd4391f38437804f182, type: 3}
-      propertyPath: listOfAllChapters.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: da682d9bc77af2f47b6e62bd46c67e3c, type: 2}
+      propertyPath: listOfCollectedAbilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8052354834864684066, guid: acec55d818692cd4391f38437804f182, type: 3}
+      propertyPath: listOfCollectedArtifacts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: acec55d818692cd4391f38437804f182, type: 3}
 --- !u!1 &2064913204

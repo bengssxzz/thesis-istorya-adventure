@@ -24,13 +24,11 @@ public class DiedScreenUI : MonoBehaviour
 
     private void TryAgainButton()
     {
-        PlayerSceneSaveData playerSavedScene;
-
-        SaveGameDataManager.Instance.GetLatestSavedScene(out playerSavedScene);
+        PlayerSceneSaveData playerSavedScene = SaveGameDataManager.Instance.GetLatestSavedScene();
 
         string sceneName = playerSavedScene.sceneName;
+        var spawnPosition = playerSavedScene.spawnPosition;
 
-
-        SceneTransitionManager.Instance.SceneTransitionInstant(sceneName);
+        SceneTransitionManager.Instance.SceneTransitionInGame(sceneName, spawnPosition);
     }
 }

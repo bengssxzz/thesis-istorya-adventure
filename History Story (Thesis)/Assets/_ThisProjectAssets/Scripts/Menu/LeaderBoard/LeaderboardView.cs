@@ -57,7 +57,7 @@ public class LeaderboardView : MonoBehaviour
         }
         else
         {
-            DienableLeaderboardView();
+            DisenableLeaderboardView();
         }
 
     }
@@ -127,7 +127,7 @@ public class LeaderboardView : MonoBehaviour
         lockPanelView?.gameObject.SetActive(false);
         LB_RectTransform?.gameObject.SetActive(true);
     }
-    private void DienableLeaderboardView()
+    private void DisenableLeaderboardView()
     {
         lockPanelView?.gameObject.SetActive(true);
         LB_RectTransform?.gameObject.SetActive(false);
@@ -154,7 +154,7 @@ public class LeaderboardView : MonoBehaviour
     }
     private void LogoutAccount() //Logout success
     {
-        DienableLeaderboardView();
+        DisenableLeaderboardView();
     }
 
 

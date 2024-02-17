@@ -112,8 +112,6 @@ public class QuestionsManager : Singleton<QuestionsManager>
 
     public QuestionsAnswer GetQandAInfo(int questionID)
     {
-        SetCurrentTableScene();
-
         var questionInfo = questionList[currentSceneTable].FirstOrDefault(x => x.id == questionID);
 
         if(questionInfo != null)

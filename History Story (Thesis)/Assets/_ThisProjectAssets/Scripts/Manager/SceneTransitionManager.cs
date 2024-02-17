@@ -171,6 +171,14 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         //MMSceneLoadingManager.LoadScene(sceneName, "IstoryaAdventureLoadingScreen");
         MMAdditiveSceneLoadingManager.LoadScene(sceneName, additiveSceneSettings);
     }
+    public void SceneTransitionInGame(string sceneName, Vector2 spawnPosition) //In game transition to use the additive loading scene
+    {
+        desiredTransSceneName = sceneName;
+        state = TransitionState.ChangeState;
+        //SceneManager.LoadScene(sceneName);
+        //MMSceneLoadingManager.LoadScene(sceneName, "IstoryaAdventureLoadingScreen");
+        MMAdditiveSceneLoadingManager.LoadScene(sceneName, additiveSceneSettings);
+    }
 
     public void SceneTransitionInstant(string sceneName) //Instant transition to use the loading screen
     {

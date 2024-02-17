@@ -63,9 +63,9 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         await LoadRoomAreaInScene();
         await LoadTriggerTimelineInScene();
     }
-    public void GetLatestSavedScene(out PlayerSceneSaveData playerSavedScene)
+    public PlayerSceneSaveData GetLatestSavedScene()
     {
-        playerSavedScene = LoadPlayerScene(GetCurrentFolderName());
+        return LoadPlayerScene(GetCurrentFolderName());
     }
 
     #region Save/Load Player Data (Statistics)

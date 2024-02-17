@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,5 +44,9 @@ public class RestoreHealthAbility : AbilityScript
   
     }
 
-
+    protected override void ModifyCastingFeedback(Entities entity, MMF_Player castingFeedback)
+    {
+        MMF_Particles toPlay = castingFeedback.GetFeedbackOfType<MMF_Particles>();
+        toPlay.BoundParticleSystem = entity.transform.Find("HealParticle").GetComponent<ParticleSystem>();
+    }
 }

@@ -505,11 +505,11 @@ public class PlayfabManager : Singleton<PlayfabManager>
         // Construct the SQL query
         string sql = string.Format("SELECT * FROM Leaderboard LIMIT {0}", requestRowsCount);
 
+
         // Execute the query on a background thread
-        List<LeaderboardFields> leaderBoardList = await UniTask.RunOnThreadPool(() =>
-        {
-            return sqlManagerLeaderboard.Query<LeaderboardFields>(sql);
-        });
+        List<LeaderboardFields> leaderBoardList = sqlManagerLeaderboard.Query<LeaderboardFields>(sql);
+
+        await UniTask.Yield();
 
         // Return the result
         return new List<LeaderboardFields>(leaderBoardList);
@@ -517,9 +517,12 @@ public class PlayfabManager : Singleton<PlayfabManager>
     public async UniTask<LeaderboardFields> GetPlayerInfoInLeaderboard(string playfabID)
     {
         string sql = string.Format("SELECT * FROM Leaderboard", playfabID);
-        
+
         //LeaderboardFields playerInfo = sqlManagerLeaderboard.Query<LeaderboardFields>(sql).FirstOrDefault(x => x.p_playfab_id == playfabID);
-        List<LeaderboardFields> leaderboard = await UniTask.RunOnThreadPool(() => sqlManagerLeaderboard.Query<LeaderboardFields>(sql));
+        List<LeaderboardFields> leaderboard = sqlManagerLeaderboard.Query<LeaderboardFields>(sql);
+
+        await UniTask.Yield();
+
 
         var playerInfo = leaderboard.FirstOrDefault(x => x.p_playfab_id == playfabID);
 

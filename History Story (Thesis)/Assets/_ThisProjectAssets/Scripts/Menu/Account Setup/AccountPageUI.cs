@@ -41,7 +41,7 @@ public class AccountPageUI : MonoBehaviour
         PlayerUserData userData = PlayfabManager.Instance.GetUserDataAccount();
         PlayerData gameSavedFile = SaveGameDataManager.Instance.LoadPlayerData();
 
-        if(userData != null)
+        if (userData != null)
         {
             playerName.text = userData.displayerName;
             playerId.text = userData.userId;
@@ -67,21 +67,34 @@ public class AccountPageUI : MonoBehaviour
             totalPoints.text = SetPlayerTotalScore(0);
         }
 
-        
+
     }
 
     #region SETTING A TEXT
     private string SetPlayerStats(EntityStatistics entityStats)
     {
-        float maxHealth = entityStats != null ? entityStats.maxHealth : 0;
-        float maxDamage = entityStats != null ? entityStats.maxDamage : 0;
-        float maxDefense = entityStats != null ? entityStats.maxDefense : 0;
-        float maxMoveSpeed = entityStats != null ? entityStats.maxMoveSpeed : 0;
-        float maxAttackSpeed = entityStats != null ? entityStats.maxAttackSpeed : 0;
-        float maxCriticalDamage = entityStats != null ? entityStats.maxCriticalDamage : 0;
-        float maxDodgeChance = entityStats != null ? entityStats.maxDodgeChance : 0;
-        float maxCriticalChance = entityStats != null ? entityStats.maxCriticalChance : 0;
-        float lifeSteal = entityStats != null ? entityStats.lifeSteal : 0;
+        float maxHealth = 0;
+        float maxDamage = 0;
+        float maxDefense = 0;
+        float maxMoveSpeed = 0;
+        float maxAttackSpeed = 0;
+        float maxCriticalDamage = 0;
+        float maxDodgeChance = 0;
+        float maxCriticalChance = 0;
+        float lifeSteal = 0;
+
+        if(entityStats != null)
+        {
+            maxHealth = entityStats.maxHealth;
+            maxDamage = entityStats.maxDamage;
+            maxDefense = entityStats.maxDefense;
+            maxMoveSpeed = entityStats.maxMoveSpeed;
+            maxAttackSpeed = entityStats.maxAttackSpeed;
+            maxCriticalDamage =  entityStats.maxCriticalDamage;
+            maxDodgeChance =  entityStats.maxDodgeChance;
+            maxCriticalChance =  entityStats.maxCriticalChance;
+            lifeSteal =  entityStats.lifeSteal;
+        }
 
         var setText = $"Health: {maxHealth}\n" +
                       $"Damage: {maxDamage}\n" +
@@ -137,8 +150,8 @@ public class AccountPageUI : MonoBehaviour
     {
         try
         {
-            await PlayfabManager.Instance.RequestRetrievePlayerData();
             SceneTransitionManager.Instance.SceneTransitionInstant(SceneManager.GetActiveScene().name);
+            await PlayfabManager.Instance.RequestRetrievePlayerData();
         }
         catch (Exception ex)
         {
