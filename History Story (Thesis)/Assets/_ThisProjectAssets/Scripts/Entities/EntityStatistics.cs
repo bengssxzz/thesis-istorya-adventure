@@ -315,9 +315,9 @@ public class EntityStatistics
 
         _currentDefense = _maxDefense;
 
-        _currentAttackSpeed = _maxMoveSpeed;
+        _currentAttackSpeed = _maxAttackSpeed;
 
-        _currentMoveSpeed = _maxAttackSpeed;
+        _currentMoveSpeed = _maxMoveSpeed;
 
         _currentCriticalDamage = _maxCriticalDamage;
 

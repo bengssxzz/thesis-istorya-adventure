@@ -23,6 +23,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     private string desiredTransSceneName;
     private Vector2 spawnPosition;
 
+    public readonly string MainMenuScene = "MainMenu";
+
 
     protected override void Awake()
     {

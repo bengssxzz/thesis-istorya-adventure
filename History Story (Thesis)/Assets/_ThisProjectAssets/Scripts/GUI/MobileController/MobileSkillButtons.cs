@@ -12,18 +12,13 @@ public class MobileSkillButtons : MonoBehaviour
 
     public event Action OnSkillRelease;
 
-    //private enum InputPhase { Started, Performed, Canceled }
     private MMTouchButton touchButton;
-
-    [SerializeField] private string inputName;
-    //[SerializeField] private InputPhase phase;
 
     [SerializeField] private TextMeshProUGUI timerTxt;
     [SerializeField] private Image abilityImage;
     [SerializeField] private Image disableImage;
 
 
-    //private InputAction inputBind;
 
 
     private void Awake()
@@ -33,47 +28,21 @@ public class MobileSkillButtons : MonoBehaviour
 
     private void OnEnable()
     {
-        touchButton.ButtonReleased.AddListener(PressCanceled);
+        touchButton.ButtonReleased.AddListener(AbilityTouchBtnPressed);
     }
     private void OnDisable()
     {
-        touchButton.ButtonReleased.RemoveListener(PressCanceled);
+        touchButton.ButtonReleased.RemoveListener(AbilityTouchBtnPressed);
     }
 
 
-    //private void Start()
-    //{
-    //    inputBind = InputManager.Instance.PlayerActionInput.actions.FindAction(inputName, true);
-
-
-    //    Debug.Log($"Bind Name: {inputBind.name}");
-    //}
-
-
-
-
-
-    //private void PressStarted()
-    //{
-    //    //if(phase != InputPhase.Started) { return; }
-
-    //}
-    //private void PressPerformed()
-    //{
-    //    //if (phase != InputPhase.Performed) { return; }
-
-    //}
-    private void PressCanceled()
+    private void AbilityTouchBtnPressed()
     {
         //if (phase != InputPhase.Canceled) { return; }
         Debug.Log("Pressing the key");
         OnSkillRelease?.Invoke();
         //InputManager.Instance.OnButtonMobilePressedRelease(inputName);
     }
-
-
-
-
 
     public void AbilityCooldown(bool isOnCooldown, float timeLapse)
     {

@@ -37,11 +37,6 @@ public class InputManager : Singleton<InputManager>
 
         PlayerActionInput = GetComponent<PlayerInput>();
 
-        //OnMobileButtonsReleased.Add("Skill 0", OnSkill0_Released);
-        //OnMobileButtonsReleased.Add("Skill 1", OnSkill1_Released);
-        //OnMobileButtonsReleased.Add("Skill 2", OnSkill2_Released);
-        //OnMobileButtonsReleased.Add("Skill 3", OnSkill3_Released);
-
     }
 
     private void OnEnable()
@@ -92,13 +87,6 @@ public class InputManager : Singleton<InputManager>
 
     public void ChangeActionMap(string newActionMapString) => PlayerActionInput.SwitchCurrentActionMap(newActionMapString);
 
-
-    ////Movement
-    //private void OnMove(InputValue value) //Computer Movement Controller
-    //{
-    //    MOVETRY = value.Get<Vector2>().normalized;
-    //    OnPlayerMove?.Invoke(MOVETRY);
-    //}
 
     //Mobile Movement Controller
     public void OnMoveMobileStick(Vector2 value) => OnPlayerMove?.Invoke(value);
