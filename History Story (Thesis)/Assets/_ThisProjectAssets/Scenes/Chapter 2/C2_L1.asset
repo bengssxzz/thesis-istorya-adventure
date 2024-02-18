@@ -6633,7 +6633,66 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: EventGuid
-        value: e83b4cfe-450b-4daf-8d8a-dd93af03351d
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 25
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 25
+        originDialogueID: 7
+        destinationConversationID: 25
+        destinationDialogueID: 8
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: SetQuestState("CollectCedulas", "success")
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 377.0454
+        y: 378.86365
+        width: 160
+        height: 30
+    - id: 8
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      - title: EventGuid
+        value: 9cf8625d-1a68-43ce-8151-ccd70a406f8d
         type: 0
         typeString: 
       conversationID: 25
@@ -6645,14 +6704,14 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: SetQuestState("CollectCedulas", "success")
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
         x: 377.0454
-        y: 378.86365
+        y: 428.86365
         width: 160
         height: 30
     entryGroups: []

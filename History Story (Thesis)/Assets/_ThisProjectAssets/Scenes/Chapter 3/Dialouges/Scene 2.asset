@@ -1033,11 +1033,14 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: After gathering enough, go to General Pio del Pilar.
+        value: After gathering enough, go to General Ricarte.
         type: 0
         typeString: 
       - title: Sequence
-        value: 
+        value: 'SetActive(Barrier Door (2),false);
+
+          SetActive(Barrier Door
+          (3),false)'
         type: 0
         typeString: 
       conversationID: 5
@@ -1082,7 +1085,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Great work, now go ahead and talk to General Pio del Pilar.
+        value: Great work, now go ahead and talk to General Ricarte.
         type: 0
         typeString: 
       - title: Sequence
@@ -1238,7 +1241,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Go ahead and talk to General Pio del Pilar now.
+        value: Go ahead and talk to General Ricarte now.
         type: 0
         typeString: 
       - title: Sequence
@@ -1265,7 +1268,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 1.1196346, y: 2.0778704}
+    canvasScrollPosition: {x: 0, y: 0}
     canvasZoom: 0.6100004
   - id: 6
     fields:
@@ -1533,7 +1536,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 346.81317
+        x: 345.71426
         y: 137.14285
         width: 160
         height: 30
@@ -2013,7 +2016,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 503
+        x: 504.31573
         y: 137
         width: 160
         height: 30
