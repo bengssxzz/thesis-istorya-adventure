@@ -31,8 +31,6 @@ public enum CategoryStats
 [System.Serializable]
 public class EntityStatistics
 {
-    [ES3NonSerializable] private Entities entity;
-
     [ES3NonSerializable] public Action<float, float> OnCurrentHealthChange;
 
 
@@ -75,7 +73,7 @@ public class EntityStatistics
     const float lifeStealBoundValue = 40;
     #endregion
 
-    #region Getter Setter 
+    #region Public Getter Setter 
     public float maxHealth { get { return _maxHealth; } private set { _maxHealth = value; } }
     public float currentHealth { get { return _currentHealth; } private set { _currentHealth = value; } }
 
@@ -113,10 +111,7 @@ public class EntityStatistics
     #endregion
 
 
-
-
-
-    public EntityStatistics(EntityStatsSO entityStatsSO, Entities entity)
+    public EntityStatistics(EntityStatsSO entityStatsSO)
     {
         _maxHealth = entityStatsSO.maxHealth;
         _currentHealth = maxHealth;
@@ -144,9 +139,6 @@ public class EntityStatistics
 
 
         lifeSteal = entityStatsSO.lifeSteal;
-
-
-
     }
 
     #region MODIFICATION (OLD)
@@ -206,6 +198,8 @@ public class EntityStatistics
      *       //Do some code
      * }
      */
+
+    #region MODIFICATION STATS
     public async Task TempModifiedDamage(float tempValue, float duration) //Damage
     {
         float startTime = Time.time;
@@ -304,13 +298,35 @@ public class EntityStatistics
         // Back to the original 
         currentDodgeChance = maxDodgeChance;
     }
-
+    #endregion
 
 
     public void SetCurrentHealth(float amount)
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         OnCurrentHealthChange?.Invoke(currentHealth, maxHealth);
+    }
+
+    public void ResetCurrentStats()
+    {
+        _currentHealth = _maxHealth;
+
+        _currentDamage = _maxDamage;
+
+        _currentDefense = _maxDefense;
+
+        _currentAttackSpeed = _maxMoveSpeed;
+
+        _currentMoveSpeed = _maxAttackSpeed;
+
+        _currentCriticalDamage = _maxCriticalDamage;
+
+        _currentDodgeChance = _maxDodgeChance;
+
+        _currentCriticalChance = _maxCriticalChance;
+
+
+        lifeSteal = _lifeSteal;
     }
 
 

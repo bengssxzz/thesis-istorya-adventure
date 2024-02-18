@@ -8,29 +8,40 @@ public class AbilityController : MonoBehaviour
 {
     private Entities entity;
 
+
     [SerializeField] private List<AbilityScript> listOfUnlockedAbilities = new List<AbilityScript>();
+
     private List<AbilityScript> currentAbilities = new List<AbilityScript>();
    
     public List<AbilityScript> ListOfCurrentAbilities {get => currentAbilities; 
         set 
         {
-            currentAbilities = value;
+            currentAbilities = new List<AbilityScript>(value);
             ResetAbilitiesOnStart();
         } 
     }
 
 
-    public void InitializedComponent(Entities entity, List<AbilityScript> newListOfAbility)
-    {
-        this.entity = entity;
-        ListOfCurrentAbilities = newListOfAbility;
 
-        foreach (AbilityScript ability in newListOfAbility)
+    private void Awake()
+    {
+        entity = GetComponent<Entities>();
+    }
+
+
+    public void InitializedDefaultAbilities(List<AbilityScript> defaultAbility)
+    {
+        Debug.Log("INITIALIZE THE ABILITY COMPONENT");
+        var listOfCollectedAbility = GameManager.Instance.GetListOfCollectedAbility;
+
+        ListOfCurrentAbilities = new List<AbilityScript>(defaultAbility);
+
+        foreach (AbilityScript ability in defaultAbility)
         {
-            if (listOfUnlockedAbilities.Contains(ability) || ability == null)
+            if (listOfCollectedAbility.Contains(ability) || ability == null)
                 continue;
 
-            listOfUnlockedAbilities.Add(ability);
+            GameManager.Instance.CollectedAbilities(ability);
         }
     }
 
@@ -59,15 +70,7 @@ public class AbilityController : MonoBehaviour
     //Unlock a new ability
     public void UnlockNewAbility(AbilityScript newAbility)
     {
-        if (listOfUnlockedAbilities.Contains(newAbility))
-        {
-            //If the new ability is already existed 
-            Debug.LogWarning(String.Format("This {0} is already unlocked", newAbility.abilityName));
-            return;
-        }
-        listOfUnlockedAbilities.Add(newAbility);
-
-        //ListOfCurrentAbilities.Add(newAbility);
+        GameManager.Instance.CollectedAbilities(newAbility);
     }
 
     public void UseAbility(int index) //Use index ablity in array
@@ -78,6 +81,7 @@ public class AbilityController : MonoBehaviour
 
             if (!ability.OnCoolDown)
             {
+
                 currentAbilities[index].TriggerAbility(entity);
                 //StartCoroutine(currentAbilities[index].TriggerAbility(this)); //Trigger the ability
             }
@@ -89,24 +93,4 @@ public class AbilityController : MonoBehaviour
 
     }
 
-    //public void UseAbility(int index) //Use index ablity in array
-    //{
-    //    try
-    //    {
-    //        var ability = currentAbilities[index];
-
-    //        if (!ability.IsActivate)
-    //        {
-    //            //If have enough mana, Use ability
-    //            entity.StartCoroutine(currentAbilities[index].Trigger(entity.gameObject)); //Trigger the ability
-    //            entity.StartCoroutine(currentAbilities[index].StartCoolDown()); //Start the cooldown
-    //            Debug.Log("Still running");
-    //        }
-    //    }
-    //    catch (Exception)
-    //    {
-    //        Debug.LogWarning($"Ability index {index} is null");
-    //    }
-
-    //}
 }

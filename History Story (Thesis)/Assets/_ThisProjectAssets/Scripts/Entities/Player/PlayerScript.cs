@@ -131,16 +131,6 @@ public class PlayerScript : Entities
     }
 
 
-    private void AbilityInventoryController(InputAction.CallbackContext obj) //Show/Hide ability inventory
-    {
-        //Toggle
-        var uiState = UIManager.Instance.ChangeUIState;
-        if (uiState == UIManager.GUIState.InGame)
-            UIManager.Instance.ChangeUIState = UIManager.GUIState.Inventory;
-        else if (uiState == UIManager.GUIState.Inventory)
-            UIManager.Instance.ChangeUIState = UIManager.GUIState.InGame;
-
-    }
 
     protected override void DeathBehaviour()
     {

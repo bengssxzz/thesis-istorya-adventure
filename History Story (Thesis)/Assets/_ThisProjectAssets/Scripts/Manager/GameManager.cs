@@ -11,11 +11,11 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private List<Chapter_LevelSO> listOfAllChapters = new List<Chapter_LevelSO>(); //List of all chapter scene
 
-    [SerializeField] private List<ArtifactsSO> listOfArtifacts = new List<ArtifactsSO>(); //List of all artifacts in the game
+    [SerializeField] private List<ArtifactsSO> listOfAllArtifacts = new List<ArtifactsSO>(); //List of all artifacts in the game
     [SerializeField] private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities in the game
 
     private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>();
-    private List<AbilityScript> listOfCollectedAbilities = new List<AbilityScript>();
+    [SerializeField] private List<AbilityScript> listOfCollectedAbilities = new List<AbilityScript>(); //FOR TESTING PURPOSES
     //private List<AbilityScript> TESTlistOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
 
     private Dictionary<Chapter_LevelSO, bool> dictChapterUnlocked; //List of all chapters
@@ -31,11 +31,35 @@ public class GameManager : Singleton<GameManager>
 
     public List<Chapter_LevelSO> GetListOfChapters { get { return listOfAllChapters; } }
 
-    public List<AbilityScript> GetListOfAllAbility { get { return listOfAllAbilities; } }
-    public List<AbilityScript> GetListOfCollectedAbility { get { return listOfCollectedAbilities; } }
+    public List<AbilityScript> GetListOfAllAbility { get 
+        {
+            // Get unique elements using HashSet
+            HashSet<AbilityScript> newList = new HashSet<AbilityScript>(listOfAllAbilities);
 
-    public List<ArtifactsSO> GetListOfAllArtifacts { get { return listOfArtifacts; } }
-    public List<ArtifactsSO> GetListOfCollectedArtifacts { get { return listOfCollectedArtifacts; } }
+            return new List<AbilityScript>(newList);
+        } }
+    public List<AbilityScript> GetListOfCollectedAbility { get 
+        {
+            // Get unique elements using HashSet
+            HashSet<AbilityScript> newList = new HashSet<AbilityScript>(listOfCollectedAbilities);
+
+            return new List<AbilityScript>(newList);
+        } }
+
+    public List<ArtifactsSO> GetListOfAllArtifacts { get 
+        {
+            // Get unique elements using HashSet
+            HashSet<ArtifactsSO> newList = new HashSet<ArtifactsSO>(listOfAllArtifacts);
+
+            return new List<ArtifactsSO>(newList);
+        } }
+    public List<ArtifactsSO> GetListOfCollectedArtifacts { get 
+        {
+            // Get unique elements using HashSet
+            HashSet<ArtifactsSO> newList = new HashSet<ArtifactsSO>(listOfCollectedArtifacts);
+
+            return new List<ArtifactsSO>(newList);
+        } }
 
     public Dictionary<Chapter_LevelSO, bool> GetDictUnlockedChapters { get { return dictChapterUnlocked; } }
     public Dictionary<string, int> GetDictEachChapterScores { get { return dictChapterScores; } }
@@ -141,7 +165,8 @@ public class GameManager : Singleton<GameManager>
             return false;
         }
     }
-    public void UnlockSceneChapter(string chapterName) //Unlock the chapter scene
+    public void UnlockSceneChapter(string chapterName) //Unlock the chapter
+                                                       //scene
     {
         var selectedScene = dictChapterUnlocked.FirstOrDefault(x => x.Key.chapterName == chapterName);
 
@@ -163,7 +188,7 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void AddCurrentChapterScore(string chapterFolder, int scoreToAdd) //Adding scores to current chapter
+    public void AddScore_CurrentChapter(string chapterFolder, int scoreToAdd) //Adding scores to current chapter
     {
         Debug.Log($"YOU ARE ADDING POINT TO CURRENT FOLDER: {chapterFolder}");
 
@@ -237,7 +262,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (_listOfArtifacts != null)
         {
-            listOfArtifacts = _listOfArtifacts;
+            listOfAllArtifacts = _listOfArtifacts;
         }
     }
 

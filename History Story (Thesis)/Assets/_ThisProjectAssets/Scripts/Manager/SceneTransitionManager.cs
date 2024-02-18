@@ -9,23 +9,19 @@ using MoreMountains.Tools;
 
 public class SceneTransitionManager : Singleton<SceneTransitionManager>
 {
-    private enum TransitionState { None, ChangeState, SpawnState}
+    private enum SwitchState { FindPosition, SetPosition}
 
     const string additiveLoadingScreenScene = "IstoryaAdventureAdditiveLoadingScreen";
     const string loadingScreenScene = "IstoryaAdventureLoadingScreen";
     const string antiSpillScene = "AntiSpillScene";
 
-    public string transitionID { get; private set; }
-    public string desiredTransSceneName { get; private set; }
 
-    private TransitionState state = TransitionState.None;
+    private SwitchState switchState;
     private MMAdditiveSceneLoadingManagerSettings additiveSceneSettings;
-    private List<SceneTriggerTrans> sceneTransitionObject = new List<SceneTriggerTrans>();
-    
-   
 
-
-
+    private string transitionID;
+    private string desiredTransSceneName;
+    private Vector2 spawnPosition;
 
 
     protected override void Awake()
@@ -43,24 +39,27 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     private void Start()
     {
-        additiveSceneSettings = new MMAdditiveSceneLoadingManagerSettings();
-        additiveSceneSettings.LoadingSceneName = additiveLoadingScreenScene;
-        additiveSceneSettings.AntiSpillSceneName = antiSpillScene;
-        additiveSceneSettings.UnloadMethod = MMAdditiveSceneLoadingManagerSettings.UnloadMethods.AllScenes;
-
-        additiveSceneSettings.BeforeEntryFadeDelay = 0f;
-        additiveSceneSettings.AfterEntryFadeDelay = 0.5f;
-        additiveSceneSettings.BeforeExitFadeDelay = 0.7f;
-
-        additiveSceneSettings.EntryFadeDuration = 0.5f;
-        additiveSceneSettings.ExitFadeDuration = 0.8f;
+        AdditiveSceneSettings();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if(scene.name != desiredTransSceneName) { return; }
 
-        InGameTransitionEffect();
+        switch (switchState)
+        {
+            case SwitchState.FindPosition:
+                FindTransitionTrigger();
+                break;
+            case SwitchState.SetPosition:
+                SetPlayerInScene(spawnPosition);
+                break;
+            default:
+                Debug.LogError("SwitchState IS IN DEFAULT VALUE");
+                break;
+        }
+
+        //InGameTransitionEffect();
 
 
 
@@ -120,25 +119,20 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         #endregion
     }
 
-    private void InGameTransitionEffect()
+    private void AdditiveSceneSettings()
     {
-        List<SceneTriggerTrans> sceneTransObject = FindTransitionTriggerInScene(); //Find all the trigger scene
+        additiveSceneSettings = new MMAdditiveSceneLoadingManagerSettings();
+        additiveSceneSettings.LoadingSceneName = additiveLoadingScreenScene;
+        additiveSceneSettings.AntiSpillSceneName = antiSpillScene;
+        additiveSceneSettings.UnloadMethod = MMAdditiveSceneLoadingManagerSettings.UnloadMethods.AllScenes;
 
-        //Find the scene trigger exist in the new scene with the same transition id
-        if (sceneTransObject.Exists(x => x.GetTransitionID == transitionID))
-        {
-            //Set the position out
-            var outPosition = sceneTransObject.FirstOrDefault(x => x.GetTransitionID == transitionID);
+        additiveSceneSettings.BeforeEntryFadeDelay = 0f;
+        additiveSceneSettings.AfterEntryFadeDelay = 0.5f;
+        additiveSceneSettings.BeforeExitFadeDelay = 0.5f;
 
-            //Set the position of the player
-            SetPlayerInScene(outPosition.GetPositionOut.position);
-        }
-        else
-        {
-            Debug.LogWarning($"THERE ARE NO {transitionID} IN THE SCENE");
-        }
+        additiveSceneSettings.EntryFadeDuration = 0.2f;
+        additiveSceneSettings.ExitFadeDuration = 1f;
     }
-    
 
     private void SetPlayerInScene(Vector2 position) //Set the player and camera
     {
@@ -154,29 +148,65 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         var playerCurrentAbility = player.GetAbility_Controller.ListOfCurrentAbilities.ToArray();
         UI_Manager.Instance.FindComponentInUIMenu<MobileController>("TouchController UI").UpdateAbilityButtons(playerCurrentAbility);
     }
-    private List<SceneTriggerTrans> FindTransitionTriggerInScene() //Find all the transition trigger in the scene
+    
+    private void FindTransitionTrigger()
     {
-        IEnumerable<SceneTriggerTrans> sceneTrigger = FindObjectsOfType<SceneTriggerTrans>();
-        return new List<SceneTriggerTrans>(sceneTrigger);
+        List<SceneTriggerTrans> sceneTriggers = new List<SceneTriggerTrans>(FindObjectsOfType<SceneTriggerTrans>());
+
+        var desiredTrigger = sceneTriggers.FirstOrDefault(x => x.GetTransitionID == transitionID);
+
+        if(desiredTrigger != null)
+        {
+            SetPlayerInScene(desiredTrigger.GetPositionOut.position);
+        }
+        else
+        {
+            Debug.LogWarning($"THERE ARE NO {transitionID} IN THE SCENE");
+        }
     }
+
+    //private void InGameTransitionEffect()
+    //{
+    //    List<SceneTriggerTrans> sceneTransObject = FindTransitionTriggerInScene(); //Find all the trigger scene
+
+    //    //Find the scene trigger exist in the new scene with the same transition id
+    //    if (sceneTransObject.Exists(x => x.GetTransitionID == transitionID))
+    //    {
+    //        //Set the position out
+    //        var outPosition = sceneTransObject.FirstOrDefault(x => x.GetTransitionID == transitionID);
+
+    //        //Set the position of the player
+    //        SetPlayerInScene(outPosition.GetPositionOut.position);
+    //    }
+    //    else
+    //    {
+    //        Debug.LogWarning($"THERE ARE NO {transitionID} IN THE SCENE");
+    //    }
+    //}
+    //private List<SceneTriggerTrans> FindTransitionTriggerInScene() //Find all the transition trigger in the scene
+    //{
+    //    IEnumerable<SceneTriggerTrans> sceneTrigger = FindObjectsOfType<SceneTriggerTrans>();
+    //    return new List<SceneTriggerTrans>(sceneTrigger);
+    //}
 
 
 
     public void SceneTransitionInGame(string sceneName, string transID = null) //In game transition to use the additive loading scene
     {
-        transitionID = transID;
+        switchState = SwitchState.FindPosition;
+
         desiredTransSceneName = sceneName;
-        state = TransitionState.ChangeState;
-        //SceneManager.LoadScene(sceneName);
-        //MMSceneLoadingManager.LoadScene(sceneName, "IstoryaAdventureLoadingScreen");
+        transitionID = transID;
+
         MMAdditiveSceneLoadingManager.LoadScene(sceneName, additiveSceneSettings);
     }
     public void SceneTransitionInGame(string sceneName, Vector2 spawnPosition) //In game transition to use the additive loading scene
     {
+        switchState = SwitchState.SetPosition;
+
         desiredTransSceneName = sceneName;
-        state = TransitionState.ChangeState;
-        //SceneManager.LoadScene(sceneName);
-        //MMSceneLoadingManager.LoadScene(sceneName, "IstoryaAdventureLoadingScreen");
+        this.spawnPosition = spawnPosition;
+
         MMAdditiveSceneLoadingManager.LoadScene(sceneName, additiveSceneSettings);
     }
 
