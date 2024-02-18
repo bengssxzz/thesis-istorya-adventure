@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Timeline;
 using UnityEngine.Playables;
-using System;
-using MoreMountains.Tools;
 
 public class ChangeSceneReciever : MonoBehaviour, INotificationReceiver
 {

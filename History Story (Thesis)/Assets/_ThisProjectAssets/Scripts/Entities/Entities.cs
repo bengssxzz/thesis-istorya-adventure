@@ -52,20 +52,17 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     {
         rb = GetComponent<Rigidbody2D>();
 
+        GetEntityStats = new EntityStatistics(entityStatsSO);
+
         GetAttack_Controller = GetComponent<AttackController>();
         GetAbility_Controller = GetComponent<AbilityController>();
-        GetAbility_Controller?.InitializedComponent(this, entityStatsSO.abilities);
 
-        GetEntityStats = new EntityStatistics(entityStatsSO, this);
 
         TryGetComponent<DropLoot>(out dropLoot);
-
     }
     protected virtual void OnEnable()
     {
-        GetAbility_Controller.InitializedComponent(this, entityStatsSO.abilities);
-
-        GetEntityStats = new EntityStatistics(entityStatsSO, this);
+        GetEntityStats.ResetCurrentStats();
     }
     protected virtual void OnDisable()
     {
@@ -76,7 +73,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
     protected virtual void Start()
     {
-
+        GetAbility_Controller.InitializedDefaultAbilities(entityStatsSO.abilities);
     }
     protected virtual void Update()
     {
