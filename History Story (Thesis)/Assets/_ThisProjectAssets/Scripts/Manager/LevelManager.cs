@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 using PixelCrushers.DialogueSystem;
+using MoreMountains.Tools;
 
 
 /*Save all pickup object in the scene
@@ -42,10 +43,30 @@ public class LevelManager : Singleton<LevelManager>
     private void OnEnable()
     {
         Lua.RegisterFunction(nameof(ShowAlertUI), this, SymbolExtensions.GetMethodInfo(() => ShowAlertUI(string.Empty, (double)0)));
+        Debug.LogWarning("SCENE LOADED WITH ON ENABLE: " + SceneManager.GetActiveScene().name);
+
+        SceneManager.sceneLoaded += SceneLoaded;
+        SceneManager.sceneUnloaded += SceneUnloaded;
+        
     }
+
     private void OnDisable()
     {
         Lua.UnregisterFunction(nameof(ShowAlertUI));
+        Debug.LogWarning("SCENE UNLOADED WITH ON DISABLE: " + SceneManager.GetActiveScene().name);
+
+        SceneManager.sceneLoaded -= SceneLoaded;
+        SceneManager.sceneUnloaded -= SceneUnloaded;
+    }
+
+    private void SceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    {
+        Debug.LogWarning("NEW SCENE LOADED: " + scene.name);
+    }
+
+    private void SceneUnloaded(Scene scene)
+    {
+        Debug.LogWarning("SCENE UNLOADED: " + scene.name);
     }
 
 

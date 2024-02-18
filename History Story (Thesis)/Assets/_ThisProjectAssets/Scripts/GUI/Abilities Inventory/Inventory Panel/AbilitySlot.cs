@@ -30,7 +30,7 @@ public class AbilitySlot : BaseSlot
 
 
 
-    private void Start()
+    private void Awake()
     {
         LockAbilitySlot(); //Lock the slot first
     }
@@ -96,9 +96,6 @@ public class AbilitySlot : BaseSlot
 
         BaseSlot slot = eventData.pointerClick.GetComponent<BaseSlot>();
         OnSlotClicked?.Invoke(slot);
-
-
-        //OnAbilitySlotClicked?.Invoke(this);
     }
     public override void OnBeginDrag(PointerEventData eventData)
     {
@@ -106,8 +103,6 @@ public class AbilitySlot : BaseSlot
 
         BaseSlot slot = eventData.pointerDrag.GetComponent<BaseSlot>();
         OnSlotBeginDrag?.Invoke(slot);
-
-        //OnAbilitySlotBeginDrag?.Invoke(this);
     }
     public override void OnDrag(PointerEventData eventData)
     {
@@ -120,94 +115,16 @@ public class AbilitySlot : BaseSlot
     {
         BaseSlot slot = eventData.pointerDrag.GetComponent<BaseSlot>();
         OnSlotDrop?.Invoke(slot);
-
-        //OnAbilitySlotDrop?.Invoke(this);
     }
     public override void OnEndDrag(PointerEventData eventData)
     {   
         BaseSlot slot = eventData.pointerCurrentRaycast.gameObject.GetComponent<BaseSlot>();
         OnSlotEndDrag?.Invoke(slot);
-
-        //OnAbilitySlotEndDrag?.Invoke(this);
     }
 
 
 
 
-
-
-
-
-
-
-
-    //public event Action<AbilitySlot> OnAbilitySlotClicked, OnAbilitySlotDrop, OnAbilitySlotBeginDrag, OnAbilitySlotEndDrag;
-
-    //[SerializeField] private Image lockSlotImg; //Image to visual the lock slot
-    //[SerializeField] private Image disablerImage; //Visual to disable slot
-    //[SerializeField] private Image abilityImage; //Image holder of the slot
-    //[SerializeField] private TextMeshProUGUI abilityName; //Name of the slot
-
-    //private bool isEnabled = false;
-
-    //public void LockedAbility()
-    //{
-    //    DisableSlot();
-    //    abilityImage.gameObject.SetActive(false);
-    //    abilityName.gameObject.SetActive(false);
-
-    //    lockSlotImg.gameObject.SetActive(true);
-    //}
-    //public void UnlockAbility(AbilityScript abilityData)
-    //{
-    //    EnableSlot();
-    //    abilityImage.sprite = abilityData.skillIcon;
-    //    abilityName.text = abilityData.abilityName;
-    //    abilityImage.gameObject.SetActive(true);
-    //    abilityName.gameObject.SetActive(true);
-
-    //    lockSlotImg.gameObject.SetActive(false);
-    //}
-
-    //public void EnableSlot()
-    //{
-    //    isEnabled = true;
-    //    disablerImage.gameObject.SetActive(false);
-    //}
-    //public void DisableSlot()
-    //{
-    //    isEnabled = false;
-    //    disablerImage.gameObject.SetActive(true);
-    //}
-
-
-    //public override void OnPointerClick(PointerEventData eventData)
-    //{
-    //    if (!isEnabled) { return; }
-
-    //    OnAbilitySlotClicked?.Invoke(this);
-    //}
-    //public override void OnBeginDrag(PointerEventData eventData)
-    //{
-    //    if (!isEnabled) { return; }
-
-    //    OnAbilitySlotBeginDrag?.Invoke(this);
-    //}
-
-    //public override void OnDrag(PointerEventData eventData)
-    //{
-    //    //"IDragHandler" is need to work the interface of "IBeginHandler" 
-    //}
-
-    //public override void OnDrop(PointerEventData eventData)
-    //{
-    //    OnAbilitySlotDrop?.Invoke(this);
-    //}
-
-    //public override void OnEndDrag(PointerEventData eventData)
-    //{
-    //    OnAbilitySlotEndDrag?.Invoke(this);
-    //}
 
 
 

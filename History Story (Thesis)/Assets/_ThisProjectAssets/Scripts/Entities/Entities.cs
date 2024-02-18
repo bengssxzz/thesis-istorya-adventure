@@ -62,14 +62,12 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     }
     protected virtual void OnEnable()
     {
-        GetEntityStats.ResetCurrentStats();
     }
     protected virtual void OnDisable()
     {
-
     }
 
-   
+
 
     protected virtual void Start()
     {

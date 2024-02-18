@@ -49,9 +49,6 @@ public class AbilityInventoryPanel : MonoBehaviour
         listOfAbilitySlot = new List<AbilitySlot>();
 
         InitializeInventory();
-
-
-
     }
 
     
@@ -97,10 +94,10 @@ public class AbilityInventoryPanel : MonoBehaviour
     }
     private void UpdateAbilitySlot()
     {
-        foreach (var abiSlot in listOfAbilitySlot)
-        {
-            abiSlot.ResetData();
-        }
+        //foreach (var abiSlot in listOfAbilitySlot)
+        //{
+        //    abiSlot.ResetData();
+        //}
 
         for (int i = 0; i < listOfUnlockedAbilities.Count; i++)
         {
@@ -151,7 +148,6 @@ public class AbilityInventoryPanel : MonoBehaviour
     }
     private void SlotBeginDragged(BaseSlot obj)
     {
-        throw new NotImplementedException();
     }
     private void SlotDragging(BaseSlot obj)
     {
@@ -177,7 +173,6 @@ public class AbilityInventoryPanel : MonoBehaviour
     }
     private void SlotDropped(BaseSlot obj)
     {
-        throw new NotImplementedException();
     }
 
     private void SlotEndDragged(BaseSlot obj)
