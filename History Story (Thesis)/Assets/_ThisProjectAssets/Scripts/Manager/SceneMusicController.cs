@@ -46,6 +46,7 @@ public class SceneMusicController : Singleton<SceneMusicController>
         SoundFxController().Forget();
 
         PlayMusicSound();
+        PlaySoundBackground();
     }
 
     private void Update()
@@ -203,6 +204,7 @@ public class SceneMusicController : Singleton<SceneMusicController>
                 var defaultFx = MMSoundManagerPlayOptions.Default;
                 defaultFx.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
                 defaultFx.ID = 9999;
+                defaultFx.Priority = 1;
 
                 int loopCount = ThesisUtility.RandomGetAmount(0, selectedClip.randomLoopCount);
 
@@ -284,4 +286,25 @@ public class SceneMusicController : Singleton<SceneMusicController>
     //    }
     //}
     #endregion
+
+    #region Sound Background Fx
+
+    private void PlaySoundBackground()
+    {
+        if(sceneAudioSO == null || sceneAudioSO.backgroundSound == null) { return; }
+
+        var backgroundOption = MMSoundManagerPlayOptions.Default;
+        backgroundOption.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
+        backgroundOption.Loop = true;
+        backgroundOption.Persistent = true;
+        backgroundOption.Volume = sceneAudioSO.backgroundVolume / 100;
+        backgroundOption.Priority = 0;
+
+        MMSoundManagerSoundPlayEvent.Trigger(sceneAudioSO.backgroundSound, backgroundOption);
+    }
+
+
+    #endregion
+
+
 }

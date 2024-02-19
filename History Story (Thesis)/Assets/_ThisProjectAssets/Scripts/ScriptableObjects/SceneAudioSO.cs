@@ -23,8 +23,13 @@ public class SceneAudioSO : ScriptableObject
     public List<AudioClip> combatMusic;
     public List<AudioClip> bossMusic;
 
+
     [Space(15)]
     [Header("Ambiance Sound")]
+    public AudioClip backgroundSound;
+    [Range(0, 100)] public float backgroundVolume;
+
+    [Space(10)]
     public float playEverySeconds = 1f;
     [Range(0, 100)] public float chanceToPlayFx = 50;
     public List<SceneSoundFx> sceneFxSound;
