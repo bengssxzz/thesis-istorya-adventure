@@ -11,139 +11,269 @@ using ThesisLibrary;
 // ???
 // Copied from template... Why does this not work?
 [CreateAssetMenu(fileName = "Equalizer", menuName = "Abilities/The Equalizer")]
-
-
 public class EqualizerAbility : AbilityScript
 {
-    // ???
-    // Still copied from template... Why does this not work?
-    // I will not use these.
-    // [Space(15)]
-    // [Header("The Equalizer")]
+    //// ???
+    //// Still copied from template... Why does this not work?
+    //// I will not use these.
+    //// [Space(15)]
+    //// [Header("The Equalizer")]
 
-    // FUNCTION DECLARATIONS
-    // ReturnDieFace returns a random face from a die that is an array of integers
-    int ReturnDieFace(int[] die)
-    {
-        Random randomizer = new Random();
-        int dieSize = die.Length;
-        return die[randomizer.Next(dieSize)];
-    }
+    //// FUNCTION DECLARATIONS
+    //// ReturnDieFace returns a random face from a die that is an array of integers
+    //int ReturnDieFace(int[] die)
+    //{
+    //    Random randomizer = new Random();
+    //    int dieSize = die.Length;
+    //    return die[randomizer.Next(dieSize)];
+    //}
 
-    // ANYTHING ELSE DECLARATIONS
-    // Dice
-    int[] diceNormal = {1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6}; // die is balanced
-    int[] diceCritical = {1, 4, 5, 6, 6, 6, 6, 6, 6}; // special case die, die likely benefits player
-    int[] chosenDie;
-    int dieFace;
-    // Baselines
-    const float CooldownTime = 5f; // cooldown for this ability.
-    const float CriticalHealthPercentage = .25f; // the limit where the player is considered at a "critical" state.
-    const float SelfDamage = 15f; // the damage the player can deal to itself.
-    const float DamageBoostPercentage = 1.5f; // additional damage the player can deal to enemies.
-    const float ShieldPercentage = .5f; // shield the player can receive.
-    const float SelfDamagePercentage = .5f; // damage the player inflicts to itself.
-    const float AttackSpeedPenalty = SelfDamagePercentage; // Attack speed penalty for die face no. 3.
-    const float FirstTriBoostPercentage = .4f; // Boost for die face no. 3.
-    const float HugeBoost = 5f; // For die face no. 5, boosts attacks damage, speed, and life steal.
-    // Initialize variables that will be reverted after the skill finishes.
-    float normalDefense;
-    float normalDamage;
-    float normalLifesteal;
-    float normalAttackSpeed;
-    float normalCriticalChance, normalCriticalDamage;
-    // ?
-    float currentHealthPercentage;
-    float lostHealth;
+    //// ANYTHING ELSE DECLARATIONS
+    //// Dice
+    //int[] diceNormal = { 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6 }; // die is balanced
+    //int[] diceCritical = { 1, 4, 5, 6, 6, 6, 6, 6, 6 }; // special case die, die likely benefits player
+    //int[] chosenDie;
+    //int dieFace;
+    //// Baselines
+    //const float CooldownTime = 5f; // cooldown for this ability.
+    //const float CriticalHealthPercentage = .25f; // the limit where the player is considered at a "critical" state.
+    //const float SelfDamage = 15f; // the damage the player can deal to itself.
+    //const float DamageBoostPercentage = 1.5f; // additional damage the player can deal to enemies.
+    //const float ShieldPercentage = .5f; // shield the player can receive.
+    //const float SelfDamagePercentage = .5f; // damage the player inflicts to itself.
+    //const float AttackSpeedPenalty = SelfDamagePercentage; // Attack speed penalty for die face no. 3.
+    //const float FirstTriBoostPercentage = .4f; // Boost for die face no. 3.
+    //const float HugeBoost = 5f; // For die face no. 5, boosts attacks damage, speed, and life steal.
+    //// Initialize variables that will be reverted after the skill finishes.
+    //float normalDefense;
+    //float normalDamage;
+    //float normalLifesteal;
+    //float normalAttackSpeed;
+    //float normalCriticalChance, normalCriticalDamage;
+    //// ?
+    //float currentHealthPercentage;
+    //float lostHealth;
 
-    // Still copied from template...
-    protected override IEnumerator PreCastingBehaviour(MonoBehaviour mono, Entities entity)
-    {
-        yield return base.PreCastingBehaviour(mono, entity);
+    //// Still copied from template...
+    //protected override IEnumerator PreCastingBehaviour(MonoBehaviour mono, Entities entity)
+    //{
+    //    yield return base.PreCastingBehaviour(mono, entity);
 
-        // Store variables that will be reverted later.
-        normalDefense = entity.GetEntityStats.maxDefense;
-        normalDamage = entity.GetEntityStats.maxDamage;
-        normalLifesteal = entity.GetEntityStats.lifeSteal;
-        normalAttackSpeed = entity.GetEntityStats.currentAttackSpeed;
-        normalCriticalChance = entity.GetEntityStats.maxCriticalChance;
-        normalCriticalDamage = entity.GetEntityStats.maxCriticalDamage;
+    //    // Store variables that will be reverted later.
+    //    normalDefense = entity.GetEntityStats.maxDefense;
+    //    normalDamage = entity.GetEntityStats.maxDamage;
+    //    normalLifesteal = entity.GetEntityStats.lifeSteal;
+    //    normalAttackSpeed = entity.GetEntityStats.currentAttackSpeed;
+    //    normalCriticalChance = entity.GetEntityStats.maxCriticalChance;
+    //    normalCriticalDamage = entity.GetEntityStats.maxCriticalDamage;
 
-        // Compute for lost health, which might be needed later.
-        lostHealth = entity.GetEntityStats.maxHealth - entity.GetEntityStats.currentHealth;
+    //    // Compute for lost health, which might be needed later.
+    //    lostHealth = entity.GetEntityStats.maxHealth - entity.GetEntityStats.currentHealth;
 
-        // Change chosen die based on critical health percentage
-        currentHealthPercentage = entity.GetEntityStats.currentHealth / entity.GetEntityStats.maxHealth;
-        if (currentHealthPercentage <= CriticalHealthPercentage)
-        {
-            chosenDie = diceCritical;
-        }
-        else
-        {
-            chosenDie = diceNormal;
-        }
-    }
-    protected override IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
-    {
-        yield return base.CastingBehaviour(mono, entity);
+    //    // Change chosen die based on critical health percentage
+    //    currentHealthPercentage = entity.GetEntityStats.currentHealth / entity.GetEntityStats.maxHealth;
+    //    if (currentHealthPercentage <= CriticalHealthPercentage)
+    //    {
+    //        chosenDie = diceCritical;
+    //    }
+    //    else
+    //    {
+    //        chosenDie = diceNormal;
+    //    }
+    //}
+    //protected override IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
+    //{
+    //    yield return base.CastingBehaviour(mono, entity);
 
-        // Get a die face.
-        dieFace = ReturnDieFace(chosenDie);
-        
-        // Do ability effects based on face of the die.
-        switch (dieFace)
-        {
-            case 1:
-                // Self-damage based on percentage.
-                entity.GetEntityStats.SetCurrentHealth(entity.GetEntityStats.currentHealth * SelfDamagePercentage);
-                break;
-            case 2:
-                // Self-damage based on fixed float value.
-                entity.GetEntityStats.SetCurrentHealth(entity.GetEntityStats.currentHealth - SelfDamage);
-                break;
-            case 3:
-                // Boost damage, critical damage, and critical chance by FirstTriBoostPercentage.
-                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.maxDamage) + entity.GetEntityStats.maxDamage * FirstTriBoostPercentage);
-                entity.GetEntityStats.ModifiedCriticalDamage((entity.GetEntityStats.maxCriticalDamage) + entity.GetEntityStats.maxCriticalDamage * FirstTriBoostPercentage);
-                entity.GetEntityStats.ModifiedCriticalChance((entity.GetEntityStats.maxCriticalChance) + entity.GetEntityStats.maxCriticalChance * FirstTriBoostPercentage);
-                // Reduce attack speed by its penalty.
-                entity.GetEntityStats.ModifiedAttackSpeed(entity.GetEntityStats.currentAttackSpeed * AttackSpeedPenalty);
-                break;
-            case 4:
-                // Boost projectile damage based on player's lost health.
-                entity.GetEntityStats.ModifiedDamage(normalDamage + (DamageBoostPercentage * lostHealth));
-                break;
-            case 5:
-                // Gain shield based on player's lost health.
-                entity.GetEntityStats.ModifiedDefense(normalDefense + (ShieldPercentage * lostHealth));
-                break;
-            case 6:
-                // Boost attack damage, attack speed, and lifesteal by HugeBoost.
-                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.maxDamage) + entity.GetEntityStats.maxDamage * HugeBoost);
-                entity.GetEntityStats.ModifiedAttackSpeed((entity.GetEntityStats.currentAttackSpeed) + entity.GetEntityStats.currentAttackSpeed * HugeBoost);
-                entity.GetEntityStats.ModifiedLifesteal((entity.GetEntityStats.lifeSteal) + entity.GetEntityStats.lifeSteal * HugeBoost);
-                break;
-            default:
-                Debug.Log("How did you get an integer not 1-6?");
-                break;
-        }
+    //    // Get a die face.
+    //    dieFace = ReturnDieFace(chosenDie);
 
-        // Specify cooldown time of the ability
-        yield return new WaitForSeconds(CooldownTime);
-    }
-    protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
-    {
-        yield return base.FinishedCastingBehaviour(mono, entity);
+    //    // Do ability effects based on face of the die.
+    //    switch (dieFace)
+    //    {
+    //        case 1:
+    //            // Self-damage based on percentage.
+    //            entity.GetEntityStats.SetCurrentHealth(entity.GetEntityStats.currentHealth * SelfDamagePercentage);
+    //            break;
+    //        case 2:
+    //            // Self-damage based on fixed float value.
+    //            entity.GetEntityStats.SetCurrentHealth(entity.GetEntityStats.currentHealth - SelfDamage);
+    //            break;
+    //        case 3:
+    //            // Boost damage, critical damage, and critical chance by FirstTriBoostPercentage.
+    //            entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.maxDamage) + entity.GetEntityStats.maxDamage * FirstTriBoostPercentage);
+    //            entity.GetEntityStats.ModifiedCriticalDamage((entity.GetEntityStats.maxCriticalDamage) + entity.GetEntityStats.maxCriticalDamage * FirstTriBoostPercentage);
+    //            entity.GetEntityStats.ModifiedCriticalChance((entity.GetEntityStats.maxCriticalChance) + entity.GetEntityStats.maxCriticalChance * FirstTriBoostPercentage);
+    //            // Reduce attack speed by its penalty.
+    //            entity.GetEntityStats.ModifiedAttackSpeed(entity.GetEntityStats.currentAttackSpeed * AttackSpeedPenalty);
+    //            break;
+    //        case 4:
+    //            // Boost projectile damage based on player's lost health.
+    //            entity.GetEntityStats.ModifiedDamage(normalDamage + (DamageBoostPercentage * lostHealth));
+    //            break;
+    //        case 5:
+    //            // Gain shield based on player's lost health.
+    //            entity.GetEntityStats.ModifiedDefense(normalDefense + (ShieldPercentage * lostHealth));
+    //            break;
+    //        case 6:
+    //            // Boost attack damage, attack speed, and lifesteal by HugeBoost.
+    //            entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.maxDamage) + entity.GetEntityStats.maxDamage * HugeBoost);
+    //            entity.GetEntityStats.ModifiedAttackSpeed((entity.GetEntityStats.currentAttackSpeed) + entity.GetEntityStats.currentAttackSpeed * HugeBoost);
+    //            entity.GetEntityStats.ModifiedLifesteal((entity.GetEntityStats.lifeSteal) + entity.GetEntityStats.lifeSteal * HugeBoost);
+    //            break;
+    //        default:
+    //            Debug.Log("How did you get an integer not 1-6?");
+    //            break;
+    //    }
 
-        // Restore player stats
-        entity.GetEntityStats.ModifiedDefense(normalDefense);
-        entity.GetEntityStats.ModifiedDamage(normalDamage);
-        entity.GetEntityStats.ModifiedLifesteal(normalLifesteal);
-        entity.GetEntityStats.ModifiedAttackSpeed(normalAttackSpeed);
-        entity.GetEntityStats.ModifiedCriticalChance(normalCriticalChance);
-        entity.GetEntityStats.ModifiedCriticalDamage(normalCriticalDamage);
-    }
+    //    // Specify cooldown time of the ability
+    //    yield return new WaitForSeconds(CooldownTime);
+    //}
+    //protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
+    //{
+    //    yield return base.FinishedCastingBehaviour(mono, entity);
+
+    //    // Restore player stats
+    //    entity.GetEntityStats.ModifiedDefense(normalDefense);
+    //    entity.GetEntityStats.ModifiedDamage(normalDamage);
+    //    entity.GetEntityStats.ModifiedLifesteal(normalLifesteal);
+    //    entity.GetEntityStats.ModifiedAttackSpeed(normalAttackSpeed);
+    //    entity.GetEntityStats.ModifiedCriticalChance(normalCriticalChance);
+    //    entity.GetEntityStats.ModifiedCriticalDamage(normalCriticalDamage);
+    //}
 }
+
+//public class EqualizerAbility : AbilityScript
+//{
+//    // ???
+//    // Still copied from template... Why does this not work?
+//    // I will not use these.
+//    // [Space(15)]
+//    // [Header("The Equalizer")]
+
+//    // FUNCTION DECLARATIONS
+//    // ReturnDieFace returns a random face from a die that is an array of integers
+//    int ReturnDieFace(int[] die)
+//    {
+//        Random randomizer = new Random();
+//        int dieSize = die.Length;
+//        return die[randomizer.Next(dieSize)];
+//    }
+
+//    // ANYTHING ELSE DECLARATIONS
+//    // Dice
+//    int[] diceNormal = {1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6}; // die is balanced
+//    int[] diceCritical = {1, 4, 5, 6, 6, 6, 6, 6, 6}; // special case die, die likely benefits player
+//    int[] chosenDie;
+//    int dieFace;
+//    // Baselines
+//    const float CooldownTime = 5f; // cooldown for this ability.
+//    const float CriticalHealthPercentage = .25f; // the limit where the player is considered at a "critical" state.
+//    const float SelfDamage = 15f; // the damage the player can deal to itself.
+//    const float DamageBoostPercentage = 1.5f; // additional damage the player can deal to enemies.
+//    const float ShieldPercentage = .5f; // shield the player can receive.
+//    const float SelfDamagePercentage = .5f; // damage the player inflicts to itself.
+//    const float AttackSpeedPenalty = SelfDamagePercentage; // Attack speed penalty for die face no. 3.
+//    const float FirstTriBoostPercentage = .4f; // Boost for die face no. 3.
+//    const float HugeBoost = 5f; // For die face no. 5, boosts attacks damage, speed, and life steal.
+//    // Initialize variables that will be reverted after the skill finishes.
+//    float normalDefense;
+//    float normalDamage;
+//    float normalLifesteal;
+//    float normalAttackSpeed;
+//    float normalCriticalChance, normalCriticalDamage;
+//    // ?
+//    float currentHealthPercentage;
+//    float lostHealth;
+
+//    // Still copied from template...
+//    protected override IEnumerator PreCastingBehaviour(MonoBehaviour mono, Entities entity)
+//    {
+//        yield return base.PreCastingBehaviour(mono, entity);
+
+//        // Store variables that will be reverted later.
+//        normalDefense = entity.GetEntityStats.maxDefense;
+//        normalDamage = entity.GetEntityStats.maxDamage;
+//        normalLifesteal = entity.GetEntityStats.lifeSteal;
+//        normalAttackSpeed = entity.GetEntityStats.currentAttackSpeed;
+//        normalCriticalChance = entity.GetEntityStats.maxCriticalChance;
+//        normalCriticalDamage = entity.GetEntityStats.maxCriticalDamage;
+
+//        // Compute for lost health, which might be needed later.
+//        lostHealth = entity.GetEntityStats.maxHealth - entity.GetEntityStats.currentHealth;
+
+//        // Change chosen die based on critical health percentage
+//        currentHealthPercentage = entity.GetEntityStats.currentHealth / entity.GetEntityStats.maxHealth;
+//        if (currentHealthPercentage <= CriticalHealthPercentage)
+//        {
+//            chosenDie = diceCritical;
+//        }
+//        else
+//        {
+//            chosenDie = diceNormal;
+//        }
+//    }
+//    protected override IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
+//    {
+//        yield return base.CastingBehaviour(mono, entity);
+
+//        // Get a die face.
+//        dieFace = ReturnDieFace(chosenDie);
+
+//        // Do ability effects based on face of the die.
+//        switch (dieFace)
+//        {
+//            case 1:
+//                // Self-damage based on percentage.
+//                entity.GetEntityStats.SetCurrentHealth(entity.GetEntityStats.currentHealth * SelfDamagePercentage);
+//                break;
+//            case 2:
+//                // Self-damage based on fixed float value.
+//                entity.GetEntityStats.SetCurrentHealth(entity.GetEntityStats.currentHealth - SelfDamage);
+//                break;
+//            case 3:
+//                // Boost damage, critical damage, and critical chance by FirstTriBoostPercentage.
+//                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.maxDamage) + entity.GetEntityStats.maxDamage * FirstTriBoostPercentage);
+//                entity.GetEntityStats.ModifiedCriticalDamage((entity.GetEntityStats.maxCriticalDamage) + entity.GetEntityStats.maxCriticalDamage * FirstTriBoostPercentage);
+//                entity.GetEntityStats.ModifiedCriticalChance((entity.GetEntityStats.maxCriticalChance) + entity.GetEntityStats.maxCriticalChance * FirstTriBoostPercentage);
+//                // Reduce attack speed by its penalty.
+//                entity.GetEntityStats.ModifiedAttackSpeed(entity.GetEntityStats.currentAttackSpeed * AttackSpeedPenalty);
+//                break;
+//            case 4:
+//                // Boost projectile damage based on player's lost health.
+//                entity.GetEntityStats.ModifiedDamage(normalDamage + (DamageBoostPercentage * lostHealth));
+//                break;
+//            case 5:
+//                // Gain shield based on player's lost health.
+//                entity.GetEntityStats.ModifiedDefense(normalDefense + (ShieldPercentage * lostHealth));
+//                break;
+//            case 6:
+//                // Boost attack damage, attack speed, and lifesteal by HugeBoost.
+//                entity.GetEntityStats.ModifiedDamage((entity.GetEntityStats.maxDamage) + entity.GetEntityStats.maxDamage * HugeBoost);
+//                entity.GetEntityStats.ModifiedAttackSpeed((entity.GetEntityStats.currentAttackSpeed) + entity.GetEntityStats.currentAttackSpeed * HugeBoost);
+//                entity.GetEntityStats.ModifiedLifesteal((entity.GetEntityStats.lifeSteal) + entity.GetEntityStats.lifeSteal * HugeBoost);
+//                break;
+//            default:
+//                Debug.Log("How did you get an integer not 1-6?");
+//                break;
+//        }
+
+//        // Specify cooldown time of the ability
+//        yield return new WaitForSeconds(CooldownTime);
+//    }
+//    protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
+//    {
+//        yield return base.FinishedCastingBehaviour(mono, entity);
+
+//        // Restore player stats
+//        entity.GetEntityStats.ModifiedDefense(normalDefense);
+//        entity.GetEntityStats.ModifiedDamage(normalDamage);
+//        entity.GetEntityStats.ModifiedLifesteal(normalLifesteal);
+//        entity.GetEntityStats.ModifiedAttackSpeed(normalAttackSpeed);
+//        entity.GetEntityStats.ModifiedCriticalChance(normalCriticalChance);
+//        entity.GetEntityStats.ModifiedCriticalDamage(normalCriticalDamage);
+//    }
+//}
 
 /* New Die explanation
 1 Take x% self-damage. 

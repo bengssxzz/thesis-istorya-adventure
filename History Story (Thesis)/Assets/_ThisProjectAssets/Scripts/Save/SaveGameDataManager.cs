@@ -92,7 +92,6 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         if (ES3.FileExists(PLAYER_DATA_FILE))
         {
             //There's a player data
-            
             Debug.Log("THERE'S A FILE OF PLAYER DATA");
             return ES3.Load<PlayerData>(PLAYER_DATA_KEY, filePath: PLAYER_DATA_FILE);
         }

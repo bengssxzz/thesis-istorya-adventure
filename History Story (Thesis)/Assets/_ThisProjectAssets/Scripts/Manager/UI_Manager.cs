@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
-
+using Cysharp.Threading.Tasks;
 
 public enum UI_ManagerState
 {
@@ -51,10 +51,19 @@ public class UI_Manager : Singleton<UI_Manager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode) //Every new scene execute this
     {
-        var loadingName = "IstoryaAdventureLoadingScreen";
-        var additiveLoadingName = "IstoryaAdventureAdditiveLoadingScreen";
+        var antiSpill = "AntiSpillScene";
+        var loadingScene = "IstoryaAdventureLoadingScreen";
+        var addLoadingScene = "IstoryaAdventureAdditiveLoadingScreen";
 
-        if (scene.name == loadingName || scene.name == additiveLoadingName) { return; }
+        var loadedSceneName = scene.name;
+
+        if (loadedSceneName == antiSpill || loadedSceneName == loadingScene || loadedSceneName == addLoadingScene) { return; }
+
+        managerState = UI_ManagerState.End;
+
+        previousMenuActive = null;
+        newMenuActive = null;
+
 
         managerState = UI_ManagerState.Start;
 
@@ -70,11 +79,19 @@ public class UI_Manager : Singleton<UI_Manager>
     }
     private void OnSceneUnloaded(Scene scene)
     {
+        var antiSpill = "AntiSpillScene";
+        var loadingScene = "IstoryaAdventureLoadingScreen";
+        var addLoadingScene = "IstoryaAdventureAdditiveLoadingScreen";
+        var loadedSceneName = scene.name;
+        if (loadedSceneName == antiSpill || loadedSceneName == loadingScene || loadedSceneName == addLoadingScene) { return; }
+
         managerState = UI_ManagerState.End;
 
         previousMenuActive = null;
         newMenuActive = null;
 
+        menus.Clear();
+        buttons.Clear();
     }
 
    
@@ -83,6 +100,18 @@ public class UI_Manager : Singleton<UI_Manager>
     {
         
     }
+
+    //private async UniTaskVoid FindMenus()
+    //{
+    //    do
+    //    {
+    //        this.menus = new List<UI_Menu>(FindObjectsOfType<UIAbstract>(true).OfType<UI_Menu>());
+    //        this.buttons = new List<UI_ButtonMenu>(FindObjectsOfType<UIAbstract>(true).OfType<UI_ButtonMenu>());
+
+    //        await UniTask.Yield();
+    //    } while (true);
+    //}
+
 
     private IEnumerator TryFindMenus()
     {
@@ -106,6 +135,8 @@ public class UI_Manager : Singleton<UI_Manager>
         managerState = UI_ManagerState.Running;
     }
 
+
+
     private void CallOnStart()
     {
         foreach (var item in callOnStart.CallMenuID)
@@ -121,6 +152,11 @@ public class UI_Manager : Singleton<UI_Manager>
     {
         IEnumerable<UI_Menu> menus = FindObjectsOfType<UIAbstract>(true).OfType<UI_Menu>();
         return new List<UI_Menu>(menus);
+    }
+    private List<UI_ButtonMenu> GetAllUIButtons()
+    {
+        IEnumerable<UI_ButtonMenu> buttons = FindObjectsOfType<UIAbstract>(true).OfType<UI_ButtonMenu>();
+        return new List<UI_ButtonMenu>(buttons);
     }
 
     private void ActivateOnStartMenu() //Activate the OnStartMenu
@@ -341,11 +377,7 @@ public class UI_Manager : Singleton<UI_Manager>
 
 
 
-    private List<UI_ButtonMenu> GetAllUIButtons()
-    {
-        IEnumerable<UI_ButtonMenu> buttons = FindObjectsOfType<UIAbstract>(true).OfType<UI_ButtonMenu>();
-        return new List<UI_ButtonMenu>(buttons);
-    }
+    
 
 
 

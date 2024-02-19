@@ -43,13 +43,13 @@ public class LevelManager : Singleton<LevelManager>
     private void OnEnable()
     {
         Lua.RegisterFunction(nameof(ShowAlertUI), this, SymbolExtensions.GetMethodInfo(() => ShowAlertUI(string.Empty, (double)0)));
-        LoadedNewScene();
+        //LoadedNewScene();
     }
 
     private void OnDisable()
     {
         Lua.UnregisterFunction(nameof(ShowAlertUI));
-        UnloadedCurrentScene();
+        //UnloadedCurrentScene();
     }
 
 
@@ -57,6 +57,12 @@ public class LevelManager : Singleton<LevelManager>
     {
         currentScene = SceneManager.GetActiveScene().name;
         SetCameraToPlayer();
+        LoadedNewScene();
+    }
+
+    private void OnDestroy()
+    {
+        UnloadedCurrentScene();
     }
 
     //Set the camera to player
@@ -91,20 +97,20 @@ public class LevelManager : Singleton<LevelManager>
     {
         Debug.LogWarning("CUSTOM LOADED SCENE");
         var player = PlayerSingleton.Instance.gameObject;
-        var gameUI = GameUI.Instance.gameObject;
+        //var gameUI = GameUI.Instance.gameObject;
 
         player.SetActive(true);
-        gameUI.SetActive(true);
+        UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
     }
     private void UnloadedCurrentScene()
     {
         Debug.LogWarning("CUSTOM UNLOADED SCENE");
 
         var player = PlayerSingleton.Instance.gameObject;
-        var gameUI = GameUI.Instance.gameObject;
+        //var gameUI = GameUI.Instance.gameObject;
 
         player.SetActive(false);
-        gameUI.SetActive(false);
+        UI_Manager.Instance.ActivateID_CloseMenu("game_ui");
     }
 
 

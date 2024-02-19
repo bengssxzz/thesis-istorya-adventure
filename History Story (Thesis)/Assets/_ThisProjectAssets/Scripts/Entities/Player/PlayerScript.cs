@@ -48,10 +48,13 @@ public class PlayerScript : Entities
 
         var playerData = SaveGameDataManager.Instance.LoadPlayerData();
 
-        if(playerData != null)
+        if (playerData != null)
         {
-            Debug.Log("SET CURRENT ABILITY FROM LOCAL SAVED FILE");
-            GetAbility_Controller.ListOfCurrentAbilities = playerData.usedCurrentAbilities;
+            if(playerData.usedCurrentAbilities != null || playerData.usedCurrentAbilities.Count > 0)
+            {
+                Debug.Log("SET CURRENT ABILITY FROM LOCAL SAVED FILE");
+                GetAbility_Controller.ListOfCurrentAbilities = playerData.usedCurrentAbilities;
+            }
         }
         else
         {

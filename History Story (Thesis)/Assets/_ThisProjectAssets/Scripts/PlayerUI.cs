@@ -17,14 +17,16 @@ public class PlayerUI : MonoBehaviour
 
     private void OnEnable()
     {
-        entity = FindObjectOfType<PlayerScript>(true);
+        entity = PlayerSingleton.Instance.GetPlayerScript;
         if(entity == null) {
             Debug.LogError($"{gameObject.name} CANT FIND THE PLAYER IN THE SCENE");
             return; 
         }
 
+        var currentHealth = entity.GetEntityStats.currentHealth;
+        var maxHealth = entity.GetEntityStats.maxHealth;
 
-        healthBarUI?.SetBar(entity.GetEntityStats.currentHealth, 0, entity.GetEntityStats.maxHealth);
+        healthBarUI?.SetBar(currentHealth, 0, maxHealth);
 
         GameManager.Instance.OnChangeChapterPoints += OnChangePoints;
         entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;

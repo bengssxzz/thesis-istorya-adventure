@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
+using Cysharp.Threading.Tasks;
+using System;
 
 [CreateAssetMenu(fileName ="Restore Health", menuName ="Abilities/Restore Health")]
 public class RestoreHealthAbility : AbilityScript
@@ -14,33 +16,26 @@ public class RestoreHealthAbility : AbilityScript
     public float time;
 
 
-    protected override IEnumerator PreCastingBehaviour(MonoBehaviour mono, Entities entity)
+    protected override async UniTask PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
-        yield return base.PreCastingBehaviour(mono, entity);
+        await base.PreCastingBehaviour(mono, entity);
 
         //no need
 
     }
-    protected override IEnumerator CastingBehaviour(MonoBehaviour mono, Entities entity)
+    protected override async UniTask CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
-        yield return base.CastingBehaviour(mono, entity);
+        await base.CastingBehaviour(mono, entity);
 
         //restore health
-        if(entity != null && entity.GetEntityStats != null)
-        {
-            entity.GetEntityStats.SetCurrentHealth(healthRestoreAmount);
-        }
-        else
-        {
-            Debug.LogError("RestoreHealthAbility : Unable to restore health");
-        }
+        entity.GetEntityStats.SetCurrentHealth(healthRestoreAmount);
 
-    yield return new WaitForSeconds(time);
+        await UniTask.Delay(TimeSpan.FromSeconds(time));
     }
 
-    protected override IEnumerator FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
+    protected override async UniTask FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
-        yield return base.FinishedCastingBehaviour(mono, entity);
+        await base.FinishedCastingBehaviour(mono, entity);
 
         //no need
   
