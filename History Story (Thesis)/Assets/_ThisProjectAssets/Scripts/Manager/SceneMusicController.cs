@@ -31,7 +31,11 @@ public class SceneMusicController : Singleton<SceneMusicController>
     private MMSoundManagerPlayOptions sceneBossMusicOptions;
 
 
-
+    private void OnDestroy()
+    {
+        FreeAllPlayingFxSound().Forget();
+        cancellationToken?.Cancel();
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -43,7 +47,7 @@ public class SceneMusicController : Singleton<SceneMusicController>
 
     private void Start()
     {
-        SoundFxController().Forget();
+        SoundFxController(cancellationToken.Token).Forget();
 
         PlayMusicSound();
         PlaySoundBackground();
@@ -67,6 +71,26 @@ public class SceneMusicController : Singleton<SceneMusicController>
             ChangeMusic(MusicState.Boss).Forget();
         }
     }
+
+
+    private async UniTaskVoid FreeAllPlayingFxSound()
+    {
+        var soundFxs = MMSoundManager.Instance.GetSoundsPlaying(MMSoundManager.MMSoundManagerTracks.Sfx);
+        var duration = 0.5f;
+
+
+        if(soundFxs.Count > 0)
+        {
+            foreach (var sound in soundFxs)
+            {
+                var soundID = sound.ID;
+                MMSoundManagerSoundFadeEvent.Trigger(MMSoundManagerSoundFadeEvent.Modes.PlayFade, soundID, duration, 0, new MMTweenType(MMTween.MMTweenCurve.LinearTween)); //Out volume
+            }
+        }
+
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+    }
+
 
     #region Music Control
     private void InitializeMusicOptions()
@@ -186,53 +210,65 @@ public class SceneMusicController : Singleton<SceneMusicController>
     #endregion
 
     #region Sound Fx Music
-    private async UniTaskVoid SoundFxController()
+    private async UniTaskVoid SoundFxController(CancellationToken cancellationToken)
     {
         if (sceneAudioSO == null || sceneAudioSO.sceneFxSound.Count == 0) { return; }
 
         var fxSounds = sceneAudioSO.sceneFxSound;
 
-        do
+        try
         {
-            await UniTask.Yield();
-
-            //Change to play
-            if (ThesisUtility.RandomGetChanceBool(sceneAudioSO.chanceToPlayFx / 100))
+            do
             {
-                var selectedClip = fxSounds.ToArray().RandomGetObject();
+                await UniTask.Yield();
 
-                var defaultFx = MMSoundManagerPlayOptions.Default;
-                defaultFx.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
-                defaultFx.ID = 9999;
-                defaultFx.Priority = 1;
+                // Check if cancellation is requested
+                cancellationToken.ThrowIfCancellationRequested();
 
-                int loopCount = ThesisUtility.RandomGetAmount(0, selectedClip.randomLoopCount);
-
-                for (int i = 0; i < loopCount; i++)
+                //Change to play
+                if (ThesisUtility.RandomGetChanceBool(sceneAudioSO.chanceToPlayFx / 100))
                 {
-                    defaultFx.PanStereo = selectedClip.randomStereoPan ? ThesisUtility.RandomGetFloat(-1, 1) : 0;
-                    defaultFx.Volume = ThesisUtility.RandomGetFloat(selectedClip.minVolume, selectedClip.maxVolume) / 100;
-                    MMSoundManagerSoundPlayEvent.Trigger(selectedClip.soundFx, defaultFx);
+                    var selectedClip = fxSounds.ToArray().RandomGetObject();
 
-                    var isPlaying = MMSoundManager.Instance.FindByID(defaultFx.ID).isPlaying;
+                    var defaultFx = MMSoundManagerPlayOptions.Default;
+                    defaultFx.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
+                    defaultFx.ID = 9999;
+                    defaultFx.Priority = 1;
 
-                    await UniTask.RunOnThreadPool(async () =>
+                    int loopCount = ThesisUtility.RandomGetAmount(0, selectedClip.randomLoopCount);
+
+                    for (int i = 0; i < loopCount; i++)
                     {
-                        while (isPlaying)
+                        defaultFx.PanStereo = selectedClip.randomStereoPan ? ThesisUtility.RandomGetFloat(-1, 1) : 0;
+                        defaultFx.Volume = ThesisUtility.RandomGetFloat(selectedClip.minVolume, selectedClip.maxVolume) / 100;
+                        MMSoundManagerSoundPlayEvent.Trigger(selectedClip.soundFx, defaultFx);
+
+                        var isPlaying = MMSoundManager.Instance.FindByID(defaultFx.ID).isPlaying;
+
+                        await UniTask.RunOnThreadPool(async () =>
                         {
-                            await UniTask.Yield(); // Yield to allow other operations
-                            isPlaying = MMSoundManager.Instance.FindByID(defaultFx.ID).isPlaying;
-                        }
-                    });
+                            while (isPlaying)
+                            {
+                                await UniTask.Yield(); // Yield to allow other operations
+                                isPlaying = MMSoundManager.Instance.FindByID(defaultFx.ID).isPlaying;
+                            }
+                        });
 
 
-                    await UniTask.Delay(TimeSpan.FromSeconds(selectedClip.delayLoop));
+                        await UniTask.Delay(TimeSpan.FromSeconds(selectedClip.delayLoop));
+                    }
                 }
-            }
 
-            await UniTask.Delay(TimeSpan.FromSeconds(sceneAudioSO.playEverySeconds));
-        } while (true);
+                await UniTask.Delay(TimeSpan.FromSeconds(sceneAudioSO.playEverySeconds));
+            } while (!cancellationToken.IsCancellationRequested);
+        }
+        catch
+        {
+            Debug.Log("STOP THE SOUND FX AMBIANCE");
+        }
+        
     }
+
     //private async UniTaskVoid SoundFxController(CancellationToken cancellationToken)
     //{
     //    if (sceneAudioSO == null || sceneAudioSO.sceneFxSound.Count == 0)
@@ -296,7 +332,6 @@ public class SceneMusicController : Singleton<SceneMusicController>
         var backgroundOption = MMSoundManagerPlayOptions.Default;
         backgroundOption.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
         backgroundOption.Loop = true;
-        backgroundOption.Persistent = true;
         backgroundOption.Volume = sceneAudioSO.backgroundVolume / 100;
         backgroundOption.Priority = 0;
 
