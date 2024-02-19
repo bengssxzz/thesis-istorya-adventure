@@ -30,6 +30,8 @@ public class EnemyBoss : MonoBehaviour
 
     private void OnEnable()
     {
+        SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Boss);
+
         battleUI = UI_Manager.Instance.FindComponentInUIMenu<BattleSystemUI>("Battle UI");
         entityStats = entity.GetEntityStats;
 
@@ -41,6 +43,8 @@ public class EnemyBoss : MonoBehaviour
     }
     private void OnDisable()
     {
+        SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Default);
+
         entity.GetEntityStats.OnCurrentHealthChange -= OnCurrentHealthChange;
         battleUI.ToggleBossInfo(false);
     }

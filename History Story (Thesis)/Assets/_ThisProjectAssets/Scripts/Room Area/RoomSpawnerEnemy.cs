@@ -171,6 +171,57 @@ public class RoomSpawnerEnemy : MonoBehaviour
     }
 
 
+    private async void BattleStarted() //Battle started
+    {
+        //Activate the barriers
+        foreach (var item in listOfBarriers)
+        {
+            item.SetActive(true);
+        }
+
+        OnStartBattleTrigger?.Invoke();
+
+        if (showBattleInfoUI)
+            battleUI.ToggleWaveInfo(true);
+
+
+        await UpdateGraphNode();
+
+        SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Combat).Forget();
+
+    }
+    private async void BattleEnded() //Battle ended
+    {
+        //Deactivate the barriers
+        foreach (var item in listOfBarriers)
+        {
+            item.SetActive(false);
+        }
+
+        OnFinishedBattleTrigger?.Invoke();
+
+        if (showBattleInfoUI)
+            battleUI.ToggleWaveInfo(false);
+
+        await UpdateGraphNode();
+
+        SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Default).Forget();
+
+        onPendingBattle = false;
+        isAlreadyTrigger = true;
+    }
+
+
+    private async UniTask UpdateGraphNode()
+    {
+        Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
+        var guo = new GraphUpdateObject(bounds);
+
+        AstarPath.active.UpdateGraphs(guo, 0.3f); //Update the node according to bound
+
+
+        await UniTask.WaitForEndOfFrame(this);
+    }
     private void CancelGetAllEnemiesTask()
     {
         // Cancel the task if it's running and dispose the CancellationTokenSource
@@ -327,57 +378,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         BattleEnded();
     }
 
-    private async void BattleStarted() //Battle started
-    {
-        //Activate the barriers
-        foreach (var item in listOfBarriers)
-        {
-            item.SetActive(true);
-        }
-
-        OnStartBattleTrigger?.Invoke();
-
-        if (showBattleInfoUI)
-            battleUI.ToggleWaveInfo(true);
-
-
-        await UpdateGraphNode();
-
-
-
-    }
-    private async void BattleEnded() //Battle ended
-    {
-        //Deactivate the barriers
-        foreach (var item in listOfBarriers)
-        {
-            item.SetActive(false);
-        }
-
-        OnFinishedBattleTrigger?.Invoke();
-
-        if (showBattleInfoUI)
-            battleUI.ToggleWaveInfo(false);
-
-        await UpdateGraphNode();
-
-        onPendingBattle = false;
-        isAlreadyTrigger = true;
-    }
-
-    private async UniTask UpdateGraphNode()
-    {
-        Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
-        var guo = new GraphUpdateObject(bounds);
-
-        AstarPath.active.UpdateGraphs(guo, 0.3f); //Update the node according to bound
-
-
-        await UniTask.WaitForEndOfFrame(this);
-    }
-
-
-
+   
 
 
 

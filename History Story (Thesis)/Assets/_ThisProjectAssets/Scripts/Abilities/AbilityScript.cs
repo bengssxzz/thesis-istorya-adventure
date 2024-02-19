@@ -85,10 +85,10 @@ public class AbilityScript : ScriptableObject
 
         while (elapsedTime < cooldownTime)
         {
-            if (cooldownCancellationTokenSource.Token.IsCancellationRequested)
-            {
-                return; // Cancel the coroutine if cancellation is requested
-            }
+            //if (cooldownCancellationTokenSource.Token.IsCancellationRequested)
+            //{
+            //    return; // Cancel the coroutine if cancellation is requested
+            //}
 
             elapsedTime = Time.time - startTime;
             OnAbilityTimeLapse?.Invoke(isOnCoolDown, cooldownTime - elapsedTime);
@@ -130,7 +130,7 @@ public class AbilityScript : ScriptableObject
     {
         await UniTask.Yield(); // Yield to allow other operations
         AbilityPlayFeedbacks(entity, precastingAtStartFeedback);
-        CooldownTimer().Forget();
+        CooldownTimer();
     }
 
     protected virtual async UniTask CastingBehaviour(MonoBehaviour mono, Entities entity)

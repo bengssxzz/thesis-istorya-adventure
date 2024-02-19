@@ -12,6 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3dd481a6bada748b93df0cba48d8fd, type: 3}
   m_Name: Tutorial Chapter Audio
   m_EditorClassIdentifier: 
-  chapterMusic: {fileID: 8300000, guid: 5c65be8364cf16847b7f4f68d68e12e3, type: 3}
-  combatMusic: {fileID: 8300000, guid: 6def857f161188a4bad48acd81f56d65, type: 3}
-  bossMusic: {fileID: 8300000, guid: 687235f5b124b7c449aa0026a5627544, type: 3}
+  defaultMusic:
+  - {fileID: 8300000, guid: de2d59aa524f9c34b80f158ba5a0f757, type: 3}
+  combatMusic:
+  - {fileID: 8300000, guid: 46c45fd55eb5471409d4e324e1a960a6, type: 3}
+  bossMusic:
+  - {fileID: 8300000, guid: 6def857f161188a4bad48acd81f56d65, type: 3}
+  playEverySeconds: 1
+  chanceToPlayFx: 50
+  sceneFxSound:
+  - soundFx: {fileID: 8300000, guid: e66b49a9e6e859846a20bb29d221386d, type: 3}
+    randomLoopCount: 0
+    delayLoop: 0.2
+    randomStereoPan: 0
+    minVolume: 50
+    maxVolume: 100
+  - soundFx: {fileID: 8300000, guid: 66abbe6a1f59edc44abc35b5a9d0ce9e, type: 3}
+    randomLoopCount: 5
+    delayLoop: 1
+    randomStereoPan: 1
+    minVolume: 50
+    maxVolume: 100

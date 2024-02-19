@@ -5,8 +5,28 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="AudioSO", menuName ="Chapters(Level)/Chapter Audios")]
 public class SceneAudioSO : ScriptableObject
 {
-    public AudioClip chapterMusic;
+    [System.Serializable] public class SceneSoundFx
+    {
+        public AudioClip soundFx;
 
-    public AudioClip combatMusic;
-    public AudioClip bossMusic;
+        [Header("FOR LOOP")]
+        public int randomLoopCount = 0;
+        public float delayLoop = 0.2f;
+
+        [Space(10)]
+        [Tooltip("If you want to play the fx in random stereo pan")]
+        public bool randomStereoPan = false;
+        [Range(0, 100)] public float minVolume = 50;
+        [Range(0, 100)] public float maxVolume = 100;
+    }
+    public List<AudioClip> defaultMusic;
+    public List<AudioClip> combatMusic;
+    public List<AudioClip> bossMusic;
+
+    [Space(15)]
+    [Header("Ambiance Sound")]
+    public float playEverySeconds = 1f;
+    [Range(0, 100)] public float chanceToPlayFx = 50;
+    public List<SceneSoundFx> sceneFxSound;
+
 }
