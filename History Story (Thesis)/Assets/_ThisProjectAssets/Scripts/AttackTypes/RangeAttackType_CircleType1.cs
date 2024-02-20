@@ -4,8 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-
-
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Circle Type 1 Attack Type", menuName = "Attack Type/Circle Type 1")]
 public class RangeAttackType_CircleType1 : RangeAttackTypeSO
@@ -16,7 +15,7 @@ public class RangeAttackType_CircleType1 : RangeAttackTypeSO
     float angleStep = 0;
     float startAngle = 0; // Start at half the view angle to the left of the right direction
 
-    protected override async UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken)
+    protected override async UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         angleStep = viewAngle / (circleRayCount);
         startAngle = -viewAngle / 2;
@@ -49,13 +48,15 @@ public class RangeAttackType_CircleType1 : RangeAttackTypeSO
                 // Increment the angle for the next bullet
                 currentAngle += angleStep;
             }
+
+            triggerCallBack?.Invoke();
             startAngle = -viewAngle / 2; // Reset the start angle for the next volley
         }
 
         await UniTask.Yield();
     }
 
-    protected override async UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken)
+    protected override async UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         angleStep = viewAngle / (circleRayCount);
         startAngle = -viewAngle / 2;
@@ -88,9 +89,9 @@ public class RangeAttackType_CircleType1 : RangeAttackTypeSO
                 // Increment the angle for the next bullet
                 currentAngle += angleStep;
             }
+            triggerCallBack?.Invoke();
+
             startAngle = -viewAngle / 2; // Reset the start angle for the next volley
-
-
         } while (!FinishedTimer());
 
         await UniTask.Yield();

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Spiral Attack Type", menuName = "Attack Type/Spiral")]
 public class RangeAttackType_Spiral : RangeAttackTypeSO
@@ -18,7 +18,7 @@ public class RangeAttackType_Spiral : RangeAttackTypeSO
 
 
 
-    protected override async UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken)
+    protected override async UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         var host = attackHandler.GetEntity;
         var centerPosition = attackHandler.GetBaseAttackPosition;
@@ -45,10 +45,12 @@ public class RangeAttackType_Spiral : RangeAttackTypeSO
                 spiralAngle += spinSpeed;
 
             }
+
+            triggerCallBack?.Invoke();
         }
     }
 
-    protected override async UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken)
+    protected override async UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         var host = attackHandler.GetEntity;
         var centerPosition = attackHandler.GetBaseAttackPosition;
@@ -73,6 +75,9 @@ public class RangeAttackType_Spiral : RangeAttackTypeSO
                 spiralAngle += spinSpeed;
 
             }
+
+            triggerCallBack?.Invoke();
+
         } while (!FinishedTimer());
 
         await UniTask.Yield();

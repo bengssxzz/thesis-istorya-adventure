@@ -210,14 +210,14 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         //Compute the total damage
         //Formula: Damage - defense %
         //computedDamage = (damage - (damage * GetEntityStats.maxDefense / 100f));
-        var computedDamage = ThesisUtility.ComputeAddedValueWithPercentage(damage, -GetEntityStats.maxDefense);
+        var computedDamage = ThesisUtility.ComputeAddedValueWithPercentage(damage, -GetEntityStats.currentDefense);
 
         GetEntityStats.SetCurrentHealth(-computedDamage);
         OnHit?.Invoke();
 
         if (debugMode)
             Debug.Log($"{this.name} Taking Damage from {sourceDamage.name} || Critical: {isCritical}" +
-                $"Original: {damage};  Defense: {GetEntityStats.maxDefense.ConvertNumberToPercent()}; Computed: {computedDamage}");
+                $"Original: {damage};  Defense: {GetEntityStats.currentDefense.ConvertNumberToPercent()}; Computed: {computedDamage}");
 
         if (GetEntityStats.currentHealth <= 0)
         {

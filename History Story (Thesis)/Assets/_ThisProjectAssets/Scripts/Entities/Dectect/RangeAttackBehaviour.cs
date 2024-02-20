@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using MoreMountains.Feedbacks;
-
+using UnityEngine.Events;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -174,7 +174,7 @@ public class RangeAttackBehaviour : MonoBehaviour
 
         foreach (var typeSO in attackType.attackTypes)
         {
-            typeSO.TriggerFire(attackHandler, attackHandler.GetCancellationToken.Token);
+            typeSO.TriggerFire(attackHandler, attackHandler.GetCancellationToken.Token, TriggerAttackCallBack);
         }
 
 
@@ -194,6 +194,16 @@ public class RangeAttackBehaviour : MonoBehaviour
         //Continue moving when the attack state is done
         attackHandler.GetEntity.StopMovement(false); //Continue moving
     }
+
+    private void TriggerAttackCallBack()
+    {
+        castingFeedback?.PlayFeedbacks();
+    }
+
+
+
+
+
 
 
 

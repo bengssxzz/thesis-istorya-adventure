@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
 using System.Threading;
-
+using MoreMountains.Feedbacks;
 
 
 #if UNITY_EDITOR
@@ -29,6 +29,7 @@ public class MeleeAttackBehaviour : MonoBehaviour
     [Tooltip("override attack speed. If 0, this will depend on the current attack speed of the entity")]
     [SerializeField] private float overrideAttackSpeed = 0;
     [SerializeField] private float attackRadius;
+    [SerializeField] private MMF_Player attackFeedback;
 
     private float attackSpeed;
     private List<Transform> targets;
@@ -45,7 +46,7 @@ public class MeleeAttackBehaviour : MonoBehaviour
     {
         targets = new List<Transform>();
 
-        if (overrideAttackSpeed <= 0 || attackHandler.GetEntity.GetEntityStats != null)
+        if (overrideAttackSpeed <= 0 || attackHandler.GetEntity?.GetEntityStats != null)
             attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
 
         attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
@@ -89,6 +90,7 @@ public class MeleeAttackBehaviour : MonoBehaviour
                 float calculatedDamage = attackHandler.GetCalculatedDamage(out var critical);
                 entity.TakeDamage(calculatedDamage, attackHandler.GetEntity, critical);
 
+                attackFeedback?.PlayFeedbacks();
             }
 
             await UniTask.Delay(TimeSpan.FromSeconds(attackHandler.CalculateAttackSpeed(attackSpeed)));

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using UnityEngine.Events;
+using System;
 
 public abstract class RangeAttackTypeSO : ScriptableObject
 {
@@ -38,40 +40,35 @@ public abstract class RangeAttackTypeSO : ScriptableObject
 
 
 
-    public async void TriggerFire(AttackHandler attackHandler, CancellationToken cancellationToken)
+    public async void TriggerFire(AttackHandler attackHandler, CancellationToken cancellationToken, Action triggerCallBack = null)
     {
         if (useTimer)
         {
-            await AttackType_Timer(attackHandler, cancellationToken);
+            await AttackType_Timer(attackHandler, cancellationToken, triggerCallBack);
         }
         else
         {
-            await AttackType_Amount(attackHandler, cancellationToken);
+            await AttackType_Amount(attackHandler, cancellationToken, triggerCallBack);
         }
     }
     
 
-    private async UniTask AttackType_Amount(AttackHandler attackHandler, CancellationToken token)
+    private async UniTask AttackType_Amount(AttackHandler attackHandler, CancellationToken token, Action triggerCallBack)
     {
         Debug.LogWarning("ATTACK TYPE AMOUNT");
         isDone = false;
-        await FireBehaviourForLoop(projectilePrefab, attackHandler, Mathf.RoundToInt(amount), intervalDelay, token);
+        await FireBehaviourForLoop(projectilePrefab, attackHandler, Mathf.RoundToInt(amount), intervalDelay, token, triggerCallBack);
         isDone = true;
     }
-    private async UniTask AttackType_Timer(AttackHandler attackHandler, CancellationToken token)
+    private async UniTask AttackType_Timer(AttackHandler attackHandler, CancellationToken token, Action triggerCallBack)
     {
         Debug.LogWarning("ATTACK TYPE TIMER");
         startTimer = Time.time;
         isDone = false;
-        await FireBehaviourWhileLoop(projectilePrefab, attackHandler, amount, intervalDelay, token);
+        await FireBehaviourWhileLoop(projectilePrefab, attackHandler, amount, intervalDelay, token, triggerCallBack);
         isDone = true;
     }
 
-    protected abstract UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken);
-    protected abstract UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken);
-
-
-
-
-
+    protected abstract UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack);
+    protected abstract UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack);
 }
