@@ -33,25 +33,25 @@ public class ModifyStatsAbility : AbilityScript
                 case EntityStats.Health:
                     break;
                 case EntityStats.Defense:
-                    await entity.GetEntityStats.TempModifiedDefense(statsModifying.modifyValue, activeTime).ConfigureAwait(false);
+                    _ = entity.GetEntityStats.TempModifiedDefense(statsModifying.modifyValue, activeTime);
                     break;
                 case EntityStats.MoveSpeed:
-                    await entity.GetEntityStats.TempModifiedMoveSpeed(statsModifying.modifyValue, activeTime).ConfigureAwait(false); ;
+                    _ = entity.GetEntityStats.TempModifiedMoveSpeed(statsModifying.modifyValue, activeTime);
                     break;
                 case EntityStats.AttackSpeed:
-                    await entity.GetEntityStats.TempModifiedAttackSpeed(statsModifying.modifyValue, activeTime).ConfigureAwait(false);;
+                    _ = entity.GetEntityStats.TempModifiedAttackSpeed(statsModifying.modifyValue, activeTime);
                     break;
                 case EntityStats.CriticalChance:
-                    await entity.GetEntityStats.TempModifiedCriticalChance(statsModifying.modifyValue, activeTime).ConfigureAwait(false);;
+                    _ = entity.GetEntityStats.TempModifiedCriticalChance(statsModifying.modifyValue, activeTime);
                     break;
                 case EntityStats.CriticalDamage:
-                    await entity.GetEntityStats.TempModifiedCriticalDamage(statsModifying.modifyValue, activeTime).ConfigureAwait(false);;
+                    _ = entity.GetEntityStats.TempModifiedCriticalDamage(statsModifying.modifyValue, activeTime);
                     break;
                 case EntityStats.Dodging:
-                    await entity.GetEntityStats.TempModifiedDodgeChance(statsModifying.modifyValue, activeTime).ConfigureAwait(false);;
+                    _ = entity.GetEntityStats.TempModifiedDodgeChance(statsModifying.modifyValue, activeTime);
                     break;
                 case EntityStats.LifeSteal:
-                    await entity.GetEntityStats.TempModifiedDamage(statsModifying.modifyValue, activeTime).ConfigureAwait(false);;
+                    _ = entity.GetEntityStats.TempModifiedDamage(statsModifying.modifyValue, activeTime);
                     break;
                 case EntityStats.Damage:
                     break;

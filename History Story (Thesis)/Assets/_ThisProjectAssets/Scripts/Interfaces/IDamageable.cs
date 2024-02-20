@@ -5,6 +5,5 @@ using UnityEngine;
 public interface IDamageable
 {
     public IEnumerator KnockBack(Transform damagePosition, float knockBackPower);
-    //public void TakeDamage(float damage, Entities sourceDamage = null, bool canDodge = false, bool canCritical = true);
     public void TakeDamage(float damage, Entities sourceDamage = null, bool isCritical = false);
 }

@@ -10,6 +10,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(AIPath))]
+[RequireComponent(typeof(ScanningEntities))]
 public class AIEntity : Entities
 {
     private enum MoveBehaviourType { Follow, Random}
@@ -17,6 +18,7 @@ public class AIEntity : Entities
     protected Seeker seek;
 
     private Transform targetEntity;
+    private ScanningEntities scanEntities;
 
     [Space(10)]
     [Header("Distance Info")]
@@ -34,6 +36,7 @@ public class AIEntity : Entities
     {
         base.Awake();
 
+        scanEntities = GetComponent<ScanningEntities>();
         aiPath = GetComponent<AIPath>();
         seek = GetComponent<Seeker>();
     }
@@ -44,7 +47,7 @@ public class AIEntity : Entities
     }
     protected override void Update()
     {
-        targetEntity = GetAttack_Controller.GetNearestEnemy;
+        targetEntity = scanEntities.GetNearestTarget;
 
         base.Update();
 

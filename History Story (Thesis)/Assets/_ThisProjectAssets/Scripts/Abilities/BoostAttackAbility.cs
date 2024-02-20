@@ -27,8 +27,8 @@ public class BoostAttackAbility : AbilityScript
         float normalDamage = entity.GetEntityStats.maxDamage * (1 + damageIncrease);
 
 
-        await entity.GetEntityStats.TempModifiedAttackSpeed(normalAttackSpeed, time).ConfigureAwait(false);
-        await entity.GetEntityStats.TempModifiedCriticalDamage(normalDamage, time).ConfigureAwait(false);
+        _ = entity.GetEntityStats.TempModifiedAttackSpeed(normalAttackSpeed, time);
+        _ = entity.GetEntityStats.TempModifiedCriticalDamage(normalDamage, time);
 
         await UniTask.Delay(TimeSpan.FromSeconds(time));
     }

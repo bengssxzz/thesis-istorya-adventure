@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd3dd481a6bada748b93df0cba48d8fd, type: 3}
+  m_Name: Intro_Town
+  m_EditorClassIdentifier: 
+  defaultMusic:
+  - {fileID: 8300000, guid: de2d59aa524f9c34b80f158ba5a0f757, type: 3}
+  combatMusic: []
+  bossMusic: []
+  backgroundSound: {fileID: 8300000, guid: da844226d34b6dd4f8a6b16ed34a78a7, type: 3}
+  backgroundVolume: 100
+  playEverySeconds: 2.5
+  chanceToPlayFx: 50
+  sceneFxSound:
+  - soundFx: {fileID: 8300000, guid: 7996152415c60794ca1391ee9e2201be, type: 3}
+    randomLoopCount: 1
+    delayLoop: 0
+    randomStereoPan: 1
+    minVolume: 47
+    maxVolume: 83
+  - soundFx: {fileID: 8300000, guid: 40d37c497b26fbb4092a43c6cfd9da57, type: 3}
+    randomLoopCount: 0
+    delayLoop: 0
+    randomStereoPan: 0
+    minVolume: 40
+    maxVolume: 40
+  - soundFx: {fileID: 8300000, guid: 51f6a9c6c784f894585e02805e171302, type: 3}
+    randomLoopCount: 0
+    delayLoop: 0
+    randomStereoPan: 1
+    minVolume: 100
+    maxVolume: 100

@@ -163,15 +163,13 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float bulletSize;
 
     [SerializeField] private LayerMask defaultHit;
-    [SerializeField] private LayerMask entityToHit;
-    [SerializeField] private LayerMask allHit;
 
 
 
     private Vector2 startPosition;
     private Vector2 directionVelocity;
     private float maxLimitDistance;
-    private LayerMask layerToHit;
+    [SerializeField] private LayerMask combineLayer;
 
     private EntityStatistics entityStats;
     private AttackController attackController;
@@ -193,22 +191,19 @@ public class Projectile : MonoBehaviour
     }
     private void OnDisable()
     {
-        layerToHit = 0; //Clear the layermask
+        combineLayer = 0; //Clear the layermask
     }
 
-    public void InitializeProjectile(Entities entityHost, Vector2 direction, float maxDistance)
+    public void InitializeProjectile(Entities entityHost, Vector2 velocityDirection, float maxDistance, LayerMask targetLayer)
     {
         hostEntity = entityHost;
 
         entityStats = entityHost.GetEntityStats;
         attackController = entityHost.GetAttack_Controller;
-        directionVelocity = direction;
+        directionVelocity = velocityDirection;
 
-        LayerMask entityHit = attackController.GetMyEnemyLayer(); // Convert layer to int
-        layerToHit = defaultHit | entityHit; // Perform bitwise OR operation
 
-        entityToHit = entityHit;
-        allHit = layerToHit;
+        combineLayer = defaultHit | targetLayer;
 
 
         var randomLimit = ThesisUtility.RandomGetFloat(0, OFFSET_MAX_LIMIT);
@@ -271,7 +266,7 @@ public class Projectile : MonoBehaviour
         if (Vector2.Distance(startPosition, transform.position) < maxLimitDistance)
         {
             //If inside the range
-            Collider2D colliderHit = Physics2D.OverlapCircle(transform.position, bulletSize, layerToHit);
+            Collider2D colliderHit = Physics2D.OverlapCircle(transform.position, bulletSize, combineLayer);
 
             if (colliderHit != null)
             {

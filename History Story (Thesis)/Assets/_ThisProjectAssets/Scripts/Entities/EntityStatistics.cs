@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ public enum CategoryStats
 public class EntityStatistics
 {
     [ES3NonSerializable] public Action<float, float> OnCurrentHealthChange;
+    [ES3NonSerializable] public Action OnCurrentStatsChange; //When the current stats changes
 
 
     [ES3Serializable] private float _lifeSteal;
@@ -80,32 +82,32 @@ public class EntityStatistics
 
     public float maxDamage { get { return _maxDamage; } private set { _maxDamage = value; } }
     public float currentDamage { get { return _currentDamage; } private set { _currentDamage = value; } }
-    
+
 
 
     public float maxDefense { get { return _maxDefense; } private set { _maxDefense = value; } }
     public float currentDefense { get { return _currentDefense; } private set { _currentDefense = value; } }
-   
+
 
     public float maxMoveSpeed { get { return _maxMoveSpeed; } private set { _maxMoveSpeed = value; } }
     public float currentMoveSpeed { get { return _currentMoveSpeed; } private set { _currentMoveSpeed = value; } }
-    
+
 
     public float maxAttackSpeed { get { return _maxAttackSpeed; } private set { _maxAttackSpeed = value; } }
     public float currentAttackSpeed { get { return _currentAttackSpeed; } private set { _currentAttackSpeed = value; } }
-   
+
 
     public float maxCriticalDamage { get { return _maxCriticalDamage; } private set { _maxCriticalDamage = value; } }
     public float currentCriticalDamage { get { return _currentCriticalDamage; } private set { _currentCriticalDamage = value; } }
-  
 
-    public float maxDodgeChance{ get { return _maxDodgeChance; } private set { _maxDodgeChance = value; } }
+
+    public float maxDodgeChance { get { return _maxDodgeChance; } private set { _maxDodgeChance = value; } }
     public float currentDodgeChance { get { return _currentDodgeChance; } private set { _currentDodgeChance = value; } }
-   
+
 
     public float maxCriticalChance { get { return _maxCriticalChance; } private set { _maxCriticalChance = value; } }
-    public float currentCriticalChance{ get { return _currentCriticalChance; } private set { _currentCriticalChance = value; } }
-   
+    public float currentCriticalChance { get { return _currentCriticalChance; } private set { _currentCriticalChance = value; } }
+
 
     public float lifeSteal { get { return _lifeSteal; } private set { _lifeSteal = value; } } //Every kill absorb health
     #endregion
@@ -141,49 +143,6 @@ public class EntityStatistics
         lifeSteal = entityStatsSO.lifeSteal;
     }
 
-    #region MODIFICATION (OLD)
-    public void ModifiedMoveSpeed(float amount)
-    {
-        currentMoveSpeed = amount;
-    }
-
-    // method to modify the defense value
-    public void ModifiedDefense(float newDefense)
-    {
-        maxDefense = Mathf.Clamp(newDefense, 0f, 1f);
-    }
-
-    // method to modify the attackspeed value
-    public void ModifiedAttackSpeed(float newAttackSpeed)
-    {
-        currentAttackSpeed = newAttackSpeed;
-    }
-
-    // method to modify the damage value
-    public void ModifiedDamage(float newDamage)
-    {
-        maxDamage = newDamage;
-    }
-
-    // !Added by different person.
-    // method to modify the damage value
-    public void ModifiedLifesteal(float newLifesteal)
-    {
-        lifeSteal = newLifesteal;
-    }
-
-    public void ModifiedCriticalChance(float newCriticalChance)
-    {
-        maxCriticalChance = newCriticalChance;
-    }
-
-    public void ModifiedCriticalDamage(float newCriticalDamage)
-    {
-        maxCriticalDamage = newCriticalDamage;
-    }
-
-    // !Addition of different person ends.
-    #endregion
 
     /* To use this in other script. For example:
      * public async void Activate(){
@@ -200,100 +159,79 @@ public class EntityStatistics
      */
 
     #region MODIFICATION STATS
-    public async Task TempModifiedDamage(float tempValue, float duration) //Damage
+    public async UniTask TempModifiedDamage(float tempValue, float duration) //Damage
     {
-        float startTime = Time.time;
-        float endTime = startTime + duration;
+        currentDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); // Apply temporary value
 
-        while (Time.time < endTime) // Wait until the specified duration has passed
-        {
-            currentDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); // Apply temporary value
-            await Task.Yield();
-        }
+        OnCurrentStatsChange?.Invoke();
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        OnCurrentStatsChange?.Invoke();
 
         // Back to the original
         currentDamage = maxDamage;
     }
-    public async Task TempModifiedDefense(float tempValue, float duration) //Defense
+    public async UniTask TempModifiedDefense(float tempValue, float duration) //Defense
     {
-        float startTime = Time.time;
-        float endTime = startTime + duration;
+        currentDefense = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
-        while (Time.time < endTime) // Wait until the specified duration has passed
-        {
-            currentDefense = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
-            await Task.Yield();
-        }
+        OnCurrentStatsChange?.Invoke();
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        OnCurrentStatsChange?.Invoke();
 
         // Back to the original 
         currentDefense = maxDefense;
     }
-    public async Task TempModifiedMoveSpeed(float tempValue, float duration) //Movement Speed
+    public async UniTask TempModifiedMoveSpeed(float tempValue, float duration) //Movement Speed
     {
-        float startTime = Time.time;
-        float endTime = startTime + duration;
+        currentMoveSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
 
-        while (Time.time < endTime) // Wait until the specified duration has passed
-        {
-            currentMoveSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
-            await Task.Yield();
-        }
+        OnCurrentStatsChange?.Invoke();
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        OnCurrentStatsChange?.Invoke();
 
         // Back to the original 
         currentMoveSpeed = maxMoveSpeed;
     }
-    public async Task TempModifiedAttackSpeed(float tempValue, float duration) //Attack Speed
+    public async UniTask TempModifiedAttackSpeed(float tempValue, float duration) //Attack Speed
     {
-        float startTime = Time.time;
-        float endTime = startTime + duration;
-
-        while (Time.time < endTime) // Wait until the specified duration has passed
-        {
-            maxAttackSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
-            await Task.Yield();
-        }
+        maxAttackSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
+        
+        OnCurrentStatsChange?.Invoke();
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        OnCurrentStatsChange?.Invoke();
 
         // Back to the original 
         currentAttackSpeed = maxAttackSpeed;
     }
-    public async Task TempModifiedCriticalDamage(float tempValue, float duration) //Critical Damage
+    public async UniTask TempModifiedCriticalDamage(float tempValue, float duration) //Critical Damage
     {
-        float startTime = Time.time;
-        float endTime = startTime + duration;
+        currentCriticalDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
 
-        while (Time.time < endTime) // Wait until the specified duration has passed
-        {
-            currentCriticalDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
-            await Task.Yield();
-        }
+        OnCurrentStatsChange?.Invoke();
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        OnCurrentStatsChange?.Invoke();
 
         // Back to the original 
         currentCriticalDamage = maxCriticalDamage;
     }
-    public async Task TempModifiedCriticalChance(float tempValue, float duration) //Critical Chance
+    public async UniTask TempModifiedCriticalChance(float tempValue, float duration) //Critical Chance
     {
-        float startTime = Time.time;
-        float endTime = startTime + duration;
+        currentCriticalChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
-        while (Time.time < endTime) // Wait until the specified duration has passed
-        {
-            currentCriticalChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
-            await Task.Yield();
-        }
+        OnCurrentStatsChange?.Invoke();
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        OnCurrentStatsChange?.Invoke();
 
         // Back to the original 
         currentCriticalChance = maxCriticalChance;
     }
-    public async Task TempModifiedDodgeChance(float tempValue, float duration) //Dodge Chance
+    public async UniTask TempModifiedDodgeChance(float tempValue, float duration) //Dodge Chance
     {
-        float startTime = Time.time;
-        float endTime = startTime + duration;
+        currentDodgeChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
-        while (Time.time < endTime) // Wait until the specified duration has passed
-        {
-            currentDodgeChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
-            await Task.Yield();
-        }
+        OnCurrentStatsChange?.Invoke();
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        OnCurrentStatsChange?.Invoke();
 
         // Back to the original 
         currentDodgeChance = maxDodgeChance;
@@ -330,43 +268,7 @@ public class EntityStatistics
     }
 
 
-    public void UpgradeCategoryStats(CategoryStats categoryStats)
-    {
-        switch (categoryStats)
-        {
-            case CategoryStats.MainStats:
-                maxHealth += 10;
-                maxDefense += 0.01f;
-                break;
-            case CategoryStats.Speed:
-                maxMoveSpeed += 0.2f;
-                maxAttackSpeed += 0.01f;
-                break;
-            case CategoryStats.Accuracy:
-                maxCriticalDamage += 0.002f;
-                maxDodgeChance += 0.002f;
-                break;
-            case CategoryStats.Sight:
-                maxCriticalChance += 0.002f;
-                break;
-            case CategoryStats.Regeneration:
-                lifeSteal += 1.5f;
-                break;
-            default:
-                Debug.LogWarning("Upgrade stats is undefined");
-                break;
-        }
-    }
-    public void UpgradeMaxHealth(int amount)
-    {
-        maxHealth += amount;
-        currentHealth = maxHealth;
-    }
-    public void UpgradeDefence(int amount)
-    {
-        maxDefense += amount;
 
-    }
 
 
     public void UpgradeStatsPermanent(EntityStats stats, float amount) //Upgrade stats permanently

@@ -48,6 +48,8 @@ public class MactanShieldAbility : AbilityScript
     {
         await base.FinishedCastingBehaviour(mono, entity);
 
+        var attackHandler = entity.GetAttackHandler;
+
         float currentAngle = startAngle;
 
         for (int j = 0; j < projectileMaxCount; j++)
@@ -65,7 +67,7 @@ public class MactanShieldAbility : AbilityScript
             newBul.transform.position = entity.transform.position;
 
             var projectileSettings = newBul.GetComponent<Projectile>();
-            projectileSettings.InitializeProjectile(entity, dir, entity.GetAttack_Controller.GetRangedAttackDistance);
+            projectileSettings.InitializeProjectile(entity, dir, entity.GetAttack_Controller.GetRangedAttackDistance, attackHandler.GetScannerEntities.GetTargetLayerMask);
             projectileSettings.OverrideProjectileSpeed(projectileSpeed);
             projectileSettings.OverrideProjectileMaxDistance(projectileMaxDistance);
             projectileSettings.OverrideProjectileDamage(entity.GetEntityStats.currentDamage + projectileAdditionalDamage);

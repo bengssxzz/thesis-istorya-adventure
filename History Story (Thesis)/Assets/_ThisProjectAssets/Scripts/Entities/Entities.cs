@@ -6,14 +6,17 @@ using ThesisLibrary;
 using MoreMountains.Feedbacks;
 using System.Linq;
 
-[RequireComponent(typeof(AttackController))]
-[RequireComponent(typeof(AbilityController))]
 
+
+[RequireComponent(typeof(AbilityController))]
 public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 {
     protected Rigidbody2D rb;
-    //protected Animator animator_controller;
     private DropLoot dropLoot;
+    private AttackHandler attackHandler;
+
+    private EntityStatistics entityStatistics;
+    private AbilityController abilityController;
 
     [Header("Entity Base")]
     [SerializeField] protected bool debugMode = false;
@@ -36,9 +39,10 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     //Getter & Setter
     public Rigidbody2D GetRigidbody2D { get { return rb; } } //Get Rigidbody2D
     public Transform GetActorTransform { get { return actorTransform; } }
+    public AttackHandler GetAttackHandler { get { return attackHandler; } }
     public AttackController GetAttack_Controller { get; private set; } //Get attack controller
-    public AbilityController GetAbility_Controller { get; private set; } //Get ability controller
-    public EntityStatistics GetEntityStats { get; private set; } //Get entity stats handler
+    public AbilityController GetAbility_Controller { get { return abilityController; } } //Get ability controller
+    public EntityStatistics GetEntityStats { get { return entityStatistics; } } //Get entity stats handler
     //public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
     public Vector2 GetMoveDirection { get; protected set; }
     public bool IsCanMove { get; set; } = true;
@@ -52,13 +56,14 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     {
         rb = GetComponent<Rigidbody2D>();
 
-        GetEntityStats = new EntityStatistics(entityStatsSO);
+        entityStatistics = new EntityStatistics(entityStatsSO);
 
         GetAttack_Controller = GetComponent<AttackController>();
-        GetAbility_Controller = GetComponent<AbilityController>();
+        abilityController = GetComponent<AbilityController>();
 
 
         TryGetComponent<DropLoot>(out dropLoot);
+        TryGetComponent<AttackHandler>(out attackHandler);
     }
     protected virtual void OnEnable()
     {
@@ -132,7 +137,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
     public virtual void StopMovement(bool canMove)
     {
-        IsCanMove = canMove;
+        IsCanMove = !canMove;
         rb.velocity = Vector2.zero;
     }
     private void Movement() //Movement handler
@@ -224,66 +229,6 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         hurtFeedback?.PlayFeedbacks();
         TakingDamageBehaviour();
     }
-    //public void TakeDamage(float damage, Entities sourceDamage = null, bool canDodge = false, bool canCritical = true) //Taking damage
-    //{
-    //    float computedDamage = 0;
-
-    //    //Dodge
-    //    if (canDodge == true)
-    //        if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) { return; } //if dodge is true, dont take damage
-
-    //    //Critical Computation
-    //    if (canCritical == true)
-    //    {
-    //        bool isCritical;
-
-    //        if (sourceDamage != null)
-    //        {
-    //            //Critical damage if the sourceDamage is not null
-
-    //            isCritical = ThesisUtility.RandomGetChanceBool(sourceDamage.GetEntityStats.maxCriticalChance.ConvertNumberToPercent());
-    //            if (isCritical)
-    //            {
-    //                //float criticalDamage = damage * sourceDamage.GetEntityStats.maxCriticalDamage / 100f;
-    //                //damage += criticalDamage;
-    //                damage += ThesisUtility.ComputeAddedValueWithPercentage(damage, sourceDamage.GetEntityStats.maxCriticalDamage);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            //Critical damage if the sourceDamage is null
-
-    //            isCritical = ThesisUtility.RandomGetChanceBool(0.5f); //Critical chance is 50%
-    //            if (isCritical)
-    //            {
-    //                float criticalDamage = damage * ThesisUtility.RandomGetFloat(0.01f, 0.5f); //Min critical damage is 1% and Max critical damage is 50%
-    //                damage += criticalDamage;
-    //            }
-    //        }
-
-    //    }
-
-    //    //Compute the total damage
-    //    //Formula: Damage - defense %
-    //    //computedDamage = (damage - (damage * GetEntityStats.maxDefense / 100f));
-    //    computedDamage = ThesisUtility.ComputeAddedValueWithPercentage(damage, -GetEntityStats.maxDefense); 
-
-    //    GetEntityStats.SetCurrentHealth(-computedDamage);
-    //    OnHit?.Invoke();
-
-    //    if (debugMode)
-    //        Debug.Log(String.Format("{3} Taking Damage || Original: {0};  Defense: {1}; Computed: {2};", damage, GetEntityStats.maxDefense.ConvertNumberToPercent(), computedDamage, this.name));
-
-    //    if (GetEntityStats.currentHealth <= 0)
-    //    {
-    //        Died(sourceDamage);
-    //        return;
-    //    }
-
-    //    //Do this behaviour if the entity is not yet died
-    //    hurtFeedback?.PlayFeedbacks();
-    //    TakingDamageBehaviour();
-    //}
 
     protected virtual void TakingDamageBehaviour() //Do this behaviour when taking damage
     {
