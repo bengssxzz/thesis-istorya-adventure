@@ -19,7 +19,7 @@ public class AbilityScript : ScriptableObject
 
     private bool isOnCoolDown = false;
     private AbilityState state = AbilityState.PreCasting;
-    private CancellationTokenSource cooldownCancellationTokenSource;
+    private float remainingCD;
 
     public Action<bool, float> OnAbilityTimeLapse;
 
@@ -66,13 +66,21 @@ public class AbilityScript : ScriptableObject
     public void Reset()
     {
         isOnCoolDown = false;
-        cooldownCancellationTokenSource?.Cancel(); // Cancel the cooldown if it's still running
     }
+
+    public void InitializeAbility()
+    {
+
+    }
+
 
     public async UniTaskVoid TriggerAbility(MonoBehaviour mono)
     {
+        Debug.LogWarning("IS ON CD: " + isOnCoolDown + "|| STATE: " + state);
+
         if (!isOnCoolDown && state == AbilityState.PreCasting)
         {
+            Debug.LogWarning("THIS IS IT 3");
             await AbilityStateControl(mono);
         }
     }
@@ -81,15 +89,9 @@ public class AbilityScript : ScriptableObject
     {
         float startTime = Time.time;
         float elapsedTime = 0f;
-        cooldownCancellationTokenSource = new CancellationTokenSource();
 
         while (elapsedTime < cooldownTime)
         {
-            //if (cooldownCancellationTokenSource.Token.IsCancellationRequested)
-            //{
-            //    return; // Cancel the coroutine if cancellation is requested
-            //}
-
             elapsedTime = Time.time - startTime;
             OnAbilityTimeLapse?.Invoke(isOnCoolDown, cooldownTime - elapsedTime);
 
@@ -101,6 +103,8 @@ public class AbilityScript : ScriptableObject
         OnAbilityTimeLapse?.Invoke(isOnCoolDown, 0f);
     }
 
+
+    #region Ability workflow
     private async UniTask AbilityStateControl(MonoBehaviour mono)
     {
         Entities entity = mono.GetComponent<Entities>();
@@ -126,24 +130,24 @@ public class AbilityScript : ScriptableObject
         }
     }
 
+
     protected virtual async UniTask PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
-        await UniTask.Yield(); // Yield to allow other operations
         AbilityPlayFeedbacks(entity, precastingAtStartFeedback);
-        CooldownTimer();
+        CooldownTimer().Forget();
+        await UniTask.Yield(); // Yield to allow other operations
     }
-
     protected virtual async UniTask CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
-        await UniTask.Yield();
         AbilityPlayFeedbacks(entity, castingAtStartFeedback);
+        await UniTask.Yield();
     }
-
     protected virtual async UniTask FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
-        await UniTask.Yield();
         AbilityPlayFeedbacks(entity, finishedAtStartFeedback);
+        await UniTask.Yield();
     }
+
 
 
     /* SAMPLE CODE FOR MODIFYING FEEDBACKS (DONT UNCOMMENT THIS OR COPY)
@@ -188,15 +192,7 @@ public class AbilityScript : ScriptableObject
     protected virtual void ModifyCastingFeedback(Entities entity, MMF_Player castingFeedback) { }
     protected virtual void ModifyFinishedCastingFeedback(Entities entity, MMF_Player finishFeedback) { }
 
-
-    
-
-    /*TODO - Save the cooldown timer of the ability 
-     * Save the cooldown using (Time.time - startTime) to get the cooldown
-     * When loading the cooldown, need iexecute ang cooldown timer
-     */
-
-
+    #endregion
 
 
 
@@ -444,6 +440,6 @@ public class AbilityScript : ScriptableObject
 
 
 
-   
+
 
 }

@@ -73,6 +73,7 @@ public class AbilityController : MonoBehaviour
 
             if (!ability.OnCoolDown)
             {
+                Debug.LogWarning("THIS IS IT 2");
                 currentAbilities[index].TriggerAbility(entity).Forget();
                 //currentAbilities[index].TriggerAbility(entity);
                 //StartCoroutine(currentAbilities[index].TriggerAbility(this)); //Trigger the ability
