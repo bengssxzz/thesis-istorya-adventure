@@ -213,7 +213,6 @@ GameObject:
   - component: {fileID: 3719126659226642806}
   - component: {fileID: 3719126659226642807}
   - component: {fileID: 3719126659226642792}
-  - component: {fileID: 3719126659226642793}
   - component: {fileID: 3719126659226642794}
   - component: {fileID: 3719126659226642795}
   - component: {fileID: 3719126659226642804}
@@ -222,6 +221,10 @@ GameObject:
   - component: {fileID: 8780504999550975509}
   - component: {fileID: 6879970786540796121}
   - component: {fileID: 3835376091111311417}
+  - component: {fileID: 3015861862116703194}
+  - component: {fileID: 1304460008906215409}
+  - component: {fileID: 4075415069187431296}
+  - component: {fileID: 1279457149716260668}
   m_Layer: 7
   m_Name: FinalBoss
   m_TagString: Enemy
@@ -316,35 +319,6 @@ MonoBehaviour:
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0
---- !u!114 &3719126659226642793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3719126659226642796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98cf90e33f69b8d4e85ca8a2b0c09261, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMode: 1
-  ignoreObstacle: 0
-  detectRadius: 5.99
-  myEnemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 67592
-  canAttack: 1
-  attackHolder: {fileID: 6162245089750823323}
-  fireRate: 0.1
-  rangedAttackDistance: 0
-  attackStates: []
-  offsetPosition: {x: 0.06, y: 0}
-  meleeAttackDistance: 0.8
-  delayAttack: 0.5
 --- !u!114 &3719126659226642794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,7 +331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8684fbcd547a91846bfdb0d41b6d1b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfUnlockedAbilities: []
 --- !u!114 &3719126659226642795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,6 +473,80 @@ PolygonCollider2D:
       - {x: 0.66002756, y: -0.4694786}
       - {x: 0.716743, y: -0.3225626}
       - {x: 0.57900923, y: -0.023296893}
+--- !u!114 &3015861862116703194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f9ff4bb0421f9e4da640c3df771becf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttackPosition: {fileID: 6162245089750823323}
+  attackPositionEndPoint: {fileID: 6162245089750823323}
+--- !u!114 &1304460008906215409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d009cdadc1ae0ac4e95a45fce3b13eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 1
+  avoidLayer:
+    serializedVersion: 2
+    m_Bits: 83992
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  scanRadius: 10
+  ignoreAvoidLayer: 0
+--- !u!114 &4075415069187431296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da920af0cc8f9264ab603e3cabf181c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 1
+  overrideAttackSpeed: 0
+  attackRadius: 1
+  attackFeedback: {fileID: 0}
+--- !u!114 &1279457149716260668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a38b08b7453d4204d9b947fac93b8dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 1
+  castingFeedback: {fileID: 0}
+  overrideAttackSpeed: 0
+  attackRadius: 3
+  attackTypes:
+  - delayCast: 0
+    canMoveWhileCasting: 0
+    attackTypes:
+    - {fileID: 11400000, guid: 7a8038c7ceaeabd4eb87d0966ca07bf4, type: 2}
+    - {fileID: 11400000, guid: ad327ffea9bdfec40aadcb5354fb07c3, type: 2}
+    - {fileID: 11400000, guid: 7d6924c4ca0825745a002b54ee0fb702, type: 2}
 --- !u!1 &8245479333427039281
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,7 +571,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8245479333427039281}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.006, y: -0.16, z: -0.00001692772}
+  m_LocalPosition: {x: 0, y: -0.054, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
