@@ -34,7 +34,9 @@ public class SceneTriggerTrans : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!showIndicator) { return; }
+        if (!showIndicator) {
+            arrowIndicatorFeedback.gameObject.SetActive(false);
+            return; }
 
         if (PlayerSingleton.Instance.GetPlayerScript != null)
         {

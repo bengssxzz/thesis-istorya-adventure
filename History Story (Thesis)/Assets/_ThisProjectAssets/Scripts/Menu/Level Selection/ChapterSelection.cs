@@ -70,6 +70,27 @@ public class ChapterSelection : MonoBehaviour
         GameManager.Instance.CollectedAbilities("Dodge");
         GameManager.Instance.UnlockSceneChapter("Chapter 2");
 
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            string fullPath = SceneUtility.GetScenePathByBuildIndex(i);
+            string name = Path.GetFileNameWithoutExtension(fullPath);
+
+            string directoryName = Path.GetDirectoryName(fullPath);
+            string folderNameOnly = Path.GetFileName(directoryName);
+
+            Debug.Log($"INDEX: {i} || NAME: {name} || DIRECTORY: {directoryName} || FolderName: {folderNameOnly} ||| FULL PATH: {fullPath}");
+        }
+
+
+
+
+
+
+
+
+
+
+
         var allScene = GameManager.Instance.GetListOfChapters;
         foreach (Chapter_LevelSO item in allScene)
         {
@@ -166,54 +187,15 @@ public class ChapterSelection : MonoBehaviour
         {
             //The file exist
             var getSaveScene = playerData.sceneName;
+            var getSaveSpawn = playerData.spawnPosition;
 
-            SceneTransitionManager.Instance.SceneTransitionInstant(getSaveScene, defaultTransID);
+            SceneTransitionManager.Instance.SceneTransitionInstant(getSaveScene, getSaveSpawn);
         }
         else
         {
-            SceneTransitionManager.Instance.SceneTransitionInstant(defaultSceneName);
+            SceneTransitionManager.Instance.SceneTransitionInstant(defaultSceneName, defaultTransID);
 
         }
-
-
-
-
-
-        //if (ES3.FileExists(filePath))
-        //{
-        //    //If file exist
-
-        //    var playerKey = GameManager.Instance.GetPlayerKey; //Player key
-
-
-
-
-
-        //    if (ES3.KeyExists(playerKey, filePath))
-        //    {
-        //        var playerData = ES3.Load<PlayerSceneSaveData>(playerKey, filePath: filePath); //Get the player data
-
-        //        var _sceneName = playerData.sceneName; //Player's last scene
-
-        //        //TODO: Spawn to the save position
-
-        //        SceneTransitionManager.Instance.SceneTransitionInstant(_sceneName);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("FILE EXIST BUT THERE ARE NO PLAYER KEY. GO TO DEFAULT SCENE");
-        //        SceneTransitionManager.Instance.SceneTransitionInstant(defaultSceneName);
-        //    }
-        //}
-        //else
-        //{
-        //    //If file is not exit
-        //    Debug.LogWarning("THERE ARE NO SCENE FILE FOR THIS LEVEL PATH. GO TO DEFAULT SCENE FOR THIS LEVEL");
-        //    SceneTransitionManager.Instance.SceneTransitionInstant(defaultSceneName);
-        //}
-
-
-        ////SceneManager.LoadScene(defaultSceneName);
     }
 
 
@@ -231,7 +213,6 @@ public class ChapterSelection : MonoBehaviour
         UI_Manager.Instance.CloseMenu("ArtifactsMenu");
         UI_Manager.Instance.CloseMenu("AbilityMenu");
     }
-
     private void ShowArtifactsCollectionPage()
     {
         UI_Manager.Instance.OpenMenu("ArtifactsMenu");
@@ -252,23 +233,16 @@ public class ChapterSelection : MonoBehaviour
 
 
 
-
-
-
     private string GetFolderNameBySceneName(string targetSceneName) //Get only the folder name of the target scene
     {
-        // Get all scene paths in the project
-        string[] scenePaths = AssetDatabase.FindAssets("t:Scene");
-
-        foreach (string scenePath in scenePaths)
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
-            string sceneFullPath = AssetDatabase.GUIDToAssetPath(scenePath);
+            string fullPath = SceneUtility.GetScenePathByBuildIndex(i);
 
-            // Check if the scene is the target scene
-            if (Path.GetFileNameWithoutExtension(sceneFullPath) == targetSceneName)
+            if (Path.GetFileNameWithoutExtension(fullPath) == targetSceneName)
             {
                 // Get the directory (folder) name from the path
-                string folderName = Path.GetDirectoryName(sceneFullPath);
+                string folderName = Path.GetDirectoryName(fullPath);
 
                 // Extract just the folder name without the path
                 string folderNameOnly = Path.GetFileName(folderName);
@@ -277,9 +251,57 @@ public class ChapterSelection : MonoBehaviour
             }
         }
 
-        // If the scene is not found, return null or an appropriate default value
         return null;
     }
+    //private string GetFolderNameBySceneName(string targetSceneName)
+    //{
+    //    // Iterate through all loaded scenes
+    //    for (int i = 0; i < SceneManager.sceneCount; i++)
+    //    {
+    //        Scene scene = SceneManager.GetSceneAt(i);
+
+    //        // Check if the scene is the target scene
+    //        if (Path.GetFileNameWithoutExtension(scene.name) == targetSceneName)
+    //        {
+    //            // Get the directory (folder) name from the scene path
+    //            string folderName = Path.GetDirectoryName(scene.path);
+
+    //            // Extract just the folder name without the path
+    //            string folderNameOnly = Path.GetFileName(folderName);
+
+    //            return folderNameOnly;
+    //        }
+    //    }
+
+    //    // If the scene is not found, return null or an appropriate default value
+    //    return null;
+    //}
+
+    //private string GetFolderNameBySceneName(string targetSceneName) //Get only the folder name of the target scene
+    //{
+    //    // Get all scene paths in the project
+    //    string[] scenePaths = AssetDatabase.FindAssets("t:Scene");
+
+    //    foreach (string scenePath in scenePaths)
+    //    {
+    //        string sceneFullPath = AssetDatabase.GUIDToAssetPath(scenePath);
+
+    //        // Check if the scene is the target scene
+    //        if (Path.GetFileNameWithoutExtension(sceneFullPath) == targetSceneName)
+    //        {
+    //            // Get the directory (folder) name from the path
+    //            string folderName = Path.GetDirectoryName(sceneFullPath);
+
+    //            // Extract just the folder name without the path
+    //            string folderNameOnly = Path.GetFileName(folderName);
+
+    //            return folderNameOnly;
+    //        }
+    //    }
+
+    //    // If the scene is not found, return null or an appropriate default value
+    //    return null;
+    //}
 
 
 }

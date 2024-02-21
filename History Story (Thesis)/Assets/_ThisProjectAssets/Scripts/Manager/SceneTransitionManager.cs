@@ -63,13 +63,6 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
         //InGameTransitionEffect();
 
-
-
-
-
-
-
-
         #region ...
 
         //LevelManager findLevelManager = FindObjectOfType<LevelManager>(); //Find the level manager in the scene
@@ -202,12 +195,12 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
         MMAdditiveSceneLoadingManager.LoadScene(sceneName, additiveSceneSettings);
     }
-    public void SceneTransitionInGame(string sceneName, Vector2 spawnPosition) //In game transition to use the additive loading scene
+    public void SceneTransitionInGame(string sceneName, Vector2 setPosition) //In game transition to use the additive loading scene
     {
         switchState = SwitchState.SetPosition;
 
         desiredTransSceneName = sceneName;
-        this.spawnPosition = spawnPosition;
+        this.spawnPosition = setPosition;
 
         MMAdditiveSceneLoadingManager.LoadScene(sceneName, additiveSceneSettings);
     }
@@ -226,7 +219,15 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
         MMSceneLoadingManager.LoadScene(sceneName, "IstoryaAdventureLoadingScreen");
     }
+    public void SceneTransitionInstant(string sceneName, Vector2 setPosition) //Instant transition to use the loading screen
+    {
+        switchState = SwitchState.SetPosition;
 
+        desiredTransSceneName = sceneName;
+        this.spawnPosition = setPosition;
+
+        MMSceneLoadingManager.LoadScene(sceneName, "IstoryaAdventureLoadingScreen");
+    }
 
 
 
