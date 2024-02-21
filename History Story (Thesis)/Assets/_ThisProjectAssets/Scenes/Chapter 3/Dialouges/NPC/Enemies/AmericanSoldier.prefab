@@ -1938,7 +1938,6 @@ GameObject:
   - component: {fileID: 3719126659226642806}
   - component: {fileID: 3719126659226642807}
   - component: {fileID: 3719126659226642792}
-  - component: {fileID: 3719126659226642793}
   - component: {fileID: 3719126659226642794}
   - component: {fileID: 3719126659226642795}
   - component: {fileID: 3719126659226642804}
@@ -1946,6 +1945,9 @@ GameObject:
   - component: {fileID: 3719126659226642803}
   - component: {fileID: 7376364347714267823}
   - component: {fileID: 8780504999550975509}
+  - component: {fileID: 3015861862116703194}
+  - component: {fileID: 1304460008906215409}
+  - component: {fileID: 3013911745938004072}
   m_Layer: 7
   m_Name: AmericanSoldier
   m_TagString: Enemy
@@ -2040,35 +2042,6 @@ MonoBehaviour:
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0
---- !u!114 &3719126659226642793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3719126659226642796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98cf90e33f69b8d4e85ca8a2b0c09261, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMode: 1
-  ignoreObstacle: 0
-  detectRadius: 15
-  myEnemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 83976
-  canAttack: 1
-  attackHolder: {fileID: 7093043328195039775}
-  fireRate: 0.1
-  rangedAttackDistance: 0
-  attackStates: []
-  offsetPosition: {x: 0, y: 0.025}
-  meleeAttackDistance: 0.18
-  delayAttack: 0.5
 --- !u!114 &3719126659226642794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2081,7 +2054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8684fbcd547a91846bfdb0d41b6d1b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfUnlockedAbilities: []
 --- !u!114 &3719126659226642795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2139,8 +2111,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0009774864, y: 0.01614359}
-  m_Size: {x: 0.17650965, y: 0.2787807}
+  m_Offset: {x: 0.001605235, y: 0.0428313}
+  m_Size: {x: 0.1713442, y: 0.32526898}
   m_Direction: 0
 --- !u!210 &3719126659226642803
 SortingGroup:
@@ -2193,6 +2165,57 @@ MonoBehaviour:
   wallAvoidFalloff: 1
   priority: 0.5
   debug: 0
+--- !u!114 &3015861862116703194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f9ff4bb0421f9e4da640c3df771becf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttackPosition: {fileID: 7093043328195039775}
+  attackPositionEndPoint: {fileID: 7093043328195039775}
+--- !u!114 &1304460008906215409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d009cdadc1ae0ac4e95a45fce3b13eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 1
+  avoidLayer:
+    serializedVersion: 2
+    m_Bits: 83992
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  scanRadius: 15
+  ignoreAvoidLayer: 0
+--- !u!114 &3013911745938004072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da920af0cc8f9264ab603e3cabf181c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 1
+  overrideAttackSpeed: 0
+  attackRadius: 0.28
+  attackFeedback: {fileID: 0}
 --- !u!1 &3775378508127148436
 GameObject:
   m_ObjectHideFlags: 0
@@ -3927,7 +3950,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7838609323827384028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.005, y: -0.012, z: -0.0011974573}
+  m_LocalPosition: {x: 0, y: 0.038, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

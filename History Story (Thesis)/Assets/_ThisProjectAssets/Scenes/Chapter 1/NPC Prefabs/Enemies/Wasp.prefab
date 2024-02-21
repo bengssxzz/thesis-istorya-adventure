@@ -264,6 +264,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1304460008906215409, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: scanRadius
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1304460008906215409, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: showGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1304460008906215409, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: ignoreAvoidLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3719126657881199351, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2
@@ -430,11 +442,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3719126659226642806, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.08
       objectReference: {fileID: 0}
     - target: {fileID: 3719126659226642806, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 9.54
       objectReference: {fileID: 0}
     - target: {fileID: 3719126659226642806, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: m_LocalPosition.z
@@ -503,7 +515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showGizmos: 0
   overrideAttackSpeed: 0
-  attackRadius: 0
+  attackRadius: 0.3
   attackFeedback: {fileID: 0}
 --- !u!4 &349995293645406408 stripped
 Transform:
