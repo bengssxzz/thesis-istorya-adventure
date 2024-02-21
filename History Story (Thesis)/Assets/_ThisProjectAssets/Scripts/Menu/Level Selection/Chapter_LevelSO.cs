@@ -18,6 +18,7 @@ public class Chapter_LevelSO : ScriptableObject
 
     [Space(10)]
     public string defaultSceneName;
+    public string defaultTransID = "dafault";
 
     [Space(10)]
     [Header("Collection")]

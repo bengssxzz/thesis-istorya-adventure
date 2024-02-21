@@ -12,7 +12,7 @@ public class LevelChapterSlot : BaseSlot
     private Chapter_LevelSO chapterLevelSO;
 
     public event Action<LevelChapterSlot> OnPressSelectChapter;
-    public event Action<string> OnPressEnterLevelChapter;
+    public event Action<string, string> OnPressEnterLevelChapter;
 
     [SerializeField] private RectTransform deselectedPanel;
     [SerializeField] private RectTransform lockPanel;
@@ -120,7 +120,7 @@ public class LevelChapterSlot : BaseSlot
         }
         else //Then the second click will chance scene
         {
-            OnPressEnterLevelChapter?.Invoke(chapterLevelSO.defaultSceneName);
+            OnPressEnterLevelChapter?.Invoke(chapterLevelSO.defaultSceneName, chapterLevelSO.defaultTransID);
             Debug.Log("Go to this scene");
         }
 

@@ -55,7 +55,8 @@ public class MobileController : MonoBehaviour
                 //abilityButtons[i].ButtonResetData();
                 continue;
             }
-            GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse += abilityButtons[i].AbilityCooldown;
+            //GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse += abilityButtons[i].AbilityCooldown;
+            GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse.AddListener(abilityButtons[i].AbilityCooldown);
         }
     }
     private void UnsubscribeButtonsEvent()
@@ -67,7 +68,9 @@ public class MobileController : MonoBehaviour
                 //abilityButtons[i].ButtonResetData();
                 continue;
             }
-            GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse -= abilityButtons[i].AbilityCooldown;
+            //GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse -= abilityButtons[i].AbilityCooldown;
+            GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse.RemoveListener(abilityButtons[i].AbilityCooldown);
+
         }
     }
 
@@ -82,25 +85,36 @@ public class MobileController : MonoBehaviour
                 {
                     if (oldAbilities[i].OnAbilityTimeLapse != null) //Check if the event is not null
                     {
-                        oldAbilities[i].OnAbilityTimeLapse = null; //Remove the listener of the button in the old ability
+                        //oldAbilities[i].OnAbilityTimeLapse = null; //Remove the listener of the button in the old ability
+                        oldAbilities[i].OnAbilityTimeLapse.RemoveAllListeners(); //Remove the listener of the button in the old ability
                     }
                 }
             }
+            //RemoveAllListenerToAbility();
 
             abilityButtons[i].ButtonResetData(); //Reset the ability button
 
             //Update button for new current abilities
             if (GetPlayerCurrentEquippedAbility(i) != null) //If the ability slot is null then just reset the button
             {
-                GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse += abilityButtons[i].AbilityCooldown; //Subscribe the button to new current ability
+
+                //GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse += abilityButtons[i].AbilityCooldown; //Subscribe the button to new current ability
+                GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse.AddListener(abilityButtons[i].AbilityCooldown); //Subscribe the button to new current ability
                 abilityButtons[i].ButtonSetDataAbility(GetPlayerCurrentEquippedAbility(i)); //Set the data of the button
-                //abilityButtons[i].ButtonResetData();
-                //GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse = null; //To remove all the subscribe event
             }
         }
-
-
     }
+
+    private void RemoveAllListenerToAbility()
+    {
+        var allAbilities = GameManager.Instance.GetListOfAllAbility;
+
+        foreach (var ability in allAbilities)
+        {
+            ability.OnAbilityTimeLapse.RemoveAllListeners();
+        }
+    }
+
 
     private void InteractTrigger() //Interact button
     {

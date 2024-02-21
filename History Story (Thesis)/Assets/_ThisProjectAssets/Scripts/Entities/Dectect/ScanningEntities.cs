@@ -36,8 +36,9 @@ public class ScanningEntities : MonoBehaviour
     private List<Transform> targetInArea;
 
     public float GetScanRadius { get { return scanRadius; } }
-    public LayerMask GetAvoidLayerMask { get { return avoidLayer; } set { avoidLayer = value; } }
     public LayerMask GetTargetLayerMask { get { return targetLayer; } set { targetLayer = value; } }
+    public LayerMask GetAvoidLayerMask { get { return avoidLayer; } set { avoidLayer = value; } }
+    public LayerMask GetCombineLayerMask { get { return combinedLayer; } }
     public Transform GetNearestTarget { get { return nearestTarget; } }
     public List<Transform> GetTargetsInArea { get { return new List<Transform>(targetInArea); } }
 

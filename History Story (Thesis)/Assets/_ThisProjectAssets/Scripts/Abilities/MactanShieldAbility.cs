@@ -67,7 +67,7 @@ public class MactanShieldAbility : AbilityScript
             newBul.transform.position = entity.transform.position;
 
             var projectileSettings = newBul.GetComponent<Projectile>();
-            projectileSettings.InitializeProjectile(entity, dir, entity.GetAttack_Controller.GetRangedAttackDistance, attackHandler.GetScannerEntities.GetTargetLayerMask);
+            projectileSettings.InitializeProjectile(entity, dir, projectileMaxDistance, attackHandler.GetScannerEntities.GetCombineLayerMask);
             projectileSettings.OverrideProjectileSpeed(projectileSpeed);
             projectileSettings.OverrideProjectileMaxDistance(projectileMaxDistance);
             projectileSettings.OverrideProjectileDamage(entity.GetEntityStats.currentDamage + projectileAdditionalDamage);

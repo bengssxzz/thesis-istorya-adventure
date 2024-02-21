@@ -80,40 +80,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        PlayfabManager.Instance.LoginOnStart();
-
-
-
-        //Debug.Log("DELETE LATER");
-        //PlayfabManager.Instance.RequestLeaderboardSQLDatabase();
-        //AddCurrentChapterScore("Chapter 1", 20000000);
-
-        //Debug.Log("CURRENT SCORE: " + GetTotalScoreInChapterLevels());
-
-        //PlayfabManager.Instance.OnLoginSuccess += Instance_OnLoginSuccess;
+        //PlayfabManager.Instance.LoginOnStart();
     }
-
-    //private void Instance_OnLoginSuccess(PlayFab.ClientModels.LoginResult obj)
-    //{
-    //    Debug.Log("ACTION CALL LOGIN SUCCESS");
-    //    PlayfabManager.Instance.UpdateLeaderboard().Forget();
-    //}
-
-    //private void Update()
-    //{
-    //    Debug.Log("DELETE THIS LATER");
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        var score = (int)Time.time * 999;
-    //        Debug.Log("UPDATE LEADERBOARD SCORE: " + score);
-    //        PlayfabManager.Instance.SetLeaderboardPlayfab(score).Forget();
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.P))
-    //    {
-    //        Debug.Log("PRINT LEADERBOARD");
-    //        PlayfabManager.Instance.UpdateLeaderboardInSqlite().Forget();
-    //    }
-    //}
 
     /* THIS THE ONE
     private void TESTINGLOADING() // Get all abilities (Scriptable Objects) inside the folder

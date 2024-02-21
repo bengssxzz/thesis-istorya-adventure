@@ -18,6 +18,7 @@ public class SceneTriggerTrans : MonoBehaviour
     [SerializeField] private Transform positionOut;
 
     [Header("Indicator Info")]
+    [SerializeField] private bool showIndicator = true;
     [SerializeField] private MMF_Player arrowIndicatorFeedback;
     [SerializeField] private float indicatorShowRange = 0.5f;
     [SerializeField] private Vector2 offsetIndicatorPosition;
@@ -26,9 +27,15 @@ public class SceneTriggerTrans : MonoBehaviour
     public Transform GetPositionOut { get { return positionOut; } }
 
 
+    private void Start()
+    {
+        arrowIndicatorFeedback.gameObject.SetActive(false);
+    }
 
     private void LateUpdate()
     {
+        if (!showIndicator) { return; }
+
         if (PlayerSingleton.Instance.GetPlayerScript != null)
         {
             Transform playerTransform = PlayerSingleton.Instance.GetPlayerScript.transform;

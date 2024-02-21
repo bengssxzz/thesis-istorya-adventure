@@ -57,7 +57,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
                 SetPlayerInScene(spawnPosition);
                 break;
             default:
-                Debug.LogError("SwitchState IS IN DEFAULT VALUE");
+                Debug.LogWarning("SwitchState IS IN DEFAULT VALUE");
                 break;
         }
 
@@ -214,9 +214,18 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     public void SceneTransitionInstant(string sceneName) //Instant transition to use the loading screen
     {
+        switchState = default;
         MMSceneLoadingManager.LoadScene(sceneName, "IstoryaAdventureLoadingScreen");
     }
+    public void SceneTransitionInstant(string sceneName, string transID = null) //Instant transition to use the loading screen
+    {
+        switchState = SwitchState.FindPosition;
 
+        desiredTransSceneName = sceneName;
+        transitionID = transID;
+
+        MMSceneLoadingManager.LoadScene(sceneName, "IstoryaAdventureLoadingScreen");
+    }
 
 
 

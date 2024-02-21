@@ -149,7 +149,7 @@ public class ChapterSelection : MonoBehaviour
 
 
     }
-    private void OnPressEnterScene(string defaultSceneName) //Go to the scene
+    private void OnPressEnterScene(string defaultSceneName, string defaultTransID) //Go to the scene
     {
         //Check if the selected chapter file exist
         string desiredScene_Folder = GetFolderNameBySceneName(defaultSceneName);
@@ -167,7 +167,7 @@ public class ChapterSelection : MonoBehaviour
             //The file exist
             var getSaveScene = playerData.sceneName;
 
-            SceneTransitionManager.Instance.SceneTransitionInstant(getSaveScene);
+            SceneTransitionManager.Instance.SceneTransitionInstant(getSaveScene, defaultTransID);
         }
         else
         {
