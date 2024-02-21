@@ -8,7 +8,7 @@ using System;
 
 public abstract class RangeAttackTypeSO : ScriptableObject
 {
-    [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private BaseProjectile projectilePrefab;
     [SerializeField] private float amount = 0;
     [SerializeField] private bool useTimer = false;
     [SerializeField] private float intervalDelay = 0.1f;
@@ -34,8 +34,8 @@ public abstract class RangeAttackTypeSO : ScriptableObject
     {
         var targetLayer = attackHandler.GetScannerEntities.GetTargetLayerMask;
         GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject, startPosition);
-        newBul.GetComponent<Projectile>().InitializeProjectile(hostEntity, direction, distance, targetLayer);
-        newBul.transform.position = startPosition;
+        newBul.GetComponent<BaseProjectile>().InitializeProjectile(hostEntity, direction, startPosition, distance, targetLayer, attackHandler.GetColorType);
+        newBul.SetActive(true);
     }
 
 
@@ -57,7 +57,7 @@ public abstract class RangeAttackTypeSO : ScriptableObject
     {
         Debug.LogWarning("ATTACK TYPE AMOUNT");
         isDone = false;
-        await FireBehaviourForLoop(projectilePrefab, attackHandler, Mathf.RoundToInt(amount), intervalDelay, token, triggerCallBack);
+        await FireBehaviourForLoop(attackHandler, Mathf.RoundToInt(amount), intervalDelay, token, triggerCallBack);
         isDone = true;
     }
     private async UniTask AttackType_Timer(AttackHandler attackHandler, CancellationToken token, Action triggerCallBack)
@@ -65,10 +65,10 @@ public abstract class RangeAttackTypeSO : ScriptableObject
         Debug.LogWarning("ATTACK TYPE TIMER");
         startTimer = Time.time;
         isDone = false;
-        await FireBehaviourWhileLoop(projectilePrefab, attackHandler, amount, intervalDelay, token, triggerCallBack);
+        await FireBehaviourWhileLoop(attackHandler, amount, intervalDelay, token, triggerCallBack);
         isDone = true;
     }
 
-    protected abstract UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack);
-    protected abstract UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack);
+    protected abstract UniTask FireBehaviourForLoop(AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack);
+    protected abstract UniTask FireBehaviourWhileLoop(AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack);
 }

@@ -10,7 +10,7 @@ public class MactanShieldAbility : AbilityScript
 {
     [Space(15)]
     [Header("Mactan Shield Ability")]
-    [SerializeField] private Projectile projectile;
+    [SerializeField] private BaseProjectile projectile;
     [SerializeField] private int projectileMaxCount = 30;
     [SerializeField] private float projectileMaxDistance = 1f;
     [SerializeField] private float projectileSpeed = 55f;
@@ -52,35 +52,46 @@ public class MactanShieldAbility : AbilityScript
 
         float currentAngle = startAngle;
 
-        for (int j = 0; j < projectileMaxCount; j++)
+        if(attackHandler != null)
         {
-            // Convert angle to radians
-            float radians = currentAngle * Mathf.Deg2Rad;
-
-            float dirX = Mathf.Cos(radians);
-            float dirY = Mathf.Sin(radians);
-
-            Vector2 bulletDir = new Vector2(dirX, dirY);
-
-            var dir = entity.GetAttack_Controller.GetAttackHolder.TransformDirection(bulletDir);
-            GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectile.gameObject, entity.transform.position);
-            newBul.transform.position = entity.transform.position;
-
-            var projectileSettings = newBul.GetComponent<Projectile>();
-            projectileSettings.InitializeProjectile(entity, dir, projectileMaxDistance, attackHandler.GetScannerEntities.GetCombineLayerMask);
-            projectileSettings.OverrideProjectileSpeed(projectileSpeed);
-            projectileSettings.OverrideProjectileMaxDistance(projectileMaxDistance);
-            projectileSettings.OverrideProjectileDamage(entity.GetEntityStats.currentDamage + projectileAdditionalDamage);
-
-            currentAngle += 360f / projectileMaxCount;
-
-            // Optionally, if you want to limit the angle to a full circle
-            if (currentAngle >= 360f)
+            for (int j = 0; j < projectileMaxCount; j++)
             {
-                currentAngle -= 360f;
+                // Convert angle to radians
+                float radians = currentAngle * Mathf.Deg2Rad;
+
+                float dirX = Mathf.Cos(radians);
+                float dirY = Mathf.Sin(radians);
+
+                Vector2 bulletDir = new Vector2(dirX, dirY);
+
+                var dir = entity.GetAttackHandler.GetBaseAttackPosition.TransformDirection(bulletDir);
+                GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectile.gameObject, entity.transform.position);
+                newBul.transform.position = entity.transform.position;
+
+                //Projectile settings
+                var startingPosition = (Vector2)attackHandler.GetBaseAttackPosition.position;
+                var colorType = attackHandler.GetColorType;
+                var hitLayer = attackHandler.GetScannerEntities.GetCombineLayerMask;
+                
+
+                var projectileSettings = newBul.GetComponent<BaseProjectile>();
+                projectileSettings.InitializeProjectile(entity, dir, startingPosition, projectileMaxDistance, hitLayer, colorType);
+                projectileSettings.OverrideProjectileSpeed(projectileSpeed);
+                projectileSettings.OverrideProjectileMaxDistance(projectileMaxDistance);
+                projectileSettings.OverrideProjectileDamage(entity.GetEntityStats.currentDamage + projectileAdditionalDamage, 0);
+
+                currentAngle += 360f / projectileMaxCount;
+
+                // Optionally, if you want to limit the angle to a full circle
+                if (currentAngle >= 360f)
+                {
+                    currentAngle -= 360f;
+                }
             }
+            startAngle = -360 / 2;
         }
-        startAngle = -360 / 2;
+
+        
     }
 
 

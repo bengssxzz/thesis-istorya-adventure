@@ -33,7 +33,7 @@ public class ScanningEntities : MonoBehaviour
     [SerializeField] private bool ignoreAvoidLayer;
 
 
-    private List<Transform> targetInArea;
+    private List<Transform> targetInArea = new List<Transform>();
 
     public float GetScanRadius { get { return scanRadius; } }
     public LayerMask GetTargetLayerMask { get { return targetLayer; } set { targetLayer = value; } }

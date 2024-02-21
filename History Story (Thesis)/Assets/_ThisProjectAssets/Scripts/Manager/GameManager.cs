@@ -71,7 +71,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         //Load all the ability from the asset folder
-        LoadAbilitiesInFolder("Assets/_ThisProjectAssets/Scriptable Object/Abilities");
+        //LoadAbilitiesInFolder("Assets/_ThisProjectAssets/Scriptable Object/Abilities");
 
 
         InitializeSceneChapter();
@@ -274,33 +274,33 @@ public class GameManager : Singleton<GameManager>
 
 
 
-    private void LoadAbilitiesInFolder(string folderPath) // Get all abilities (Scriptable Objects) inside the folder
-    {
-        string[] files = Directory.GetFiles(folderPath, "*.asset");
+    //private void LoadAbilitiesInFolder(string folderPath) // Get all abilities (Scriptable Objects) inside the folder
+    //{
+    //    string[] files = Directory.GetFiles(folderPath, "*.asset");
 
-        foreach (string filePath in files)
-        {
-            // Load the Scriptable Object from the file
-            AbilityScript ability = UnityEditor.AssetDatabase.LoadAssetAtPath<AbilityScript>(filePath);
-            //AbilityScript ability = Resources.Load<AbilityScript>(filePath);
+    //    foreach (string filePath in files)
+    //    {
+    //        // Load the Scriptable Object from the file
+    //        AbilityScript ability = UnityEditor.AssetDatabase.LoadAssetAtPath<AbilityScript>(filePath);
+    //        //AbilityScript ability = Resources.Load<AbilityScript>(filePath);
 
 
-            if (ability != null)
-            {
-                listOfAllAbilities.Add(ability);
-                //listOfAllAbilities.Add(ability);
-            }
-        }
+    //        if (ability != null)
+    //        {
+    //            listOfAllAbilities.Add(ability);
+    //            //listOfAllAbilities.Add(ability);
+    //        }
+    //    }
 
-        // Get all subdirectories (subfolders) in the folder
-        string[] subfolders = Directory.GetDirectories(folderPath);
+    //    // Get all subdirectories (subfolders) in the folder
+    //    string[] subfolders = Directory.GetDirectories(folderPath);
 
-        foreach (string subfolder in subfolders)
-        {
-            // Recursively load abilities from subfolders
-            LoadAbilitiesInFolder(subfolder);
-        }
-    }
+    //    foreach (string subfolder in subfolders)
+    //    {
+    //        // Recursively load abilities from subfolders
+    //        LoadAbilitiesInFolder(subfolder);
+    //    }
+    //}
 
 
     

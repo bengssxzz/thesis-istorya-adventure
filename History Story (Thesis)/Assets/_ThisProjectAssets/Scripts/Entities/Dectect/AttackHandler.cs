@@ -24,14 +24,15 @@ public class AttackHandler : MonoBehaviour
     [SerializeField] private Transform baseAttackPosition;
     [SerializeField] private Transform attackPositionEndPoint;
 
+    [SerializeField] private Color colorType;
 
     #region Public Getter & Setter
     public Entities GetEntity { get { return entity; } }
     public ScanningEntities GetScannerEntities { get { return scanner; } }
-    
     public RangeAttackBehaviour GetRangedAttackBehaviour { get { return rangeAttacker; } }
     public MeleeAttackBehaviour GetMeleeAttackBehaviour { get { return meleeAttacker; } }
 
+    public Color GetColorType { get { return colorType; } }
     public CancellationTokenSource GetCancellationToken { get { return cancellationToken; } }
     public Transform GetBaseAttackPosition { get { return baseAttackPosition; } }
     public Transform GetAttackPositionEndPoint { get  { 

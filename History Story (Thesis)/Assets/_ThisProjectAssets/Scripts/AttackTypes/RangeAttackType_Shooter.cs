@@ -17,9 +17,9 @@ public class RangeAttackType_Shooter : RangeAttackTypeSO
 
     private Vector2 targetPosition;
 
-    protected override async UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
+    protected override async UniTask FireBehaviourForLoop(AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
-        if(attackHandler.GetScannerEntities.GetNearestTarget == null)
+        if(attackHandler.GetScannerEntities.GetNearestTarget != null)
             targetPosition = attackHandler.GetScannerEntities.GetNearestTarget.position;
 
         for (int i = 0; i < amount; i++)
@@ -29,7 +29,8 @@ public class RangeAttackType_Shooter : RangeAttackTypeSO
 
             if (followAimTarget)
             {
-                targetPosition = attackHandler.GetScannerEntities.GetNearestTarget.position;
+                if(attackHandler.GetScannerEntities.GetNearestTarget != null)
+                    targetPosition = attackHandler.GetScannerEntities.GetNearestTarget.position;
             }
 
             var host = attackHandler.GetEntity;
@@ -46,7 +47,7 @@ public class RangeAttackType_Shooter : RangeAttackTypeSO
         await UniTask.Yield();
     }
 
-    protected override async UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
+    protected override async UniTask FireBehaviourWhileLoop(AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         targetPosition = attackHandler.GetScannerEntities.GetNearestTarget.position;
 

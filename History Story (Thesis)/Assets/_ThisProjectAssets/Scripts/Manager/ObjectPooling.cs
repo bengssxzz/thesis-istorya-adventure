@@ -13,6 +13,8 @@ public class ObjectPooling : Singleton<ObjectPooling>
 
     public GameObject GetObjectInPool(string objectTag, GameObject prefabObject, Vector3 setPosition, bool getActiveObject = false)
     {
+        GameObject requestNewObj = null;
+
         if (poolObjects.ContainsKey(objectTag))
         {
             // when tag is exist
@@ -29,15 +31,19 @@ public class ObjectPooling : Singleton<ObjectPooling>
                 }
             }
             // create a new object when no found
-            return CreateObject(objectTag, prefabObject);
+            requestNewObj = CreateObject(objectTag, prefabObject);
+            requestNewObj.SetActive(true);
+
+            return requestNewObj;
         }
         else
         {
             // create a new object and a tag in dictionary
-            return CreateObject(objectTag, prefabObject);
-        }
+            requestNewObj = CreateObject(objectTag, prefabObject);
+            requestNewObj.SetActive(true);
 
-        
+            return requestNewObj;
+        }
     }
 
     private GameObject CreateObject(string objectTag, GameObject prefabObject)

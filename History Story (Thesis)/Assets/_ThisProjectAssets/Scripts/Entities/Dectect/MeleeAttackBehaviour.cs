@@ -33,7 +33,7 @@ public class MeleeAttackBehaviour : MonoBehaviour
 
     private float attackSpeed;
     private List<Transform> targets;
-
+    private CancellationTokenSource meleeCancellationToken;
 
     private void Awake()
     {
@@ -46,22 +46,53 @@ public class MeleeAttackBehaviour : MonoBehaviour
     {
         targets = new List<Transform>();
 
-        if (overrideAttackSpeed <= 0 || attackHandler.GetEntity?.GetEntityStats != null)
-            attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
+        if (attackHandler.GetEntity.GetEntityStats != null)
+        {
+            if (overrideAttackSpeed <= 0)
+                attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
 
-        attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
+            attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
+        }
 
-        await MeleeAttack();
+        if (attackHandler.GetScannerEntities != null)
+        {
+            meleeCancellationToken?.Cancel();
+            meleeCancellationToken = new CancellationTokenSource();
+            await MeleeAttack(meleeCancellationToken.Token);
+        }
     }
     private void OnDisable()
     {   
         attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange -= EntityStatsChanges;
     }
 
-    private void Start()
+    private async void Start()
     {
-        if (overrideAttackSpeed <= 0)
-            attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
+        if (attackHandler.GetEntity.GetEntityStats != null)
+        {
+            if (overrideAttackSpeed <= 0)
+                attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
+
+            attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange -= EntityStatsChanges;
+            attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
+        }
+        else
+        {
+            Debug.LogError("ENTITY STATS CANT FOUND");
+        }
+
+
+        if (attackHandler.GetScannerEntities != null)
+        {
+            meleeCancellationToken?.Cancel();
+            meleeCancellationToken = new CancellationTokenSource();
+            await MeleeAttack(meleeCancellationToken.Token);
+        }
+        else
+        {
+            Debug.LogError("ENTITY SCANNER CANT FOUND IN MELEE ATTACK BEHAVIOUR");
+        }
+
     }
 
     private void EntityStatsChanges()
@@ -70,9 +101,9 @@ public class MeleeAttackBehaviour : MonoBehaviour
             attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
     }
 
-    private async UniTask MeleeAttack()
+    private async UniTask MeleeAttack(CancellationToken meleeCancellationToken)
     {
-        while (!attackHandler.GetCancellationToken.IsCancellationRequested)
+        while (!attackHandler.GetCancellationToken.IsCancellationRequested && !meleeCancellationToken.IsCancellationRequested)
         {
             var scanner = attackHandler.GetScannerEntities;
 

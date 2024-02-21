@@ -18,7 +18,7 @@ public class RangeAttackType_Spiral : RangeAttackTypeSO
 
 
 
-    protected override async UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
+    protected override async UniTask FireBehaviourForLoop(AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         var host = attackHandler.GetEntity;
         var centerPosition = attackHandler.GetBaseAttackPosition;
@@ -50,7 +50,7 @@ public class RangeAttackType_Spiral : RangeAttackTypeSO
         }
     }
 
-    protected override async UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
+    protected override async UniTask FireBehaviourWhileLoop(AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         var host = attackHandler.GetEntity;
         var centerPosition = attackHandler.GetBaseAttackPosition;

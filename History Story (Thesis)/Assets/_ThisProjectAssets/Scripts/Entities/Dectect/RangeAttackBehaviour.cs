@@ -41,6 +41,7 @@ public class RangeAttackBehaviour : MonoBehaviour
     private float attackSpeed;
 
     private AttackHandler attackHandler;
+    private CancellationTokenSource rangeCancellationToken;
 
     private Quaternion q;
     private float angle = 0;
@@ -63,23 +64,56 @@ public class RangeAttackBehaviour : MonoBehaviour
 
     private async void OnEnable()
     {
-        if (overrideAttackSpeed <= 0)
-            attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
+        if (attackHandler.GetEntity.GetEntityStats != null)
+        {
+            if (overrideAttackSpeed <= 0)
+                attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
 
-        attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
+            attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
+        }
+        
 
-        await RangeAttack();
+        if(attackHandler.GetScannerEntities != null)
+        {
+            rangeCancellationToken?.Cancel();
+            rangeCancellationToken = new CancellationTokenSource();
+            await RangeAttack(rangeCancellationToken.Token);
+        }
     }
     private void OnDisable()
     {
+        rangeCancellationToken?.Cancel();
         attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange -= EntityStatsChanges;
     }
 
-    private void EntityStatsChanges()
+    private async void Start()
     {
-        if(overrideAttackSpeed <= 0)
-            attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
+        if (attackHandler.GetEntity.GetEntityStats != null)
+        {
+            if (overrideAttackSpeed <= 0)
+                attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
+
+            attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange -= EntityStatsChanges;
+            attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
+        }
+        else
+        {
+            Debug.LogError("ENTITY STATS CANT FOUND");
+        }
+
+
+        if (attackHandler.GetScannerEntities != null)
+        {
+            rangeCancellationToken?.Cancel();
+            rangeCancellationToken = new CancellationTokenSource();
+            await RangeAttack(rangeCancellationToken.Token);
+        }
+        else
+        {
+            Debug.LogError("ENTITY SCANNER CANT FOUND IN RANGE ATTACK BEHAVIOUR.");
+        }
     }
+
 
 
     private void Update()
@@ -87,6 +121,11 @@ public class RangeAttackBehaviour : MonoBehaviour
         Aiming();
     }
 
+    private void EntityStatsChanges()
+    {
+        if(overrideAttackSpeed <= 0)
+            attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
+    }
     private void Aiming() //Controll the aiming of the entity toward to nearest enemy
     {
         if (attackHandler.GetBaseAttackPosition == null) { return; }
@@ -128,12 +167,12 @@ public class RangeAttackBehaviour : MonoBehaviour
     }
 
 
-    private async UniTask RangeAttack()
+    private async UniTask RangeAttack(CancellationToken rangeCancelToken)
     {
         if(attackTypes.Count == 0) { return; }
         await UniTask.Delay(100);
 
-        while (!attackHandler.GetCancellationToken.IsCancellationRequested)
+        while (!attackHandler.GetCancellationToken.IsCancellationRequested && !rangeCancelToken.IsCancellationRequested)
         {
             await UniTask.WaitUntil(() => attackHandler.GetScannerEntities.GetNearestTarget != null, cancellationToken: attackHandler.GetCancellationToken.Token);
             foreach (var type in attackTypes)
@@ -143,8 +182,9 @@ public class RangeAttackBehaviour : MonoBehaviour
                 if (type == null)
                     continue;
 
-
+                Debug.LogWarning("CASTING TYPES");
                 await CastAllTypes(type);
+                Debug.LogWarning("DONE CASTING");
 
                 await UniTask.Delay(TimeSpan.FromSeconds(attackHandler.CalculateAttackSpeed(attackSpeed)));
 
@@ -197,6 +237,7 @@ public class RangeAttackBehaviour : MonoBehaviour
 
     private void TriggerAttackCallBack()
     {
+        Debug.LogWarning("PLAYING FEEDBACKS");
         castingFeedback?.PlayFeedbacks();
     }
 

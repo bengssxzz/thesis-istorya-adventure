@@ -162,12 +162,19 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
             animator_controller.SetFloat("move_speed", magnitude);
         }
     }
-    public float GetCalculatedDamage(out bool isCritical)
+    public float GetCalculatedDamage(out bool isCritical, float overwriteCritical = 0f)
     {
         var plainDamage = GetEntityStats.currentDamage; //Current damage
 
         //Calculate if this is critical damage
-        isCritical = ThesisUtility.RandomGetChanceBool(GetEntityStats.currentCriticalChance);
+        if(overwriteCritical > 0)
+        {
+            isCritical = ThesisUtility.RandomGetChanceBool(overwriteCritical);
+        }
+        else
+        {
+            isCritical = ThesisUtility.RandomGetChanceBool(GetEntityStats.currentCriticalChance);
+        }
 
         if (isCritical)
         {

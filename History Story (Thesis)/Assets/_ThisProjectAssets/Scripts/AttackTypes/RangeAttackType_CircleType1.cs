@@ -15,7 +15,7 @@ public class RangeAttackType_CircleType1 : RangeAttackTypeSO
     float angleStep = 0;
     float startAngle = 0; // Start at half the view angle to the left of the right direction
 
-    protected override async UniTask FireBehaviourForLoop(Projectile projectile, AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
+    protected override async UniTask FireBehaviourForLoop(AttackHandler attackHandler, int amount, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         angleStep = viewAngle / (circleRayCount);
         startAngle = -viewAngle / 2;
@@ -56,7 +56,7 @@ public class RangeAttackType_CircleType1 : RangeAttackTypeSO
         await UniTask.Yield();
     }
 
-    protected override async UniTask FireBehaviourWhileLoop(Projectile projectile, AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
+    protected override async UniTask FireBehaviourWhileLoop(AttackHandler attackHandler, float timer, float intervalDelay, CancellationToken cancellationToken, Action triggerCallBack)
     {
         angleStep = viewAngle / (circleRayCount);
         startAngle = -viewAngle / 2;
