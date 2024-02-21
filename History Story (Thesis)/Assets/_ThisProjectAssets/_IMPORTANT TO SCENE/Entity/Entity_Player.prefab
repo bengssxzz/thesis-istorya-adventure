@@ -310,7 +310,7 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         Owner: {fileID: 802622247}
         DebugActive: 0
-        AnimateRotationTarget: {fileID: 7083957337786037241}
+        AnimateRotationTarget: {fileID: 1073771258}
         Mode: 0
         RotationSpace: 0
         AnimateRotationDuration: 0.2
@@ -12402,6 +12402,63 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3272832204859969409, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
   m_PrefabInstance: {fileID: 2221413786969204713}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &865684037480504302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728808542503135336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d009cdadc1ae0ac4e95a45fce3b13eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 1
+  avoidLayer:
+    serializedVersion: 2
+    m_Bits: 83968
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  scanRadius: -1.5
+  ignoreAvoidLayer: 0
+--- !u!114 &865684037480504303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728808542503135336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a38b08b7453d4204d9b947fac93b8dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 1
+  castingFeedback: {fileID: 802622247}
+  overrideAttackSpeed: 0
+  attackRadius: 1.5
+  attackTypes:
+  - delayCast: 0
+    canMoveWhileCasting: 1
+    attackTypes:
+    - {fileID: 11400000, guid: f8f568790f74f65419b2133be75afd46, type: 2}
+--- !u!114 &865684037480504305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728808542503135336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f9ff4bb0421f9e4da640c3df771becf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttackPosition: {fileID: 7083957337786037241}
+  attackPositionEndPoint: {fileID: 1644089862}
+  colorType: {r: 1, g: 0.713982, b: 0, a: 1}
 --- !u!114 &1234495529721341892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12433,6 +12490,18 @@ MonoBehaviour:
   hurtFeedback: {fileID: 7083957338772371100}
   diedFeedback: {fileID: 0}
   playerVisuals: {fileID: 8006469770189766998}
+--- !u!114 &7083957337534718305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728808542503135336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8684fbcd547a91846bfdb0d41b6d1b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7083957338074783352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12447,75 +12516,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   proximitySelector: {fileID: 7083957337906818334}
   itemHolder: {fileID: 7083957339380387658}
---- !u!114 &7083957337534718305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3728808542503135336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8684fbcd547a91846bfdb0d41b6d1b4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &865684037480504302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3728808542503135336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d009cdadc1ae0ac4e95a45fce3b13eda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showGizmos: 1
-  avoidLayer:
-    serializedVersion: 2
-    m_Bits: 83968
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  scanRadius: -1.5
-  ignoreAvoidLayer: 0
---- !u!114 &865684037480504305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3728808542503135336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f9ff4bb0421f9e4da640c3df771becf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseAttackPosition: {fileID: 7083957337786037241}
-  attackPositionEndPoint: {fileID: 1644089862}
-  colorType: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &865684037480504303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3728808542503135336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a38b08b7453d4204d9b947fac93b8dc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showGizmos: 1
-  castingFeedback: {fileID: 802622247}
-  overrideAttackSpeed: 0
-  attackRadius: 1.5
-  attackTypes:
-  - delayCast: 0
-    canMoveWhileCasting: 1
-    attackTypes:
-    - {fileID: 11400000, guid: f8f568790f74f65419b2133be75afd46, type: 2}
 --- !u!4 &3728808542503135339 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3272832204859969410, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}

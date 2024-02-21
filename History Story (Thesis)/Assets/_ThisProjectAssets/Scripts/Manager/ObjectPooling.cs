@@ -32,6 +32,7 @@ public class ObjectPooling : Singleton<ObjectPooling>
             }
             // create a new object when no found
             requestNewObj = CreateObject(objectTag, prefabObject);
+            requestNewObj.transform.position = setPosition;
             requestNewObj.SetActive(true);
 
             return requestNewObj;
@@ -40,6 +41,7 @@ public class ObjectPooling : Singleton<ObjectPooling>
         {
             // create a new object and a tag in dictionary
             requestNewObj = CreateObject(objectTag, prefabObject);
+            requestNewObj.transform.position = setPosition;
             requestNewObj.SetActive(true);
 
             return requestNewObj;

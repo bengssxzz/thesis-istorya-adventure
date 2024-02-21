@@ -223,7 +223,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3719126659225698074}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -451,6 +451,7 @@ MonoBehaviour:
   entityStatsSO: {fileID: 11400000, guid: e0b3c1533d3c2974691b67059df6bd54, type: 2}
   actorTransform: {fileID: 0}
   animator_controller: {fileID: 0}
+  diedParticle: {fileID: 0}
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
   moveBehaviour: 0
@@ -484,6 +485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseAttackPosition: {fileID: 5298546594413584754}
   attackPositionEndPoint: {fileID: 8300499777806128654}
+  colorType: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1304460008906215409
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -28,6 +28,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
     [Space(15)]
     [Header("Entity Feedback")]
+    [SerializeField] private ParticleSystem diedParticle;
     [SerializeField] private MMF_Player hurtFeedback;
     [SerializeField] private MMF_Player diedFeedback;
 
@@ -259,6 +260,13 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
         if(diedFeedback != null)
         {
+            if(diedParticle != null)
+            {
+                var centerPosition = attackHandler.GetBaseAttackPosition.position;
+                var particle = ObjectPooling.Instance.GetObjectInPool("particle", diedParticle.gameObject, centerPosition);
+                particle.GetComponent<ParticleSystem>().Play();
+            }
+
             diedFeedback?.PlayFeedbacks();
         }
         else

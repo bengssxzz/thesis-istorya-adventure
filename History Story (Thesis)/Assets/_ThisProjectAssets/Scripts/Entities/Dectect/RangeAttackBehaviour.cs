@@ -30,7 +30,9 @@ public class RangeAttackBehaviour : MonoBehaviour
     [SerializeField] private bool showGizmos = false;
     [Space(20)]
 
+    [SerializeField] private MMF_Player beforeCastingFeedback;
     [SerializeField] private MMF_Player castingFeedback;
+    [SerializeField] private MMF_Player afterCastingFeedback;
 
 
     [Tooltip("override attack speed. If 0, this will depend on the current attack speed of the entity")]
@@ -46,7 +48,7 @@ public class RangeAttackBehaviour : MonoBehaviour
     private Quaternion q;
     private float angle = 0;
     private Vector2 dir;
-
+    private float attackTime;
 
 
 
@@ -185,8 +187,8 @@ public class RangeAttackBehaviour : MonoBehaviour
                 Debug.LogWarning("CASTING TYPES");
                 await CastAllTypes(type);
                 Debug.LogWarning("DONE CASTING");
-
-                await UniTask.Delay(TimeSpan.FromSeconds(attackHandler.CalculateAttackSpeed(attackSpeed)));
+                attackTime = attackHandler.CalculateAttackSpeed(attackSpeed);
+                await UniTask.Delay(TimeSpan.FromSeconds(attackTime));
 
                 Debug.LogWarning("CURRENT TYPE " + attackTypes.IndexOf(type));
                 await UniTask.WaitUntil(() => attackHandler.GetScannerEntities.GetNearestTarget != null, cancellationToken: attackHandler.GetCancellationToken.Token);
@@ -207,6 +209,7 @@ public class RangeAttackBehaviour : MonoBehaviour
             attackHandler.GetEntity.StopMovement(true); //Stop movement
         }
 
+        beforeCastingFeedback?.PlayFeedbacks();
 
         await UniTask.Delay(TimeSpan.FromSeconds(attackType.delayCast)); //Delay casting
 
@@ -227,6 +230,8 @@ public class RangeAttackBehaviour : MonoBehaviour
             isPlaying = attackType.attackTypes.Any(x => x.GetAttackDone == false);
             await UniTask.Yield();
         } while (isPlaying && attackHandler.GetScannerEntities.GetNearestTarget != null);
+
+        afterCastingFeedback?.PlayFeedbacks();
 
         Debug.LogWarning("DONE PLAYING STATE");
         await UniTask.Yield();

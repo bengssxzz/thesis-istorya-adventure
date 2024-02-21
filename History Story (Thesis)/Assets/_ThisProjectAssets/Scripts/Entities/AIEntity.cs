@@ -51,15 +51,24 @@ public class AIEntity : Entities
 
         base.Update();
 
-        switch (moveBehaviour)
+        if (IsCanMove)
         {
-            case MoveBehaviourType.Follow:
-                SeekBehaviour();
-                break;
-            case MoveBehaviourType.Random:
-                StartCoroutine(RandomBehaviour());
-                break;
+            aiPath.canMove = true;
+            switch (moveBehaviour)
+            {
+                case MoveBehaviourType.Follow:
+                    SeekBehaviour();
+                    break;
+                case MoveBehaviourType.Random:
+                    StartCoroutine(RandomBehaviour());
+                    break;
+            }
         }
+        else
+        {
+            aiPath.canMove = false;
+        }
+        
 
         FleeBehaviour();
 
