@@ -1496,14 +1496,14 @@ GameObject:
   - component: {fileID: 3719126659226642792}
   - component: {fileID: 3719126659226642794}
   - component: {fileID: 3719126659226642795}
-  - component: {fileID: -8572161242063959967}
   - component: {fileID: 3719126659226642804}
   - component: {fileID: 3719126659226642803}
   - component: {fileID: 7376364347714267823}
   - component: {fileID: 8780504999550975509}
   - component: {fileID: 3015861862116703194}
   - component: {fileID: 1304460008906215409}
-  - component: {fileID: 6326056622882365363}
+  - component: {fileID: 441828162180467996}
+  - component: {fileID: 441228980739098558}
   m_Layer: 7
   m_Name: SpanishRanged
   m_TagString: Enemy
@@ -1624,7 +1624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d73f89d71d24f4da799a0d8bde4392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
+  debugMode: 0
   entityStatsSO: {fileID: 11400000, guid: 08874a11110faf24b9b6643f09141aaa, type: 2}
   actorTransform: {fileID: 3719126659225698073}
   animator_controller: {fileID: 0}
@@ -1632,26 +1632,10 @@ MonoBehaviour:
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
   moveBehaviour: 0
-  stopDistance: 1.85
-  fleeDistance: 0.7
+  stopDistance: 2
+  fleeDistance: 1
   minRandomWait: 1
   maxRandomWait: 5
---- !u!70 &-8572161242063959967
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3719126659226642796}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.001926899, y: 0.0330925}
-  m_Size: {x: 0.1368661, y: 0.32114792}
-  m_Direction: 0
 --- !u!50 &3719126659226642804
 Rigidbody2D:
   serializedVersion: 4
@@ -1736,9 +1720,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f9ff4bb0421f9e4da640c3df771becf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canAttack: 1
   baseAttackPosition: {fileID: 7782919645824822349}
   attackPositionEndPoint: {fileID: 7782919645824822349}
-  colorType: {r: 0.735849, g: 0.079832695, b: 0.079832695, a: 1}
+  colorType: {r: 0.5660378, g: 0, b: 0, a: 1}
 --- !u!114 &1304460008906215409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1760,7 +1745,23 @@ MonoBehaviour:
     m_Bits: 64
   scanRadius: 10
   ignoreAvoidLayer: 0
---- !u!114 &6326056622882365363
+--- !u!70 &441828162180467996
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.00090146065, y: 0.034008026}
+  m_Size: {x: 0.14837122, y: 0.31066132}
+  m_Direction: 0
+--- !u!114 &441228980739098558
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1772,15 +1773,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a38b08b7453d4204d9b947fac93b8dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showGizmos: 1
+  showGizmos: 0
   beforeCastingFeedback: {fileID: 0}
   castingFeedback: {fileID: 0}
   afterCastingFeedback: {fileID: 0}
   overrideAttackSpeed: 0
-  attackRadius: 1.85
+  attackRadius: 2
   attackTypes:
   - delayCast: 0
-    canMoveWhileCasting: 1
+    canMoveWhileCasting: 0
     attackTypes:
     - {fileID: 11400000, guid: f8f568790f74f65419b2133be75afd46, type: 2}
 --- !u!1 &3755433490247354671
