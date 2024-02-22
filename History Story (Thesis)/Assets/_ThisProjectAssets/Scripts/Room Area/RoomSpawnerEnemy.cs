@@ -64,13 +64,13 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
 
 
-    private void Awake()
+    private async void Awake()
     {
         roomArea = GetComponentInParent<RoomArea>();
         roomAreaCollider = roomArea.GetComponent<PolygonCollider2D>();
 
 
-
+        await UniTask.Delay(20);
         var loadedData = SaveGameDataManager.Instance.LoadRoomAreaInScene();
 
         if (loadedData != null)

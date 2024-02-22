@@ -191,14 +191,9 @@ public class PlayerInteractHandler : MonoBehaviour
             UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(indicator); //Update the interact button
 
         }
-
-        Debug.Log(usable.GetComponent<VisualSelector>().transform.root.name);
     }
     private void ProximitySelector_DeselectedUsableObject(Usable usable)
     {
-        Debug.Log(usable.GetComponent<VisualSelector>().transform.root.name);
-
-
         //Check if holding something
         if (isHoldingSomething)
         {
