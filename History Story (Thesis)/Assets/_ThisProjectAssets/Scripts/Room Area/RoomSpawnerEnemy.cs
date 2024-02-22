@@ -182,7 +182,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         OnStartBattleTrigger?.Invoke();
 
         if (showBattleInfoUI)
-            battleUI.ToggleWaveInfo(true);
+            battleUI?.ToggleWaveInfo(true);
 
 
         await UpdateGraphNode();
@@ -201,7 +201,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         OnFinishedBattleTrigger?.Invoke();
 
         if (showBattleInfoUI)
-            battleUI.ToggleWaveInfo(false);
+            battleUI?.ToggleWaveInfo(false);
 
         await UpdateGraphNode();
 
@@ -315,7 +315,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
                 desiredToSpawn--;
 
-                battleUI.UpdateEnemyRemain(desiredToSpawn);
+                battleUI?.UpdateEnemyRemain(desiredToSpawn);
                 var randomCalc = ThesisUtility.RandomGetFloat(1f, 1.5f);
                 await UniTask.Delay(TimeSpan.FromSeconds(randomCalc));
             }
@@ -332,7 +332,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         for (int i = 0; i < waveInfoList.Length; i++)
         {
             Debug.Log($"START WAVE {i + 1}");
-            battleUI.UpdateWaveInfo(i + 1, waveInfoList.Length);
+            battleUI?.UpdateWaveInfo(i + 1, waveInfoList.Length);
 
             await SpawnEnemyWaves(i); //Wait to finish the spawn
 

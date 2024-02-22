@@ -60,8 +60,12 @@ public class DropLoot : MonoBehaviour
 
                         lootItem.transform.position = transform.position;
                         Rigidbody2D rb = lootItem.GetComponent<Rigidbody2D>();
-                        rb.drag = 5;
-                        rb.AddForce(randomDirection * addForce * Time.deltaTime, ForceMode2D.Impulse);
+                        if(rb != null)
+                        {
+                            rb.drag = 5;
+                            rb.AddForce(randomDirection * addForce * Time.deltaTime, ForceMode2D.Impulse);
+                        }
+                        
                     }
                 }
             }

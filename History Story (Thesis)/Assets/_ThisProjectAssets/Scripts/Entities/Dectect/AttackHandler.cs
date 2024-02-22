@@ -12,7 +12,7 @@ using MoreMountains.Tools;
 public class AttackHandler : MonoBehaviour
 {
     private const float MIN_ATTACKSPEED = 0.3f;
-    private const float MAX_ATTACKSPEED = 2.5f;
+    private const float MAX_ATTACKSPEED = 5f;
 
 
     private Entities entity;

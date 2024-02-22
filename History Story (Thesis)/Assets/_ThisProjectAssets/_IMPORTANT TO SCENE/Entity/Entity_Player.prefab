@@ -12436,7 +12436,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmos: 1
+  beforeCastingFeedback: {fileID: 0}
   castingFeedback: {fileID: 802622247}
+  afterCastingFeedback: {fileID: 0}
   overrideAttackSpeed: 0
   attackRadius: 1.5
   attackTypes:
@@ -12456,6 +12458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f9ff4bb0421f9e4da640c3df771becf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canAttack: 1
   baseAttackPosition: {fileID: 7083957337786037241}
   attackPositionEndPoint: {fileID: 1644089862}
   colorType: {r: 1, g: 0.713982, b: 0, a: 1}
@@ -12487,6 +12490,7 @@ MonoBehaviour:
   entityStatsSO: {fileID: 11400000, guid: c9615d63cf78e854b83275ab28d790e1, type: 2}
   actorTransform: {fileID: 7332668966398437175}
   animator_controller: {fileID: 4650033953438250616}
+  diedParticle: {fileID: 0}
   hurtFeedback: {fileID: 7083957338772371100}
   diedFeedback: {fileID: 0}
   playerVisuals: {fileID: 8006469770189766998}
