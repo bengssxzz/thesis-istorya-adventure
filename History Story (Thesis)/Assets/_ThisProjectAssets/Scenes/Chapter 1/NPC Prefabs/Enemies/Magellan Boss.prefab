@@ -2740,7 +2740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d73f89d71d24f4da799a0d8bde4392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
+  debugMode: 0
   entityStatsSO: {fileID: 11400000, guid: d964c80391b58f14daefe68500438563, type: 2}
   actorTransform: {fileID: 3719126659225698073}
   animator_controller: {fileID: 0}
@@ -2796,12 +2796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfDropLoot:
-  - lootPrefab: {fileID: 7720255052265319275, guid: 169182babb56f924fbad12e0a9552186, type: 3}
-    randomAmountDrop: 0
-    minAmount: 1
-    maxAmount: 1
-    dropChance: 100
+  listOfDropLoot: []
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2870,9 +2865,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f9ff4bb0421f9e4da640c3df771becf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canAttack: 1
   baseAttackPosition: {fileID: 6162245089750823323}
   attackPositionEndPoint: {fileID: 6162245089750823323}
-  colorType: {r: 0, g: 0, b: 0, a: 0}
+  colorType: {r: 0.7169812, g: 0.064257726, b: 0.064257726, a: 1}
 --- !u!114 &1304460008906215409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2923,7 +2919,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmos: 1
+  beforeCastingFeedback: {fileID: 0}
   castingFeedback: {fileID: 0}
+  afterCastingFeedback: {fileID: 0}
   overrideAttackSpeed: 0
   attackRadius: 3
   attackTypes:
