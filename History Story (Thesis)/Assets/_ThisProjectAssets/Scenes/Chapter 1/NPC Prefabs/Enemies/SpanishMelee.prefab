@@ -637,7 +637,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2537352917786011228}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.026, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1448,6 +1448,7 @@ GameObject:
   - component: {fileID: 3015861862116703194}
   - component: {fileID: 1304460008906215409}
   - component: {fileID: 211796129228182543}
+  - component: {fileID: 7969053210017337368}
   m_Layer: 7
   m_Name: SpanishMelee
   m_TagString: Enemy
@@ -1682,11 +1683,11 @@ MonoBehaviour:
   showGizmos: 0
   avoidLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 83992
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
-  scanRadius: 0
+    m_Bits: 64
+  scanRadius: 10
   ignoreAvoidLayer: 0
 --- !u!114 &211796129228182543
 MonoBehaviour:
@@ -1702,8 +1703,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showGizmos: 1
   overrideAttackSpeed: 0
-  attackRadius: 0.47
+  attackRadius: 0.33
   attackFeedback: {fileID: 0}
+--- !u!70 &7969053210017337368
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0013301373, y: 0.02792883}
+  m_Size: {x: 0.14091444, y: 0.3164072}
+  m_Direction: 0
 --- !u!1 &3837163692437912451
 GameObject:
   m_ObjectHideFlags: 0
