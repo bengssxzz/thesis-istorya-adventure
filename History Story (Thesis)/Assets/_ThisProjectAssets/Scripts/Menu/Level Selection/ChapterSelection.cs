@@ -69,6 +69,7 @@ public class ChapterSelection : MonoBehaviour
         GameManager.Instance.CollectArtifacts("Hunters Insignia");
         GameManager.Instance.CollectedAbilities("Dodge");
         GameManager.Instance.UnlockSceneChapter("Chapter 2");
+        GameManager.Instance.UnlockSceneChapter("Chapter 3");
 
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
