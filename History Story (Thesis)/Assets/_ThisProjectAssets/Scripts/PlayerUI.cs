@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using MoreMountains.Tools;
+using Cysharp.Threading.Tasks;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -15,8 +16,10 @@ public class PlayerUI : MonoBehaviour
 
 
 
-    private void OnEnable()
+    private async void OnEnable()
     {
+        await UniTask.Delay(20);
+
         entity = PlayerSingleton.Instance.GetPlayerScript;
         if(entity == null) {
             Debug.LogError($"{gameObject.name} CANT FIND THE PLAYER IN THE SCENE");

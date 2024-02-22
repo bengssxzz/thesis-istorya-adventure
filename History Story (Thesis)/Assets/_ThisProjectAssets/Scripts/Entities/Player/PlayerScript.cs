@@ -8,6 +8,7 @@ using System;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using PixelCrushers.DialogueSystem;
+using Cysharp.Threading.Tasks;
 
 public class PlayerScript : Entities
 {
@@ -17,9 +18,11 @@ public class PlayerScript : Entities
     public PlayerInteractHandler GetInteractHandler { get; private set; }
 
 
-    protected override void Awake()
+    protected override async void Awake()
     {
         base.Awake();
+
+        await UniTask.Delay(50);
         //move = InputManager.Instance.PlayerActionInput.actions["Move"];
 
         GetInteractHandler = GetComponent<PlayerInteractHandler>();
