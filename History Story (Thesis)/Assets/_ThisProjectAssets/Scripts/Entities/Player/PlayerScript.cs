@@ -24,6 +24,24 @@ public class PlayerScript : Entities
 
         GetInteractHandler = GetComponent<PlayerInteractHandler>();
 
+
+        var playerData = SaveGameDataManager.Instance.LoadPlayerData();
+
+        if (playerData != null)
+        {
+            //Load a save stats
+            if (playerData.playerStats != null)
+            {
+                GetEntityStats = playerData.playerStats;
+            }
+
+            if (playerData.usedCurrentAbilities != null)
+            {
+                List<AbilityScript> usedAbility = new List<AbilityScript>(playerData.usedCurrentAbilities);
+                GetAbility_Controller.ListOfCurrentAbilities = usedAbility;
+            }
+        }
+
     }
 
     protected override void OnEnable()
@@ -45,21 +63,6 @@ public class PlayerScript : Entities
     protected override void Start()
     {
         base.Start();
-
-        var playerData = SaveGameDataManager.Instance.LoadPlayerData();
-
-        if (playerData != null)
-        {
-            if(playerData.usedCurrentAbilities != null || playerData.usedCurrentAbilities.Count > 0)
-            {
-                Debug.Log("SET CURRENT ABILITY FROM LOCAL SAVED FILE");
-                GetAbility_Controller.ListOfCurrentAbilities = playerData.usedCurrentAbilities;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("THERE ARE NO PLAYER FILE EXIST");
-        }
     }
 
     protected override void Update()
@@ -115,7 +118,8 @@ public class PlayerScript : Entities
     {
         playerVisuals.gameObject.SetActive(state);
         IsCanMove = state;
-        GetAttack_Controller.EnableAttacking = state;
+        GetAttackHandler.IsCanAttack = state;
+        //GetAttack_Controller.EnableAttacking = state;
     }
 
     protected override void MovementBehaviour()

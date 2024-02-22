@@ -50,28 +50,17 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     //}
 
     #region LOCAL SAVING
-    public async UniTaskVoid SaveChapterScene()
-    {
-        var saveRoomArea = await SaveRoomAreaInScene();
-        var saveTriggerTimeline = await SaveTriggerTimelineInScene();
-
-        ES3.Save("room_trigger", saveRoomArea, filePath: GetIdentifier());
-        ES3.Save("timeline_trigger", saveTriggerTimeline, filePath: GetIdentifier());
-    }
-    public async void LoadChapterScene()
-    {
-        await LoadRoomAreaInScene();
-        await LoadTriggerTimelineInScene();
-    }
+    
     public PlayerSceneSaveData GetLatestSavedScene()
     {
         return LoadPlayerScene(GetCurrentFolderName());
     }
 
     #region Save/Load Player Data (Statistics)
-    public async UniTask SavePlayerData()
+    public async UniTask SavePlayerStatsData()
     {
         Entities player = PlayerSingleton.Instance.GetPlayerScript;
+
         PlayerData playerData = new PlayerData
         {
             playerStats = player.GetEntityStats,
@@ -84,8 +73,10 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             usedCurrentAbilities = player.GetAbility_Controller.ListOfCurrentAbilities
         };
 
-        await UniTask.RunOnThreadPool(() => ES3.Save(PLAYER_DATA_KEY, playerData, filePath: PLAYER_DATA_FILE));
 
+        ES3.Save(PLAYER_DATA_KEY, playerData, filePath: PLAYER_DATA_FILE);
+
+        await UniTask.Yield();
     }
     public PlayerData LoadPlayerData()
     {
@@ -98,11 +89,28 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         else
         {
             //There are no player data
-            Debug.LogError("THERE'S NO FILE OF PLAYER DATA FOUND");
+            Debug.LogError("THERE'S NO FILE OF PLAYER DATA");
             return null;
         }
     }
     #endregion
+
+
+
+    #endregion
+
+
+
+
+    #region SCENE SAVE/LOAD DATA
+
+    public async UniTaskVoid SaveChapterScene()
+    {
+        await SavePlayerStatsData(); //Save the player stats
+        await SaveTriggerTimelineInScene(); //Save the timeline
+        await SaveRoomAreaInScene(); //Save the room area
+        await SaveChestInScene(); //Save the chest
+    }
 
 
     #region SAVE/LOAD PLAYER IN CHAPTER (Like Position, Kung nasan yung last ni player na scene)
@@ -116,21 +124,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         ES3.Save(sceneKeyNamePD, playerData, filePath: GetIdentifier(sceneFileNamePD));
 
-        await UniTask.Delay(1000);
+        await UniTask.Delay(150);
     }
-
-    //public void SavePlayerScene(Vector3 spawnPosition) //Saving the player in this chapter level
-    //{
-    //    var playerData = new PlayerSceneSaveData()
-    //    {
-    //        sceneName = GetCurrentSceneName(),
-    //        spawnPosition = spawnPosition
-    //    };
-
-    //    ES3.Save(sceneKeyNamePD, playerData, filePath: GetIdentifier(sceneFileNamePD)); //Save the player
-
-    //    SaveChapterScene(); //Save the changes in the scene
-    //}
     public PlayerSceneSaveData LoadPlayerScene(string folderName) //Load the player in chapter scene
     {
         var filePlayerPathData = string.Format("{0}/{1}.thesis", folderName, sceneFileNamePD);
@@ -140,7 +135,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         if (ES3.FileExists(filePlayerPathData))
         {
             //There are a file of the player
-            if(ES3.KeyExists(sceneKeyNamePD, filePath: filePlayerPathData))
+            if (ES3.KeyExists(sceneKeyNamePD, filePath: filePlayerPathData))
             {
                 return ES3.Load<PlayerSceneSaveData>(sceneKeyNamePD, filePath: filePlayerPathData);
             }
@@ -168,13 +163,11 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         RoomArea[] roomAreas = FindObjectsOfType<RoomArea>();
         return new List<RoomArea>(roomAreas);
     }
-
-    private async UniTask<List<RoomBattleSaveData>> SaveRoomAreaInScene()
+    private async UniTask SaveRoomAreaInScene()
     {
         var saveRoomArea = new List<RoomBattleSaveData>();
-        var roomAreas = FindAllRoomAreaInScene();
 
-        foreach (var room in roomAreas)
+        foreach (var room in FindAllRoomAreaInScene())
         {
             RoomBattleSaveData data = new RoomBattleSaveData()
             {
@@ -186,11 +179,11 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             saveRoomArea.Add(data);
         }
 
-        await UniTask.Yield();
 
-        return saveRoomArea;
+        ES3.Save("room_trigger", saveRoomArea, filePath: GetIdentifier());
+        await UniTask.Yield();
     }
-    private async UniTask LoadRoomAreaInScene()
+    public List<RoomBattleSaveData> LoadRoomAreaInScene()
     {
         if (IsKeyExist("room_trigger"))
         {
@@ -198,27 +191,11 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
             if (roomAreaData != null)
             {
-                var roomAreas = FindAllRoomAreaInScene();
-
-                foreach (var room in roomAreas)
-                {
-                    var roomData = roomAreaData.FirstOrDefault(x => x.roomId == room.GetBattleTrigger.GetInstanceID());
-                    if (roomData != null)
-                    {
-                        Debug.Log($"ID: {room.GetInstanceID()} || {roomData.isAlreadyTrigger}");
-                        room.GetBattleTrigger.IsAlreadyTriggerArea = roomData.isAlreadyTrigger;
-                        room.GetBattleTrigger.GetNextDesiredBattleTrigger = roomData.desiredBattleNextEnter;
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"THERE ARE NO BATTLE TRIGGER WITH ID {roomData.roomId} IN {room.gameObject.name}");
-                    }
-                }
+                return new List<RoomBattleSaveData>(roomAreaData);
             }
         }
 
-        await UniTask.Yield();
-
+        return null;
     }
     #endregion
 
@@ -229,12 +206,11 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         TriggerTimeLine[] triggerTimeLines = FindObjectsOfType<TriggerTimeLine>();
         return new List<TriggerTimeLine>(triggerTimeLines);
     }
-    private async UniTask<List<TimelineCutscenesSaveData>> SaveTriggerTimelineInScene()
+    private async UniTask SaveTriggerTimelineInScene()
     {
         List<TimelineCutscenesSaveData> saveCutscenes = new List<TimelineCutscenesSaveData>();
-        var triggerTimelines = FindAllTriggerTimelineInScene();
 
-        foreach (TriggerTimeLine item in triggerTimelines)
+        foreach (TriggerTimeLine item in FindAllTriggerTimelineInScene())
         {
             TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
             {
@@ -245,10 +221,10 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             saveCutscenes.Add(data);
         }
 
+        ES3.Save("timeline_trigger", saveCutscenes, filePath: GetIdentifier());
         await UniTask.Yield();
-        return saveCutscenes;
     }
-    private async UniTask LoadTriggerTimelineInScene()
+    public List<TimelineCutscenesSaveData> LoadTriggerTimelineInScene()
     {
         if (IsKeyExist("timeline_trigger"))
         {
@@ -256,35 +232,61 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
             if (sceneData != null)
             {
-                //List<TimelineCutscenesSaveData> timelineDatas = sceneData.timelineCutscenesSaveDatas; //load the list of the timeline triggers from file
-                var triggerTimelines = FindAllTriggerTimelineInScene();
-
-                foreach (var item in triggerTimelines)
-                {
-                    TimelineCutscenesSaveData data = sceneData.FirstOrDefault(x => x.id == item.GetInstanceID()); //Find the timeline with the same instance id
-
-                    if (data != null)
-                    {
-                        item.IsTimelinePlayOnce = data.isAlreadyTrigger;
-                    }
-                    else
-                    {
-                        Debug.LogError($"THERE ARE NO {item.GetInstanceID()} ID SAVED IN THE FILE");
-                    }
-                }
+                return new List<TimelineCutscenesSaveData>(sceneData);
             }
         }
-
-        await UniTask.Yield();
+        return null;
     }
 
-
     #endregion
+
+    #region SAVE/LOAD CHEST IN THE SCENE
+
+    private List<ChestScript> FindAllChestInScene()
+    {
+        ChestScript[] chests = FindObjectsOfType<ChestScript>();
+        return new List<ChestScript>(chests);
+    }
+    private async UniTask SaveChestInScene()
+    {
+        List<ChestSaveData> savedData = new List<ChestSaveData>();
+
+        foreach (ChestScript chest in FindAllChestInScene())
+        {
+            ChestSaveData data = new ChestSaveData
+            {
+                id = chest.GetInstanceID(),
+                isActiveInScene = chest.GetChestVisual.gameObject.activeInHierarchy,
+                isChestOpened = chest.IsChestOpened
+            };
+
+            savedData.Add(data);
+        }
+
+        ES3.Save("chests", savedData, filePath: GetIdentifier());
+        await UniTask.Yield();
+    }
+    public List<ChestSaveData> LoadChestInScene()
+    {
+        if (IsKeyExist("chests"))
+        {
+            List<ChestSaveData> chestData = ES3.Load<List<ChestSaveData>>("chests", filePath: GetIdentifier());
+
+            if (chestData != null)
+            {
+                return new List<ChestSaveData>(chestData);
+            }
+        }
+        return null;
+    }
+    #endregion
+
+
 
     //TODO: SAVE/LOAD FOR OBJECTS IN THE SCENE
 
-    #endregion
 
+    #endregion
 
 
 
@@ -307,7 +309,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         }
     }
-    private string GetIdentifier(string overrideFileName = "") 
+    private string GetIdentifier(string overrideFileName = "")
     {
         if (string.IsNullOrEmpty(overrideFileName))
         {
@@ -318,7 +320,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         {
             return string.Format("{0}/{1}.thesis", GetCurrentFolderName(), overrideFileName);
         }
-        
+
     }
 
     private string GetCurrentFolderName() //Get the file name

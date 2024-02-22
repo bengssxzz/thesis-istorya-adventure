@@ -8,6 +8,7 @@ using ThesisLibrary;
 using System;
 using UnityEngine.Events;
 using Pathfinding;
+using System.Linq;
 
 
 
@@ -67,6 +68,24 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         roomArea = GetComponentInParent<RoomArea>();
         roomAreaCollider = roomArea.GetComponent<PolygonCollider2D>();
+
+
+
+        var loadedData = SaveGameDataManager.Instance.LoadRoomAreaInScene();
+
+        if (loadedData != null)
+        {
+            var data = loadedData.FirstOrDefault(x => x.roomId == GetInstanceID());
+
+            if (data != null)
+            {
+                desiredToBattleInRoom = data.desiredBattleNextEnter;
+                isAlreadyTrigger = data.isAlreadyTrigger;
+            }
+
+        }
+
+
     }
 
 

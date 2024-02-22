@@ -31,23 +31,41 @@ public class PlayerInteractHandler : MonoBehaviour
     private void OnEnable()
     {
         InputManager.Instance.OnInteractObject += InteractObject;
+        proximitySelector.SelectedUsableObject += ProximitySelector_SelectedUsableObject;
+        proximitySelector.DeselectedUsableObject += ProximitySelector_DeselectedUsableObject;
 
+        if (isHoldingSomething)
+        {
+            Debug.Log("HOLDING SOMETHING");
+            UI_Manager.Instance.OpenMenu("Interact Button");
+            UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
+        }
+
+
+        #region LUA Register Function
         //Register a function for quest system
         Lua.RegisterFunction(nameof(GetHoldingSomething), this, SymbolExtensions.GetMethodInfo(() => GetHoldingSomething(string.Empty)));
         Lua.RegisterFunction(nameof(GetTheItemHolding), this, SymbolExtensions.GetMethodInfo(() => GetTheItemHolding()));
+        #endregion
     }
     private void OnDisable()
     {
         InputManager.Instance.OnInteractObject -= InteractObject;
+        proximitySelector.SelectedUsableObject -= ProximitySelector_SelectedUsableObject;
+        proximitySelector.DeselectedUsableObject -= ProximitySelector_DeselectedUsableObject;
 
+
+
+        #region LUA Unregister Function
         Lua.UnregisterFunction(nameof(GetHoldingSomething));
         Lua.UnregisterFunction(nameof(GetTheItemHolding));
+        #endregion
     }
 
     private void Start()
     {
         //InvokeRepeating("UpdateInteractButton", 0.1f, 0.2f); //Invoke repeat the UpdateInteractButton()
-        StartCoroutine(UpdateInteractButton1());
+        //StartCoroutine(UpdateInteractButton1());
     }
 
     #region LUA Functions
@@ -72,6 +90,8 @@ public class PlayerInteractHandler : MonoBehaviour
         }
     }
     #endregion
+
+
     private void InteractObject()
     {
         Debug.Log("SELECTING USABLE OBJECT");
@@ -95,7 +115,6 @@ public class PlayerInteractHandler : MonoBehaviour
         pickObject.transform.SetParent(itemHolder);
         pickObject.transform.localPosition = Vector3.zero;
     }
-
     public void DropItem() //Drop the item
     {
         var pickObject = Instantiate(pickupObject, transform.position, Quaternion.identity); //Drop the object in player position
@@ -105,8 +124,10 @@ public class PlayerInteractHandler : MonoBehaviour
         Destroy(pickupObject.gameObject);
         pickupObject = null;
 
-        player.GetAttack_Controller.EnableAttacking = !isHoldingSomething;
+        player.GetAttackHandler.IsCanAttack = !isHoldingSomething;
+        //player.GetAttack_Controller.EnableAttacking = !isHoldingSomething;
     }
+
     public void PickUpObject(PickupObject pickObject) //Trigger interact
     {
         if (pickupObject == null) //Pick up the object
@@ -125,61 +146,72 @@ public class PlayerInteractHandler : MonoBehaviour
 
         }
 
-        player.GetAttack_Controller.EnableAttacking = !isHoldingSomething; //Stop attacking when holding something
+        player.GetAttackHandler.IsCanAttack = !isHoldingSomething;
+        //player.GetAttack_Controller.EnableAttacking = !isHoldingSomething; //Stop attacking when holding something
     }
 
 
-    private void UpdateInteractButton() //Handle the update of the interact button
+    //private IEnumerator UpdateInteractButton1()
+    //{
+    //    while (true)
+    //    {
+    //        if (proximitySelector.usablesInRange.Count > 0) //Check if usable object is in range
+    //        {
+    //            UI_Manager.Instance.OpenMenu("Interact Button");
+    //        }
+    //        else
+    //        {
+    //            //Check if holding something
+    //            if (isHoldingSomething)
+    //            {
+    //                UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
+    //            }
+    //            else
+    //            {
+    //                UI_Manager.Instance.CloseMenu("Interact Button");
+    //            }
+    //        }
+
+    //        yield return new WaitForEndOfFrame();
+    //    }
+
+    //}
+
+
+
+    private void ProximitySelector_SelectedUsableObject(Usable usable)
     {
-        //Debug.Log("UPDATE VISUAL OF INTERACTION");
-        if(proximitySelector.usablesInRange.Count > 0) //Check if usable object is in range
+        var selected = usable.GetComponent<VisualSelector>();
+
+        if(selected != null)
+        {
+            var indicator = selected.GetVisualIndicator;
+
+            UI_Manager.Instance.OpenMenu("Interact Button");
+            UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(indicator); //Update the interact button
+
+        }
+
+        Debug.Log(usable.GetComponent<VisualSelector>().transform.root.name);
+    }
+    private void ProximitySelector_DeselectedUsableObject(Usable usable)
+    {
+        Debug.Log(usable.GetComponent<VisualSelector>().transform.root.name);
+
+
+        //Check if holding something
+        if (isHoldingSomething)
         {
             UI_Manager.Instance.OpenMenu("Interact Button");
+            UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
         }
         else
         {
-            //Check if holding something
-            if (isHoldingSomething) 
-            {
-                UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
-                return; 
-            } 
-            else
-            {
-                UI_Manager.Instance.CloseMenu("Interact Button");
-            }
+            UI_Manager.Instance.CloseMenu("Interact Button");
         }
     }
 
-    private IEnumerator UpdateInteractButton1()
-    {
-        while (true)
-        {
-            if (proximitySelector.usablesInRange.Count > 0) //Check if usable object is in range
-            {
-                UI_Manager.Instance.OpenMenu("Interact Button");
-            }
-            else
-            {
-                //Check if holding something
-                if (isHoldingSomething)
-                {
-                    UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
-                }
-                else
-                {
-                    UI_Manager.Instance.CloseMenu("Interact Button");
-                }
-            }
-
-            yield return new WaitForEndOfFrame();
-        }
-
-
-
-        
-        
-    }
+    
 
 
 

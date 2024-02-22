@@ -13,6 +13,7 @@ public class MobileInteractButton : MonoBehaviour
 {
     public event Action OnPressReleasedInteract;
 
+    private MobileInteractButtonState interactState;
 
     private MMTouchButton interactButton;
 
@@ -37,12 +38,9 @@ public class MobileInteractButton : MonoBehaviour
         interactButton.ButtonReleased.RemoveListener(OnRelease);
     }
 
-    private void OnRelease() => OnPressReleasedInteract?.Invoke();
-
-
-    public void UpdateInteractImage(MobileInteractButtonState state)
+    private void LateUpdate()
     {
-        switch (state)
+        switch (interactState)
         {
             case MobileInteractButtonState.Drop:
                 interactImage.sprite = dropImage;
@@ -54,6 +52,27 @@ public class MobileInteractButton : MonoBehaviour
                 interactImage.sprite = speakImage;
                 break;
         }
+    }
+
+    private void OnRelease() => OnPressReleasedInteract?.Invoke();
+
+
+    public void UpdateInteractImage(MobileInteractButtonState state)
+    {
+        interactState = state;
+
+        //switch (state)
+        //{
+        //    case MobileInteractButtonState.Drop:
+        //        interactImage.sprite = dropImage;
+        //        break;
+        //    case MobileInteractButtonState.Pickup:
+        //        interactImage.sprite = pickUpImage;
+        //        break;
+        //    case MobileInteractButtonState.Speak:
+        //        interactImage.sprite = speakImage;
+        //        break;
+        //}
     }
 
 

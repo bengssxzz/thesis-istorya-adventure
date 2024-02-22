@@ -12,22 +12,14 @@ public enum UI_ManagerState
 }
 public class UI_Manager : Singleton<UI_Manager>
 {
-    [Serializable]
-    public class CallMenuOnStart
-    {
-        public string[] CallMenuID;
-        public string[] CallActivateID;
-    }
-
     private UI_ManagerState managerState = UI_ManagerState.Start;
 
-    private List<UI_Menu> menus;
+    private List<UI_Menu> menuList;
     private List<UI_ButtonMenu> buttons;
 
     private UI_Menu previousMenuActive;
     private UI_Menu newMenuActive;
 
-    [SerializeField] private CallMenuOnStart callOnStart;
 
     public UI_ManagerState GetManagerState { get { return managerState; } }
 
@@ -47,7 +39,7 @@ public class UI_Manager : Singleton<UI_Manager>
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
-    
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode) //Every new scene execute this
     {
@@ -67,14 +59,6 @@ public class UI_Manager : Singleton<UI_Manager>
 
         managerState = UI_ManagerState.Start;
 
-        //ClearMenuList(); //Clear menu list on every new loaded scene
-
-        //menus = GetAllUIMenus();
-        //buttons = GetAllUIButtons();
-
-        //ActivateOnStartMenu(); //Activate all the OnStartMenu
-        //CallOnStart(); 
-
         StartCoroutine(TryFindMenus());
     }
     private void OnSceneUnloaded(Scene scene)
@@ -90,27 +74,25 @@ public class UI_Manager : Singleton<UI_Manager>
         previousMenuActive = null;
         newMenuActive = null;
 
-        menus.Clear();
+        menuList.Clear();
         buttons.Clear();
     }
 
-   
 
-    private void Start()
+
+    private async UniTask InitializeAllUIMenus()
     {
-        
+        ClearMenuList();
+
+        await UniTask.Delay(100);
+
+        this.menuList = GetAllUIMenus();
+        this.buttons = GetAllUIButtons();
+
+        ActivateOnStartMenu(); //Activate all the OnStartMenu
     }
 
-    //private async UniTaskVoid FindMenus()
-    //{
-    //    do
-    //    {
-    //        this.menus = new List<UI_Menu>(FindObjectsOfType<UIAbstract>(true).OfType<UI_Menu>());
-    //        this.buttons = new List<UI_ButtonMenu>(FindObjectsOfType<UIAbstract>(true).OfType<UI_ButtonMenu>());
 
-    //        await UniTask.Yield();
-    //    } while (true);
-    //}
 
 
     private IEnumerator TryFindMenus()
@@ -119,43 +101,29 @@ public class UI_Manager : Singleton<UI_Manager>
 
         do
         {
-            this.menus = GetAllUIMenus();
+            this.menuList = GetAllUIMenus();
             this.buttons = GetAllUIButtons();
 
-            if(menus.Count == 0 || menus == null)
+            if (menuList.Count == 0 || menuList == null)
                 Debug.LogWarning("FINDING MENUS");
 
             yield return new WaitForEndOfFrame();
 
-        } while (menus.Count == 0 || menus == null);
+        } while (menuList.Count == 0 || menuList == null);
 
         ActivateOnStartMenu(); //Activate all the OnStartMenu
-        CallOnStart();
 
         managerState = UI_ManagerState.Running;
     }
 
-
-
-    private void CallOnStart()
-    {
-        foreach (var item in callOnStart.CallMenuID)
-        {
-            OpenMenu(item);
-        }
-        foreach (var item in callOnStart.CallActivateID)
-        {
-            ActivateID_OpenMenu(item);
-        }
-    }
     private List<UI_Menu> GetAllUIMenus()
     {
-        IEnumerable<UI_Menu> menus = FindObjectsOfType<UIAbstract>(true).OfType<UI_Menu>();
+        IEnumerable<UI_Menu> menus = FindObjectsOfType<UI_Menu>(true);
         return new List<UI_Menu>(menus);
     }
     private List<UI_ButtonMenu> GetAllUIButtons()
     {
-        IEnumerable<UI_ButtonMenu> buttons = FindObjectsOfType<UIAbstract>(true).OfType<UI_ButtonMenu>();
+        IEnumerable<UI_ButtonMenu> buttons = FindObjectsOfType<UI_ButtonMenu>(true);
         return new List<UI_ButtonMenu>(buttons);
     }
 
@@ -163,37 +131,22 @@ public class UI_Manager : Singleton<UI_Manager>
     {
         CloseAllMenu(); //Close all activate menu
 
-        var menuOnStart = menus.Where(x => x.IsOnStartMenu);
+        var menuOnStart = menuList.Where(x => x.IsOnStartMenu);
 
         foreach (var item in menuOnStart)
         {
             item.EnablePage();
         }
     }
-    private void ClearMenuList() => menus?.Clear(); //Clear the list menu
-    private void CloseAllMenu() //Close all the menus active in the scene
-    {
-        if (menus.Count < 0)
-        {
-            Debug.LogWarning("THERE ARE NO MENUS IN THE SYSTEM");
-            return;
-        }
+    private void ClearMenuList() => menuList?.Clear(); //Clear the list menu
 
-        var menuWithActiveID = menus.Where(x => x.IsGlobalMenu == false);
-
-
-        foreach (var item in menuWithActiveID)
-        {
-            item.DisablePage();
-        }
-    }
 
 
     #region Menu UI public methods
     //SHOULD DELETE SOON
     public void BackToPreviousActiveMenu() //Back to the previous menu
     {
-        if(previousMenuActive == null) { return; }
+        if (previousMenuActive == null) { return; }
 
         CloseAllMenu();
 
@@ -209,17 +162,27 @@ public class UI_Manager : Singleton<UI_Manager>
 
     //}
 
+    public void CloseAllMenu() //Close all the menus active in the scene
+    {
+        var menuWithActiveID = menuList.Where(x => x.IsGlobalMenu == false);
+
+
+        foreach (var item in menuWithActiveID)
+        {
+            item.DisablePage();
+        }
+    }
     public bool IsMenuOpened(string menuID)
     {
-        if (menus.Count < 0 || menus == null)
+        if (menuList.Count < 0 || menuList == null)
         {
             Debug.LogWarning($"THERE ARE NO MENUS TO CHECK IF {menuID} IS OPEN IN THE SYSTEM");
             return false;
         }
 
-        if (menus.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
+        if (menuList.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
         {
-            var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
+            var selectedMenu = menuList.FirstOrDefault(script => script.GetUI_ID == menuID);
 
             return selectedMenu.GetMenuPage.gameObject.activeInHierarchy;
         }
@@ -234,23 +197,23 @@ public class UI_Manager : Singleton<UI_Manager>
 
     public void OpenMenu(string menuID) //Find the page with the same ID and open it
     {
-        if (menus.Count < 0 || menus == null)
+        if (menuList.Count < 0 || menuList == null)
         {
             Debug.LogWarning("THERE ARE NO MENUS TO OPEN IN THE SYSTEM");
             return;
         }
 
-        if (menus.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
+        if (menuList.Exists(x => x.GetUI_ID == menuID)) //If the menu ID exist in the list
         {
-            var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
+            var selectedMenu = menuList.FirstOrDefault(script => script.GetUI_ID == menuID);
 
             if (!selectedMenu.IsSubMenu) //If not sub menu then dont close other UI
             {
                 CloseAllMenu(); //Close all the menu page first
             }
-            
-            
-            if(newMenuActive != null)
+
+
+            if (newMenuActive != null)
                 previousMenuActive = newMenuActive; //Contain the latest active menu to previour menu active
 
             selectedMenu.EnablePage();
@@ -264,13 +227,13 @@ public class UI_Manager : Singleton<UI_Manager>
     }
     public void CloseMenu(string menuID) //Find the page with the same ID and close it
     {
-        if(menus.Count < 0 || menus == null)
+        if (menuList.Count < 0 || menuList == null)
         {
             Debug.LogWarning("THERE ARE NO MENUS TO CLOSE IN THE SYSTEM");
             return;
         }
 
-        var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
+        var selectedMenu = menuList.FirstOrDefault(script => script.GetUI_ID == menuID);
 
         if (selectedMenu != null)
         {
@@ -281,21 +244,39 @@ public class UI_Manager : Singleton<UI_Manager>
             Debug.LogWarning($"{menuID} menu is doesn't exist");
         }
     }
-    
-    public void ActivateID_OpenMenu(string activateID) //Open all the menu with the same activateID
+
+    public async UniTask ActivateID_OpenMenu(string activateID)
     {
-        CloseAllMenu(); //Close all
+        var menuWithActiveID = new List<UI_Menu>(menuList.Where(script => script.GetActivationIDListener == activateID));
 
-        var menuWithActiveID = menus.Where(script => script.GetActivationIDListener == activateID);
-
-        foreach (var item in menuWithActiveID)
+        foreach (var menu in menuList)
         {
-            item.EnablePage();
+            if (menuWithActiveID.Contains(menu))
+            {
+                menu.EnablePage();
+                continue;
+            }
+
+            menu.DisablePage();
         }
+
+        await UniTask.Yield();
     }
+
+    //public void ActivateID_OpenMenu(string activateID) //Open all the menu with the same activateID
+    //{
+    //    CloseAllMenu(); //Close all
+
+    //    var menuWithActiveID = menuList.Where(script => script.GetActivationIDListener == activateID);
+
+    //    foreach (var item in menuWithActiveID)
+    //    {
+    //        item.EnablePage();
+    //    }
+    //}
     public void ActivateID_CloseMenu(string activateID) //Close all the menu with the same activateID
     {
-        var menuWithActiveID = menus.Where(script => script.GetActivationIDListener == activateID);
+        var menuWithActiveID = menuList.Where(script => script.GetActivationIDListener == activateID);
 
         foreach (var item in menuWithActiveID)
         {
@@ -305,10 +286,10 @@ public class UI_Manager : Singleton<UI_Manager>
 
     public RectTransform GetMenu(string menuID)
     {
-        if (menus.Exists(x => x.GetUI_ID == menuID))
+        if (menuList.Exists(x => x.GetUI_ID == menuID))
         {
-            var selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID);
-            if(selectedMenu != null)
+            var selectedMenu = menuList.FirstOrDefault(script => script.GetUI_ID == menuID);
+            if (selectedMenu != null)
             {
                 return selectedMenu.GetMenuPage;
             }
@@ -327,12 +308,12 @@ public class UI_Manager : Singleton<UI_Manager>
 
     public T FindComponentInUIMenu<T>(string menuID) //Find object in menu
     {
-        if(menus.Exists(x => x.GetUI_ID == menuID))
+        if (menuList.Exists(x => x.GetUI_ID == menuID))
         {
-            GameObject selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID).gameObject;
+            GameObject selectedMenu = menuList.FirstOrDefault(script => script.GetUI_ID == menuID).gameObject;
             T component = selectedMenu.GetComponentInChildren<T>(true);
 
-            if(component != null)
+            if (component != null)
             {
                 Debug.Log($"I FOUND {typeof(T).ToString()} IN {component}");
                 return component;
@@ -351,9 +332,9 @@ public class UI_Manager : Singleton<UI_Manager>
     }
     public T[] FindComponentsInUIMenu<T>(string menuID) //Find all objects in menu
     {
-        if (menus.Exists(x => x.GetUI_ID == menuID))
+        if (menuList.Exists(x => x.GetUI_ID == menuID))
         {
-            GameObject selectedMenu = menus.FirstOrDefault(script => script.GetUI_ID == menuID).gameObject;
+            GameObject selectedMenu = menuList.FirstOrDefault(script => script.GetUI_ID == menuID).gameObject;
             T[] component = selectedMenu.GetComponentsInChildren<T>(true);
 
             if (component != null)
@@ -377,7 +358,7 @@ public class UI_Manager : Singleton<UI_Manager>
 
 
 
-    
+
 
 
 

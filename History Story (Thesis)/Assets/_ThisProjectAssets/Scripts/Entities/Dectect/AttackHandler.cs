@@ -75,7 +75,7 @@ public class AttackHandler : MonoBehaviour
     }
     private void OnDestroy()
     {
-        cancellationToken.Cancel();
+        cancellationToken?.Cancel();
     }
 
 
