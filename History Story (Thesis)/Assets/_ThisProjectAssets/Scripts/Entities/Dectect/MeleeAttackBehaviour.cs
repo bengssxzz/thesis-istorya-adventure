@@ -115,14 +115,20 @@ public class MeleeAttackBehaviour : MonoBehaviour
                     Vector2.Distance(x.position + offsetPosition, attackHandler.GetBaseAttackPosition.position) <= attackRadius
                     && attackHandler.GetScannerEntities.CheckValidTarget(x.transform)).ToList();
 
+                if(inRangeTargets.Count > 0)
+                {
+                    attackHandler.IsMeleeAttackPlaying = true;
+                }
+                else
+                {
+                    attackHandler.IsMeleeAttackPlaying = false;
+                }
 
                 //If range attack is not playing, do melee attack
                 if (!attackHandler.IsRangeAttackPlaying)
                 {
                     if (inRangeTargets.Count > 0 && inRangeTargets != null)
                     {
-                        attackHandler.IsMeleeAttackPlaying = true;
-
                         foreach (var target in inRangeTargets)
                         {
                             IDamageable entity = target.GetComponent<IDamageable>();
@@ -133,7 +139,6 @@ public class MeleeAttackBehaviour : MonoBehaviour
                             attackFeedback?.PlayFeedbacks();
                         }
 
-                        attackHandler.IsMeleeAttackPlaying = false;
                         await UniTask.Delay(TimeSpan.FromSeconds(attackHandler.CalculateAttackSpeed(attackSpeed)));
                     }
                 }
