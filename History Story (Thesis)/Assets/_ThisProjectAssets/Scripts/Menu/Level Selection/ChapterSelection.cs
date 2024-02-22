@@ -70,6 +70,7 @@ public class ChapterSelection : MonoBehaviour
         GameManager.Instance.CollectedAbilities("Dodge");
         GameManager.Instance.UnlockSceneChapter("Chapter 2");
         GameManager.Instance.UnlockSceneChapter("Chapter 3");
+        GameManager.Instance.UnlockSceneChapter("Chapter 4");
 
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
