@@ -50,6 +50,7 @@ public class RangeAttackBehaviour : MonoBehaviour
     private Vector2 dir;
     private float attackTime;
 
+    Transform targetInRange;
 
 
     public float GetAttackRadius { get { return attackRadius; } }
@@ -87,6 +88,10 @@ public class RangeAttackBehaviour : MonoBehaviour
         rangeCancellationToken?.Cancel();
         attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange -= EntityStatsChanges;
     }
+    private void OnDestroy()
+    {
+        rangeCancellationToken?.Cancel();
+    }
 
     private async void Start()
     {
@@ -120,6 +125,25 @@ public class RangeAttackBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if(attackHandler.GetScannerEntities.GetNearestTarget != null)
+        {
+            var validDistance = Vector2.Distance(attackHandler.GetBaseAttackPosition.position, attackHandler.GetScannerEntities.GetNearestTarget.position);
+            if (validDistance <= attackRadius)
+            {
+                //Target is in range
+                targetInRange = attackHandler.GetScannerEntities.GetNearestTarget;
+            }
+            else
+            {
+                targetInRange = null;
+            }
+        }
+        else
+        {
+            targetInRange = null;
+        }
+        
+
         Aiming();
     }
 
@@ -138,6 +162,8 @@ public class RangeAttackBehaviour : MonoBehaviour
 
         if (nearestTarget != null)
         {
+            if (!attackHandler.IsCanAttack) { return; }
+
             //Direct rotation toward to the enemy position
             dir = nearestTarget.position - basePosition.position;
 
@@ -172,26 +198,33 @@ public class RangeAttackBehaviour : MonoBehaviour
     private async UniTask RangeAttack(CancellationToken rangeCancelToken)
     {
         if(attackTypes.Count == 0) { return; }
-        await UniTask.Delay(100);
+        await UniTask.Delay(1000);
 
         while (!attackHandler.GetCancellationToken.IsCancellationRequested && !rangeCancelToken.IsCancellationRequested)
         {
-            await UniTask.WaitUntil(() => attackHandler.GetScannerEntities.GetNearestTarget != null, cancellationToken: attackHandler.GetCancellationToken.Token);
             foreach (var type in attackTypes)
             {
+                await UniTask.WaitUntil(() => attackHandler.IsMeleeAttackPlaying == false, cancellationToken: attackHandler.GetCancellationToken.Token); //Wait until the melee attack is not playing
+
                 if(attackHandler.GetScannerEntities.GetNearestTarget == null) { break; }
                 
                 if (type == null)
                     continue;
 
+                attackHandler.IsRangeAttackPlaying = true;
+
                 Debug.LogWarning("CASTING TYPES");
                 await CastAllTypes(type);
                 Debug.LogWarning("DONE CASTING");
+
+                attackHandler.IsRangeAttackPlaying = false;
+
                 attackTime = attackHandler.CalculateAttackSpeed(attackSpeed);
                 await UniTask.Delay(TimeSpan.FromSeconds(attackTime));
 
                 Debug.LogWarning("CURRENT TYPE " + attackTypes.IndexOf(type));
-                await UniTask.WaitUntil(() => attackHandler.GetScannerEntities.GetNearestTarget != null, cancellationToken: attackHandler.GetCancellationToken.Token);
+                await UniTask.WaitUntil(() => targetInRange != null, cancellationToken: attackHandler.GetCancellationToken.Token); //wait until there's a nearest target
+                await UniTask.WaitUntil(() => attackHandler.IsCanAttack == true, cancellationToken: attackHandler.GetCancellationToken.Token); //Wait until the attacker can attack
             }
 
             await UniTask.Yield();
@@ -226,10 +259,10 @@ public class RangeAttackBehaviour : MonoBehaviour
             if (attackHandler.GetCancellationToken.IsCancellationRequested)
                 break;
 
-            Debug.LogWarning("STILL PLAYING STATE");
             isPlaying = attackType.attackTypes.Any(x => x.GetAttackDone == false);
+            Debug.LogWarning("PLAYING STATE: " + isPlaying);
             await UniTask.Yield();
-        } while (isPlaying && attackHandler.GetScannerEntities.GetNearestTarget != null);
+        } while (isPlaying && targetInRange != null);
 
         afterCastingFeedback?.PlayFeedbacks();
 

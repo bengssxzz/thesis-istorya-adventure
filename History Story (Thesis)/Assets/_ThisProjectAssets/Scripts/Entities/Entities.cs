@@ -92,21 +92,6 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
     protected void FlipEntity(Vector2 velocity)
     {
-        //if (entitySpriteRenderer == null) { return; }
-
-        //if (direction.x > 0 && facingLeft)
-        //{
-        //    facingLeft = !facingLeft;
-        //    entitySpriteRenderer.flipX = facingLeft;
-        //}
-        //else if (direction.x < 0 && !facingLeft)
-        //{
-        //    facingLeft = !facingLeft;
-        //    entitySpriteRenderer.flipX = facingLeft;
-        //}
-
-        //if (entitySpriteRenderer == null) { return; }
-
         if(actorTransform == null)
         {
             Debug.LogWarning($"IT WONT FLIP BECAUSE THERE ARE NO ACTOR TRANSFORM ATTACH IN {gameObject.name}'s ENTITY SCRIPT");
@@ -258,23 +243,19 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         }
 
 
-        if(diedFeedback != null)
-        {
-            if(diedParticle != null)
-            {
-                var centerPosition = attackHandler.GetBaseAttackPosition.position;
-                var particle = ObjectPooling.Instance.GetObjectInPool("particle", diedParticle.gameObject, centerPosition);
-                particle.GetComponent<ParticleSystem>().Play();
-            }
 
-            diedFeedback?.PlayFeedbacks();
-        }
-        else
+        if (diedParticle != null)
         {
-            DiedEffects();
+            var centerPosition = attackHandler.GetBaseAttackPosition.position;
+            var particle = ObjectPooling.Instance.GetObjectInPool("particle", diedParticle.gameObject, centerPosition, true);
+            particle.GetComponent<ParticleSystem>().Play();
         }
+
+        diedFeedback?.PlayFeedbacks();
+
 
         DeathBehaviour();
+        DiedEffects();
     }
     protected virtual void DiedEffects()
     {

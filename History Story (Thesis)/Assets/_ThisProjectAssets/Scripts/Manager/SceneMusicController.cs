@@ -33,9 +33,10 @@ public class SceneMusicController : Singleton<SceneMusicController>
 
     private void OnDestroy()
     {
-        FreeAllPlayingFxSound().Forget();
+        DestroyAllSounds();
         cancellationToken?.Cancel();
     }
+
     protected override void Awake()
     {
         base.Awake();
@@ -72,6 +73,12 @@ public class SceneMusicController : Singleton<SceneMusicController>
         }
     }
 
+
+    private void DestroyAllSounds()
+    {
+        MMSoundManager.Instance.FreeAllSounds();
+        MMSoundManager.Instance.FreeAllLoopingSounds();
+    }
 
     private async UniTaskVoid FreeAllPlayingFxSound()
     {

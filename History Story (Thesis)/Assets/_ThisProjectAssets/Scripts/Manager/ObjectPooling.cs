@@ -11,7 +11,7 @@ public class ObjectPooling : Singleton<ObjectPooling>
     private Dictionary<string, List<GameObject>> poolObjects = new Dictionary<string, List<GameObject>>();
 
 
-    public GameObject GetObjectInPool(string objectTag, GameObject prefabObject, Vector3 setPosition, bool getActiveObject = false)
+    public GameObject GetObjectInPool(string objectTag, GameObject prefabObject, Vector3 setPosition, bool setToggle = false, bool getActiveObject = false)
     {
         GameObject requestNewObj = null;
 
@@ -26,14 +26,14 @@ public class ObjectPooling : Singleton<ObjectPooling>
                 {
                     // return when found one
                     item.transform.position = setPosition;
-                    item.SetActive(true);
+                    item.SetActive(setToggle);
                     return item;
                 }
             }
             // create a new object when no found
             requestNewObj = CreateObject(objectTag, prefabObject);
             requestNewObj.transform.position = setPosition;
-            requestNewObj.SetActive(true);
+            requestNewObj.SetActive(setToggle);
 
             return requestNewObj;
         }
@@ -42,7 +42,7 @@ public class ObjectPooling : Singleton<ObjectPooling>
             // create a new object and a tag in dictionary
             requestNewObj = CreateObject(objectTag, prefabObject);
             requestNewObj.transform.position = setPosition;
-            requestNewObj.SetActive(true);
+            requestNewObj.SetActive(setToggle);
 
             return requestNewObj;
         }

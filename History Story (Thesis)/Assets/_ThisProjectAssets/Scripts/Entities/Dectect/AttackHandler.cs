@@ -11,16 +11,20 @@ using MoreMountains.Tools;
 [RequireComponent(typeof(ScanningEntities))]
 public class AttackHandler : MonoBehaviour
 {
+    private const float MIN_ATTACKSPEED = 0.3f;
+    private const float MAX_ATTACKSPEED = 2.5f;
+
+
     private Entities entity;
     private ScanningEntities scanner;
     private RangeAttackBehaviour rangeAttacker;
     private MeleeAttackBehaviour meleeAttacker;
     private CancellationTokenSource cancellationToken;
 
-    private const float MIN_ATTACKSPEED = 0.3f;
-    private const float MAX_ATTACKSPEED = 2.5f;
+    private bool rangeAttackIsPlaying = false;
+    private bool meleeAttackIsPlaying = false;
 
-
+    [SerializeField] private bool canAttack = true;
     [SerializeField] private Transform baseAttackPosition;
     [SerializeField] private Transform attackPositionEndPoint;
 
@@ -32,6 +36,9 @@ public class AttackHandler : MonoBehaviour
     public RangeAttackBehaviour GetRangedAttackBehaviour { get { return rangeAttacker; } }
     public MeleeAttackBehaviour GetMeleeAttackBehaviour { get { return meleeAttacker; } }
 
+    public bool IsCanAttack { get { return canAttack; } set { canAttack = value; } }
+    public bool IsRangeAttackPlaying { get { return rangeAttackIsPlaying; } set { rangeAttackIsPlaying = value; } }
+    public bool IsMeleeAttackPlaying { get { return meleeAttackIsPlaying; } set { meleeAttackIsPlaying = value; } }
     public Color GetColorType { get { return colorType; } }
     public CancellationTokenSource GetCancellationToken { get { return cancellationToken; } }
     public Transform GetBaseAttackPosition { get { return baseAttackPosition; } }

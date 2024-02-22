@@ -309,7 +309,9 @@ public class RoomSpawnerEnemy : MonoBehaviour
                 Vector2 randomPosition = ThesisUtility.RandomGetVector2InCollider2DArea(roomAreaCollider, 0.35f, cannotSpawn);
 
                 GameObject selectedEnemy = ObjectPooling.Instance.GetObjectInPool("enemy", waveInfo.enemyArray.RandomGetObject(), Vector3.zero);
+                selectedEnemy.GetComponent<Entities>()?.GetEntityStats.ResetCurrentStats();
                 selectedEnemy.transform.position = randomPosition;
+                selectedEnemy.SetActive(true);
 
                 desiredToSpawn--;
 

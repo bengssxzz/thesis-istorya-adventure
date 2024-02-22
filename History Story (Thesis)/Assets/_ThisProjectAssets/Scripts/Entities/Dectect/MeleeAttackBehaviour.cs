@@ -32,7 +32,7 @@ public class MeleeAttackBehaviour : MonoBehaviour
     [SerializeField] private MMF_Player attackFeedback;
 
     private float attackSpeed;
-    private List<Transform> targets;
+    private List<Transform> inRangeTargets;
     private CancellationTokenSource meleeCancellationToken;
 
     private void Awake()
@@ -44,7 +44,7 @@ public class MeleeAttackBehaviour : MonoBehaviour
 
     private async void OnEnable()
     {
-        targets = new List<Transform>();
+        inRangeTargets = new List<Transform>();
 
         if (attackHandler.GetEntity.GetEntityStats != null)
         {
@@ -62,7 +62,7 @@ public class MeleeAttackBehaviour : MonoBehaviour
         }
     }
     private void OnDisable()
-    {   
+    {
         attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange -= EntityStatsChanges;
     }
 
@@ -109,22 +109,42 @@ public class MeleeAttackBehaviour : MonoBehaviour
 
             Vector3 offsetPosition = new Vector3(0, 0.06f);
 
-            targets = scanner.GetTargetsInArea.
-                Where(x => 
-                Vector2.Distance(x.position + offsetPosition, attackHandler.GetBaseAttackPosition.position) <= attackRadius &&
-                attackHandler.GetScannerEntities.CheckValidTarget(x.transform)).ToList();
-
-            foreach (var target in targets)
+            if (attackHandler.IsCanAttack)
             {
-                IDamageable entity = target.GetComponent<IDamageable>();
+                inRangeTargets = scanner.GetTargetsInArea.Where(x =>
+                    Vector2.Distance(x.position + offsetPosition, attackHandler.GetBaseAttackPosition.position) <= attackRadius
+                    && attackHandler.GetScannerEntities.CheckValidTarget(x.transform)).ToList();
 
-                float calculatedDamage = attackHandler.GetCalculatedDamage(out var critical);
-                entity.TakeDamage(calculatedDamage, attackHandler.GetEntity, critical);
 
-                attackFeedback?.PlayFeedbacks();
+                //If range attack is not playing, do melee attack
+                if (!attackHandler.IsRangeAttackPlaying)
+                {
+                    if (inRangeTargets.Count > 0 && inRangeTargets != null)
+                    {
+                        attackHandler.IsMeleeAttackPlaying = true;
+
+                        foreach (var target in inRangeTargets)
+                        {
+                            IDamageable entity = target.GetComponent<IDamageable>();
+
+                            float calculatedDamage = attackHandler.GetCalculatedDamage(out var critical);
+                            entity.TakeDamage(calculatedDamage, attackHandler.GetEntity, critical);
+
+                            attackFeedback?.PlayFeedbacks();
+                        }
+
+                        attackHandler.IsMeleeAttackPlaying = false;
+                        await UniTask.Delay(TimeSpan.FromSeconds(attackHandler.CalculateAttackSpeed(attackSpeed)));
+                    }
+                }
+            }
+            else
+            {
+                inRangeTargets = new List<Transform>(); //Clear the targets in range
             }
 
-            await UniTask.Delay(TimeSpan.FromSeconds(attackHandler.CalculateAttackSpeed(attackSpeed)));
+
+            await UniTask.Yield();
         }
     }
 

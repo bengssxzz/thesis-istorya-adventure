@@ -249,6 +249,7 @@ public class BattleTriggerArea : MonoBehaviour
 
                 GameObject selectedEnemy = ObjectPooling.Instance.GetObjectInPool("enemy", waveInfo.enemyArray.RandomGetObject(), Vector3.zero);
                 selectedEnemy.transform.position = randomPosition;
+                selectedEnemy.SetActive(true);
 
                 desiredToSpawn--;
 

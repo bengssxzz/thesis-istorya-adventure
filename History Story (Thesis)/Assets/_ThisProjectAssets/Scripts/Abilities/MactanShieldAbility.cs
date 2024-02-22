@@ -67,6 +67,7 @@ public class MactanShieldAbility : AbilityScript
                 var dir = entity.GetAttackHandler.GetBaseAttackPosition.TransformDirection(bulletDir);
                 GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectile.gameObject, entity.transform.position);
                 newBul.transform.position = entity.transform.position;
+                newBul.SetActive(true);
 
                 //Projectile settings
                 var startingPosition = (Vector2)attackHandler.GetBaseAttackPosition.position;
