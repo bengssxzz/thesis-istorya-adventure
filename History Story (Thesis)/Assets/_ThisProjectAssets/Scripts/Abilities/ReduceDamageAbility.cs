@@ -1,8 +1,10 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 using Cysharp.Threading.Tasks;
+using System;
 
 [CreateAssetMenu(fileName ="Reduce Damage", menuName ="Abilities/Reduce Damage")]
 public class ReduceDamageAbility : AbilityScript
@@ -37,7 +39,7 @@ public class ReduceDamageAbility : AbilityScript
     protected override void ModifyCastingFeedback(Entities entity, MMF_Player castingFeedback)
     {
         MMF_Particles toPlay = castingFeedback.GetFeedbackOfType<MMF_Particles>();
-        toPlay.BoundParticleSystem = entity.transform.Find("DefenseUpParticle").GetComponent<ParticleSystem>();
+        toPlay.BoundParticleSystem = entity.transform.MMFindDeepChildDepthFirst("DefenseUpParticle").GetComponent<ParticleSystem>();
     }
 
 
