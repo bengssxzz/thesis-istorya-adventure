@@ -826,7 +826,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Here take this... for your troubles.
+        value: Here, I'll teach you how to heal yourself... as thanks.
         type: 0
         typeString: 
       - title: Sequence
@@ -852,7 +852,10 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: SetQuestState("HealKatipuneros", "success")
+      userScript: 'SetQuestState("HealKatipuneros", "success");
+
+        CollectAbilities("Restore
+        Health")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
@@ -962,7 +965,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 413.6585
-        y: 248.29271
+        y: 246.92284
         width: 160
         height: 30
     entryGroups: []
