@@ -130,6 +130,37 @@ Transform:
   m_Father: {fileID: 1150513555608893092}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &764062954297864875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2804370714022161288}
+  m_Layer: 7
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2804370714022161288
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764062954297864875}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.025, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3719126659226642806}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000678330030064157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,7 +1442,6 @@ GameObject:
   - component: {fileID: 3719126659226642794}
   - component: {fileID: 3719126659226642795}
   - component: {fileID: 3719126659226642804}
-  - component: {fileID: 3719126659226642805}
   - component: {fileID: 3719126659226642803}
   - component: {fileID: 7376364347714267823}
   - component: {fileID: 8780504999550975509}
@@ -1541,6 +1571,7 @@ MonoBehaviour:
   actorTransform: {fileID: 3719126659225698073}
   animator_controller: {fileID: 0}
   diedParticle: {fileID: 0}
+  diedParticle: {fileID: 0}
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
   moveBehaviour: 0
@@ -1569,22 +1600,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &3719126659226642805
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3719126659226642796}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.024960577}
-  serializedVersion: 2
-  m_Radius: 0.10448009
 --- !u!210 &3719126659226642803
 SortingGroup:
   m_ObjectHideFlags: 0
