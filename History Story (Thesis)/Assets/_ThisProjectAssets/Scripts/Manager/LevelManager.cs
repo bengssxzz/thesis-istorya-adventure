@@ -9,7 +9,6 @@ using System;
 using System.IO;
 using System.Linq;
 using PixelCrushers.DialogueSystem;
-using MoreMountains.Tools;
 
 
 /*Save all pickup object in the scene
@@ -93,14 +92,14 @@ public class LevelManager : Singleton<LevelManager>
     }
 
     
-    private void LoadedNewScene()
+    private async void LoadedNewScene()
     {
         Debug.LogWarning("CUSTOM LOADED SCENE");
         var player = PlayerSingleton.Instance.gameObject;
         //var gameUI = GameUI.Instance.gameObject;
 
+        await UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
         player.SetActive(true);
-        UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
     }
     private void UnloadedCurrentScene()
     {
@@ -109,8 +108,9 @@ public class LevelManager : Singleton<LevelManager>
         var player = PlayerSingleton.Instance.gameObject;
         //var gameUI = GameUI.Instance.gameObject;
 
+        //UI_Manager.Instance.ActivateID_CloseMenu("game_ui");
+        UI_Manager.Instance.CloseAllMenu();
         player.SetActive(false);
-        UI_Manager.Instance.ActivateID_CloseMenu("game_ui");
     }
 
 

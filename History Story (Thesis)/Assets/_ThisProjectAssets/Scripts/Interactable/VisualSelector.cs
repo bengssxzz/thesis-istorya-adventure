@@ -22,7 +22,7 @@ public class VisualSelector : MonoBehaviour
 
 
     public Usable GetVisualUsable { get { return usable; } }
-
+    public MobileInteractButtonState GetVisualIndicator { get { return interactVisualState; } }
 
 
     private void Awake()
@@ -64,14 +64,17 @@ public class VisualSelector : MonoBehaviour
     private void OnDeselectObject()
     {
         selector?.SetActive(false);
+
+        //UI_Manager.Instance.CloseMenu("Interact Button");
         OnEventDeselectObject?.Invoke();
     }
     private void OnSelectObject()
     {
         selector?.SetActive(true); //Enable the visual selector
 
-        var interact = UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button");
-        interact.UpdateInteractImage(interactVisualState); //Update the visual of interact button
+        //UI_Manager.Instance.OpenMenu("Interact Button");
+        //var interact = UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button");
+        //interact.UpdateInteractImage(interactVisualState); //Update the visual of interact button
 
         OnEventSelectObject?.Invoke(); //Invoke event
     }

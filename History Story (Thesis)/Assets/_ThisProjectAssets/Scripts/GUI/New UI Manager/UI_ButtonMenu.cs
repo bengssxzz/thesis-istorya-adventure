@@ -27,22 +27,22 @@ public class UI_ButtonMenu : UIAbstract
         UI_Manager.Instance.BackToPreviousActiveMenu();
     }
 
-    public void OpenMenu()
+    public async void OpenMenu()
     {
         if (callActivateID)
         {
-            UI_Manager.Instance.ActivateID_OpenMenu(activateID);
+            await UI_Manager.Instance.ActivateID_OpenMenu(activateID);
         }
         else
         {
             UI_Manager.Instance.OpenMenu(interactMenuID);
         }
     }
-    public void CloseMenu()
+    public async void CloseMenu()
     {
         if (callActivateID)
         {
-            UI_Manager.Instance.ActivateID_OpenMenu(activateID);
+           await UI_Manager.Instance.ActivateID_OpenMenu(activateID);
         }
         else
         {

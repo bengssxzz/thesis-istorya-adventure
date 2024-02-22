@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -70,30 +71,79 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        //Load all the ability from the asset folder
-        //LoadAbilitiesInFolder("Assets/_ThisProjectAssets/Scriptable Object/Abilities");
-
 
         InitializeSceneChapter();
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += SceneLoaded;
+        SceneManager.sceneUnloaded += SceneUnloaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= SceneLoaded;
+        SceneManager.sceneUnloaded -= SceneUnloaded;
+    }
+
+    private void SceneUnloaded(Scene scene)
+    {
+        throw new NotImplementedException();
+    }
+
+    private async void SceneLoaded(Scene scene, LoadSceneMode load)
+    {
+        await UniTask.Delay(150);
+        if (dictChapterScores.ContainsKey(GetCurrentFolderName()))
+        {
+            OnChangeChapterPoints?.Invoke(dictChapterScores[GetCurrentFolderName()]);
+        }
+    }
 
     private void Start()
     {
-        //PlayfabManager.Instance.LoginOnStart();
+        RetrievePlayerData();
     }
 
-    /* THIS THE ONE
-    private void TESTINGLOADING() // Get all abilities (Scriptable Objects) inside the folder
-    {
-        //string[] files = Directory.GetFiles(folderPath, "*.asset");
-        AbilityScript[] abilityObjects = Resources.LoadAll<AbilityScript>("Abilities");
 
-        foreach (var filePath in abilityObjects)
+    private void RetrievePlayerData()
+    {
+        var loadedData = SaveGameDataManager.Instance.LoadPlayerData();
+
+        if (loadedData != null)
         {
-            TESTlistOfAllAbilities.Add(filePath);
+            //Load Artifacts
+            if(loadedData.artifactsCollected != null)
+            {
+                List<ArtifactsSO> collectedArtifacts = new List<ArtifactsSO>(loadedData.artifactsCollected);
+                listOfCollectedArtifacts = collectedArtifacts;
+            }
+
+            if(loadedData.abilitiesCollected != null)
+            {
+                List<AbilityScript> collectedAbilities = new List<AbilityScript>(loadedData.abilitiesCollected);
+                listOfCollectedAbilities = collectedAbilities;
+            }
+
+            if(loadedData.unlockedChapters != null)
+            {
+                Dictionary<Chapter_LevelSO, bool> unlockedChapters = new Dictionary<Chapter_LevelSO, bool>(loadedData.unlockedChapters);
+                dictChapterUnlocked = unlockedChapters;
+            }
+
+            if(loadedData.chapterScores != null)
+            {
+                Dictionary<string, int> chapterScores = new Dictionary<string, int>(loadedData.chapterScores);
+                dictChapterScores = chapterScores;
+            }
+
         }
-    }*/
+    }
+
+
+
+
 
 
     #region FOR SCENE CHAPTERS

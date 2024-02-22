@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using System.Linq;
 
 [RequireComponent(typeof(PlayableDirector))]
 [RequireComponent(typeof(Collider2D))]
@@ -32,6 +33,26 @@ public class TriggerTimeLine : MonoBehaviour
     private void Awake()
     {
         timelineDirector = GetComponent<PlayableDirector>();
+
+
+
+
+        var loadedData = SaveGameDataManager.Instance.LoadTriggerTimelineInScene();
+
+        if(loadedData != null)
+        {
+            var data = loadedData.FirstOrDefault(x => x.id == GetInstanceID());
+
+            if(data != null)
+            {
+                alreadyPlayOnce = data.isAlreadyTrigger;
+            }
+        }
+
+
+
+
+
     }
 
     private void Start()

@@ -22,7 +22,6 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     [SerializeField] protected bool debugMode = false;
 
     [SerializeField] private EntityStatsSO entityStatsSO;
-    //[SerializeField] private SpriteRenderer entitySpriteRenderer;
     [SerializeField] private Transform actorTransform;
     [SerializeField] private Animator animator_controller;
 
@@ -41,9 +40,9 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     public Rigidbody2D GetRigidbody2D { get { return rb; } } //Get Rigidbody2D
     public Transform GetActorTransform { get { return actorTransform; } }
     public AttackHandler GetAttackHandler { get { return attackHandler; } }
-    public AttackController GetAttack_Controller { get; private set; } //Get attack controller
+    //public AttackController GetAttack_Controller { get; private set; } //Get attack controller
     public AbilityController GetAbility_Controller { get { return abilityController; } } //Get ability controller
-    public EntityStatistics GetEntityStats { get { return entityStatistics; } } //Get entity stats handler
+    public EntityStatistics GetEntityStats { get { return entityStatistics; } set { entityStatistics = value;  } } //Get entity stats handler
     //public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
     public Vector2 GetMoveDirection { get; protected set; }
     public bool IsCanMove { get; set; } = true;
@@ -59,12 +58,14 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
         entityStatistics = new EntityStatistics(entityStatsSO);
 
-        GetAttack_Controller = GetComponent<AttackController>();
+        //GetAttack_Controller = GetComponent<AttackController>();
         abilityController = GetComponent<AbilityController>();
+        GetAbility_Controller.InitializedDefaultAbilities(entityStatsSO.abilities);
 
 
         TryGetComponent<DropLoot>(out dropLoot);
         TryGetComponent<AttackHandler>(out attackHandler);
+        
     }
     protected virtual void OnEnable()
     {
@@ -77,7 +78,6 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
     protected virtual void Start()
     {
-        GetAbility_Controller.InitializedDefaultAbilities(entityStatsSO.abilities);
     }
     protected virtual void Update()
     {
