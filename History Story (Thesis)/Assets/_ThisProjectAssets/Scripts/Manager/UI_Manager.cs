@@ -247,6 +247,8 @@ public class UI_Manager : Singleton<UI_Manager>
 
     public async UniTask ActivateID_OpenMenu(string activateID)
     {
+        CloseAllMenu();
+
         var menuWithActiveID = new List<UI_Menu>(menuList.Where(script => script.GetActivationIDListener == activateID));
 
         foreach (var menu in menuList)

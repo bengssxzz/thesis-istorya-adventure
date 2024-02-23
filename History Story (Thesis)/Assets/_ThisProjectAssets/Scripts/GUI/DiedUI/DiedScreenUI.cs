@@ -26,7 +26,7 @@ public class DiedScreenUI : MonoBehaviour
     {
         PlayerSceneSaveData playerSavedScene = SaveGameDataManager.Instance.GetLatestSavedScene();
 
-        var player = FindObjectOfType<PlayerScript>(true);
+        var player = PlayerSingleton.Instance.GetPlayerScript;
         string sceneName = playerSavedScene.sceneName;
         var spawnPosition = playerSavedScene.spawnPosition;
 

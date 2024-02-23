@@ -90,15 +90,8 @@ public class UpgradeStatsSystem : MonoBehaviour
     }
     private void SuccessfulUpgrade() //
     {
-
-        foreach (var item in updaterTextValue)
-        {
-            Debug.Log($"TEXT: {item.Key} || VALUE: {item.Value}");
-        }
-
         foreach (KeyValuePair<string, float> item in updaterTextValue)
         {
-            Debug.Log("Name: " + item.Key + " Value: " + item.Value);
             if (item.Value == 0) { continue; }
 
             Enum.TryParse(item.Key, out EntityStats parseEnum);

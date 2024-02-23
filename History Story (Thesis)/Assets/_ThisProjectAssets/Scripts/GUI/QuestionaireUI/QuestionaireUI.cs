@@ -107,6 +107,10 @@ public class QuestionaireUI : MonoBehaviour
 
     private void ChoicePressed(string selectedAnswer) //Reciever from each buttons
     {
+        foreach (var item in buttonChoices)
+        {
+            item.DisableButtonChoice(false);
+        }
         //Check the answer on button press
         Debug.Log("PRESSING " + selectedAnswer + " CHOICE BTN");
         this.selectedAnswer = selectedAnswer;

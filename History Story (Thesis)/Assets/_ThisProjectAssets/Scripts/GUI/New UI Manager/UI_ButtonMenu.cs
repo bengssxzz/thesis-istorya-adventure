@@ -27,11 +27,11 @@ public class UI_ButtonMenu : UIAbstract
         UI_Manager.Instance.BackToPreviousActiveMenu();
     }
 
-    public async void OpenMenu()
+    public void OpenMenu()
     {
         if (callActivateID)
         {
-            await UI_Manager.Instance.ActivateID_OpenMenu(activateID);
+            UI_Manager.Instance.ActivateID_OpenMenu(activateID);
         }
         else
         {
@@ -42,7 +42,7 @@ public class UI_ButtonMenu : UIAbstract
     {
         if (callActivateID)
         {
-           await UI_Manager.Instance.ActivateID_OpenMenu(activateID);
+           UI_Manager.Instance.ActivateID_OpenMenu(activateID);
         }
         else
         {

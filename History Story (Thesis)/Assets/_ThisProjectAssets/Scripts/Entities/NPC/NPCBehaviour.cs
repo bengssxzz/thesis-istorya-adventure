@@ -4,6 +4,8 @@ using UnityEngine;
 using Pathfinding;
 using ThesisLibrary;
 using System.Linq;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class NPCBehaviour : MonoBehaviour
 {
@@ -73,7 +75,8 @@ public class NPCBehaviour : MonoBehaviour
                 break;
 
             case MovementBehaviourState.RandomArea:
-                StartCoroutine(RandomAreaMoveBehaviour());
+                //StartCoroutine(RandomAreaMoveBehaviour());
+                RandomAreaMoveBehaviour().Forget();
                 break;
 
             case MovementBehaviourState.SetLocation:
@@ -140,11 +143,11 @@ public class NPCBehaviour : MonoBehaviour
         }
     }
 
-    private IEnumerator RandomAreaMoveBehaviour()
+    private async UniTaskVoid RandomAreaMoveBehaviour()
     {
-        while (true)
+        do
         {
-            Vector2 randomPosition = ThesisUtility.RandomGetVector2InCollider2DArea(areaCollider, 0.02f, invalidPositionLayer);
+            Vector2 randomPosition = await ThesisUtility.RandomGetVector2InCollider2DArea(areaCollider, 0.02f, invalidPositionLayer);
 
             // Move to the selected position
             aiPath.destination = randomPosition;
@@ -153,16 +156,40 @@ public class NPCBehaviour : MonoBehaviour
 
             aiPath.SearchPath();
 
-            while (aiPath.pathPending || !aiPath.reachedEndOfPath) // Wait until we know for sure that the agent has calculated a path to the destination
-                yield return null;
+            await UniTask.WaitUntil(() => aiPath.pathPending || !aiPath.reachedEndOfPath);
 
             //Reached the distination
             //Wait in the destination position
             aiPath.canMove = false;
-            yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minWaitTime, maxWaitTime));
+            await UniTask.Delay(TimeSpan.FromSeconds(ThesisUtility.RandomGetFloat(minWaitTime, maxWaitTime)));
 
-        }
+
+        } while (true);
     }
+
+    //private async IEnumerator RandomAreaMoveBehaviour()
+    //{
+    //    while (true)
+    //    {
+    //        Vector2 randomPosition = ThesisUtility.RandomGetVector2InCollider2DArea(areaCollider, 0.02f, invalidPositionLayer);
+
+    //        // Move to the selected position
+    //        aiPath.destination = randomPosition;
+    //        aiPath.maxSpeed = moveSpeed * Time.fixedDeltaTime;
+    //        aiPath.canMove = true;
+
+    //        aiPath.SearchPath();
+
+    //        while (aiPath.pathPending || !aiPath.reachedEndOfPath) // Wait until we know for sure that the agent has calculated a path to the destination
+    //            yield return null;
+
+    //        //Reached the distination
+    //        //Wait in the destination position
+    //        aiPath.canMove = false;
+    //        yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minWaitTime, maxWaitTime));
+
+    //    }
+    //}
 
 
     #region Loop States
