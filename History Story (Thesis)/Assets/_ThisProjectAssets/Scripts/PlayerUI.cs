@@ -14,29 +14,30 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private MMProgressBar healthBarUI;
     [SerializeField] private TextMeshProUGUI pointsTxt;
 
+    private bool alreadyFound = false;
 
 
-    private async void OnEnable()
+    private void OnEnable()
     {
-        await UniTask.Delay(20);
-
         entity = PlayerSingleton.Instance.GetPlayerScript;
-        if(entity == null) {
-            Debug.LogError($"{gameObject.name} CANT FIND THE PLAYER IN THE SCENE");
-            return; 
+
+
+        if(entity.GetEntityStats != null && !alreadyFound)
+        {
+            alreadyFound = true;
+            var currentHealth = entity.GetEntityStats.currentHealth;
+            var maxHealth = entity.GetEntityStats.maxHealth;
+
+            healthBarUI?.SetBar(currentHealth, 0, maxHealth);
+
+            GameManager.Instance.OnChangeChapterPoints += OnChangePoints;
+            entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;
         }
-
-        var currentHealth = entity.GetEntityStats.currentHealth;
-        var maxHealth = entity.GetEntityStats.maxHealth;
-
-        healthBarUI?.SetBar(currentHealth, 0, maxHealth);
-
-        GameManager.Instance.OnChangeChapterPoints += OnChangePoints;
-        entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;
-
     }
     private void OnDisable()
     {
+        alreadyFound = false;
+
         GameManager.Instance.OnChangeChapterPoints -= OnChangePoints;
         entity.GetEntityStats.OnCurrentHealthChange -= ChangeHealth;
     }
@@ -44,7 +45,20 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-        //entity.OnHealthChanged += ChangeHealth;
+        entity = PlayerSingleton.Instance.GetPlayerScript;
+
+
+        if (entity.GetEntityStats != null && !alreadyFound)
+        {
+            alreadyFound = true;
+            var currentHealth = entity.GetEntityStats.currentHealth;
+            var maxHealth = entity.GetEntityStats.maxHealth;
+
+            healthBarUI?.SetBar(currentHealth, 0, maxHealth);
+
+            GameManager.Instance.OnChangeChapterPoints += OnChangePoints;
+            entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;
+        }
     }
 
     private void ChangeHealth(float currentHealth, float maxHealth)
