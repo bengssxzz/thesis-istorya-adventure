@@ -831,7 +831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NPCActor: {fileID: 3851663602232176334}
-  NPCActorToFlip: {fileID: 9026194555089466314}
+  NPCActorToFlip: {fileID: 3116139296647478422}
   npcAnimator: {fileID: 6343775879632036485}
   positions: {fileID: 8730457613376819332}
   moveBehaviour: 0
@@ -4002,6 +4002,8 @@ GameObject:
   - component: {fileID: 892842760}
   - component: {fileID: 892842761}
   - component: {fileID: 2077896071914944234}
+  - component: {fileID: 6403106146652162356}
+  - component: {fileID: 7091183239860632696}
   m_Layer: 0
   m_Name: Actor
   m_TagString: Untagged
@@ -4274,6 +4276,76 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selector: {fileID: 5167402668523107294}
   NPCCollider: {fileID: 0}
+--- !u!114 &6403106146652162356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8731687991914652491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
+--- !u!114 &7091183239860632696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8731687991914652491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+  radius: 0.36
+  height: 0.01
+  canMove: 1
+  maxSpeed: 1
+  gravity: {x: 0, y: 0, z: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 1
+  enableRotation: 0
+  autoRepath:
+    mode: 0
+    period: 0.5
+    sensitivity: 10
+    maximumPeriod: 2
+    visualizeSensitivity: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 0.18
+  pickNextWaypointDist: 0.05
+  endReachedDistance: 0.2
+  alwaysDrawGizmos: 0
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 1
+  constrainInsideGraph: 0
 --- !u!1 &8860034737807744068
 GameObject:
   m_ObjectHideFlags: 0
@@ -4552,11 +4624,6 @@ Animator:
 --- !u!4 &8168387100337829835 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8578899244174869727, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
-  m_PrefabInstance: {fileID: 456464051651605268}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &9026194555089466314 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8869509075524763870, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
   m_PrefabInstance: {fileID: 456464051651605268}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4148966597306964516

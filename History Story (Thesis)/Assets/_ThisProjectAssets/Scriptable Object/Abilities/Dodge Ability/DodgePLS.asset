@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d024b91ba049a964ab04e86f56ae0503, type: 3}
+  m_Name: DodgePLS
+  m_EditorClassIdentifier: 
+  state: 1
+  OnAbilityTimeLapse:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityName: DodgePLS
+  abilityIcon: {fileID: 1666568127, guid: 4e36728c77369984bb00b8232757b05d, type: 3}
+  abilityDescription: A quick and short roll. Gets you out of danger!
+  cooldownTime: 1
+  precastingAtStartFeedback: {fileID: 0}
+  castingAtStartFeedback: {fileID: -6885861741707995846, guid: 99051f209b106f6468e407cda739ed84, type: 3}
+  finishedAtStartFeedback: {fileID: 0}
+  dodgePower: 500
+  dodgeDistance: 0.12
