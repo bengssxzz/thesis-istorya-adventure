@@ -69,6 +69,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     }
     protected virtual void OnEnable()
     {
+        entityStatistics.InvokeCurrentHealthEvent();
     }
     protected virtual void OnDisable()
     {

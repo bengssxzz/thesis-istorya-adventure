@@ -22,12 +22,11 @@ public class PlayerScript : Entities
     {
         base.Awake();
 
-        //move = InputManager.Instance.PlayerActionInput.actions["Move"];
 
         GetInteractHandler = GetComponent<PlayerInteractHandler>();
 
 
-        await UniTask.Delay(50);
+        await UniTask.Delay(5);
         var playerData = SaveGameDataManager.Instance.LoadPlayerData();
 
         if (playerData != null)
@@ -66,6 +65,8 @@ public class PlayerScript : Entities
     protected override void Start()
     {
         base.Start();
+
+        GetEntityStats.InvokeCurrentHealthEvent();
     }
 
     protected override void Update()

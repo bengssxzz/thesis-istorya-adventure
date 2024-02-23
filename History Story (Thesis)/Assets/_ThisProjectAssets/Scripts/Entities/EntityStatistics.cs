@@ -239,6 +239,11 @@ public class EntityStatistics
     #endregion
 
 
+    public void InvokeCurrentHealthEvent()
+    {
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        OnCurrentHealthChange?.Invoke(currentHealth, maxHealth);
+    }
     public void SetCurrentHealth(float amount)
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
