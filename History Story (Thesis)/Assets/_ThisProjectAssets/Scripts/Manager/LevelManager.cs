@@ -108,8 +108,8 @@ public class LevelManager : Singleton<LevelManager>
         //var player = PlayerSingleton.Instance.gameObject;
         //var gameUI = GameUI.Instance.gameObject;
 
-        //UI_Manager.Instance.ActivateID_CloseMenu("game_ui");
-        UI_Manager.Instance.CloseAllMenu();
+        UI_Manager.Instance.ActivateID_CloseMenu("game_ui");
+        //UI_Manager.Instance.CloseAllMenu();
         player.gameObject.SetActive(false);
     }
 

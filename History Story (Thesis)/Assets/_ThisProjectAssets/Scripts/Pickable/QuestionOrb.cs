@@ -17,9 +17,9 @@ public class QuestionOrb : BasePoints
         questionPoints = ThesisUtility.RandomGetAmount(minQuestionPoints, maxQuestionPoints);
     }
 
-    protected override void CollectPoints(PlayerScript player, int points)
+    protected override void CollectPoints(PlayerScript player, int powerPoints)
     {
-        QuestionsManager.Instance.QuestionTriggerUI(points, questionPoints);
+        QuestionsManager.Instance.QuestionTriggerUI(powerPoints, questionPoints);
     }
 
 }

@@ -198,37 +198,45 @@ public class RangeAttackBehaviour : MonoBehaviour
     private async UniTask RangeAttack(CancellationToken rangeCancelToken)
     {
         if(attackTypes.Count == 0) { return; }
-        await UniTask.Delay(1000);
-
-        while (!attackHandler.GetCancellationToken.IsCancellationRequested && !rangeCancelToken.IsCancellationRequested)
+        try
         {
-            foreach (var type in attackTypes)
+            await UniTask.Delay(1000, cancellationToken: rangeCancelToken);
+
+            while (!attackHandler.GetCancellationToken.IsCancellationRequested && !rangeCancelToken.IsCancellationRequested)
             {
-                await UniTask.WaitUntil(() => attackHandler.IsMeleeAttackPlaying == false, cancellationToken: attackHandler.GetCancellationToken.Token); //Wait until the melee attack is not playing
+                foreach (var type in attackTypes)
+                {
+                    await UniTask.WaitUntil(() => attackHandler.IsMeleeAttackPlaying == false, cancellationToken: attackHandler.GetCancellationToken.Token); //Wait until the melee attack is not playing
 
-                if(attackHandler.GetScannerEntities.GetNearestTarget == null) { break; }
-                
-                if (type == null)
-                    continue;
+                    if (attackHandler.GetScannerEntities.GetNearestTarget == null) { break; }
 
-                attackHandler.IsRangeAttackPlaying = true;
+                    if (type == null)
+                        continue;
 
-                Debug.LogWarning("CASTING TYPES");
-                await CastAllTypes(type);
-                Debug.LogWarning("DONE CASTING");
+                    attackHandler.IsRangeAttackPlaying = true;
 
-                attackHandler.IsRangeAttackPlaying = false;
+                    Debug.LogWarning("CASTING TYPES");
+                    await CastAllTypes(type);
+                    Debug.LogWarning("DONE CASTING");
 
-                attackTime = attackHandler.CalculateAttackSpeed(attackSpeed);
-                await UniTask.Delay(TimeSpan.FromSeconds(attackTime));
+                    attackHandler.IsRangeAttackPlaying = false;
 
-                Debug.LogWarning("CURRENT TYPE " + attackTypes.IndexOf(type));
-                await UniTask.WaitUntil(() => targetInRange != null, cancellationToken: attackHandler.GetCancellationToken.Token); //wait until there's a nearest target
-                await UniTask.WaitUntil(() => attackHandler.IsCanAttack == true, cancellationToken: attackHandler.GetCancellationToken.Token); //Wait until the attacker can attack
+                    attackTime = attackHandler.CalculateAttackSpeed(attackSpeed);
+                    await UniTask.Delay(TimeSpan.FromSeconds(attackTime));
+
+                    Debug.LogWarning("CURRENT TYPE " + attackTypes.IndexOf(type));
+                    await UniTask.WaitUntil(() => targetInRange != null, cancellationToken: attackHandler.GetCancellationToken.Token); //wait until there's a nearest target
+                    await UniTask.WaitUntil(() => attackHandler.IsCanAttack == true, cancellationToken: attackHandler.GetCancellationToken.Token); //Wait until the attacker can attack
+                }
+
+                await UniTask.Yield();
             }
-
-            await UniTask.Yield();
         }
+        catch (OperationCanceledException)
+        {
+            attackHandler.IsRangeAttackPlaying = false;
+        }
+        
         
     }
 
@@ -236,41 +244,47 @@ public class RangeAttackBehaviour : MonoBehaviour
     {
         bool isPlaying = false;
 
-
-        if (!attackType.canMoveWhileCasting)
+        try
         {
-            attackHandler.GetEntity.StopMovement(true); //Stop movement
-        }
+            if (!attackType.canMoveWhileCasting)
+            {
+                attackHandler.GetEntity.StopMovement(true); //Stop movement
+            }
 
-        beforeCastingFeedback?.PlayFeedbacks();
+            beforeCastingFeedback?.PlayFeedbacks();
 
-        await UniTask.Delay(TimeSpan.FromSeconds(attackType.delayCast)); //Delay casting
-
-
-
-        foreach (var typeSO in attackType.attackTypes)
-        {
-            typeSO.TriggerFire(attackHandler, attackHandler.GetCancellationToken.Token, TriggerAttackCallBack);
-        }
+            await UniTask.Delay(TimeSpan.FromSeconds(attackType.delayCast), cancellationToken: attackHandler.GetCancellationToken.Token); //Delay casting
 
 
-        do
-        {
-            if (attackHandler.GetCancellationToken.IsCancellationRequested)
-                break;
 
-            isPlaying = attackType.attackTypes.Any(x => x.GetAttackDone == false);
-            Debug.LogWarning("PLAYING STATE: " + isPlaying);
+            foreach (var typeSO in attackType.attackTypes)
+            {
+                typeSO.TriggerFire(attackHandler, attackHandler.GetCancellationToken.Token, TriggerAttackCallBack);
+            }
+
+
+            do
+            {
+                if (attackHandler.GetCancellationToken.IsCancellationRequested)
+                    break;
+
+                isPlaying = attackType.attackTypes.Any(x => x.GetAttackDone == false);
+                Debug.LogWarning("PLAYING STATE: " + isPlaying);
+                await UniTask.Yield();
+            } while (isPlaying && targetInRange != null);
+
+            afterCastingFeedback?.PlayFeedbacks();
+
+            Debug.LogWarning("DONE PLAYING STATE");
             await UniTask.Yield();
-        } while (isPlaying && targetInRange != null);
 
-        afterCastingFeedback?.PlayFeedbacks();
+            //Continue moving when the attack state is done
+            attackHandler.GetEntity.StopMovement(false); //Continue moving
+        }
+        catch (OperationCanceledException)
+        {
 
-        Debug.LogWarning("DONE PLAYING STATE");
-        await UniTask.Yield();
-
-        //Continue moving when the attack state is done
-        attackHandler.GetEntity.StopMovement(false); //Continue moving
+        }
     }
 
     private void TriggerAttackCallBack()

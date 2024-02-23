@@ -270,6 +270,8 @@ public class EntityStatistics
 
 
         lifeSteal = _lifeSteal;
+
+        OnCurrentStatsChange?.Invoke();
     }
 
 
@@ -312,6 +314,7 @@ public class EntityStatistics
                 Debug.LogError($"THERE ARE NO {stats.ToString()} IN ENTITY STATISTICS");
                 break;
         }
+        OnCurrentStatsChange?.Invoke();
     }
     public float GetRemainingStatsValue(EntityStats stats) //Get the remaining stats value
     {

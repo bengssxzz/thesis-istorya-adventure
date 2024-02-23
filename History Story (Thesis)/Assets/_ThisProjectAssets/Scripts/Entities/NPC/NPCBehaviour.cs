@@ -156,7 +156,8 @@ public class NPCBehaviour : MonoBehaviour
 
             aiPath.SearchPath();
 
-            await UniTask.WaitUntil(() => aiPath.pathPending || !aiPath.reachedEndOfPath);
+            while (aiPath.pathPending || !aiPath.reachedEndOfPath) // Wait until we know for sure that the agent has calculated a path to the destination
+                await UniTask.Yield();
 
             //Reached the distination
             //Wait in the destination position

@@ -157,10 +157,6 @@ public class UI_Manager : Singleton<UI_Manager>
         newMenuActive = oldMenu;
 
     }
-    //public void CloseSelf()
-    //{
-
-    //}
 
     public void CloseAllMenu() //Close all the menus active in the scene
     {
@@ -245,37 +241,37 @@ public class UI_Manager : Singleton<UI_Manager>
         }
     }
 
-    public async UniTask ActivateID_OpenMenu(string activateID)
-    {
-        CloseAllMenu();
-
-        var menuWithActiveID = new List<UI_Menu>(menuList.Where(script => script.GetActivationIDListener == activateID));
-
-        foreach (var menu in menuList)
-        {
-            if (menuWithActiveID.Contains(menu))
-            {
-                menu.EnablePage();
-                continue;
-            }
-
-            menu.DisablePage();
-        }
-
-        await UniTask.Yield();
-    }
-
-    //public void ActivateID_OpenMenu(string activateID) //Open all the menu with the same activateID
+    //public async UniTask ActivateID_OpenMenu(string activateID)
     //{
-    //    CloseAllMenu(); //Close all
+    //    CloseAllMenu();
 
-    //    var menuWithActiveID = menuList.Where(script => script.GetActivationIDListener == activateID);
+    //    var menuWithActiveID = new List<UI_Menu>(menuList.Where(script => script.GetActivationIDListener == activateID));
 
-    //    foreach (var item in menuWithActiveID)
+    //    foreach (var menu in menuList)
     //    {
-    //        item.EnablePage();
+    //        if (menuWithActiveID.Contains(menu))
+    //        {
+    //            menu.EnablePage();
+    //            continue;
+    //        }
+
+    //        menu.DisablePage();
     //    }
+
+    //    await UniTask.Yield();
     //}
+
+    public void ActivateID_OpenMenu(string activateID) //Open all the menu with the same activateID
+    {
+        CloseAllMenu(); //Close all
+
+        var menuWithActiveID = menuList.Where(script => script.GetActivationIDListener == activateID);
+
+        foreach (var item in menuWithActiveID)
+        {
+            item.EnablePage();
+        }
+    }
     public void ActivateID_CloseMenu(string activateID) //Close all the menu with the same activateID
     {
         var menuWithActiveID = menuList.Where(script => script.GetActivationIDListener == activateID);

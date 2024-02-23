@@ -88,7 +88,7 @@ public class UpgradeStatsSystem : MonoBehaviour
         ChangeCurrentVisualPowerText(amount);
         UpdateVisualUI();
     }
-    private void SuccessfulUpgrade() //
+    private async void SuccessfulUpgrade() //
     {
         foreach (KeyValuePair<string, float> item in updaterTextValue)
         {
@@ -109,9 +109,10 @@ public class UpgradeStatsSystem : MonoBehaviour
             //Debug.Log($"{item.Key}|| Current: {currentStats} Percent: {percentToAdd}% Computed: {computeAddedValue}");
             //player.GetEntityStats.AddStatsPermanent(parseEnum, computeAddedValue);
         }
-        
-        
+
+        player.GetEntityStats.ResetCurrentStats();
         powerUpFeedback?.PlayFeedbacks();
+        await SaveGameDataManager.Instance.SavePlayerStatsData();
     }
 
     private float GetStatsUpgradePercent(EntityStats stats) //Percentage of adding stats amount

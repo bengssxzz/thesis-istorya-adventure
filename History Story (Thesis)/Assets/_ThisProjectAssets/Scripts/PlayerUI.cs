@@ -32,6 +32,7 @@ public class PlayerUI : MonoBehaviour
 
             GameManager.Instance.OnChangeChapterPoints += OnChangePoints;
             entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;
+            entity.GetEntityStats.OnCurrentStatsChange += PlayerUpgradedStats;
         }
     }
     private void OnDisable()
@@ -40,8 +41,8 @@ public class PlayerUI : MonoBehaviour
 
         GameManager.Instance.OnChangeChapterPoints -= OnChangePoints;
         entity.GetEntityStats.OnCurrentHealthChange -= ChangeHealth;
+        entity.GetEntityStats.OnCurrentStatsChange -= PlayerUpgradedStats;
     }
-
 
     private void Start()
     {
@@ -60,6 +61,16 @@ public class PlayerUI : MonoBehaviour
             entity.GetEntityStats.OnCurrentHealthChange += ChangeHealth;
         }
     }
+
+    private void PlayerUpgradedStats()
+    {
+        var currentHealth = entity.GetEntityStats.currentHealth;
+        var maxHealth = entity.GetEntityStats.maxHealth;
+
+        healthBarUI?.SetBar(currentHealth, 0, maxHealth);
+        ChangeHealth(currentHealth, maxHealth);
+    }
+
 
     private void ChangeHealth(float currentHealth, float maxHealth)
     {
