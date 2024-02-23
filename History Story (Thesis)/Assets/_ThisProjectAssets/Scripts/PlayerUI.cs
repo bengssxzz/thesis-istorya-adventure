@@ -49,6 +49,7 @@ public class PlayerUI : MonoBehaviour
 
     private void ChangeHealth(float currentHealth, float maxHealth)
     {
+        healthBarUI.TextValueMultiplier = maxHealth;
         healthBarUI.UpdateBar(currentHealth, 0, maxHealth);
     }
 

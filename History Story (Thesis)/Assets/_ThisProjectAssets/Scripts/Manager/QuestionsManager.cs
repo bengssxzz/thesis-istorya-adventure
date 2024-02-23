@@ -52,8 +52,11 @@ public class QuestionsManager : Singleton<QuestionsManager>
     private int currentQandAId = -1;
     private string currentSceneTable;
 
+    private int scoreHolder = 0;
+    private int powerPointHolder = 0;
 
 
+    public (int, int) GetDesiredReward { get { return (powerPointHolder, scoreHolder); } }
 
 
     protected override void Awake()
@@ -100,8 +103,11 @@ public class QuestionsManager : Singleton<QuestionsManager>
     }
 
     
-    public void QuestionTriggerUI() //Trigger the UI question
+    public void QuestionTriggerUI(int powerPoints, int questionPoint) //Trigger the UI question
     {
+        scoreHolder = questionPoint;
+        powerPointHolder = powerPoints;
+
         SetCurrentTableScene();
 
         var qandaInfos = RequestQandA(4);

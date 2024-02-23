@@ -6,6 +6,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class UpgradeStats : MonoBehaviour
 {
@@ -24,18 +25,42 @@ public class UpgradeStats : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statsPlayerValue;
     [SerializeField] private TextMeshProUGUI statsAddValue;
 
+    private float pressingDelay = 1f;
+
     public string GetStatsAssign { get { return statsAssign; } }
     public MMF_Player SetClickFeedback { set { clickFeedback = value; } }
 
     private void OnEnable()
     {
+        minusValueButton.ButtonPressed.AddListener(OnAddButtonPressing);
+        addValueButton.ButtonPressed.AddListener(OnMinusButtonPressing);
+
         minusValueButton.ButtonReleased.AddListener(OnMinusButtonReleaseClick);
         addValueButton.ButtonReleased.AddListener(OnAddButtonReleaseClick);
     }
     private void OnDisable()
     {
+        minusValueButton.ButtonPressed.RemoveListener(OnAddButtonPressing);
+        addValueButton.ButtonPressed.RemoveListener(OnMinusButtonPressing);
+
         minusValueButton.ButtonReleased.RemoveListener(OnMinusButtonReleaseClick);
         addValueButton.ButtonReleased.RemoveListener(OnAddButtonReleaseClick);
+    }
+
+    private async void OnAddButtonPressing()
+    {
+        SetFeedback(addValueButton.transform);
+        OnAddAmountValue?.Invoke(this, statsAssign);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay));
+    }
+    private async void OnMinusButtonPressing()
+    {
+
+        SetFeedback(minusValueButton.transform);
+        OnReductAmountValue?.Invoke(this, statsAssign);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay));
     }
 
 
@@ -44,7 +69,6 @@ public class UpgradeStats : MonoBehaviour
         SetFeedback(addValueButton.transform);
         OnAddAmountValue?.Invoke(this, statsAssign);
     }
-
     private void OnMinusButtonReleaseClick()
     {
         SetFeedback(minusValueButton.transform);
@@ -68,7 +92,7 @@ public class UpgradeStats : MonoBehaviour
     }
     public void SetStatsValue(float amount)
     {
-        statsAddValue.text = string.Format("{0}%", amount.ToString("F1"));
+        statsAddValue.text = string.Format("{0}", amount.ToString("F1"));
     }
     public void ResetData()
     {
@@ -77,6 +101,8 @@ public class UpgradeStats : MonoBehaviour
 
         statsPlayerValue.text = "";
         statsAddValue.text = "";
+
+        EnableMinusButton(false);
     }
 
 
@@ -103,6 +129,12 @@ public class UpgradeStats : MonoBehaviour
         }
     }
     
+
+
+    private IEnumerator DelayPressing()
+    {
+        yield return new WaitForSeconds(pressingDelay);
+    }
 
 
 

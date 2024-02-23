@@ -271,37 +271,37 @@ public class EntityStatistics
 
 
 
-    public void UpgradeStatsPermanent(EntityStats stats, float amount) //Upgrade stats permanently
+    public void AddStatsPermanent(EntityStats stats, float addAmount) //Upgrade stats permanently
     {
         switch (stats)
         {
             case EntityStats.Health: //Can upgrade many times
-                maxHealth = Mathf.Clamp(maxHealth + amount, 0, maxHealthBoundValue);
+                maxHealth = Mathf.Clamp(maxHealth + addAmount, 0, maxHealthBoundValue);
                 currentHealth = maxHealth;
                 break;
             case EntityStats.Damage: //Can upgrade many times
-                maxDamage = Mathf.Clamp(maxDamage + amount, 0, maxDamageBoundValue);
+                maxDamage = Mathf.Clamp(maxDamage + addAmount, 0, maxDamageBoundValue);
                 break;
             case EntityStats.Defense:
-                maxDefense = Mathf.Clamp(maxDefense + amount, 0, maxDefenseBoundValue);
+                maxDefense = Mathf.Clamp(maxDefense + addAmount, 0, maxDefenseBoundValue);
                 break;
             case EntityStats.MoveSpeed:
-                maxMoveSpeed = Mathf.Clamp(maxMoveSpeed + amount, 0, maxMoveSpeedBoundValue);
+                maxMoveSpeed = Mathf.Clamp(maxMoveSpeed + addAmount, 0, maxMoveSpeedBoundValue);
                 break;
             case EntityStats.AttackSpeed:
-                maxAttackSpeed = Mathf.Clamp(maxAttackSpeed + amount, 0, maxAttackSpeedBoundValue);
+                maxAttackSpeed = Mathf.Clamp(maxAttackSpeed + addAmount, 0, maxAttackSpeedBoundValue);
                 break;
             case EntityStats.CriticalChance:
-                maxCriticalChance = Mathf.Clamp(maxCriticalChance + amount, 0, maxCriticalChanceBoundValue);
+                maxCriticalChance = Mathf.Clamp(maxCriticalChance + addAmount, 0, maxCriticalChanceBoundValue);
                 break;
             case EntityStats.CriticalDamage: //Can upgrade many times
-                maxCriticalDamage = Mathf.Clamp(maxCriticalDamage + amount, 0, maxCriticalDamageBoundValue);
+                maxCriticalDamage = Mathf.Clamp(maxCriticalDamage + addAmount, 0, maxCriticalDamageBoundValue);
                 break;
             case EntityStats.Dodging:
-                maxDodgeChance = Mathf.Clamp(maxDodgeChance + amount, 0, maxDodgeChanceBoundValue);
+                maxDodgeChance = Mathf.Clamp(maxDodgeChance + addAmount, 0, maxDodgeChanceBoundValue);
                 break;
             case EntityStats.LifeSteal:
-                lifeSteal = Mathf.Clamp(lifeSteal + amount, 0, lifeStealBoundValue);
+                lifeSteal = Mathf.Clamp(lifeSteal + addAmount, 0, lifeStealBoundValue);
                 break;
             default:
                 Debug.LogError($"THERE ARE NO {stats.ToString()} IN ENTITY STATISTICS");

@@ -22,12 +22,12 @@ public class PlayerScript : Entities
     {
         base.Awake();
 
-        await UniTask.Delay(50);
         //move = InputManager.Instance.PlayerActionInput.actions["Move"];
 
         GetInteractHandler = GetComponent<PlayerInteractHandler>();
 
 
+        await UniTask.Delay(50);
         var playerData = SaveGameDataManager.Instance.LoadPlayerData();
 
         if (playerData != null)

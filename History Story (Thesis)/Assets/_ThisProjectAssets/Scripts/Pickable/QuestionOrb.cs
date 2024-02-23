@@ -3,28 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using ThesisLibrary;
 
-public class QuestionOrb : MonoBehaviour
+public class QuestionOrb : BasePoints
 {
+    [SerializeField] private int minQuestionPoints = 1000;
+    [SerializeField] private int maxQuestionPoints = 1000;
 
-    private void OnEnable()
+    private int questionPoints = 0;
+
+
+    protected override void OnAwakeBehaviour()
     {
-        StartCoroutine(StartLifeTime());
+        base.OnAwakeBehaviour();
+        questionPoints = ThesisUtility.RandomGetAmount(minQuestionPoints, maxQuestionPoints);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void CollectPoints(PlayerScript player, int points)
     {
-        if (collision.CompareTag("Player"))
-        {
-            gameObject.SetActive(false);
-            QuestionsManager.Instance.QuestionTriggerUI();
-        }
-    }
-
-
-    IEnumerator StartLifeTime() //Life time of the exp point
-    {
-        yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(5, 10));
-        gameObject.SetActive(false);
+        QuestionsManager.Instance.QuestionTriggerUI(points, questionPoints);
     }
 
 }

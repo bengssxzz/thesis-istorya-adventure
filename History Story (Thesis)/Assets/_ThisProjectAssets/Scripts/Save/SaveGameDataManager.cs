@@ -167,6 +167,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     {
         var saveRoomArea = new List<RoomBattleSaveData>();
 
+        if (FindAllRoomAreaInScene() == null || FindAllRoomAreaInScene().Count == 0) { return; }
+
         foreach (var room in FindAllRoomAreaInScene())
         {
             RoomBattleSaveData data = new RoomBattleSaveData()
@@ -210,6 +212,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     {
         List<TimelineCutscenesSaveData> saveCutscenes = new List<TimelineCutscenesSaveData>();
 
+        if (FindAllTriggerTimelineInScene() == null || FindAllTriggerTimelineInScene().Count == 0) { return; }
+
         foreach (TriggerTimeLine item in FindAllTriggerTimelineInScene())
         {
             TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
@@ -250,6 +254,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     private async UniTask SaveChestInScene()
     {
         List<ChestSaveData> savedData = new List<ChestSaveData>();
+
+        if(FindAllChestInScene() == null || FindAllChestInScene().Count == 0) { return; }
 
         foreach (ChestScript chest in FindAllChestInScene())
         {

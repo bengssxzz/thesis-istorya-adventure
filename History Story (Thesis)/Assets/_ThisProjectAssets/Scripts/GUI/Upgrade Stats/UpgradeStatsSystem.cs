@@ -9,6 +9,7 @@ using System.Linq;
 using ThesisLibrary;
 using MoreMountains.Tools;
 using MoreMountains.Feedbacks;
+using Cysharp.Threading.Tasks;
 
 public class UpgradeStatsSystem : MonoBehaviour
 {
@@ -43,7 +44,8 @@ public class UpgradeStatsSystem : MonoBehaviour
     }
     private void OnEnable()
     {
-        InitializeUpgrade();
+        if (currentStatsCanUpgrade.Count != 0 || maxStatsCanUpgrade.Count != 0)
+            InitializeUpgrade();
 
         powerupBtn?.ButtonReleased.AddListener(SuccessfulUpgrade);
         foreach (var item in upgradeStats)
@@ -67,10 +69,10 @@ public class UpgradeStatsSystem : MonoBehaviour
 
    
 
-    private void Start()
+    private async void Start()
     {
         //Run one time only
-        SetMaxAmountToUpgrade(); //Register the computed desired stats that can upgrade
+        await SetMaxAmountToUpgrade(); //Register the computed desired stats that can upgrade
         UpdateCurrentAmountStats(); //Register the current stats to dictionary
 
         InitializeUpgrade();
@@ -79,6 +81,81 @@ public class UpgradeStatsSystem : MonoBehaviour
         //SetPowerPoints(5); //FOR TESTING PURPOSES
     }
 
+    public void SetPowerPoints(int amount) //Set the points
+    {
+        maxAvailablePoints = amount;
+        currentAvailablePoints = maxAvailablePoints;
+        ChangeCurrentVisualPowerText(amount);
+        UpdateVisualUI();
+    }
+    private void SuccessfulUpgrade() //
+    {
+
+        foreach (var item in updaterTextValue)
+        {
+            Debug.Log($"TEXT: {item.Key} || VALUE: {item.Value}");
+        }
+
+        foreach (KeyValuePair<string, float> item in updaterTextValue)
+        {
+            Debug.Log("Name: " + item.Key + " Value: " + item.Value);
+            if (item.Value == 0) { continue; }
+
+            Enum.TryParse(item.Key, out EntityStats parseEnum);
+
+
+            float percentToAdd = item.Value; //Value
+
+            Debug.Log($"{item.Key}|| Add Amount: {percentToAdd} to: {item.Key}");
+            player.GetEntityStats.AddStatsPermanent(parseEnum, percentToAdd);
+
+            //float percentToAdd = item.Value; //Percent
+            //float currentStats = GetCurrentMaxStats(parseEnum);
+            //float computeAddedValue = currentStats == 0 ? (percentToAdd / 100) : (percentToAdd / 100) * currentStats;
+
+            //Debug.Log($"{item.Key}|| Current: {currentStats} Percent: {percentToAdd}% Computed: {computeAddedValue}");
+            //player.GetEntityStats.AddStatsPermanent(parseEnum, computeAddedValue);
+        }
+        
+        
+        powerUpFeedback?.PlayFeedbacks();
+    }
+
+    private float GetStatsUpgradePercent(EntityStats stats) //Percentage of adding stats amount
+    {
+        switch (stats)
+        {
+            case EntityStats.Health:
+                return 10f;
+            case EntityStats.Damage:
+                return 1f;
+            case EntityStats.Defense:
+                return 0.15f;
+            case EntityStats.MoveSpeed:
+                return 0.15f;
+            case EntityStats.AttackSpeed:
+                return 0.15f;
+            case EntityStats.CriticalChance:
+                return 0.15f;
+            case EntityStats.CriticalDamage:
+                return 1f;
+            case EntityStats.Dodging:
+                return 0.03f;
+            case EntityStats.LifeSteal:
+                return 0.5f;
+            default:
+                Debug.LogError($"THERE ARE NO {stats} IN THE ENTITY STATISTICS");
+                return 0f;
+        }
+    }
+
+    private void ChangeCurrentVisualPowerText(int value)
+    {
+        currentAvailablePoints = value;
+        pointsTxt.text = currentAvailablePoints.ToString(); //Update the text
+
+        //TODO: If the current availble points is 0, enable the POWER UP button. If there are still points then disable the button.
+    }
 
     private void OnMinusPressed(UpgradeStats upgradeStat, string statsName)
     {
@@ -88,9 +165,8 @@ public class UpgradeStatsSystem : MonoBehaviour
         updaterTextValue[statsName] -= GetStatsUpgradePercent(parseEnum); //Deduct amount
         upgradeStats[index].SetStatsValue(updaterTextValue[statsName]);
 
-        currentAvailablePoints += 1;
-        //UpdateVisualUI();
-        pointsTxt.text = currentAvailablePoints.ToString(); //Update the text
+        ChangeCurrentVisualPowerText(currentAvailablePoints += 1);
+
 
         foreach (var item in upgradeStats)
         {
@@ -105,10 +181,7 @@ public class UpgradeStatsSystem : MonoBehaviour
             bool isAddEnable = currentAvailablePoints > 0;
             item.EnableAddButton(isAddEnable);
 
-            //TODO: If the current availble points is 0, enable the POWER UP button. If there are still points then disable the button.
         }
-
-        Debug.Log("PRESSING THE MINUS");
     }
     private void OnAddPressed(UpgradeStats upgradeStat, string statsName)
     {
@@ -118,9 +191,9 @@ public class UpgradeStatsSystem : MonoBehaviour
         updaterTextValue[statsName] += GetStatsUpgradePercent(parseEnum); //Add amount 
         upgradeStats[index].SetStatsValue(updaterTextValue[statsName]);
 
-        currentAvailablePoints -= 1;
-        //UpdateVisualUI();
-        pointsTxt.text = currentAvailablePoints.ToString(); //Update the text
+
+
+        ChangeCurrentVisualPowerText(currentAvailablePoints -= 1);
 
         foreach (var item in upgradeStats)
         {
@@ -134,30 +207,6 @@ public class UpgradeStatsSystem : MonoBehaviour
         {
             bool isAddEnable = currentAvailablePoints > 0;
             item.EnableAddButton(isAddEnable);
-
-            //TODO: If the current availble points is 0, enable the POWER UP button. If there are still points then disable the button.
-        }
-
-        Debug.Log("PRESSING THE ADD");
-    }
-    private void SuccessfulUpgrade() //
-    {
-        powerUpFeedback?.PlayFeedbacks();
-
-        foreach (KeyValuePair<string, float> item in updaterTextValue)
-        {
-            if(item.Value == 0) { continue; }
-
-            Enum.TryParse(item.Key, out EntityStats parseEnum);
-            
-            float percentToAdd = item.Value; //Percent
-            float currentStats = GetCurrentStats(parseEnum);
-            float computeAddedValue = currentStats == 0 ? (percentToAdd / 100) : (percentToAdd / 100) * currentStats;
-
-            Debug.Log($"{item.Key}|| Current: {currentStats} Percent: {percentToAdd}% Computed: {computeAddedValue}");
-            player.GetEntityStats.UpgradeStatsPermanent(parseEnum, computeAddedValue);
-
-
         }
     }
 
@@ -167,11 +216,6 @@ public class UpgradeStatsSystem : MonoBehaviour
         {
             item.ResetData();
         }
-
-
-        if(currentStatsCanUpgrade.Count == 0 || maxStatsCanUpgrade.Count == 0) {
-            Debug.LogError("One in 'currentStatsCanUpgrade' and 'maxStatsCanUpgrade' Dictionaries  is empty");
-            return; }
 
         GetUpdaterValue(); //Reset the updater value
         generatedStatsUpgrade = GetRandomStatsToUpgrade();
@@ -185,7 +229,7 @@ public class UpgradeStatsSystem : MonoBehaviour
 
             if(Enum.TryParse(generatedStatsUpgrade[i], out EntityStats parseStats)) //Try parse the string to enum
             {
-                upgradeStats[i].SetData(generatedStatsUpgrade[i], GetCurrentStats(parseStats)); //Set the data
+                upgradeStats[i].SetData(generatedStatsUpgrade[i], GetCurrentMaxStats(parseStats)); //Set the data
                 upgradeStats[i].SetStatsValue(updaterTextValue[generatedStatsUpgrade[i]]);
             }
             else
@@ -208,15 +252,6 @@ public class UpgradeStatsSystem : MonoBehaviour
             item.EnableMinusButton(enableMinus);
             item.EnableAddButton(enableAdd);
         }
-
-        pointsTxt.text = currentAvailablePoints.ToString(); //Update the points text
-    }
-
-    public void SetPowerPoints(int amount) //Set the points
-    {
-        maxAvailablePoints = amount;
-        currentAvailablePoints = maxAvailablePoints;
-        UpdateVisualUI();
     }
 
     private void GetUpdaterValue()
@@ -227,11 +262,9 @@ public class UpgradeStatsSystem : MonoBehaviour
             updaterTextValue.Add(stat.ToString(), 0);
         }
     }
-    private void SetMaxAmountToUpgrade()
+    private async UniTask SetMaxAmountToUpgrade() //Set a max stats
     {
         float maxStatsBoundValue = 0;
-        float maxPercent = 0;
-        float desiredMaxStats = 0;
 
         foreach (EntityStats stat in Enum.GetValues(typeof(EntityStats)))
         {
@@ -239,74 +272,56 @@ public class UpgradeStatsSystem : MonoBehaviour
             {
                 case EntityStats.Health: //Infinite can upgrate
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat); //Get the remaining value
-                    maxPercent = float.PositiveInfinity; //Infinite
-                    desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"Health: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    Debug.Log($"Health: {GetCurrentMaxStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 case EntityStats.Damage: //Infinite can upgrate
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
-                    maxPercent = float.PositiveInfinity; //Infinite
-                    desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"Damage: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    Debug.Log($"Damage: {GetCurrentMaxStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 case EntityStats.Defense:
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
-                    maxPercent = 20;
-                    desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"Defense: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    Debug.Log($"Defense: {GetCurrentMaxStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 case EntityStats.MoveSpeed:
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
-                    maxPercent = 20;
-                    desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"MoveSpeed: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    Debug.Log($"MoveSpeed: {GetCurrentMaxStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 case EntityStats.AttackSpeed:
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
-                    maxPercent = 20;
-                    desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"AttackSpeed: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    //Debug.Log($"AttackSpeed: {GetCurrentStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 case EntityStats.CriticalChance:
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
-                    maxPercent = 20;
-                    desiredMaxStats = ThesisUtility.ComputeAddedValueWithPercentage(maxStatsBoundValue, maxPercent);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"CriticalChance: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    //Debug.Log($"CriticalChance: {GetCurrentStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 case EntityStats.CriticalDamage: //Infinite can upgrate
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
-                    maxPercent = float.PositiveInfinity; //Infinite
-                    desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"CriticalDamage: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    //Debug.Log($"CriticalDamage: {GetCurrentStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 case EntityStats.Dodging:
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
-                    maxPercent = 20;
-                    desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"Dodging: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    //Debug.Log($"Dodging: {GetCurrentStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 case EntityStats.LifeSteal:
                     maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
-                    maxPercent = 20;
-                    desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
-                    maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
-                    //Debug.Log($"{stat}: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Remaning Value: {maxStatsBoundValue}");
+                    maxStatsCanUpgrade.Add(stat.ToString(), maxStatsBoundValue);
+                    //Debug.Log($"{stat}: {GetCurrentStats(stat)} || Max Value: {maxStatsBoundValue}");
 
                     break;
                 default:
@@ -314,44 +329,109 @@ public class UpgradeStatsSystem : MonoBehaviour
                     break;
             }
         }
+
+        await UniTask.Yield();
     }
+    //private void SetMaxAmountToUpgrade()
+    //{
+    //    float maxStatsBoundValue = 0;
+    //    float maxPercent = 0;
+    //    float desiredMaxStats = 0;
+
+    //    foreach (EntityStats stat in Enum.GetValues(typeof(EntityStats)))
+    //    {
+    //        switch (stat)
+    //        {
+    //            case EntityStats.Health: //Infinite can upgrate
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat); //Get the remaining value
+    //                maxPercent = float.PositiveInfinity; //Infinite
+    //                desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                Debug.Log($"Health: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            case EntityStats.Damage: //Infinite can upgrate
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
+    //                maxPercent = float.PositiveInfinity; //Infinite
+    //                desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                Debug.Log($"Damage: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            case EntityStats.Defense:
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
+    //                maxPercent = 20;
+    //                desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                Debug.Log($"Defense: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            case EntityStats.MoveSpeed:
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
+    //                maxPercent = 20;
+    //                desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                Debug.Log($"MoveSpeed: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            case EntityStats.AttackSpeed:
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
+    //                maxPercent = 20;
+    //                desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                //Debug.Log($"AttackSpeed: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            case EntityStats.CriticalChance:
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
+    //                maxPercent = 20;
+    //                desiredMaxStats = ThesisUtility.ComputeAddedValueWithPercentage(maxStatsBoundValue, maxPercent);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                //Debug.Log($"CriticalChance: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            case EntityStats.CriticalDamage: //Infinite can upgrate
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
+    //                maxPercent = float.PositiveInfinity; //Infinite
+    //                desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                //Debug.Log($"CriticalDamage: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            case EntityStats.Dodging:
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
+    //                maxPercent = 20;
+    //                desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                //Debug.Log($"Dodging: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            case EntityStats.LifeSteal:
+    //                maxStatsBoundValue = player.GetEntityStats.GetMaxBoundStats(stat);
+    //                maxPercent = 20;
+    //                desiredMaxStats = GetCurrentStats(stat) + ((maxPercent / 100) * maxStatsBoundValue);
+    //                maxStatsCanUpgrade.Add(stat.ToString(), desiredMaxStats);
+    //                //Debug.Log($"{stat}: {GetCurrentStats(stat)} || Percent: {maxPercent} || Desired: {desiredMaxStats} || Max Value: {maxStatsBoundValue}");
+
+    //                break;
+    //            default:
+    //                Debug.LogWarning("No " + stat + " register");
+    //                break;
+    //        }
+    //    }
+    //}
     private void UpdateCurrentAmountStats()
     {
         foreach (EntityStats stat in Enum.GetValues(typeof(EntityStats)))
         {
             //Debug.Log($"{stat}|| Current: {GetCurrentStats(stat)} max bound: {maxStatsCanUpgrade[stat.ToString()]}");
-            currentStatsCanUpgrade.Add(stat.ToString(), GetCurrentStats(stat));
+            currentStatsCanUpgrade.Add(stat.ToString(), GetCurrentMaxStats(stat));
         }
     }
 
-    private float GetStatsUpgradePercent(EntityStats stats) //Percentage of adding stats amount
-    {
-        switch (stats)
-        {
-            case EntityStats.Health:
-                return 20f;
-            case EntityStats.Damage:
-                return 10f;
-            case EntityStats.Defense:
-                return 1.8f;
-            case EntityStats.MoveSpeed:
-                return 2.5f;
-            case EntityStats.AttackSpeed:
-                return 2.5f;
-            case EntityStats.CriticalChance:
-                return 2.5f;
-            case EntityStats.CriticalDamage:
-                return 3f;
-            case EntityStats.Dodging:
-                return 1.8f;
-            case EntityStats.LifeSteal:
-                return 2.5f;
-            default:
-                Debug.LogError($"THERE ARE NO {stats} IN THE ENTITY STATISTICS");
-                return 0f;
-        }
-    }
-    private float GetCurrentStats(EntityStats stats) //Get the maximum amount of stats
+
+    
+    private float GetCurrentMaxStats(EntityStats stats) //Get the maximum amount of stats
     {
         float statsCurrentValue = 0;
         switch (stats)

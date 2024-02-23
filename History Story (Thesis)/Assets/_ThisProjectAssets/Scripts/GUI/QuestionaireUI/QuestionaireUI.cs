@@ -134,9 +134,9 @@ public class QuestionaireUI : MonoBehaviour
             Debug.Log("Correct Answer");
             //UI_Manager.Instance.CloseMenu("Question UI");
 
-            //Open the upgrade stats
-            int amountUpgrade = ThesisUtility.RandomGetAmount(3, 7);
-            int amountPoints = ThesisUtility.RandomGetAmount(500, 1000);
+            var reward = QuestionsManager.Instance.GetDesiredReward;
+            var powerPoints = reward.Item1;
+            var questionPoints = reward.Item2;
 
             //UI_Manager.Instance.OpenMenu("UpgradeStats UI");
             var upgradeMenu = UI_Manager.Instance.GetMenu("UpgradeStats UI"); //Menu
@@ -146,8 +146,8 @@ public class QuestionaireUI : MonoBehaviour
             mmfScale.TargetCanvasGroup = upgradeMenu.GetComponent<CanvasGroup>();
 
             //Rewards
-            UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(amountUpgrade);
-            GameManager.Instance.AddCurrentChapterScore(amountPoints);
+            UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(powerPoints);
+            GameManager.Instance.AddCurrentChapterScore(questionPoints);
 
             //Play the correct feedback
             correctFeedback?.PlayFeedbacks();
