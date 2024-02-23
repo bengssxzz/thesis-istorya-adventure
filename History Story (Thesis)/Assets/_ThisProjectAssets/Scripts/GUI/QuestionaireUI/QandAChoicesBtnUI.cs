@@ -41,12 +41,19 @@ public class QandAChoicesBtnUI : MonoBehaviour
     {
         gameObject.SetActive(true);
         canvasGroup.alpha = 1;
-        canvasGroup.interactable = true;
+
+        DisableButtonChoice(true);
     }
 
-
+    public void DisableButtonChoice(bool toggle)
+    {
+        canvasGroup.interactable = toggle;
+        canvasGroup.blocksRaycasts = toggle;
+    }
     private void ButtonPressed()
     {
+        DisableButtonChoice(false);
+
         pressedFeedback?.PlayFeedbacks();
         OnButtonPressed?.Invoke(choiceValue);
     }

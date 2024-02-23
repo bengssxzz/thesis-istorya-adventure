@@ -122,10 +122,10 @@ public class AbilityHolderPanel : MonoBehaviour
         return abilityIndicatorHolder.transform;
     }
 
-    private async void SetChangesAbilities()
+    private void SetChangesAbilities()
     {
         UI_Manager.Instance.CloseMenu("Ability Inventory UI");
-        await UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
+        UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
 
 
         player.GetAbility_Controller.ListOfCurrentAbilities = new List<AbilityScript>(abilityPositions); //Update the current abilities

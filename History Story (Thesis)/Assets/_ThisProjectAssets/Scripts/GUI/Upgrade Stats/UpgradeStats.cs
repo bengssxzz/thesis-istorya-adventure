@@ -7,10 +7,10 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class UpgradeStats : MonoBehaviour
 {
-
     private string statsAssign;
     private MMF_Player clickFeedback;
 
@@ -25,55 +25,106 @@ public class UpgradeStats : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statsPlayerValue;
     [SerializeField] private TextMeshProUGUI statsAddValue;
 
-    private float pressingDelay = 1f;
+    private CancellationTokenSource pressingCanellation;
+    private bool holding = false;
+    private float holdingDelay = 0.5f;
+    private float pressingDelay = 0.1f;
 
     public string GetStatsAssign { get { return statsAssign; } }
     public MMF_Player SetClickFeedback { set { clickFeedback = value; } }
 
     private void OnEnable()
     {
-        minusValueButton.ButtonPressed.AddListener(OnAddButtonPressing);
-        addValueButton.ButtonPressed.AddListener(OnMinusButtonPressing);
+        addValueButton.ButtonPressedFirstTime.AddListener(OnAddButtonPressing);
+        minusValueButton.ButtonPressedFirstTime.AddListener(OnMinusButtonPressing);
 
         minusValueButton.ButtonReleased.AddListener(OnMinusButtonReleaseClick);
         addValueButton.ButtonReleased.AddListener(OnAddButtonReleaseClick);
     }
     private void OnDisable()
     {
-        minusValueButton.ButtonPressed.RemoveListener(OnAddButtonPressing);
-        addValueButton.ButtonPressed.RemoveListener(OnMinusButtonPressing);
+        addValueButton.ButtonPressedFirstTime.RemoveListener(OnAddButtonPressing);
+        minusValueButton.ButtonPressedFirstTime.RemoveListener(OnMinusButtonPressing);
 
         minusValueButton.ButtonReleased.RemoveListener(OnMinusButtonReleaseClick);
         addValueButton.ButtonReleased.RemoveListener(OnAddButtonReleaseClick);
     }
 
+    private void OnDestroy()
+    {
+        pressingCanellation?.Cancel();
+        pressingCanellation?.Dispose();
+    }
+
+    #region Button Events
+
     private async void OnAddButtonPressing()
     {
-        SetFeedback(addValueButton.transform);
-        OnAddAmountValue?.Invoke(this, statsAssign);
+        pressingCanellation = new CancellationTokenSource();
+        try
+        {
+            while (!pressingCanellation.IsCancellationRequested)
+            {
+                SetFeedback(addValueButton.transform);
+                OnAddAmountValue?.Invoke(this, statsAssign);
 
-        await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay));
+                if (!holding)
+                {
+                    holding = true;
+                    await UniTask.Delay(TimeSpan.FromSeconds(holdingDelay), cancellationToken: pressingCanellation.Token);
+                }
+
+
+                await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay), cancellationToken: pressingCanellation.Token);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            holding = false;
+        }
+
+        
     }
     private async void OnMinusButtonPressing()
     {
+        pressingCanellation = new CancellationTokenSource();
 
-        SetFeedback(minusValueButton.transform);
-        OnReductAmountValue?.Invoke(this, statsAssign);
+        try
+        {
+            while (!pressingCanellation.IsCancellationRequested)
+            {
+                SetFeedback(minusValueButton.transform);
+                OnReductAmountValue?.Invoke(this, statsAssign);
 
-        await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay));
+                if (!holding)
+                {
+                    holding = true;
+                    await UniTask.Delay(TimeSpan.FromSeconds(holdingDelay), cancellationToken: pressingCanellation.Token);
+                }
+
+                await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay), cancellationToken: pressingCanellation.Token);
+            }
+        }
+        catch(OperationCanceledException)
+        {
+            holding = false;
+        }
+        
     }
 
 
     private void OnAddButtonReleaseClick()
     {
-        SetFeedback(addValueButton.transform);
-        OnAddAmountValue?.Invoke(this, statsAssign);
+        holding = false;
+        pressingCanellation?.Cancel();
     }
     private void OnMinusButtonReleaseClick()
     {
-        SetFeedback(minusValueButton.transform);
-        OnReductAmountValue?.Invoke(this, statsAssign);
+        holding = false;
+        pressingCanellation?.Cancel();
     }
+
+    #endregion
 
     private void SetFeedback(Transform button)
     {
@@ -114,7 +165,9 @@ public class UpgradeStats : MonoBehaviour
         }
         else
         {
+            pressingCanellation?.Cancel();
             minusValueButton.DisableButton();
+            holding = false;
         }
     }
     public void EnableAddButton(bool toggle)
@@ -125,17 +178,11 @@ public class UpgradeStats : MonoBehaviour
         }
         else
         {
+            pressingCanellation?.Cancel();
             addValueButton.DisableButton();
+            holding = false;
         }
     }
-    
-
-
-    private IEnumerator DelayPressing()
-    {
-        yield return new WaitForSeconds(pressingDelay);
-    }
-
 
 
 

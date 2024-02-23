@@ -92,25 +92,25 @@ public class LevelManager : Singleton<LevelManager>
     }
 
     
-    private async void LoadedNewScene()
+    private void LoadedNewScene()
     {
         Debug.LogWarning("CUSTOM LOADED SCENE");
-        var player = PlayerSingleton.Instance.gameObject;
+        //player = PlayerSingleton.Instance.gameObject;
         //var gameUI = GameUI.Instance.gameObject;
 
-        await UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
-        player.SetActive(true);
+        UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
+        player.gameObject.SetActive(true);
     }
     private void UnloadedCurrentScene()
     {
         Debug.LogWarning("CUSTOM UNLOADED SCENE");
 
-        var player = PlayerSingleton.Instance.gameObject;
+        //var player = PlayerSingleton.Instance.gameObject;
         //var gameUI = GameUI.Instance.gameObject;
 
         //UI_Manager.Instance.ActivateID_CloseMenu("game_ui");
         UI_Manager.Instance.CloseAllMenu();
-        player.SetActive(false);
+        player.gameObject.SetActive(false);
     }
 
 

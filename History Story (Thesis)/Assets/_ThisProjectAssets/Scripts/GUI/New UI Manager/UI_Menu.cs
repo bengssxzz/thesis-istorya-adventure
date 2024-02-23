@@ -52,7 +52,11 @@ public class UI_Menu : UIAbstract
             return;
         }
 
-        if(enablePageFB == null)
+        if (menuPage.gameObject.activeInHierarchy){
+            return;
+        }
+
+        if (enablePageFB == null)
         {
             menuPage.gameObject.SetActive(true);
         }
@@ -78,6 +82,10 @@ public class UI_Menu : UIAbstract
         if (menuPage == null)
         {
             Debug.LogError($"{gameObject.name}'s menu page is not assign");
+            return;
+        }
+
+        if (!menuPage.gameObject.activeInHierarchy) {
             return;
         }
 
