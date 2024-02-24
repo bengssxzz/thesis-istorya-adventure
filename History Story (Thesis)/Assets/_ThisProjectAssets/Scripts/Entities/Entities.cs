@@ -244,7 +244,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     }
     public void RegenHealth(float healthAmount)
     {
-        GetEntityStats.SetCurrentHealth(healthAmount);
+        var calculateRegen = healthAmount * (GetEntityStats.lifeSteal / 100);
+        GetEntityStats.SetCurrentHealth(calculateRegen);    
     }
 
     private void Died(Entities sourceDamage) // Entity died

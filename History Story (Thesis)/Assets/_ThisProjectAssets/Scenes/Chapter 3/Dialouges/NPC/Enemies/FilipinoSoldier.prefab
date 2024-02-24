@@ -1791,6 +1791,9 @@ MonoBehaviour:
   fleeDistance: 0
   minRandomWait: 1
   maxRandomWait: 5
+  useAbility_Range: 1
+  minUseTimerDelay: 5
+  maxUseTimerDelay: 5
 --- !u!50 &3719126659226642804
 Rigidbody2D:
   serializedVersion: 4
@@ -1851,12 +1854,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropForce: 80
   listOfDropLoot:
   - lootPrefab: {fileID: 2426698528674895485, guid: aa7dcba69a1810748b09c67f4e94ef2f, type: 3}
     randomAmountDrop: 0
     minAmount: 1
     maxAmount: 1
     dropChance: 100
+  - lootPrefab: {fileID: 4659685974505659230, guid: ec64678380a06ef46b2407d4f1b5ac0b, type: 3}
+    randomAmountDrop: 0
+    minAmount: 1
+    maxAmount: 5
+    dropChance: 100
+  - lootPrefab: {fileID: 801891879412706702, guid: f7a5984780fae094292451feb7e256f6, type: 3}
+    randomAmountDrop: 0
+    minAmount: 1
+    maxAmount: 1
+    dropChance: 10
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1913,6 +1927,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmos: 1
+  followHostLayer:
+    serializedVersion: 2
+    m_Bits: 0
   avoidLayer:
     serializedVersion: 2
     m_Bits: 83992
@@ -1920,7 +1937,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   scanRadius: 15
-  ignoreAvoidLayer: 0
+  ignoreAvoidLayer: 1
 --- !u!114 &4009529696751008655
 MonoBehaviour:
   m_ObjectHideFlags: 0

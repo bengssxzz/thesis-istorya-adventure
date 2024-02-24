@@ -69,9 +69,9 @@ public class EntityStatistics
     //Bound value
     const float maxHealthBoundValue = float.PositiveInfinity; //Bound to infinite
     const float maxDamageBoundValue = float.PositiveInfinity; //Bound to infinite
-    const float maxDefenseBoundValue = 75;
+    const float maxDefenseBoundValue = 80;  
     const float maxMoveSpeedBoundValue = 150;
-    const float maxAttackSpeedBoundValue = 50;
+    const float maxAttackSpeedBoundValue = 100;
     const float maxCriticalDamageBoundValue = float.PositiveInfinity; //Bound to infinite
     const float maxDodgeChanceBoundValue = 70;
     const float maxCriticalChanceBoundValue = 70;
