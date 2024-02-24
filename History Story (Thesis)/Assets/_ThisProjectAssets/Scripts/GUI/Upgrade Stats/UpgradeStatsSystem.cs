@@ -123,20 +123,20 @@ public class UpgradeStatsSystem : MonoBehaviour
                 return 15f;
             case EntityStats.Damage:
                 return 3f;
-            case EntityStats.Defense:
-                return 1.1f;
-            case EntityStats.MoveSpeed:
-                return 1f;
-            case EntityStats.AttackSpeed:
-                return 0.8f;
-            case EntityStats.CriticalChance:
-                return 0.8f;
-            case EntityStats.CriticalDamage:
-                return 2f;
-            case EntityStats.Dodging:
+            case EntityStats.Defense: // LIMITED
                 return 0.5f;
-            case EntityStats.LifeSteal:
-                return 1f;
+            case EntityStats.MoveSpeed:// LIMITED
+                return 0.5f;
+            case EntityStats.AttackSpeed:// LIMITED
+                return 0.5f;
+            case EntityStats.CriticalChance:// LIMITED
+                return 0.5f;
+            case EntityStats.CriticalDamage:
+                return 3f;
+            case EntityStats.Dodging:// LIMITED
+                return 0.5f;
+            case EntityStats.LifeSteal:// LIMITED
+                return 1.2f;
             default:
                 Debug.LogError($"THERE ARE NO {stats} IN THE ENTITY STATISTICS");
                 return 0f;
