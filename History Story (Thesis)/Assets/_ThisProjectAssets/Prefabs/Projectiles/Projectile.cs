@@ -21,6 +21,8 @@ public class Projectile : MonoBehaviour
     private float damage = 0;
     private bool isCritical = false;
 
+
+
     private void OnDisable()
     {
         combinedMask = 0;
@@ -30,15 +32,18 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
+       
+    }
+    private void FixedUpdate()
+    {
         Collider2D colliderHit = Physics2D.OverlapCircle(transform.position, colliderSize, combinedMask);
 
         if (colliderHit != null)
         {
             //Hit something
-
             var damagableObject = colliderHit.GetComponent<IDamageable>();
 
-            if(damagableObject != null)
+            if (damagableObject != null)
             {
                 damagableObject.TakeDamage(damage, hostEntity, isCritical);
             }
@@ -46,7 +51,6 @@ public class Projectile : MonoBehaviour
             ProjectileHit();
         }
     }
-
 
 
     private void ProjectileHit()
@@ -57,7 +61,8 @@ public class Projectile : MonoBehaviour
     public void InitalizationProjectile(Entities entity, float additionalDamage, float overwriteCritical, LayerMask layerToHit, Color color)
     {
         bool critical = false;
-        var calcualtedDamage = entity.GetCalculatedDamage(out critical, overwriteCritical);
+        //var calcualtedDamage = entity.GetCalculatedDamage(out critical, overwriteCritical);
+        var calcualtedDamage = entity.GetAttackHandler.GetCalculatedDamage(out critical, overwriteCritical);
 
         hostEntity = entity;
         this.damage = calcualtedDamage + additionalDamage;

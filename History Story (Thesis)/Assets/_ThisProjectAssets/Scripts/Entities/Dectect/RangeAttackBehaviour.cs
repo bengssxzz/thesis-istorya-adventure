@@ -54,7 +54,7 @@ public class RangeAttackBehaviour : MonoBehaviour
 
 
     public float GetAttackRadius { get { return attackRadius; } }
-
+    
 
 
 
@@ -74,14 +74,22 @@ public class RangeAttackBehaviour : MonoBehaviour
 
             attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
         }
-        
 
-        if(attackHandler.GetScannerEntities != null)
-        {
-            rangeCancellationToken?.Cancel();
-            rangeCancellationToken = new CancellationTokenSource();
-            await RangeAttack(rangeCancellationToken.Token);
-        }
+
+        rangeCancellationToken?.Cancel();
+        rangeCancellationToken = new CancellationTokenSource();
+
+        await UniTask.Delay(100);
+        await RangeAttack(rangeCancellationToken.Token);
+
+        //if(attackHandler.GetScannerEntities != null)
+        //{
+        //    rangeCancellationToken?.Cancel();
+        //    rangeCancellationToken = new CancellationTokenSource();
+
+        //    await UniTask.Delay(100);
+        //    await RangeAttack(rangeCancellationToken.Token);
+        //}
     }
     private void OnDisable()
     {
@@ -93,7 +101,7 @@ public class RangeAttackBehaviour : MonoBehaviour
         rangeCancellationToken?.Cancel();
     }
 
-    private async void Start()
+    private void Start()
     {
         if (attackHandler.GetEntity.GetEntityStats != null)
         {
@@ -109,16 +117,18 @@ public class RangeAttackBehaviour : MonoBehaviour
         }
 
 
-        if (attackHandler.GetScannerEntities != null)
-        {
-            rangeCancellationToken?.Cancel();
-            rangeCancellationToken = new CancellationTokenSource();
-            await RangeAttack(rangeCancellationToken.Token);
-        }
-        else
-        {
-            Debug.LogError("ENTITY SCANNER CANT FOUND IN RANGE ATTACK BEHAVIOUR.");
-        }
+        //if (attackHandler.GetScannerEntities != null)
+        //{
+        //    rangeCancellationToken?.Cancel();
+        //    rangeCancellationToken = new CancellationTokenSource();
+
+        //    await UniTask.Delay(100);
+        //    await RangeAttack(rangeCancellationToken.Token);
+        //}
+        //else
+        //{
+        //    Debug.LogError("ENTITY SCANNER CANT FOUND IN RANGE ATTACK BEHAVIOUR.");
+        //}
     }
 
 
@@ -259,6 +269,7 @@ public class RangeAttackBehaviour : MonoBehaviour
 
             foreach (var typeSO in attackType.attackTypes)
             {
+                Debug.Log("TRIGGERING TYPES");
                 typeSO.TriggerFire(attackHandler, attackHandler.GetCancellationToken.Token, TriggerAttackCallBack);
             }
 
@@ -269,7 +280,6 @@ public class RangeAttackBehaviour : MonoBehaviour
                     break;
 
                 isPlaying = attackType.attackTypes.Any(x => x.GetAttackDone == false);
-                Debug.LogWarning("PLAYING STATE: " + isPlaying);
                 await UniTask.Yield();
             } while (isPlaying && targetInRange != null);
 

@@ -87,7 +87,8 @@ public class BattleTriggerArea : MonoBehaviour
     {
         //ExampleWaitUntil().Forget();
         //StartBattle().Forget();
-        battleUI = UI_Manager.Instance.FindComponentInUIMenu<BattleSystemUI>("Battle UI");
+        //battleUI = UI_Manager.Instance.FindComponentInUIMenu<BattleSystemUI>("Battle UI");
+        battleUI = BattleSystemUI.Instance;
     }
 
 

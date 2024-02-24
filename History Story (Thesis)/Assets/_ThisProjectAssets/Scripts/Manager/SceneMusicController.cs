@@ -35,6 +35,7 @@ public class SceneMusicController : Singleton<SceneMusicController>
     {
         DestroyAllSounds();
         cancellationToken?.Cancel();
+        cancellationToken?.Dispose();
     }
 
     protected override void Awake()
@@ -48,7 +49,7 @@ public class SceneMusicController : Singleton<SceneMusicController>
 
     private void Start()
     {
-        SoundFxController(cancellationToken.Token).Forget();
+        SoundFxController().Forget();
 
         PlayMusicSound();
         PlaySoundBackground();
@@ -183,41 +184,49 @@ public class SceneMusicController : Singleton<SceneMusicController>
         var soundList = MMSoundManager.Instance.GetSoundsPlaying(MMSoundManager.MMSoundManagerTracks.Music);
         var duration = 1;
 
-
-        //Fade out all the sound in the music track
-        if (soundList.Count > 0)
+        try
         {
-            foreach (var sound in soundList)
+            //Fade out all the sound in the music track
+            if (soundList.Count > 0)
             {
-                var soundID = sound.ID;
-                MMSoundManagerSoundFadeEvent.Trigger(MMSoundManagerSoundFadeEvent.Modes.PlayFade, soundID, duration, 0, new MMTweenType(MMTween.MMTweenCurve.LinearTween)); //Out volume
+                foreach (var sound in soundList)
+                {
+                    var soundID = sound.ID;
+                    MMSoundManagerSoundFadeEvent.Trigger(MMSoundManagerSoundFadeEvent.Modes.PlayFade, soundID, duration, 0, new MMTweenType(MMTween.MMTweenCurve.LinearTween)); //Out volume
+                }
+            }
+
+
+            await UniTask.Delay(TimeSpan.FromSeconds(duration / 2), cancellationToken: cancellationToken.Token); //Delay to play the next music
+
+            musicSceneState = changeState;
+            PlayMusicSound(duration, 1); //Play the sound
+
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: cancellationToken.Token);
+
+            //Free the music
+            if (soundList.Count > 0)
+            {
+                foreach (var sound in soundList)
+                {
+                    var soundID = sound.ID;
+                    MMSoundManagerSoundControlEvent.Trigger(MMSoundManagerSoundControlEventTypes.Free, soundID, sound.Source);
+                }
             }
         }
-
-
-        await UniTask.Delay(TimeSpan.FromSeconds(duration / 2)); //Delay to play the next music
-
-        musicSceneState = changeState;
-        PlayMusicSound(duration, 1); //Play the sound
-
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-
-        //Free the music
-        if (soundList.Count > 0)
+        catch (OperationCanceledException)
         {
-            foreach (var sound in soundList)
-            {
-                var soundID = sound.ID;
-                MMSoundManagerSoundControlEvent.Trigger(MMSoundManagerSoundControlEventTypes.Free, soundID, sound.Source);
-            }
+            MMSoundManager.Instance.StopAllSounds();
         }
+
+        
 
     }
 
     #endregion
 
     #region Sound Fx Music
-    private async UniTaskVoid SoundFxController(CancellationToken cancellationToken)
+    private async UniTaskVoid SoundFxController()
     {
         if (sceneAudioSO == null || sceneAudioSO.sceneFxSound.Count == 0) { return; }
 
@@ -230,7 +239,7 @@ public class SceneMusicController : Singleton<SceneMusicController>
                 await UniTask.Yield();
 
                 // Check if cancellation is requested
-                cancellationToken.ThrowIfCancellationRequested();
+                cancellationToken.Token.ThrowIfCancellationRequested();
 
                 //Change to play
                 if (ThesisUtility.RandomGetChanceBool(sceneAudioSO.chanceToPlayFx / 100))
@@ -259,18 +268,19 @@ public class SceneMusicController : Singleton<SceneMusicController>
                                 await UniTask.Yield(); // Yield to allow other operations
                                 isPlaying = MMSoundManager.Instance.FindByID(defaultFx.ID).isPlaying;
                             }
-                        });
+                        }, cancellationToken: cancellationToken.Token);
 
 
-                        await UniTask.Delay(TimeSpan.FromSeconds(selectedClip.delayLoop));
+                        await UniTask.Delay(TimeSpan.FromSeconds(selectedClip.delayLoop), cancellationToken: cancellationToken.Token);
                     }
                 }
 
-                await UniTask.Delay(TimeSpan.FromSeconds(sceneAudioSO.playEverySeconds));
+                await UniTask.Delay(TimeSpan.FromSeconds(sceneAudioSO.playEverySeconds), cancellationToken: cancellationToken.Token);
             } while (!cancellationToken.IsCancellationRequested);
         }
         catch
         {
+            MMSoundManager.Instance.FreeAllSounds();
             Debug.Log("STOP THE SOUND FX AMBIANCE");
         }
         

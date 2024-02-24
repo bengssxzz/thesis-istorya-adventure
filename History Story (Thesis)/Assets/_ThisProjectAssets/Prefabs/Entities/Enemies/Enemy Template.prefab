@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 3719126659226642806}
   - component: {fileID: 3719126659226642804}
   - component: {fileID: 3719126659226642803}
-  - component: {fileID: 3719126659226642805}
+  - component: {fileID: 286327768314041728}
   - component: {fileID: 8780504999550975509}
   - component: {fileID: 3719126659226642807}
   - component: {fileID: 3719126659226642792}
@@ -310,8 +310,8 @@ SortingGroup:
   m_SortingLayerID: -1014085095
   m_SortingLayer: 4
   m_SortingOrder: 0
---- !u!58 &3719126659226642805
-CircleCollider2D:
+--- !u!61 &286327768314041728
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -324,8 +324,18 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,6 +470,9 @@ MonoBehaviour:
   fleeDistance: 0
   minRandomWait: 1
   maxRandomWait: 5
+  useAbility_Range: 1
+  minUseTimerDelay: 5
+  maxUseTimerDelay: 5
 --- !u!114 &3719126659226642794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,12 +514,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmos: 0
+  followHostLayer:
+    serializedVersion: 2
+    m_Bits: 0
   avoidLayer:
     serializedVersion: 2
     m_Bits: 83968
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   scanRadius: 15
   ignoreAvoidLayer: 1
 --- !u!1 &8882251930173837481

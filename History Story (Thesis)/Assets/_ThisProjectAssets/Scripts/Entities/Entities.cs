@@ -5,6 +5,7 @@ using UnityEngine;
 using ThesisLibrary;
 using MoreMountains.Feedbacks;
 using System.Linq;
+using System.Threading;
 
 
 
@@ -17,11 +18,12 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
     private EntityStatistics entityStatistics;
     private AbilityController abilityController;
+    private CancellationTokenSource entityCancellation;
 
     [Header("Entity Base")]
     [SerializeField] protected bool debugMode = false;
 
-    [SerializeField] private EntityStatsSO entityStatsSO;
+    [SerializeField] protected EntityStatsSO entityStatsSO;
     [SerializeField] private Transform actorTransform;
     [SerializeField] private Animator animator_controller;
 
@@ -37,6 +39,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
 
     //Getter & Setter
+    public CancellationToken GetEntityCancellationToken { get { return entityCancellation.Token; } }
     public Rigidbody2D GetRigidbody2D { get { return rb; } } //Get Rigidbody2D
     public Transform GetActorTransform { get { return actorTransform; } }
     public AttackHandler GetAttackHandler { get { return attackHandler; } }
@@ -52,6 +55,11 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
 
 
+    private void OnDestroy()
+    {
+        entityCancellation?.Cancel();
+        entityCancellation?.Dispose();
+    }
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -60,7 +68,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
         //GetAttack_Controller = GetComponent<AttackController>();
         abilityController = GetComponent<AbilityController>();
-        GetAbility_Controller.InitializedDefaultAbilities(entityStatsSO.abilities);
+        //GetAbility_Controller.InitializedDefaultAbilities(entityStatsSO.abilities);
 
 
         TryGetComponent<DropLoot>(out dropLoot);
@@ -69,11 +77,16 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     }
     protected virtual void OnEnable()
     {
+        entityCancellation = new CancellationTokenSource();
+
         entityStatistics.InvokeCurrentHealthEvent();
+        entityStatistics.InitializeCancellationToken(entityCancellation.Token);
     }
     protected virtual void OnDisable()
     {
+        entityCancellation?.Cancel();
     }
+
 
 
 
@@ -149,31 +162,31 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
             animator_controller.SetFloat("move_speed", magnitude);
         }
     }
-    public float GetCalculatedDamage(out bool isCritical, float overwriteCritical = 0f)
-    {
-        var plainDamage = GetEntityStats.currentDamage; //Current damage
+    //public float GetCalculatedDamage(out bool isCritical, float overwriteCritical = 0f)
+    //{
+    //    var plainDamage = GetEntityStats.currentDamage; //Current damage
 
-        //Calculate if this is critical damage
-        if(overwriteCritical > 0)
-        {
-            isCritical = ThesisUtility.RandomGetChanceBool(overwriteCritical);
-        }
-        else
-        {
-            isCritical = ThesisUtility.RandomGetChanceBool(GetEntityStats.currentCriticalChance);
-        }
+    //    //Calculate if this is critical damage
+    //    if(overwriteCritical > 0)
+    //    {
+    //        isCritical = ThesisUtility.RandomGetChanceBool(overwriteCritical);
+    //    }
+    //    else
+    //    {
+    //        isCritical = ThesisUtility.RandomGetChanceBool(GetEntityStats.currentCriticalChance);
+    //    }
 
-        if (isCritical)
-        {
-            //Critical Damage
-            //float criticalDamage = damage * sourceDamage.GetEntityStats.maxCriticalDamage / 100f;
-            //damage += criticalDamage;
-            plainDamage += GetEntityStats.currentCriticalDamage;
-        }
+    //    if (isCritical)
+    //    {
+    //        //Critical Damage
+    //        //float criticalDamage = damage * sourceDamage.GetEntityStats.maxCriticalDamage / 100f;
+    //        //damage += criticalDamage;
+    //        plainDamage += GetEntityStats.currentCriticalDamage;
+    //    }
 
 
-        return plainDamage;
-    }
+    //    return plainDamage;
+    //}
 
     public void GenerateHealth(float healthAmount)// Generating health
     {
@@ -210,7 +223,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         OnHit?.Invoke();
 
         if (debugMode)
-            Debug.Log($"{this.name} Taking Damage from {sourceDamage.name} || Critical: {isCritical}" +
+            Debug.Log($"{this.name} Taking Damage from {sourceDamage?.name} || Critical: {isCritical}" +
                 $"Original: {damage};  Defense: {GetEntityStats.currentDefense.ConvertNumberToPercent()}; Computed: {computedDamage}");
 
         if (GetEntityStats.currentHealth <= 0)

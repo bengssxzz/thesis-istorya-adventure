@@ -22,9 +22,9 @@ public class PlayerScript : Entities
     {
         base.Awake();
 
-
         GetInteractHandler = GetComponent<PlayerInteractHandler>();
 
+        InitializedDefaultAbilities(entityStatsSO.abilities);
 
         await UniTask.Delay(5);
         var playerData = SaveGameDataManager.Instance.LoadPlayerData();
@@ -118,6 +118,24 @@ public class PlayerScript : Entities
         GameManager.Instance.CollectedAbilities(abilityName);
     }
 
+    private void InitializedDefaultAbilities(List<AbilityScript> defaultAbility)
+    {
+        Debug.Log("INITIALIZE THE ABILITY COMPONENT");
+        var listOfCollectedAbility = GameManager.Instance.GetListOfCollectedAbility;
+
+        //GetAbility_Controller.ListOfCurrentAbilities = new List<AbilityScript>(defaultAbility);
+        GetAbility_Controller.ListOfCurrentAbilities = new List<AbilityScript>(new AbilityScript[4]); 
+
+        foreach (AbilityScript ability in defaultAbility)
+        {
+            if (listOfCollectedAbility.Contains(ability) || ability == null)
+                continue;
+
+            GameManager.Instance.CollectedAbilities(ability);
+        }
+    }
+
+
     public void SetPlayerVisual(bool state)
     {
         playerVisuals.gameObject.SetActive(state);
@@ -132,6 +150,9 @@ public class PlayerScript : Entities
         //GetMoveDirection = move.ReadValue<Vector2>().normalized;
         rb.velocity = GetMoveDirection * GetEntityStats.currentMoveSpeed * Time.deltaTime;
     }
+
+
+
 
     protected override void KillerReward(Entities killerEntity, Entities victimEntity) //When I killed the enemy
     {

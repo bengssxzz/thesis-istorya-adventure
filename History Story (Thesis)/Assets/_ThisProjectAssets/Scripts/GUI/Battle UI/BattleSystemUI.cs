@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.Events;
 using System;
 
-public class BattleSystemUI : MonoBehaviour
+public class BattleSystemUI : Singleton<BattleSystemUI>
 {
     [SerializeField] private RectTransform bossInfoPage;
     [SerializeField] private TextMeshProUGUI bossNameTxt;
@@ -18,15 +18,17 @@ public class BattleSystemUI : MonoBehaviour
 
 
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         ToggleBossInfo(false);
         ToggleWaveInfo(false);
     }
     private void Start()
     {
-        enemyRemainTxt.text = "";
-        waveInfoTxt.text = "";
+        enemyRemainTxt.text = "Enemy to spawn:";
+        waveInfoTxt.text = "Waves:";
     }
 
 
@@ -47,6 +49,7 @@ public class BattleSystemUI : MonoBehaviour
     }
     public void SetBossHealthBar(float currentHealth, float maxHealth)
     {
+        bossHealthbar.TextValueMultiplier = maxHealth;
         bossHealthbar.SetBar(currentHealth, 0, maxHealth);
     }
     public void UpdateBossHealth(float currentHealth, float maxHealth)

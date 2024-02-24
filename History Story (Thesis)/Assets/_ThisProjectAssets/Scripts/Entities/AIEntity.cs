@@ -4,6 +4,8 @@ using UnityEngine;
 using Pathfinding;
 using ThesisLibrary;
 using System;
+using Cysharp.Threading.Tasks;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,12 +15,13 @@ using UnityEditor;
 [RequireComponent(typeof(ScanningEntities))]
 public class AIEntity : Entities
 {
-    private enum MoveBehaviourType { Follow, Random}
+    private enum MoveBehaviourType { Follow, Random }
     protected AIPath aiPath;
     protected Seeker seek;
 
     private Transform targetEntity;
     private ScanningEntities scanEntities;
+    private OverheadHealthbar overHeadHealthbar;
 
     [Space(10)]
     [Header("Distance Info")]
@@ -29,31 +32,60 @@ public class AIEntity : Entities
     [Header("For Random Move Behaviour")]
     [SerializeField] private float minRandomWait;
     [SerializeField] private float maxRandomWait;
+
+    [Space(10)]
+    [Header("Use Random Abilties")]
+    [SerializeField] private float useAbility_Range = 1;
+    [SerializeField] private float minUseTimerDelay = 5;
+    [SerializeField] private float maxUseTimerDelay = 5;
+
+
+
     private bool isAlreadyCalculateRandom = false;
 
-    
+
     protected override void Awake()
     {
         base.Awake();
 
+        overHeadHealthbar = GetComponentInChildren<OverheadHealthbar>();
         scanEntities = GetComponent<ScanningEntities>();
         aiPath = GetComponent<AIPath>();
         seek = GetComponent<Seeker>();
+        GetAbility_Controller.InitializedDefaultAbilities(entityStatsSO.abilities);
     }
     protected override void Start()
     {
         base.Start();
 
+        _ = UseAbilityController();
+    }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        GetEntityStats.ResetCurrentStats();
     }
     protected override void Update()
     {
         targetEntity = scanEntities.GetNearestTarget;
 
         base.Update();
+        FlipEntity(aiPath.velocity.normalized);
 
         if (IsCanMove)
         {
             aiPath.canMove = true;
+
+            if (targetEntity == null) //Follow the follower host
+            {
+                if (scanEntities.GetFollowTarget == null) { return; }
+
+                aiPath.destination = scanEntities.GetFollowTarget.position;
+                aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime;
+
+                return;
+            }
+
             switch (moveBehaviour)
             {
                 case MoveBehaviourType.Follow:
@@ -68,17 +100,67 @@ public class AIEntity : Entities
         {
             aiPath.canMove = false;
         }
-        
+
 
         FleeBehaviour();
 
-        FlipEntity(aiPath.velocity.normalized);
     }
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
     }
 
+
+    private async UniTask UseAbilityController()
+    {
+        List<AbilityScript> availableAbility = new List<AbilityScript>();
+
+        if (GetAbility_Controller.ListOfCurrentAbilities.Count > 0)
+            availableAbility = new List<AbilityScript>(GetAbility_Controller.ListOfCurrentAbilities.Where(item => item != null));
+
+        try
+        {
+            while (availableAbility.Count > 0 && !GetEntityCancellationToken.IsCancellationRequested)
+            {
+                Debug.Log("EXECUTING: " + availableAbility.Count + " || IS CANCENCELLED: " + GetEntityCancellationToken.IsCancellationRequested);
+                await UniTask.WaitUntil(() => GetAttackHandler.GetScannerEntities.GetNearestTarget != null);
+
+                var distance = Vector2.Distance(transform.position, GetAttackHandler.GetScannerEntities.GetNearestTarget.position);
+
+                Debug.Log("WORKING");
+                if (distance < useAbility_Range)
+                {
+                    Debug.Log("TARGET IN RANGE");
+                    if (ThesisUtility.RandomGetChanceBool(0.8f)) //Trigger ability in 80% chance
+                    {
+                        //Use ability, the target is in range
+                        var abilityToUse = availableAbility.ToArray().RandomGetObject();
+
+                        if (!abilityToUse.OnCoolDown)
+                        {
+                            abilityToUse.TriggerAbility(this).Forget();
+                        }
+
+                        Debug.Log("USING ABILITY");
+                    }
+                    else
+                    {
+                        Debug.Log("NO TIME TO USE ABILITY");
+                    }
+                    var delayTimer = ThesisUtility.RandomGetFloat(minUseTimerDelay, maxUseTimerDelay);
+                    await UniTask.Delay(TimeSpan.FromSeconds(delayTimer), cancellationToken: GetEntityCancellationToken);
+                }
+
+                await UniTask.Yield();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("ERROR?");
+        }
+
+
+    }
 
 
 
@@ -120,13 +202,12 @@ public class AIEntity : Entities
     {
         if (targetEntity == null) { return; }
 
-        var distance = Vector2.Distance(transform.position, targetEntity.position);
+        var distance = Vector2.Distance(GetAttackHandler.GetBaseAttackPosition.position, targetEntity.position);
         if (distance > stopDistance && distance > fleeDistance)
         {
             aiPath.canMove = true;
             aiPath.destination = targetEntity.position;
             aiPath.maxSpeed = GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime;
-            //Debug.Log($"Current Speeed: {GetEntityStats.currentMoveSpeed} || Deltatime: {Time.deltaTime} || Total: {GetEntityStats.currentMoveSpeed * Time.fixedDeltaTime}");
 
         }
         else
@@ -136,9 +217,9 @@ public class AIEntity : Entities
     }
     private void FleeBehaviour()
     {
-        if(targetEntity == null) { return; }
+        if (targetEntity == null) { return; }
 
-        if (Vector2.Distance(transform.position, targetEntity.position) < fleeDistance)
+        if (Vector2.Distance(GetAttackHandler.GetBaseAttackPosition.position, targetEntity.position) < fleeDistance)
         {
             //TODO: Flee
             Debug.Log("Flee");
@@ -159,18 +240,18 @@ public class AIEntity : Entities
     }
 
 
-    private void OnDrawGizmosSelected()
+
+
+
+    public void SetLifeTimer(float time)
     {
-        if (!debugMode) { return; }
+        StartCoroutine(LifeTimer(time));
+    }
+    private IEnumerator LifeTimer(float timer)
+    {
+        yield return new WaitForSeconds(timer);
 
-#if UNITY_EDITOR
-        Handles.color = Color.magenta;
-        Handles.DrawWireDisc(transform.position, transform.forward, stopDistance);
-
-        Handles.color = Color.red;
-        Handles.DrawWireDisc(transform.position, transform.forward, fleeDistance);
-#endif
-
+        TakeDamage(GetEntityStats.maxHealth + 99, this);
     }
 
 
@@ -185,6 +266,36 @@ public class AIEntity : Entities
 
 
 
+    private void OnDrawGizmosSelected()
+    {
+        if (!debugMode) { return; }
 
+#if UNITY_EDITOR
+        if(GetAttackHandler == null)
+        {
+            Handles.color = Color.magenta;
+            Handles.DrawWireDisc(transform.position, transform.forward, stopDistance);
+
+            Handles.color = Color.red;
+            Handles.DrawWireDisc(transform.position, transform.forward, fleeDistance);
+
+            Handles.color = Color.cyan;
+            Handles.DrawWireDisc(transform.position, transform.forward, useAbility_Range, 1);
+        }
+        else
+        {
+            Handles.color = Color.magenta;
+            Handles.DrawWireDisc(GetAttackHandler.GetBaseAttackPosition.position, transform.forward, stopDistance);
+
+            Handles.color = Color.red;
+            Handles.DrawWireDisc(GetAttackHandler.GetBaseAttackPosition.position, transform.forward, fleeDistance);
+
+            Handles.color = Color.cyan;
+            Handles.DrawWireDisc(GetAttackHandler.GetBaseAttackPosition.position, transform.forward, useAbility_Range, 1);
+        }
+        
+#endif
+
+    }
 
 }

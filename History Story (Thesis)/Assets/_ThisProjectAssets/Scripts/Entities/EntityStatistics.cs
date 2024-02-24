@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
-
+using System.Threading;
 
 public enum EntityStats
 {
@@ -34,6 +34,9 @@ public class EntityStatistics
 {
     [ES3NonSerializable] public Action<float, float> OnCurrentHealthChange;
     [ES3NonSerializable] public Action OnCurrentStatsChange; //When the current stats changes
+
+    [ES3NonSerializable] private CancellationToken entityCancellation;
+
 
 
     [ES3Serializable] private float _lifeSteal;
@@ -142,7 +145,10 @@ public class EntityStatistics
 
         lifeSteal = entityStatsSO.lifeSteal;
     }
-
+    public void InitializeCancellationToken(CancellationToken token)
+    {
+        entityCancellation = token;
+    }
 
     /* To use this in other script. For example:
      * public async void Activate(){
@@ -159,82 +165,166 @@ public class EntityStatistics
      */
 
     #region MODIFICATION STATS
+    public async UniTask TempModifiedHealth(float tempValue, float duration) //Damage
+    {
+        currentHealth = Mathf.Clamp(tempValue, 0, float.MaxValue); // Apply temporary value
+
+        try
+        {
+            OnCurrentStatsChange?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: entityCancellation);
+            OnCurrentStatsChange?.Invoke();
+        }
+        catch (OperationCanceledException)
+        {
+            currentHealth = maxHealth;
+            OnCurrentStatsChange?.Invoke();
+        }
+
+
+        // Back to the original
+        currentHealth = maxHealth;
+        OnCurrentStatsChange?.Invoke();
+    }
     public async UniTask TempModifiedDamage(float tempValue, float duration) //Damage
     {
         currentDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); // Apply temporary value
 
-        OnCurrentStatsChange?.Invoke();
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-        OnCurrentStatsChange?.Invoke();
+        try
+        {
+            OnCurrentStatsChange?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: entityCancellation);
+            OnCurrentStatsChange?.Invoke();
+        }
+        catch (OperationCanceledException)
+        {
+            currentDamage = maxDamage;
+            OnCurrentStatsChange?.Invoke();
+        }
 
         // Back to the original
         currentDamage = maxDamage;
+        OnCurrentStatsChange?.Invoke();
     }
     public async UniTask TempModifiedDefense(float tempValue, float duration) //Defense
     {
         currentDefense = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
-        OnCurrentStatsChange?.Invoke();
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-        OnCurrentStatsChange?.Invoke();
+        try
+        {
+            OnCurrentStatsChange?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: entityCancellation);
+            OnCurrentStatsChange?.Invoke();
+        }
+        catch (OperationCanceledException)
+        {
+            currentDefense = maxDefense;
+            OnCurrentStatsChange?.Invoke();
+        }
 
         // Back to the original 
         currentDefense = maxDefense;
+        OnCurrentStatsChange?.Invoke();
     }
     public async UniTask TempModifiedMoveSpeed(float tempValue, float duration) //Movement Speed
     {
         currentMoveSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
 
-        OnCurrentStatsChange?.Invoke();
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-        OnCurrentStatsChange?.Invoke();
+        try
+        {
+            OnCurrentStatsChange?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: entityCancellation);
+            OnCurrentStatsChange?.Invoke();
+        }
+        catch (OperationCanceledException)
+        {
+            currentMoveSpeed = maxMoveSpeed;
+            OnCurrentStatsChange?.Invoke();
+        }
 
         // Back to the original 
         currentMoveSpeed = maxMoveSpeed;
+        OnCurrentStatsChange?.Invoke();
     }
     public async UniTask TempModifiedAttackSpeed(float tempValue, float duration) //Attack Speed
     {
         maxAttackSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
-        
-        OnCurrentStatsChange?.Invoke();
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-        OnCurrentStatsChange?.Invoke();
+
+        try
+        {
+            OnCurrentStatsChange?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: entityCancellation);
+            OnCurrentStatsChange?.Invoke();
+        }
+        catch (OperationCanceledException)
+        {
+            currentAttackSpeed = maxAttackSpeed;
+            OnCurrentStatsChange?.Invoke();
+        }
 
         // Back to the original 
         currentAttackSpeed = maxAttackSpeed;
+        OnCurrentStatsChange?.Invoke();
     }
     public async UniTask TempModifiedCriticalDamage(float tempValue, float duration) //Critical Damage
     {
         currentCriticalDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
 
-        OnCurrentStatsChange?.Invoke();
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-        OnCurrentStatsChange?.Invoke();
+        try
+        {
+            OnCurrentStatsChange?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: entityCancellation);
+            OnCurrentStatsChange?.Invoke();
+        }
+        catch (OperationCanceledException)
+        {
+            currentCriticalDamage = maxCriticalDamage;
+            OnCurrentStatsChange?.Invoke();
+        }
 
         // Back to the original 
         currentCriticalDamage = maxCriticalDamage;
+        OnCurrentStatsChange?.Invoke();
     }
     public async UniTask TempModifiedCriticalChance(float tempValue, float duration) //Critical Chance
     {
         currentCriticalChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
-        OnCurrentStatsChange?.Invoke();
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-        OnCurrentStatsChange?.Invoke();
+        try
+        {
+            OnCurrentStatsChange?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: entityCancellation);
+            OnCurrentStatsChange?.Invoke();
+        }
+        catch (OperationCanceledException)
+        {
+            currentCriticalChance = maxCriticalChance;
+            OnCurrentStatsChange?.Invoke();
+        }
 
         // Back to the original 
         currentCriticalChance = maxCriticalChance;
+        OnCurrentStatsChange?.Invoke();
     }
     public async UniTask TempModifiedDodgeChance(float tempValue, float duration) //Dodge Chance
     {
         currentDodgeChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
-        OnCurrentStatsChange?.Invoke();
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-        OnCurrentStatsChange?.Invoke();
+        try
+        {
+            OnCurrentStatsChange?.Invoke();
+            await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: entityCancellation);
+            OnCurrentStatsChange?.Invoke();
+        }
+        catch (OperationCanceledException)
+        {
+            currentDodgeChance = maxDodgeChance;
+            OnCurrentStatsChange?.Invoke();
+        }
 
         // Back to the original 
         currentDodgeChance = maxDodgeChance;
+        OnCurrentStatsChange?.Invoke();
     }
     #endregion
 

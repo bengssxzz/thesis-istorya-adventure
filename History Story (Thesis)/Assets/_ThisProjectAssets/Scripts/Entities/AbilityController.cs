@@ -25,21 +25,10 @@ public class AbilityController : MonoBehaviour
         entity = GetComponent<Entities>();
     }
 
-
     public void InitializedDefaultAbilities(List<AbilityScript> defaultAbility)
     {
-        Debug.Log("INITIALIZE THE ABILITY COMPONENT");
-        var listOfCollectedAbility = GameManager.Instance.GetListOfCollectedAbility;
-
-        ListOfCurrentAbilities = new List<AbilityScript>(defaultAbility);
-
-        foreach (AbilityScript ability in defaultAbility)
-        {
-            if (listOfCollectedAbility.Contains(ability) || ability == null)
-                continue;
-
-            GameManager.Instance.CollectedAbilities(ability);
-        }
+        HashSet<AbilityScript> newList = new HashSet<AbilityScript>(defaultAbility);
+        ListOfCurrentAbilities = new List<AbilityScript>(newList);
     }
 
     private void ResetAbilitiesOnStart() //Reset each abilities

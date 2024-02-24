@@ -35,7 +35,7 @@ public class SceneTriggerTrans : MonoBehaviour
     private void LateUpdate()
     {
         if (!showIndicator) {
-            arrowIndicatorFeedback.gameObject.SetActive(false);
+            arrowIndicatorFeedback?.gameObject.SetActive(false);
             return; }
 
         if (PlayerSingleton.Instance.GetPlayerScript != null)
@@ -45,9 +45,9 @@ public class SceneTriggerTrans : MonoBehaviour
             if (Vector2.Distance(transform.position + (Vector3)offsetIndicatorPosition, playerTransform.transform.position) < indicatorShowRange)
             {
                 //Show indicator when the player is inside
-                arrowIndicatorFeedback.gameObject.SetActive(true);
+                arrowIndicatorFeedback?.gameObject.SetActive(true);
             }else
-                arrowIndicatorFeedback.gameObject.SetActive(false);
+                arrowIndicatorFeedback?.gameObject.SetActive(false);
         }
     }
 

@@ -18,6 +18,7 @@ public class OverheadHealthbar : MonoBehaviour
 
     private void Awake()
     {
+        targetEntity = GetComponentInParent<Entities>();
         canvas = GetComponent<Canvas>();
         healthbar = GetComponentInChildren<MMProgressBar>();
     }
@@ -29,16 +30,9 @@ public class OverheadHealthbar : MonoBehaviour
             healthbarTransform.gameObject.SetActive(false);
             return; }
 
-        var entityStats = targetEntity.GetEntityStats;
-
-        healthbar.SetBar(targetEntity.GetEntityStats.currentHealth, 0, targetEntity.GetEntityStats.maxHealth);
-
         targetEntity.GetEntityStats.OnCurrentHealthChange += CurrentHealthChange;
 
-        if (entityStats.currentHealth == entityStats.maxHealth)
-        {
-            healthbarTransform.gameObject.SetActive(false);
-        }
+        UpdateHealthBar();
     }
 
 
@@ -52,6 +46,20 @@ public class OverheadHealthbar : MonoBehaviour
         canvas.worldCamera = Camera.main;
     }
 
+    public void UpdateHealthBar()
+    {
+        var entityStats = targetEntity.GetEntityStats;
+
+        healthbar.SetBar(targetEntity.GetEntityStats.currentHealth, 0, targetEntity.GetEntityStats.maxHealth);
+
+
+        if (entityStats.currentHealth >= entityStats.maxHealth)
+        {
+            healthbarTransform.gameObject.SetActive(false);
+        }
+
+
+    }
 
 
 
@@ -59,7 +67,7 @@ public class OverheadHealthbar : MonoBehaviour
     {
         healthbar.UpdateBar(currentHealth, 0, maxHealth);
 
-        if (currentHealth != maxHealth)
+        if (currentHealth < maxHealth)
         {
             healthbarTransform.gameObject.SetActive(true);
         }

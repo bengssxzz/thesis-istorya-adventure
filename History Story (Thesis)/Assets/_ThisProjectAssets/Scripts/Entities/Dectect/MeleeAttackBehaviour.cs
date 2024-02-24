@@ -54,19 +54,19 @@ public class MeleeAttackBehaviour : MonoBehaviour
             attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange += EntityStatsChanges;
         }
 
-        if (attackHandler.GetScannerEntities != null)
-        {
-            meleeCancellationToken?.Cancel();
-            meleeCancellationToken = new CancellationTokenSource();
-            await MeleeAttack(meleeCancellationToken.Token);
-        }
+
+        meleeCancellationToken?.Cancel();
+        meleeCancellationToken = new CancellationTokenSource();
+
+        await UniTask.Delay(100);
+        await MeleeAttack(meleeCancellationToken.Token);
     }
     private void OnDisable()
     {
         attackHandler.GetEntity.GetEntityStats.OnCurrentStatsChange -= EntityStatsChanges;
     }
 
-    private async void Start()
+    private void Start()
     {
         if (attackHandler.GetEntity.GetEntityStats != null)
         {
@@ -82,16 +82,18 @@ public class MeleeAttackBehaviour : MonoBehaviour
         }
 
 
-        if (attackHandler.GetScannerEntities != null)
-        {
-            meleeCancellationToken?.Cancel();
-            meleeCancellationToken = new CancellationTokenSource();
-            await MeleeAttack(meleeCancellationToken.Token);
-        }
-        else
-        {
-            Debug.LogError("ENTITY SCANNER CANT FOUND IN MELEE ATTACK BEHAVIOUR");
-        }
+        //if (attackHandler.GetScannerEntities != null)
+        //{
+        //    meleeCancellationToken?.Cancel();
+        //    meleeCancellationToken = new CancellationTokenSource();
+
+        //    await UniTask.Delay(100);
+        //    await MeleeAttack(meleeCancellationToken.Token);
+        //}
+        //else
+        //{
+        //    Debug.LogError("ENTITY SCANNER CANT FOUND IN MELEE ATTACK BEHAVIOUR");
+        //}
 
     }
 

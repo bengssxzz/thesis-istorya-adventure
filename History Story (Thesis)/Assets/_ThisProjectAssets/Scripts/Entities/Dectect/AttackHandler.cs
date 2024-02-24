@@ -30,6 +30,8 @@ public class AttackHandler : MonoBehaviour
 
     [SerializeField] private Color colorType;
 
+
+
     #region Public Getter & Setter
     public Entities GetEntity { get { return entity; } }
     public ScanningEntities GetScannerEntities { get { return scanner; } }
@@ -92,14 +94,18 @@ public class AttackHandler : MonoBehaviour
 
 
 
-    public float GetCalculatedDamage(out bool isCritical)
+    public float GetCalculatedDamage(out bool isCritical, float overrideCritical = 0)
     {
         var entityStats = entity.GetEntityStats;
 
         var plainDamage = entityStats.currentDamage; //Current damage
 
         //Calculate if this is critical damage
-        isCritical = ThesisUtility.RandomGetChanceBool(entityStats.currentCriticalChance);
+        if(overrideCritical > 0) 
+            isCritical = ThesisUtility.RandomGetChanceBool(entityStats.currentCriticalChance);
+        else
+            isCritical = ThesisUtility.RandomGetChanceBool(overrideCritical);
+
 
         if (isCritical)
         {

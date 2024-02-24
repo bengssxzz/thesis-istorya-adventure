@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,11 +29,15 @@ public class EnemyBoss : MonoBehaviour
         entity = GetComponent<Entities>();
     }
 
-    private void OnEnable()
+    private async void OnEnable()
     {
+        await UniTask.Delay(10);
+
+        battleUI = BattleSystemUI.Instance;
+
         SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Boss);
 
-        battleUI = UI_Manager.Instance.FindComponentInUIMenu<BattleSystemUI>("Battle UI");
+        //battleUI = UI_Manager.Instance.FindComponentInUIMenu<BattleSystemUI>("Battle UI");
         entityStats = entity.GetEntityStats;
 
         battleUI.ToggleBossInfo(true);

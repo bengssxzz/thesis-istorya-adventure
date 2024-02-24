@@ -105,9 +105,11 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
     private void Start()
     {
+        battleUI = BattleSystemUI.Instance;
+
         //ExampleWaitUntil().Forget();
         //StartBattle().Forget();
-        battleUI = UI_Manager.Instance.FindComponentInUIMenu<BattleSystemUI>("Battle UI");
+        //battleUI = UI_Manager.Instance.FindComponentInUIMenu<BattleSystemUI>("Battle UI");
         //GetAllEnemiesInRoom(getAllEnemiesTokenSource.Token).Forget();
         //await ExecuteWaves();
         //Debug.Log("START CONTINUE");

@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine.Events;
 using MoreMountains.Tools;
+using Cysharp.Threading.Tasks;
 
 public class MobileController : MonoBehaviour
 {
@@ -41,8 +42,9 @@ public class MobileController : MonoBehaviour
 
 
 
-    private void Start()
+    private async void Start()
     {
+        await UniTask.Delay(10);
         UpdateAbilityButtons();
     }
 

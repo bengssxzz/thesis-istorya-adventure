@@ -25,6 +25,7 @@ public class ChestScript : MonoBehaviour
 
     private bool isLocked = false;
     private bool isOpened = false;
+    private bool isActiveOnStart = true;
 
     public Transform GetChestVisual { get { return chestVisual; } }
     public bool IsChestOpened { get { return isOpened; } set { isOpened = value; } }
@@ -33,19 +34,7 @@ public class ChestScript : MonoBehaviour
     private void Awake()
     {
         dropLoot = GetComponent<DropLoot>();
-
-        var loadedData = SaveGameDataManager.Instance.LoadChestInScene();
-
-        if (loadedData != null)
-        {
-            var findData = loadedData.FirstOrDefault(x => x.id == GetInstanceID());
-
-            if(findData != null)
-            {
-                chestVisual.gameObject.SetActive(findData.isActiveInScene);
-                isOpened = findData.isChestOpened;
-            }
-        }
+        isActiveOnStart = chestVisual.gameObject.activeSelf;
     }
 
     private void OnEnable()
@@ -62,12 +51,50 @@ public class ChestScript : MonoBehaviour
 
     private void Start()
     {
+        LoadData();
+
         selector.gameObject.SetActive(!isOpened);
 
         openChest.gameObject.SetActive(isOpened);
         closeChest.gameObject.SetActive(!isOpened);
     }
 
+    private void LoadData()
+    {
+        var loadedData = SaveGameDataManager.Instance.LoadChestInScene();
+
+        if (loadedData != null)
+        {
+            var findData = loadedData.FirstOrDefault(x => x.id == GetInstanceID());
+
+            if (findData != null)
+            {
+                chestVisual.gameObject.SetActive(findData.isActiveInScene);
+                isOpened = findData.isChestOpened;
+            }
+        }
+    }
+
+    public void ResetChest()
+    {
+        isOpened = false;
+        chestVisual.gameObject.SetActive(isActiveOnStart);
+    }
+
+    public void HideChest()
+    {
+        if (!isOpened)
+        {
+            chestVisual.gameObject.SetActive(false);
+        }
+    }
+    public void UnhideChest()
+    {
+        if (!isOpened)
+        {
+            chestVisual.gameObject.SetActive(true);
+        }
+    }
 
     private void NearToChest(Collider2D obj) //When player is close to chest
     {
