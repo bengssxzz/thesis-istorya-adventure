@@ -55,17 +55,13 @@ public class AbilityController : MonoBehaviour
 
     public void UseAbility(int index) //Use index ablity in array
     {
-        Debug.LogWarning("THIS IS IT");
         try
         {
             var ability = currentAbilities[index];
 
             if (!ability.OnCoolDown)
             {
-                Debug.LogWarning("THIS IS IT 2");
                 currentAbilities[index].TriggerAbility(entity).Forget();
-                //currentAbilities[index].TriggerAbility(entity);
-                //StartCoroutine(currentAbilities[index].TriggerAbility(this)); //Trigger the ability
             }
         }
         catch (Exception)

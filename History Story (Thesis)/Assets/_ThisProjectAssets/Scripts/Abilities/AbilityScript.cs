@@ -7,11 +7,21 @@ using UnityEngine.Events;
 using System.Threading;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-
-
+using MoreMountains.Tools;
+using ThesisLibrary;
 
 public class AbilityScript : ScriptableObject
 {
+    [Serializable]
+    public class SFX_AudioClip
+    {
+        public AudioClip sound_FX;
+        [Range(0, 2)] public float minVolume = 1;
+        [Range(0, 2)] public float maxVolume = 1;
+        [Range(-3, 3)] public float minPitch = 1;
+        [Range(-3, 3)] public float maxPitch = 1;
+    }
+
     private enum AbilityState
     {
         PreCasting, //Before casting state
@@ -52,6 +62,12 @@ public class AbilityScript : ScriptableObject
     [SerializeField] protected MMF_Player castingAtStartFeedback;
     [SerializeField] protected MMF_Player finishedAtStartFeedback;
 
+    [Space(10)]
+    [Header("For Sound")]
+    [SerializeField] private SFX_AudioClip preCastingAtStart_SoundFX;
+    [SerializeField] private SFX_AudioClip castingAtStart_SoundFX;
+    [SerializeField] private SFX_AudioClip finishedAtStart_SoundFX;
+
 
     private void OnValidate()
     {
@@ -86,11 +102,10 @@ public class AbilityScript : ScriptableObject
 
     public async UniTaskVoid TriggerAbility(MonoBehaviour mono)
     {
-        Debug.LogWarning("IS ON CD: " + isOnCoolDown + "|| STATE: " + state);
+        //Debug.LogWarning("IS ON CD: " + isOnCoolDown + "|| STATE: " + state);
 
         if (!isOnCoolDown && state == AbilityState.PreCasting)
         {
-            Debug.LogWarning("THIS IS IT 3");
             await AbilityStateControl(mono);
         }
     }
@@ -145,6 +160,18 @@ public class AbilityScript : ScriptableObject
         OnAbilityTimeLapse?.Invoke(isOnCoolDown, 0f);
     }
 
+    private void PlaySoundEffect(SFX_AudioClip soundSFX)
+    {
+        var soundFx = MMSoundManagerPlayOptions.Default;
+        soundFx.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
+        soundFx.Volume = ThesisUtility.RandomGetFloat(soundSFX.minVolume, soundSFX.maxVolume);
+        soundFx.Pitch = ThesisUtility.RandomGetFloat(soundSFX.minPitch, soundSFX.minPitch);
+
+
+        MMSoundManagerSoundPlayEvent.Trigger(soundSFX.sound_FX, soundFx);
+    }
+
+
     #region Ability workflow
     private async UniTask AbilityStateControl(MonoBehaviour mono)
     {
@@ -175,17 +202,20 @@ public class AbilityScript : ScriptableObject
     protected virtual async UniTask PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         AbilityPlayFeedbacks(entity, precastingAtStartFeedback);
+        PlaySoundEffect(preCastingAtStart_SoundFX);
         CooldownTimer().Forget();
         await UniTask.Yield(); // Yield to allow other operations
     }
     protected virtual async UniTask CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         AbilityPlayFeedbacks(entity, castingAtStartFeedback);
+        PlaySoundEffect(castingAtStart_SoundFX);
         await UniTask.Yield();
     }
     protected virtual async UniTask FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         AbilityPlayFeedbacks(entity, finishedAtStartFeedback);
+        PlaySoundEffect(finishedAtStart_SoundFX);
         await UniTask.Yield();
     }
 

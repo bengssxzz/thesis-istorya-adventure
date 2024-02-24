@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e7c90cdb43f15469af887c69699fa6, type: 3}
+  m_Name: Magellan Summon Spanish Melee
+  m_EditorClassIdentifier: 
+  state: 0
+  OnAbilityTimeLapse:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityName: Magellan Summon Spanish Melee
+  abilityIcon: {fileID: 0}
+  abilityDescription: 
+  cooldownTime: 60
+  precastingAtStartFeedback: {fileID: 0}
+  castingAtStartFeedback: {fileID: 0}
+  finishedAtStartFeedback: {fileID: 0}
+  preCastingAtStart_SoundFX:
+    sound_FX: {fileID: 8300000, guid: 8cdeb352456d2f4438d2f7af76dfd440, type: 3}
+    minVolume: 1
+    maxVolume: 1.5
+    minPitch: 1
+    maxPitch: 1
+  castingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  finishedAtStart_SoundFX:
+    sound_FX: {fileID: 8300000, guid: c3fafeed9c9c7ce4b9bd22d2fa8c8909, type: 3}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1.3
+  canMoveWhileSummon: 0
+  canAttackWhileSummon: 0
+  lightPrefab: {fileID: 67063377517511961, guid: c34c196fc40992942bdac35e19862ad7, type: 3}
+  summonPrefab: {fileID: 3719126659226642795, guid: 56cbdf73487d3084c9c7094075605002, type: 3}
+  randomRangePosition: 0.5
+  spawnCount: 3
+  delay: 3
+  createLight: 0
+  followHost: 0
+  lifeTimer: 10
+  overrideScanRadius: 0
+  overrideHealth: 0
+  overrideDamage: 0
+  overrideMoveSpeed: 0
+  overrideAttackSpeed: 0

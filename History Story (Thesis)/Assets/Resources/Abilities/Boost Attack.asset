@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5ca5c6e0a5278442a8d76f5867c15cc, type: 3}
   m_Name: Boost Attack
   m_EditorClassIdentifier: 
+  state: 0
+  OnAbilityTimeLapse:
+    m_PersistentCalls:
+      m_Calls: []
   abilityName: Boost Attack
   abilityIcon: {fileID: 0}
   abilityDescription: 
@@ -19,6 +23,24 @@ MonoBehaviour:
   precastingAtStartFeedback: {fileID: 0}
   castingAtStartFeedback: {fileID: 0}
   finishedAtStartFeedback: {fileID: 0}
+  preCastingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  castingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  finishedAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
   attackSpeedIncrease: 0
   damageIncrease: 0
   time: 0

@@ -2,42 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ThesisLibrary;
+using Cysharp.Threading.Tasks;
 
-public class AbilityItem_Pickable : PickableObject
+public class AbilityItem_Pickable : BasePoints
 {
     [SerializeField] private Image abilityImage;
-
     [SerializeField] private AbilityScript abilitySO;
 
+    [Tooltip("If the ability is already collected, instantiate this")]
+    [SerializeField] private BasePoints[] alternativePoints;
+     
 
-    private void OnEnable()
+    protected override async void OnAwakeBehaviour()
     {
-        SetingUp();
-    }
+        base.OnAwakeBehaviour();
 
-    private void Start()
-    {
-        SetingUp();
-    }
+        abilityImage.sprite = abilitySO.abilityIcon;
+        await UniTask.Delay(20);
 
-    private void SetingUp()
-    {
-        if (abilitySO == null)
+        var alreadyCollected = GameManager.Instance.GetListOfCollectedAbility.Contains(abilitySO);
+
+        if (alreadyCollected)
         {
-            Debug.LogWarning($"{this.name} missing a scriptable object");
-            abilityImage.gameObject.SetActive(false);
+            if(alternativePoints.Length > 0)
+            {
+                var objectRandom = alternativePoints.RandomGetObject().gameObject;
+                var newObject = ObjectPooling.Instance.GetObjectInPool("loot", objectRandom, transform.position, true);
+                newObject.transform.position = transform.position;
+                newObject.GetComponent<BasePoints>().GetAmountPoints = GetAmountPoints;
+            }
+            gameObject.SetActive(false);
             return;
         }
-        abilityImage.gameObject.SetActive(true);
-        abilityImage.sprite = abilitySO.abilityIcon;
+    }
+    protected override void CollectPoints(PlayerScript player, int points)
+    {
+        //Add points
+        GameManager.Instance.AddCurrentChapterScore(points);
+        GameManager.Instance.CollectedAbilities(abilitySO);
     }
 
-    protected override void PickUpLogic(Entities entity)
-    {
-        if (abilitySO != null)
-        {
-            abilityImage.gameObject.SetActive(true);
-            entity.GetAbility_Controller.UnlockNewAbility(abilitySO);
-        }
-    }
+    
 }

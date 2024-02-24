@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ThesisLibrary;
 
+[DisallowMultipleComponent]
 public class DropLoot : MonoBehaviour
 {
     [System.Serializable]

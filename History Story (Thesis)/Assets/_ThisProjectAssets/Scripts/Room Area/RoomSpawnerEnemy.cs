@@ -107,14 +107,6 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         battleUI = BattleSystemUI.Instance;
 
-        //ExampleWaitUntil().Forget();
-        //StartBattle().Forget();
-        //battleUI = UI_Manager.Instance.FindComponentInUIMenu<BattleSystemUI>("Battle UI");
-        //GetAllEnemiesInRoom(getAllEnemiesTokenSource.Token).Forget();
-        //await ExecuteWaves();
-        //Debug.Log("START CONTINUE");
-
-
     }
 
 
@@ -255,7 +247,6 @@ public class RoomSpawnerEnemy : MonoBehaviour
     }
     private async UniTaskVoid GetAllEnemiesInRoom(CancellationToken cancellationToken) //Getting all the enemies alive in the area
     {
-        Debug.Log("GETTING ENEMIES COUNT");
 
         if (roomAreaCollider != null)
         {
@@ -324,9 +315,6 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
             for (int i = 0; i < toSpawn; i++)
             {
-                Debug.Log("CREATE NEW " + desiredToSpawn);
-
-                //Calculate a random position first
                 Vector2 randomPosition = await ThesisUtility.RandomGetVector2InCollider2DArea(roomAreaCollider, 0.35f, cannotSpawn);
 
                 GameObject selectedEnemy = ObjectPooling.Instance.GetObjectInPool("enemy", waveInfo.enemyArray.RandomGetObject(), Vector3.zero);
@@ -344,7 +332,6 @@ public class RoomSpawnerEnemy : MonoBehaviour
             await UniTask.WaitUntil(() => totalEnemyInRoom <= 1); //Wait until the remaining enemy become 1
         } while (desiredToSpawn > 0);
 
-        Debug.Log("NO MORE ENEMY TO SPAWN");
     }
     private async UniTask ExecuteWaves() //Execute the wave list
     {
@@ -352,14 +339,12 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         for (int i = 0; i < waveInfoList.Length; i++)
         {
-            Debug.Log($"START WAVE {i + 1}");
             battleUI?.UpdateWaveInfo(i + 1, waveInfoList.Length);
 
             await SpawnEnemyWaves(i); //Wait to finish the spawn
 
             await UniTask.WaitUntil(() => totalEnemyInRoom == 0); //Wait until the total enemy become 0
 
-            Debug.Log($"DONE {i + 1} WAVE");
         }
 
         await UniTask.Delay(ThesisUtility.RandomGetAmount(1000, 1700)); //From 1sec to 1.7sec

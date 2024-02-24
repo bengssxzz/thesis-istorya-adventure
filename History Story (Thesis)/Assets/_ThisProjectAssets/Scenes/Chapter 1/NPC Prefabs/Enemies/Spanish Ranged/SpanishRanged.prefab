@@ -1637,6 +1637,9 @@ MonoBehaviour:
   fleeDistance: 0.8
   minRandomWait: 1
   maxRandomWait: 5
+  useAbility_Range: 1
+  minUseTimerDelay: 5
+  maxUseTimerDelay: 5
 --- !u!70 &-8572161242063959967
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1697,7 +1700,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfDropLoot: []
+  listOfDropLoot:
+  - lootPrefab: {fileID: 4659685974505659230, guid: f8bf8dc642fef2145bb5fe2b2a03e498, type: 3}
+    randomAmountDrop: 1
+    minAmount: 2
+    maxAmount: 5
+    dropChance: 0
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1754,6 +1762,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmos: 0
+  followHostLayer:
+    serializedVersion: 2
+    m_Bits: 0
   avoidLayer:
     serializedVersion: 2
     m_Bits: 83992

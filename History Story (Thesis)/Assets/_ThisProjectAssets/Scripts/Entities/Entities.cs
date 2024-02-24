@@ -43,6 +43,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     public Rigidbody2D GetRigidbody2D { get { return rb; } } //Get Rigidbody2D
     public Transform GetActorTransform { get { return actorTransform; } }
     public AttackHandler GetAttackHandler { get { return attackHandler; } }
+    public DropLoot GetDropLoot { get { return dropLoot; } set { dropLoot = value; } }
     //public AttackController GetAttack_Controller { get; private set; } //Get attack controller
     public AbilityController GetAbility_Controller { get { return abilityController; } } //Get ability controller
     public EntityStatistics GetEntityStats { get { return entityStatistics; } set { entityStatistics = value;  } } //Get entity stats handler

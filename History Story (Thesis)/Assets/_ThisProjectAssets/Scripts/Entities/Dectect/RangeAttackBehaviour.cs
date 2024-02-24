@@ -225,16 +225,13 @@ public class RangeAttackBehaviour : MonoBehaviour
 
                     attackHandler.IsRangeAttackPlaying = true;
 
-                    Debug.LogWarning("CASTING TYPES");
                     await CastAllTypes(type);
-                    Debug.LogWarning("DONE CASTING");
 
                     attackHandler.IsRangeAttackPlaying = false;
 
                     attackTime = attackHandler.CalculateAttackSpeed(attackSpeed);
                     await UniTask.Delay(TimeSpan.FromSeconds(attackTime));
 
-                    Debug.LogWarning("CURRENT TYPE " + attackTypes.IndexOf(type));
                     await UniTask.WaitUntil(() => targetInRange != null, cancellationToken: attackHandler.GetCancellationToken.Token); //wait until there's a nearest target
                     await UniTask.WaitUntil(() => attackHandler.IsCanAttack == true, cancellationToken: attackHandler.GetCancellationToken.Token); //Wait until the attacker can attack
                 }
@@ -269,7 +266,6 @@ public class RangeAttackBehaviour : MonoBehaviour
 
             foreach (var typeSO in attackType.attackTypes)
             {
-                Debug.Log("TRIGGERING TYPES");
                 typeSO.TriggerFire(attackHandler, attackHandler.GetCancellationToken.Token, TriggerAttackCallBack);
             }
 
@@ -285,7 +281,6 @@ public class RangeAttackBehaviour : MonoBehaviour
 
             afterCastingFeedback?.PlayFeedbacks();
 
-            Debug.LogWarning("DONE PLAYING STATE");
             await UniTask.Yield();
 
             //Continue moving when the attack state is done
@@ -299,7 +294,6 @@ public class RangeAttackBehaviour : MonoBehaviour
 
     private void TriggerAttackCallBack()
     {
-        Debug.LogWarning("PLAYING FEEDBACKS");
         castingFeedback?.PlayFeedbacks();
     }
 

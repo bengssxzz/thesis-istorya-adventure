@@ -12,6 +12,7 @@ public abstract class BasePoints : MonoBehaviour
     private const float MIN_LIFE_SECOND = 20;
     private const float MAX_LIFE_SECOND = 30;
 
+    [SerializeField] private bool useLifeTime = true;
 
     [Header("Sound")]
     [SerializeField] private AudioClip collectSound;
@@ -32,6 +33,7 @@ public abstract class BasePoints : MonoBehaviour
 
     private float startTimer;
 
+    public int GetAmountPoints { get { return amountPoints; } set { amountPoints = value; } }
     public object TimeSpawn { get; private set; }
 
     private void OnEnable()
@@ -39,8 +41,19 @@ public abstract class BasePoints : MonoBehaviour
         OnAwakeBehaviour();
 
         startTimer = Time.time;
-        StartCoroutine(LifetimeTimer());
+
+        if(useLifeTime)
+            StartCoroutine(LifetimeTimer());
     }
+
+
+    protected virtual void OnAwakeBehaviour()
+    {
+        lifeSecond = ThesisUtility.RandomGetFloat(MIN_LIFE_SECOND, MAX_LIFE_SECOND);
+        amountPoints = ThesisUtility.RandomGetAmount(minPoints, maxPoints);
+    }
+    protected abstract void CollectPoints(PlayerScript player, int points);
+
 
     private void PlaySound()
     {
@@ -52,14 +65,6 @@ public abstract class BasePoints : MonoBehaviour
         if(collectSound != null)
             MMSoundManagerSoundPlayEvent.Trigger(collectSound, soundFx);
     }
-
-    protected virtual void OnAwakeBehaviour()
-    {
-        lifeSecond = ThesisUtility.RandomGetFloat(MIN_LIFE_SECOND, MAX_LIFE_SECOND);
-        amountPoints = ThesisUtility.RandomGetAmount(minPoints, maxPoints);
-    }
-    protected abstract void CollectPoints(PlayerScript player, int points);
-
     private async void OnTriggerEnter2D(Collider2D collision)
     {
         var delay = ThesisUtility.RandomGetFloat(0.5f, 1);

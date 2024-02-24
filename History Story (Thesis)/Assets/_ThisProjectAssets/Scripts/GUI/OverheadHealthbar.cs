@@ -15,7 +15,6 @@ public class OverheadHealthbar : MonoBehaviour
 
 
 
-
     private void Awake()
     {
         targetEntity = GetComponentInParent<Entities>();
@@ -46,6 +45,7 @@ public class OverheadHealthbar : MonoBehaviour
         canvas.worldCamera = Camera.main;
     }
 
+
     public void UpdateHealthBar()
     {
         var entityStats = targetEntity.GetEntityStats;
@@ -60,8 +60,6 @@ public class OverheadHealthbar : MonoBehaviour
 
 
     }
-
-
 
     private void CurrentHealthChange(float currentHealth, float maxHealth)
     {

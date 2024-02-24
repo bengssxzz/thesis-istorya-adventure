@@ -122,16 +122,14 @@ public class AIEntity : Entities
         {
             while (availableAbility.Count > 0 && !GetEntityCancellationToken.IsCancellationRequested)
             {
-                Debug.Log("EXECUTING: " + availableAbility.Count + " || IS CANCENCELLED: " + GetEntityCancellationToken.IsCancellationRequested);
                 await UniTask.WaitUntil(() => GetAttackHandler.GetScannerEntities.GetNearestTarget != null);
 
                 var distance = Vector2.Distance(transform.position, GetAttackHandler.GetScannerEntities.GetNearestTarget.position);
 
-                Debug.Log("WORKING");
                 if (distance < useAbility_Range)
                 {
                     Debug.Log("TARGET IN RANGE");
-                    if (ThesisUtility.RandomGetChanceBool(0.8f)) //Trigger ability in 80% chance
+                    if (ThesisUtility.RandomGetChanceBool()) //Trigger ability in 80% chance
                     {
                         //Use ability, the target is in range
                         var abilityToUse = availableAbility.ToArray().RandomGetObject();
@@ -251,7 +249,7 @@ public class AIEntity : Entities
     {
         yield return new WaitForSeconds(timer);
 
-        TakeDamage(GetEntityStats.maxHealth + 99, this);
+        TakeDamage(99999, this);
     }
 
 

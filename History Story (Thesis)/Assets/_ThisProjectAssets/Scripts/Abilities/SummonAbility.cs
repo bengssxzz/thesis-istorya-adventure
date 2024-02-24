@@ -9,14 +9,19 @@ using System;
 [CreateAssetMenu(fileName = "New Summon Ability", menuName = "Abilities/Summon")]
 public class SummonAbility : AbilityScript
 {
+    [Header("Entity Host")]
+    public bool canMoveWhileSummon;
+    public bool canAttackWhileSummon;
+
+    [Space(10)]
     [Header("Summon Ability")]
     public Light2D lightPrefab;
     public AIEntity summonPrefab;
-    public float randomRangePosition;
+    public float randomRangePosition = 0.5f;
     public int spawnCount = 1;
-    public bool canMoveWhileSummon;
     public float delay;
 
+    [Space(10)]
     [Header("Summoned Entity")]
     public bool createLight = false;
     public bool followHost = false;
@@ -24,8 +29,10 @@ public class SummonAbility : AbilityScript
     //public string SetTag;
     //public string SetLayerMask;
 
+    [Space(10)]
     [Header("Summoned Stats")]
     public float overrideScanRadius;
+    public float overrideHealth;
     public float overrideDamage;
     public float overrideMoveSpeed;
     public float overrideAttackSpeed;
@@ -33,10 +40,12 @@ public class SummonAbility : AbilityScript
     protected override async UniTask PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         await base.PreCastingBehaviour(mono, entity);
-        Debug.Log("Precasting");
+        Debug.Log(entity.name + " CASTING SUMMONING");
 
         if (!canMoveWhileSummon)
             entity.StopMovement(true);
+        if (!canAttackWhileSummon)
+            entity.GetAttackHandler.IsCanAttack = false;
 
         await UniTask.Delay(TimeSpan.FromSeconds(delay));
     }
@@ -81,6 +90,7 @@ public class SummonAbility : AbilityScript
         Debug.Log("Finish casting");
 
         entity.StopMovement(false);
+        entity.GetAttackHandler.IsCanAttack = true;
     }
 
 
@@ -93,8 +103,8 @@ public class SummonAbility : AbilityScript
         var spawner = ObjectPooling.Instance.GetObjectInPool("ability_spawner", summonPrefab.gameObject, spawningPosition);
         AIEntity _spawner = spawner.GetComponent<AIEntity>();
 
-        //_spawner.gameObject.layer = LayerMask.NameToLayer(SetLayerMask);
-        //_spawner.gameObject.tag = SetTag;
+        
+
         if (entity.CompareTag("Player"))
         {
             //From player
@@ -111,7 +121,14 @@ public class SummonAbility : AbilityScript
         _spawner.GetAttackHandler.GetScannerEntities.GetTargetLayerMask = entity.GetAttackHandler.GetScannerEntities.GetTargetLayerMask;
         spawner.SetActive(true);
 
-        if(followHost)
+
+        var hasDropLoot = _spawner.GetComponent<DropLoot>();
+        if (hasDropLoot)
+        {
+            _spawner.GetDropLoot = null;
+        }
+
+        if (followHost)
             _spawner.GetAttackHandler.GetScannerEntities.GetFollowTargetLayerMask = 1 << entity.gameObject.layer;
         if (lifeTimer > 0) //Set timer
         {
@@ -122,6 +139,14 @@ public class SummonAbility : AbilityScript
         if (overrideScanRadius > 0)
             _spawner.GetAttackHandler.GetScannerEntities.GetScanRadius = overrideScanRadius;
 
+        if (overrideHealth > 0)
+        {
+            var overhealthBar = _spawner.GetComponentInChildren<OverheadHealthbar>();
+
+            _ = _spawner.GetEntityStats.TempModifiedHealth(overrideHealth, 99);
+
+            overhealthBar?.UpdateHealthBar();
+        }
         if (overrideDamage > 0)
             _ = _spawner.GetEntityStats.TempModifiedDamage(overrideDamage, 99);
         if (overrideMoveSpeed > 0)
@@ -148,7 +173,7 @@ public class SummonAbility : AbilityScript
             generatedPosition = new Vector2(randomPos, randomPos);
 
             // Check if the random position collides with any collider in the avoid layer
-            invalidPosition = Physics2D.OverlapCircle(generatedPosition, 0.1f, avoidLayer);
+            invalidPosition = Physics2D.OverlapCircle(generatedPosition, 0.05f, avoidLayer);
 
             await UniTask.Yield();
         } while (invalidPosition != null && !cancellation.IsCancellationRequested);

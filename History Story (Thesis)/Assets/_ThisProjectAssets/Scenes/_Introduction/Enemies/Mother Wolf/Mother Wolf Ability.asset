@@ -23,16 +23,36 @@ MonoBehaviour:
   precastingAtStartFeedback: {fileID: 0}
   castingAtStartFeedback: {fileID: 0}
   finishedAtStartFeedback: {fileID: 0}
+  preCastingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  castingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  finishedAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  canMoveWhileSummon: 0
+  canAttackWhileSummon: 0
   lightPrefab: {fileID: 67063377517511961, guid: c34c196fc40992942bdac35e19862ad7, type: 3}
   summonPrefab: {fileID: 3658767040671979719, guid: 63672e7a9c3d7514da49fb37be1bb2d1, type: 3}
   randomRangePosition: 0.5
   spawnCount: 5
-  canMoveWhileSummon: 0
   delay: 1.2
   createLight: 0
   followHost: 0
   lifeTimer: 0
   overrideScanRadius: 0
+  overrideHealth: 0
   overrideDamage: 0
   overrideMoveSpeed: 0
   overrideAttackSpeed: 0
