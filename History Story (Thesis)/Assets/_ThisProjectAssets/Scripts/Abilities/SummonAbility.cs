@@ -58,27 +58,31 @@ public class SummonAbility : AbilityScript
         {
             var generatedPosition = await GenerateRandomPosition(entity, randomRangePosition);
             var spawner = SummonObject(entity, generatedPosition);
-            if (createLight)
-            {
-                var light = spawner.GetComponentInChildren<Light2D>(true);
 
-                if (light == null)
+            if(spawner != null)
+            {
+                if (createLight)
                 {
-                    light = Instantiate(lightPrefab).GetComponent<Light2D>();
-                    light.transform.position = spawner.transform.position;
-                    light.transform.SetParent(spawner.transform);
+                    var light = spawner.GetComponentInChildren<Light2D>(true);
+
+                    if (light == null)
+                    {
+                        light = Instantiate(lightPrefab).GetComponent<Light2D>();
+                        light.transform.position = spawner.transform.position;
+                        light.transform.SetParent(spawner.transform);
+                    }
+
+                    light.color = entity.GetAttackHandler.GetColorType;
+                    light.gameObject.SetActive(true);
                 }
-
-                light.color = entity.GetAttackHandler.GetColorType;
-                light.gameObject.SetActive(true);
-            }
-            else
-            {
-                var light = spawner.GetComponentInChildren<Light2D>(true);
-
-                if (light != null)
+                else
                 {
-                    light.gameObject.SetActive(false);
+                    var light = spawner.GetComponentInChildren<Light2D>(true);
+
+                    if (light != null)
+                    {
+                        light.gameObject.SetActive(false);
+                    }
                 }
             }
         }
@@ -93,9 +97,23 @@ public class SummonAbility : AbilityScript
         entity.GetAttackHandler.IsCanAttack = true;
     }
 
-
+    private void RemoveComponents(AIEntity summoned)
+    {
+        var hasBoss = summoned.GetComponent<EnemyBoss>();
+        var hasDropLoot = summoned.GetComponent<DropLoot>();
+        if (hasDropLoot)
+        {
+            summoned.GetDropLoot = null;
+            hasDropLoot.enabled = false;
+        }
+        if (hasBoss)
+        {
+            hasBoss.enabled = false;
+        }
+    }
     private GameObject SummonObject(Entities entity, Vector2 spawnPosition)
     {
+        if(summonPrefab == null) { return null; }
         var position = spawnPosition == null ? Vector2.zero : spawnPosition;
         //To summon object
         var spawningPosition = (Vector2)entity.transform.position + position;
@@ -103,7 +121,8 @@ public class SummonAbility : AbilityScript
         var spawner = ObjectPooling.Instance.GetObjectInPool("ability_spawner", summonPrefab.gameObject, spawningPosition);
         AIEntity _spawner = spawner.GetComponent<AIEntity>();
 
-        
+        RemoveComponents(_spawner);
+
 
         if (entity.CompareTag("Player"))
         {
@@ -117,6 +136,8 @@ public class SummonAbility : AbilityScript
             _spawner.gameObject.layer = LayerMask.NameToLayer("Enemy");
             _spawner.gameObject.tag = "Enemy";
         }
+
+
 
         _spawner.GetAttackHandler.GetScannerEntities.GetTargetLayerMask = entity.GetAttackHandler.GetScannerEntities.GetTargetLayerMask;
         spawner.SetActive(true);

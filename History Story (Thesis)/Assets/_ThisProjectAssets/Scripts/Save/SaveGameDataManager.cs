@@ -171,6 +171,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         foreach (var room in FindAllRoomAreaInScene())
         {
+            if(room.GetBattleTrigger == null) { continue; }
+
             RoomBattleSaveData data = new RoomBattleSaveData()
             {
                 roomId = room.GetBattleTrigger.GetInstanceID(),

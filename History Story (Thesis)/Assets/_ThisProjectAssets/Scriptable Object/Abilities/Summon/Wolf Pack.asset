@@ -17,9 +17,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   abilityName: Wolf Pack
-  abilityIcon: {fileID: 21300000, guid: b1644198b68741748b96f452021a8bba, type: 3}
+  abilityIcon: {fileID: -106013292, guid: 9d99aef8cf0752d4880c237c5dc98425, type: 3}
   abilityDescription: Summons three wolves to help you fight
-  cooldownTime: 1
+  cooldownTime: 50
   precastingAtStartFeedback: {fileID: 0}
   castingAtStartFeedback: {fileID: 0}
   finishedAtStartFeedback: {fileID: 0}
@@ -48,11 +48,11 @@ MonoBehaviour:
   randomRangePosition: 0.8
   spawnCount: 3
   delay: 0
-  createLight: 0
+  createLight: 1
   followHost: 0
-  lifeTimer: 0
+  lifeTimer: 10
   overrideScanRadius: 0
   overrideHealth: 0
   overrideDamage: 0
-  overrideMoveSpeed: 0
-  overrideAttackSpeed: 0
+  overrideMoveSpeed: 40
+  overrideAttackSpeed: 50

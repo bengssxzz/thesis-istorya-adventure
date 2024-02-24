@@ -22,6 +22,7 @@ public class DropLoot : MonoBehaviour
 
 
     [Header("Loot")]
+    [SerializeField] private float dropForce = 150f;
     [SerializeField] private List<Loot> listOfDropLoot;
 
     private GameObject[] AmountItemDropLoot(Loot itemLoot)
@@ -57,14 +58,12 @@ public class DropLoot : MonoBehaviour
                     {
                         Vector2 randomDirection = ThesisUtility.RandomGetVector2Direction();
 
-                        const float addForce = 250;
-
                         lootItem.transform.position = transform.position;
                         Rigidbody2D rb = lootItem.GetComponent<Rigidbody2D>();
                         if(rb != null)
                         {
-                            rb.drag = 5;
-                            rb.AddForce(randomDirection * addForce * Time.deltaTime, ForceMode2D.Impulse);
+                            rb.drag = 10;
+                            rb.AddForce(randomDirection * dropForce * Time.deltaTime, ForceMode2D.Impulse);
                         }
                         
                     }

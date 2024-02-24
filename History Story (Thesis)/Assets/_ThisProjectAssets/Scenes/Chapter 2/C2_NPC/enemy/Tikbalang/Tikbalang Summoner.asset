@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e7c90cdb43f15469af887c69699fa6, type: 3}
+  m_Name: Tikbalang Summoner
+  m_EditorClassIdentifier: 
+  state: 0
+  OnAbilityTimeLapse:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityName: Tikbalang Summoner
+  abilityIcon: {fileID: 0}
+  abilityDescription: 
+  cooldownTime: 20
+  precastingAtStartFeedback: {fileID: 0}
+  castingAtStartFeedback: {fileID: 0}
+  finishedAtStartFeedback: {fileID: 0}
+  preCastingAtStart_SoundFX:
+    sound_FX: {fileID: 8300000, guid: 6950c18105f06b941ab079a075b78281, type: 3}
+    minVolume: 0.8
+    maxVolume: 1.3
+    minPitch: 0.8
+    maxPitch: 1
+  castingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  finishedAtStart_SoundFX:
+    sound_FX: {fileID: 8300000, guid: 0999d1df7e56fa249b65995e01dbcb3a, type: 3}
+    minVolume: 0.8
+    maxVolume: 1.2
+    minPitch: 1
+    maxPitch: 1
+  canMoveWhileSummon: 0
+  canAttackWhileSummon: 0
+  lightPrefab: {fileID: 67063377517511961, guid: c34c196fc40992942bdac35e19862ad7, type: 3}
+  summonPrefab: {fileID: 0}
+  randomRangePosition: 0.5
+  spawnCount: 2
+  delay: 2.5
+  createLight: 0
+  followHost: 0
+  lifeTimer: 5
+  overrideScanRadius: 0
+  overrideHealth: 0
+  overrideDamage: 0
+  overrideMoveSpeed: 0
+  overrideAttackSpeed: 70
