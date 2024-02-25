@@ -6,14 +6,16 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Linq;
+using MoreMountains.Tools;
 
-public class LevelChapterSlot : BaseSlot
+public class LevelChapterSlot : MonoBehaviour
 {
     private Chapter_LevelSO chapterLevelSO;
 
     public event Action<LevelChapterSlot> OnPressSelectChapter;
     public event Action<string, string> OnPressEnterLevelChapter;
 
+    [SerializeField] private MMTouchButton chapterButton;
     [SerializeField] private RectTransform deselectedPanel;
     [SerializeField] private RectTransform lockPanel;
 
@@ -42,6 +44,17 @@ public class LevelChapterSlot : BaseSlot
     }
 
 
+    private void OnDestroy()
+    {
+        chapterButton.ButtonReleased.RemoveListener(ChapterButtonPressed);
+    }
+    private void Awake()
+    {
+        chapterButton.ButtonReleased.AddListener(ChapterButtonPressed);
+    }
+
+   
+
     public void InitializeChapterButton(Chapter_LevelSO chapterLevelSO)
     {
         this.chapterLevelSO = chapterLevelSO;
@@ -59,7 +72,6 @@ public class LevelChapterSlot : BaseSlot
     public void UpdateBtn() //Update the button
     {
         ProgressCalculation(chapterLevelSO);
-
     }
 
     private void ProgressCalculation(Chapter_LevelSO chapterLevelSO)
@@ -108,7 +120,9 @@ public class LevelChapterSlot : BaseSlot
         lockPanel.gameObject.SetActive(toggleLock);
     }
 
-    public override void OnPointerClick(PointerEventData eventData)
+
+
+    private void ChapterButtonPressed()
     {
         if (isLock) { return; }
 
@@ -123,38 +137,5 @@ public class LevelChapterSlot : BaseSlot
             OnPressEnterLevelChapter?.Invoke(chapterLevelSO.defaultSceneName, chapterLevelSO.defaultTransID);
             Debug.Log("Go to this scene");
         }
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #region No Need
-    public override void OnBeginDrag(PointerEventData eventData)
-    {
-    }
-
-    public override void OnDrag(PointerEventData eventData)
-    {
-    }
-
-    public override void OnDrop(PointerEventData eventData)
-    {
-    }
-
-    public override void OnEndDrag(PointerEventData eventData)
-    {
-    }
-
-    #endregion
 }

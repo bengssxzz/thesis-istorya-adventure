@@ -128,7 +128,7 @@ public class QuestionaireUI : MonoBehaviour
         }
 
     }
-    public void CheckAnswer()
+    public async void CheckAnswer()
     {
         var checkedAnswer = QuestionsManager.Instance.CheckQuestionAnswer(selectedAnswer);
 
@@ -150,7 +150,8 @@ public class QuestionaireUI : MonoBehaviour
             mmfScale.TargetCanvasGroup = upgradeMenu.GetComponent<CanvasGroup>();
 
             //Rewards
-            UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI").SetPowerPoints(powerPoints);
+            var upgradeStats = await UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI");
+            upgradeStats.SetPowerPoints(powerPoints);
             GameManager.Instance.AddCurrentChapterScore(questionPoints);
 
             //Play the correct feedback

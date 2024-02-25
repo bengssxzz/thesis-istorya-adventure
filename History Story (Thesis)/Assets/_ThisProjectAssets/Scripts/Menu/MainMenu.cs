@@ -33,6 +33,11 @@ public class MainMenu : MonoBehaviour
         PlayfabManager.Instance.OnLoginSuccess -= LoginSuccess;
     }
 
+    private async void Start()
+    {
+        await UI_Manager.Instance.InitializeGetAllMenus();
+    }
+
     private void LevelSelectPressed()
     {
         UI_Manager.Instance.OpenMenu("LevelSelectPage");

@@ -35,7 +35,7 @@ public class BattleSystemUI : Singleton<BattleSystemUI>
 
     public void ToggleBossInfo(bool toggle)
     {
-        bossInfoPage.gameObject.SetActive(toggle);
+        bossInfoPage.gameObject?.SetActive(toggle);
     }
     public void ToggleWaveInfo(bool toggle)
     {

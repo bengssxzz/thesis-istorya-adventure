@@ -129,7 +129,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         additiveSceneSettings.ExitFadeDuration = 1f;
     }
 
-    private void SetPlayerInScene(Vector2 position) //Set the player and camera
+    private async void SetPlayerInScene(Vector2 position) //Set the player and camera
     {
         LevelManager findLevelManager = FindObjectOfType<LevelManager>(); //Find the level manager in the scene
 
@@ -141,7 +141,9 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
         //Update the mobile skill when changing scene
         var playerCurrentAbility = player.GetAbility_Controller.ListOfCurrentAbilities.ToArray();
-        UI_Manager.Instance.FindComponentInUIMenu<MobileController>("TouchController UI").UpdateAbilityButtons(playerCurrentAbility);
+
+        var mobileController = await UI_Manager.Instance.FindComponentInUIMenu<MobileController>("TouchController UI");
+        mobileController.UpdateAbilityButtons(playerCurrentAbility);
     }
     
     private void FindTransitionTrigger()

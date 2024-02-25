@@ -65,7 +65,7 @@ public class AbilityPageUI : MonoBehaviour
         }
     }
 
-    private void abilitySlotPressed(AbilitySlotUI slotUI)
+    private async void abilitySlotPressed(AbilitySlotUI slotUI)
     {
         var index = 0;
 
@@ -74,7 +74,9 @@ public class AbilityPageUI : MonoBehaviour
         var chapterSO = listOfAbilities_Chapter[index];
 
         UI_Manager.Instance.OpenMenu("AbilityPaperPage");
-        UI_Manager.Instance.FindComponentInUIMenu<AbilityPaperPageUI>("AbilityPaperPage").SetPaperPage(chapterSO);
+
+        var abilityPaperPage = await UI_Manager.Instance.FindComponentInUIMenu<AbilityPaperPageUI>("AbilityPaperPage");
+        abilityPaperPage.SetPaperPage(chapterSO);
     }
 
     private AbilitySlotUI CreateNewSlotUI()

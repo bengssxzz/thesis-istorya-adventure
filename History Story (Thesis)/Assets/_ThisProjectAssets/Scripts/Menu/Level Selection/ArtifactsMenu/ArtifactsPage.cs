@@ -67,7 +67,7 @@ public class ArtifactsPage : MonoBehaviour
         }
     }
 
-    private void ArtifactSlotPressed(ArtifactsSlotUI slotUI)
+    private async void ArtifactSlotPressed(ArtifactsSlotUI slotUI)
     {
         var index = 0;
 
@@ -76,7 +76,9 @@ public class ArtifactsPage : MonoBehaviour
         var chapterSO = listOfArtifacts_Chapter[index];
 
         UI_Manager.Instance.OpenMenu("ArtifactPaperPage");
-        UI_Manager.Instance.FindComponentInUIMenu<ArtifactsPaperPage>("ArtifactPaperPage").SetPaperPage(chapterSO);
+
+        var artifactsPaperPage = await UI_Manager.Instance.FindComponentInUIMenu<ArtifactsPaperPage>("ArtifactPaperPage");
+        artifactsPaperPage.SetPaperPage(chapterSO);
     }
 
     private ArtifactsSlotUI CreateNewSlotUI()

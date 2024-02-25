@@ -7,6 +7,7 @@ using System.IO;
 using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -14,6 +15,8 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private List<ArtifactsSO> listOfAllArtifacts = new List<ArtifactsSO>(); //List of all artifacts in the game
     [SerializeField] private List<AbilityScript> listOfAllAbilities = new List<AbilityScript>(); //List of all available abilities in the game
+
+    private CancellationTokenSource gameMainMenuCancellationToken;
 
     private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>();
     [SerializeField] private List<AbilityScript> listOfCollectedAbilities = new List<AbilityScript>(); //FOR TESTING PURPOSES
@@ -29,6 +32,8 @@ public class GameManager : Singleton<GameManager>
 
 
     #region Getters and Setters
+
+    public CancellationToken GetMainMenuCancellationToken { get { return gameMainMenuCancellationToken.Token; } }
 
     public List<Chapter_LevelSO> GetListOfChapters { get { return listOfAllChapters; } }
 
@@ -60,7 +65,8 @@ public class GameManager : Singleton<GameManager>
             HashSet<ArtifactsSO> newList = new HashSet<ArtifactsSO>(listOfCollectedArtifacts);
 
             return new List<ArtifactsSO>(newList);
-        } }
+        } 
+    }
 
     public Dictionary<Chapter_LevelSO, bool> GetDictUnlockedChapters { get { return dictChapterUnlocked; } }
     public Dictionary<string, int> GetDictEachChapterScores { get { return dictChapterScores; } }
@@ -73,6 +79,14 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
 
         InitializeSceneChapter();
+
+        gameMainMenuCancellationToken = new CancellationTokenSource();
+    }
+
+    private void OnDestroy()
+    {
+        gameMainMenuCancellationToken?.Cancel();
+        gameMainMenuCancellationToken?.Dispose();
     }
 
     private void OnEnable()
@@ -250,8 +264,7 @@ public class GameManager : Singleton<GameManager>
 
 
     #region FOR ARTIFACTS
-    public void CollectArtifacts
-        (ArtifactsSO artifacts)
+    public void CollectArtifacts(ArtifactsSO artifacts)
     {
         if (GetListOfCollectedArtifacts.Contains(artifacts)){
             Debug.Log($"{artifacts.artifactName} IS ALREADY COLLECTED");
@@ -261,7 +274,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void CollectArtifacts(string artifactName)
     {
-        if(GetListOfCollectedArtifacts.Any(x => x.artifactName == artifactName)) {
+        if(GetListOfCollectedArtifacts.Any(collectedArtifacts => collectedArtifacts != null && collectedArtifacts.artifactName == artifactName)) {
             Debug.Log($"{artifactName} IS ALREADY COLLECTED");
             return; }
 
