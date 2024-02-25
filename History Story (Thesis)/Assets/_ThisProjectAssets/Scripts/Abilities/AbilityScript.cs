@@ -85,7 +85,7 @@ public class AbilityScript : ScriptableObject
         isOnCoolDown = false;
     }
 
-    public void RestartAbility(CancellationToken cancellationToken)
+    public void RestartAbility()
     {
         isOnCoolDown = false;
         state = AbilityState.PreCasting;

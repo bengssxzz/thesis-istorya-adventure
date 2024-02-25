@@ -76,37 +76,22 @@ public class PlayerScript : Entities
     }
 
 
+
+    #region LUA FUNCTIONS
     private void LUASubscribe()
     {
         Lua.RegisterFunction(nameof(CollectArtifacts), this, SymbolExtensions.GetMethodInfo(() => CollectArtifacts(string.Empty)));
         Lua.RegisterFunction(nameof(CollectAbilities), this, SymbolExtensions.GetMethodInfo(() => CollectAbilities(string.Empty)));
+        Lua.RegisterFunction(nameof(ShowAlertUI), this, SymbolExtensions.GetMethodInfo(() => ShowAlertUI(string.Empty, (double)0)));
+
     }
     private void LUAUnsubscribe()
     {
         Lua.UnregisterFunction(nameof(CollectArtifacts));
         Lua.UnregisterFunction(nameof(CollectAbilities));
-    }
-
-    private void ButtonInputEvent_Subscribe()
-    {
-        InputManager.Instance.OnPlayerMove += MovementDirection;
-        InputManager.Instance.OnSkill0_Released += Skill0Trigger;
-        InputManager.Instance.OnSkill1_Released += Skill1Trigger;
-        InputManager.Instance.OnSkill2_Released += Skill2Trigger;
-        InputManager.Instance.OnSkill3_Released += Skill3Trigger;
+        Lua.UnregisterFunction(nameof(ShowAlertUI));
 
     }
-
-
-    private void ButtonInputEvent_Unsubscribe()
-    {
-        InputManager.Instance.OnPlayerMove -= MovementDirection;
-        InputManager.Instance.OnSkill0_Released -= Skill0Trigger;
-        InputManager.Instance.OnSkill1_Released -= Skill1Trigger;
-        InputManager.Instance.OnSkill2_Released -= Skill2Trigger;
-        InputManager.Instance.OnSkill3_Released -= Skill3Trigger;
-    }
-
     private void CollectArtifacts(string artifactsName)
     {
         Debug.Log($"ARTIFACT COLLECTED {artifactsName}");
@@ -117,6 +102,37 @@ public class PlayerScript : Entities
         Debug.Log($"ABILITY COLLECTED {abilityName}");
         GameManager.Instance.CollectedAbilities(abilityName);
     }
+    private void ShowAlertUI(string message, double delay)
+    {
+        DialogueManager.ShowAlert(message, (float)delay);
+    }
+
+    #endregion
+
+
+
+
+    private void ButtonInputEvent_Subscribe()
+    {
+        InputManager.Instance.OnPlayerMove += MovementDirection;
+        InputManager.Instance.OnSkill0_Released += Skill0Trigger;
+        InputManager.Instance.OnSkill1_Released += Skill1Trigger;
+        InputManager.Instance.OnSkill2_Released += Skill2Trigger;
+        InputManager.Instance.OnSkill3_Released += Skill3Trigger;
+
+    }
+    private void ButtonInputEvent_Unsubscribe()
+    {
+        InputManager.Instance.OnPlayerMove -= MovementDirection;
+        InputManager.Instance.OnSkill0_Released -= Skill0Trigger;
+        InputManager.Instance.OnSkill1_Released -= Skill1Trigger;
+        InputManager.Instance.OnSkill2_Released -= Skill2Trigger;
+        InputManager.Instance.OnSkill3_Released -= Skill3Trigger;
+    }
+
+
+
+
 
     private void InitializedDefaultAbilities(List<AbilityScript> defaultAbility)
     {

@@ -101,13 +101,6 @@ public class UpgradeStatsSystem : MonoBehaviour
 
             Debug.Log($"{item.Key}|| Add Amount: {percentToAdd} to: {item.Key}");
             player.GetEntityStats.AddStatsPermanent(parseEnum, percentToAdd);
-
-            //float percentToAdd = item.Value; //Percent
-            //float currentStats = GetCurrentMaxStats(parseEnum);
-            //float computeAddedValue = currentStats == 0 ? (percentToAdd / 100) : (percentToAdd / 100) * currentStats;
-
-            //Debug.Log($"{item.Key}|| Current: {currentStats} Percent: {percentToAdd}% Computed: {computeAddedValue}");
-            //player.GetEntityStats.AddStatsPermanent(parseEnum, computeAddedValue);
         }
 
         player.GetEntityStats.ResetCurrentStats();

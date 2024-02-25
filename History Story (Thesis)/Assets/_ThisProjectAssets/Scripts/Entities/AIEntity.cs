@@ -154,7 +154,20 @@ public class AIEntity : Entities
         }
         catch (OperationCanceledException)
         {
-            Debug.Log("ERROR?");
+            Debug.Log("DISPOSE ABILITY");
+
+            foreach (var ability in availableAbility)
+            {
+                ability.RestartAbility();
+            }
+        }
+        catch (ObjectDisposedException)
+        {
+            Debug.Log("DISPOSE ABILITY");
+            foreach (var ability in availableAbility)
+            {
+                ability.RestartAbility();
+            }
         }
 
 

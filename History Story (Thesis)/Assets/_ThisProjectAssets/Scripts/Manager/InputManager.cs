@@ -37,13 +37,18 @@ public class InputManager : Singleton<InputManager>
 
         PlayerActionInput = GetComponent<PlayerInput>();
 
-    }
-
-    private void OnEnable()
-    {
         OnComputerInputRegister();
     }
+
+    //private void OnEnable()
+    //{
+    //    OnComputerInputDeRegister();
+    //}
     private void OnDisable()
+    {
+        OnComputerInputDeRegister();
+    }
+    private void OnDestroy()
     {
         OnComputerInputDeRegister();
     }
@@ -62,15 +67,20 @@ public class InputManager : Singleton<InputManager>
     }
     private void OnComputerInputDeRegister()
     {
-        PlayerActionInput.actions["Move"].performed -= MovementControl;
-        PlayerActionInput.actions["Move"].canceled -= MovementControl;
+        if (PlayerActionInput != null)
+        {
 
-        PlayerActionInput.actions["Skill 0"].canceled -= Skill0Trigger;
-        PlayerActionInput.actions["Skill 1"].canceled -= Skill1Trigger;
-        PlayerActionInput.actions["Skill 2"].canceled -= Skill2Trigger;
-        PlayerActionInput.actions["Skill 3"].canceled -= Skill3Trigger;
 
-        PlayerActionInput.actions["Interact"].canceled -= InteractTrigger;
+            PlayerActionInput.actions["Move"].performed -= MovementControl;
+            PlayerActionInput.actions["Move"].canceled -= MovementControl;
+
+            PlayerActionInput.actions["Skill 0"].canceled -= Skill0Trigger;
+            PlayerActionInput.actions["Skill 1"].canceled -= Skill1Trigger;
+            PlayerActionInput.actions["Skill 2"].canceled -= Skill2Trigger;
+            PlayerActionInput.actions["Skill 3"].canceled -= Skill3Trigger;
+
+            PlayerActionInput.actions["Interact"].canceled -= InteractTrigger;
+        }
     }
 
 

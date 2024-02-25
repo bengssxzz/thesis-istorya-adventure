@@ -37,6 +37,11 @@ public class SceneMusicController : Singleton<SceneMusicController>
         cancellationToken?.Cancel();
         cancellationToken?.Dispose();
     }
+    private void OnDisable()
+    {
+        DestroyAllSounds();
+        cancellationToken?.Cancel();
+    }
 
     protected override void Awake()
     {
@@ -216,10 +221,18 @@ public class SceneMusicController : Singleton<SceneMusicController>
         }
         catch (OperationCanceledException)
         {
-            MMSoundManager.Instance.StopAllSounds();
+            if (MMSoundManager.Instance != null)
+                MMSoundManager.Instance.StopAllSounds();
+        }
+        catch (ObjectDisposedException)
+        {
+            if(MMSoundManager.Instance != null)
+            {
+                MMSoundManager.Instance.StopAllSounds();
+            }
         }
 
-        
+
 
     }
 

@@ -22,11 +22,6 @@ public class UI_ButtonMenu : UIAbstract
         buttonMenu = GetComponent<Button>();
     }
 
-    public void BackClick()
-    {
-        UI_Manager.Instance.BackToPreviousActiveMenu();
-    }
-
     public void OpenMenu()
     {
         if (callActivateID)

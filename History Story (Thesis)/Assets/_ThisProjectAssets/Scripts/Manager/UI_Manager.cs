@@ -28,16 +28,16 @@ public class UI_Manager : Singleton<UI_Manager>
         base.Awake();
     }
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
-    }
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
-    }
+    //private void OnEnable()
+    //{
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //    SceneManager.sceneUnloaded += OnSceneUnloaded;
+    //}
+    //private void OnDisable()
+    //{
+    //    SceneManager.sceneLoaded -= OnSceneLoaded;
+    //    SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    //}
 
 
 
@@ -79,18 +79,6 @@ public class UI_Manager : Singleton<UI_Manager>
     }
 
 
-
-    private async UniTask InitializeAllUIMenus()
-    {
-        ClearMenuList();
-
-        await UniTask.Delay(100);
-
-        this.menuList = GetAllUIMenus();
-        this.buttons = GetAllUIButtons();
-
-        ActivateOnStartMenu(); //Activate all the OnStartMenu
-    }
 
 
 
@@ -142,22 +130,21 @@ public class UI_Manager : Singleton<UI_Manager>
 
 
 
-    #region Menu UI public methods
-    //SHOULD DELETE SOON
-    public void BackToPreviousActiveMenu() //Back to the previous menu
+    public async UniTask InitializeGetAllMenus()
     {
-        if (previousMenuActive == null) { return; }
+        ClearMenuList();
+        await UniTask.Delay(50);
 
-        CloseAllMenu();
+        this.menuList = GetAllUIMenus();
+        this.buttons = GetAllUIButtons();
 
-        var oldMenu = previousMenuActive;
-        oldMenu.EnablePage(); //Enable the old active menu
+        managerState = UI_ManagerState.Running;
 
-        previousMenuActive = null;
-        newMenuActive = oldMenu;
-
+        await UniTask.Yield();
     }
 
+
+    #region Menu UI public methods
     public void CloseAllMenu() //Close all the menus active in the scene
     {
         var menuWithActiveID = menuList.Where(x => x.IsGlobalMenu == false);
@@ -190,6 +177,7 @@ public class UI_Manager : Singleton<UI_Manager>
 
 
     }
+
 
     public void OpenMenu(string menuID) //Find the page with the same ID and open it
     {
@@ -241,25 +229,6 @@ public class UI_Manager : Singleton<UI_Manager>
         }
     }
 
-    //public async UniTask ActivateID_OpenMenu(string activateID)
-    //{
-    //    CloseAllMenu();
-
-    //    var menuWithActiveID = new List<UI_Menu>(menuList.Where(script => script.GetActivationIDListener == activateID));
-
-    //    foreach (var menu in menuList)
-    //    {
-    //        if (menuWithActiveID.Contains(menu))
-    //        {
-    //            menu.EnablePage();
-    //            continue;
-    //        }
-
-    //        menu.DisablePage();
-    //    }
-
-    //    await UniTask.Yield();
-    //}
 
     public void ActivateID_OpenMenu(string activateID) //Open all the menu with the same activateID
     {
@@ -282,6 +251,7 @@ public class UI_Manager : Singleton<UI_Manager>
         }
     }
 
+
     public RectTransform GetMenu(string menuID)
     {
         if (menuList.Exists(x => x.GetUI_ID == menuID))
@@ -303,6 +273,7 @@ public class UI_Manager : Singleton<UI_Manager>
             return null;
         }
     }
+
 
     public T FindComponentInUIMenu<T>(string menuID) //Find object in menu
     {

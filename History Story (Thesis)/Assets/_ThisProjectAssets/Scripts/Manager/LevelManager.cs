@@ -41,13 +41,11 @@ public class LevelManager : Singleton<LevelManager>
 
     private void OnEnable()
     {
-        Lua.RegisterFunction(nameof(ShowAlertUI), this, SymbolExtensions.GetMethodInfo(() => ShowAlertUI(string.Empty, (double)0)));
         //LoadedNewScene();
     }
 
     private void OnDisable()
     {
-        Lua.UnregisterFunction(nameof(ShowAlertUI));
         //UnloadedCurrentScene();
     }
 
@@ -84,26 +82,20 @@ public class LevelManager : Singleton<LevelManager>
             Debug.LogError("THERE ARE NO CAMERA IN THIS SCENE");
         }
     }
-
-    //Show alert
-    public void ShowAlertUI(string message, double delay)
-    {
-        DialogueManager.ShowAlert(message, (float)delay);
-    }
-
     
-    private void LoadedNewScene()
+    private async void LoadedNewScene()
     {
-        Debug.LogWarning("CUSTOM LOADED SCENE");
+        Debug.LogWarning("CUSTOM LOADED SCENE FROM " + SceneManager.GetActiveScene().name);
         //player = PlayerSingleton.Instance.gameObject;
         //var gameUI = GameUI.Instance.gameObject;
 
+        await UI_Manager.Instance.InitializeGetAllMenus();
         UI_Manager.Instance.ActivateID_OpenMenu("game_ui");
         player.gameObject.SetActive(true);
     }
     private void UnloadedCurrentScene()
     {
-        Debug.LogWarning("CUSTOM UNLOADED SCENE");
+        Debug.LogWarning("CUSTOM UNLOADED SCENE FROM " + SceneManager.GetActiveScene().name);
 
         //var player = PlayerSingleton.Instance.gameObject;
         //var gameUI = GameUI.Instance.gameObject;
