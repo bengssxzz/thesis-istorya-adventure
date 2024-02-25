@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using MoreMountains.Tools;
+using UnityEngine.UI;
 
 
 public class ChapterSelection : MonoBehaviour
@@ -68,11 +69,16 @@ public class ChapterSelection : MonoBehaviour
         Debug.Log("TESTING");
         GameManager.Instance.UnlockSceneChapter("Introduction");
 
+
+        foreach (var item in GameManager.Instance.GetDictUnlockedChapters)
+        {
+            Debug.Log($"CHAPTER: {item.Key.chapterName} || UNLOCKED: {item.Value}");
+        }
         //GameManager.Instance.CollectArtifacts("Hunters Insignia");
         //GameManager.Instance.CollectedAbilities("Dodge");
-        //GameManager.Instance.UnlockSceneChapter("Chapter 2");
-        //GameManager.Instance.UnlockSceneChapter("Chapter 3");
-        //GameManager.Instance.UnlockSceneChapter("Chapter 4");
+        GameManager.Instance.UnlockSceneChapter("Chapter 2");
+        GameManager.Instance.UnlockSceneChapter("Chapter 3");
+        GameManager.Instance.UnlockSceneChapter("Chapter 4");
 
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
@@ -82,7 +88,7 @@ public class ChapterSelection : MonoBehaviour
             string directoryName = Path.GetDirectoryName(fullPath);
             string folderNameOnly = Path.GetFileName(directoryName);
 
-            Debug.Log($"INDEX: {i} || NAME: {name} || DIRECTORY: {directoryName} || FolderName: {folderNameOnly} ||| FULL PATH: {fullPath}");
+            //Debug.Log($"INDEX: {i} || NAME: {name} || DIRECTORY: {directoryName} || FolderName: {folderNameOnly} ||| FULL PATH: {fullPath}");
         }
 
 
@@ -210,23 +216,33 @@ public class ChapterSelection : MonoBehaviour
         abilityPage.SetListOfAbility(infoSO.collections.abilities);
     }
 
-    private void ShowDescriptionPage()
+    private async void ShowDescriptionPage()
     {
         UI_Manager.Instance.OpenMenu("DescriptionMenu");
+        var resetScrollBar = await UI_Manager.Instance.FindComponentInUIMenu<Scrollbar>("DescriptionMenu");
+        resetScrollBar.value = 1;
+
+
 
         UI_Manager.Instance.CloseMenu("ArtifactsMenu");
         UI_Manager.Instance.CloseMenu("AbilityMenu");
     }
-    private void ShowArtifactsCollectionPage()
+    private async void ShowArtifactsCollectionPage()
     {
         UI_Manager.Instance.OpenMenu("ArtifactsMenu");
+        var resetScrollBar = await UI_Manager.Instance.FindComponentInUIMenu<Scrollbar>("ArtifactsMenu");
+        resetScrollBar.value = 1;
+
 
         UI_Manager.Instance.CloseMenu("DescriptionMenu");
         UI_Manager.Instance.CloseMenu("AbilityMenu");
     }
-    private void ShowAbilitiesCollectionPage()
+    private async void ShowAbilitiesCollectionPage()
     {
         UI_Manager.Instance.OpenMenu("AbilityMenu");
+        var resetScrollBar = await UI_Manager.Instance.FindComponentInUIMenu<Scrollbar>("AbilityMenu");
+        resetScrollBar.value = 1;
+
 
         UI_Manager.Instance.CloseMenu("DescriptionMenu");
         UI_Manager.Instance.CloseMenu("ArtifactsMenu");
@@ -257,55 +273,5 @@ public class ChapterSelection : MonoBehaviour
 
         return null;
     }
-    //private string GetFolderNameBySceneName(string targetSceneName)
-    //{
-    //    // Iterate through all loaded scenes
-    //    for (int i = 0; i < SceneManager.sceneCount; i++)
-    //    {
-    //        Scene scene = SceneManager.GetSceneAt(i);
-
-    //        // Check if the scene is the target scene
-    //        if (Path.GetFileNameWithoutExtension(scene.name) == targetSceneName)
-    //        {
-    //            // Get the directory (folder) name from the scene path
-    //            string folderName = Path.GetDirectoryName(scene.path);
-
-    //            // Extract just the folder name without the path
-    //            string folderNameOnly = Path.GetFileName(folderName);
-
-    //            return folderNameOnly;
-    //        }
-    //    }
-
-    //    // If the scene is not found, return null or an appropriate default value
-    //    return null;
-    //}
-
-    //private string GetFolderNameBySceneName(string targetSceneName) //Get only the folder name of the target scene
-    //{
-    //    // Get all scene paths in the project
-    //    string[] scenePaths = AssetDatabase.FindAssets("t:Scene");
-
-    //    foreach (string scenePath in scenePaths)
-    //    {
-    //        string sceneFullPath = AssetDatabase.GUIDToAssetPath(scenePath);
-
-    //        // Check if the scene is the target scene
-    //        if (Path.GetFileNameWithoutExtension(sceneFullPath) == targetSceneName)
-    //        {
-    //            // Get the directory (folder) name from the path
-    //            string folderName = Path.GetDirectoryName(sceneFullPath);
-
-    //            // Extract just the folder name without the path
-    //            string folderNameOnly = Path.GetFileName(folderName);
-
-    //            return folderNameOnly;
-    //        }
-    //    }
-
-    //    // If the scene is not found, return null or an appropriate default value
-    //    return null;
-    //}
-
 
 }

@@ -18,9 +18,8 @@ public class GameManager : Singleton<GameManager>
 
     private CancellationTokenSource gameMainMenuCancellationToken;
 
-    private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>();
+    [SerializeField] private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>(); //FOR TESTING PURPOSES
     [SerializeField] private List<AbilityScript> listOfCollectedAbilities = new List<AbilityScript>(); //FOR TESTING PURPOSES
-    //private List<AbilityScript> TESTlistOfAllAbilities = new List<AbilityScript>(); //List of all available abilities
 
     private Dictionary<Chapter_LevelSO, bool> dictChapterUnlocked; //List of all chapters
     private Dictionary<string, int> dictChapterScores = new Dictionary<string, int>(); //List of all chapters
