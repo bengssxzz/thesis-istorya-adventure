@@ -20,6 +20,7 @@ public class UI_Manager : Singleton<UI_Manager>
     private UI_Menu previousMenuActive;
     private UI_Menu newMenuActive;
 
+    private bool doneInitialization = true;
 
     public UI_ManagerState GetManagerState { get { return managerState; } }
 
@@ -132,6 +133,7 @@ public class UI_Manager : Singleton<UI_Manager>
 
     public async UniTask InitializeGetAllMenus()
     {
+        doneInitialization = false;
         ClearMenuList();
         await UniTask.Delay(50);
 
@@ -141,6 +143,7 @@ public class UI_Manager : Singleton<UI_Manager>
         managerState = UI_ManagerState.Running;
 
         await UniTask.Yield();
+        doneInitialization = true;
     }
 
 
@@ -275,29 +278,43 @@ public class UI_Manager : Singleton<UI_Manager>
     }
 
 
-    public T FindComponentInUIMenu<T>(string menuID) //Find object in menu
+    public async UniTask<T> FindComponentInUIMenu<T>(string menuID) //Find object in menu
     {
-        if (menuList.Exists(x => x.GetUI_ID == menuID))
+        try
         {
-            GameObject selectedMenu = menuList.FirstOrDefault(script => script.GetUI_ID == menuID).gameObject;
-            T component = selectedMenu.GetComponentInChildren<T>(true);
+            await UniTask.WaitUntil(() => doneInitialization == true, cancellationToken: GameManager.Instance.GetMainMenuCancellationToken);
 
-            if (component != null)
+            if (menuList.Exists(x => x.GetUI_ID == menuID))
             {
-                Debug.Log($"I FOUND {typeof(T).ToString()} IN {component}");
-                return component;
+                GameObject selectedMenu = menuList.FirstOrDefault(script => script.GetUI_ID == menuID).gameObject;
+                T component = selectedMenu.GetComponentInChildren<T>(true);
+
+                if (component != null)
+                {
+                    Debug.Log($"I FOUND {typeof(T).ToString()} IN {component}");
+                    return component;
+                }
+                else
+                {
+                    Debug.LogWarning($"THERE ARE NO {typeof(T).ToString()} ATTACH TO {menuID}'s ID MENU");
+                    return default(T);
+                }
             }
             else
             {
-                Debug.LogWarning($"THERE ARE NO {typeof(T).ToString()} ATTACH TO {menuID}'s ID MENU");
+                Debug.LogError($"MENU ID ({menuID}) IS MISSPELLED/NOT EXIST IN THE PROJECT");
                 return default(T);
             }
         }
-        else
+        catch (OperationCanceledException)
         {
-            Debug.LogError($"MENU ID ({menuID}) IS MISSPELLED/NOT EXIST IN THE PROJECT");
             return default(T);
         }
+        catch (ObjectDisposedException)
+        {
+            return default(T);
+        }
+       
     }
     public T[] FindComponentsInUIMenu<T>(string menuID) //Find all objects in menu
     {

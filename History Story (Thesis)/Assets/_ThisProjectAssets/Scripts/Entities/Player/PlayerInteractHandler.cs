@@ -28,7 +28,7 @@ public class PlayerInteractHandler : MonoBehaviour
     {
         player = GetComponent<PlayerScript>();
     }
-    private void OnEnable()
+    private async void OnEnable()
     {
         InputManager.Instance.OnInteractObject += InteractObject;
         proximitySelector.SelectedUsableObject += ProximitySelector_SelectedUsableObject;
@@ -38,7 +38,8 @@ public class PlayerInteractHandler : MonoBehaviour
         {
             Debug.Log("HOLDING SOMETHING");
             UI_Manager.Instance.OpenMenu("Interact Button");
-            UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
+            var mobileInteract = await UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button");
+            mobileInteract.UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
         }
 
 
@@ -179,7 +180,7 @@ public class PlayerInteractHandler : MonoBehaviour
 
 
 
-    private void ProximitySelector_SelectedUsableObject(Usable usable)
+    private async void ProximitySelector_SelectedUsableObject(Usable usable)
     {
         var selected = usable.GetComponent<VisualSelector>();
 
@@ -188,17 +189,19 @@ public class PlayerInteractHandler : MonoBehaviour
             var indicator = selected.GetVisualIndicator;
 
             UI_Manager.Instance.OpenMenu("Interact Button");
-            UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(indicator); //Update the interact button
+            var mobileInteract = await UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button");
+            mobileInteract.UpdateInteractImage(indicator); //Update the interact button
 
         }
     }
-    private void ProximitySelector_DeselectedUsableObject(Usable usable)
+    private async void ProximitySelector_DeselectedUsableObject(Usable usable)
     {
         //Check if holding something
         if (isHoldingSomething)
         {
             UI_Manager.Instance.OpenMenu("Interact Button");
-            UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button").UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
+            var mobileInteract = await UI_Manager.Instance.FindComponentInUIMenu<MobileInteractButton>("Interact Button");
+            mobileInteract.UpdateInteractImage(MobileInteractButtonState.Drop); //Update the interact button
         }
         else
         {
