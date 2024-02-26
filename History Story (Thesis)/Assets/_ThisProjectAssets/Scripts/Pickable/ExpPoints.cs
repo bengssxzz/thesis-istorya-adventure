@@ -20,7 +20,7 @@ public class ExpPoints : BasePoints
     }
 
 
-    protected override void CollectPoints(PlayerScript player, int points)
+    protected override void CollectedBehaviour(PlayerScript player, int points)
     {
         //Regen health
         player?.RegenHealth(healthPoint);

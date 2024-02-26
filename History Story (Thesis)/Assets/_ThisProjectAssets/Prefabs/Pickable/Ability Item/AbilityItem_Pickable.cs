@@ -36,11 +36,12 @@ public class AbilityItem_Pickable : BasePoints
             return;
         }
     }
-    protected override void CollectPoints(PlayerScript player, int points)
+    protected override void CollectedBehaviour(PlayerScript player, int points)
     {
         //Add points
         GameManager.Instance.AddCurrentChapterScore(points);
         GameManager.Instance.CollectedAbilities(abilitySO);
+        player.CollectFeedbackModified("Ability Collected: " + abilitySO.abilityName);
     }
 
     

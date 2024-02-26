@@ -18,6 +18,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     private EntityStatistics entityStatistics;
     private AbilityController abilityController;
     private CancellationTokenSource entityCancellation;
+    MMChannelData floatingTextChannel;
+
 
     private bool isImmuneDamage = false;
 
@@ -66,7 +68,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
+        floatingTextChannel = new MMChannelData(MMChannelModes.Int, 0, ScriptableObject.CreateInstance<MMChannel>());
         entityStatistics = new EntityStatistics(entityStatsSO);
 
         //GetAttack_Controller = GetComponent<AttackController>();
@@ -106,6 +108,26 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         Movement();
     }
 
+
+    protected void SetFloatingText(string stringValue, Color colorText)
+    {
+        Gradient dodgeColor = new Gradient();
+        GradientColorKey[] colorKey = new GradientColorKey[2];
+        GradientAlphaKey[] alphaKey = new GradientAlphaKey[1];
+        //Color
+        colorKey[0].time = 0f;
+        colorKey[0].color = colorText;
+        colorKey[1].time = 0f;
+        colorKey[1].color = colorText;
+
+        //Alpha
+        alphaKey[0].time = 0f;
+        alphaKey[0].alpha = 1f;
+
+        dodgeColor.SetKeys(colorKey, alphaKey);
+
+        MMFloatingTextSpawnEvent.Trigger(floatingTextChannel, transform.position, stringValue, Vector2.up, 1, forceColor: true, animateColorGradient: dodgeColor);
+    }
 
     protected void FlipEntity(Vector2 velocity)
     {
@@ -215,11 +237,18 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     }
     public async void TempImmunity(float timeAmount)
     {
-        isImmuneDamage = true;
+        try
+        {
+            isImmuneDamage = true;
 
-        await UniTask.Delay(TimeSpan.FromSeconds(timeAmount));
+            await UniTask.Delay(TimeSpan.FromSeconds(timeAmount), cancellationToken: entityCancellation.Token);
 
-        isImmuneDamage = false;
+            isImmuneDamage = false;
+        }
+        finally
+        {
+            isImmuneDamage = false;
+        }
 
     }
     public void TakeDamage(float damage, Entities sourceDamage = null, bool isCritical = false)
@@ -227,6 +256,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         if (isImmuneDamage) { return; } //If immune to damage is true, dont take damage;
 
         if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) {
+            var colorSelf = attackHandler.GetColorType.a <= 0.3 ? Color.cyan : attackHandler.GetColorType;
+            SetFloatingText("Dodge", colorSelf);
             TempImmunity(0.5f);
             return; } //if dodge is true, dont take damage
 
@@ -234,6 +265,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         if (isCritical)
         {
             //Damage is critical
+            var colorFrom = sourceDamage == null ? Color.red : sourceDamage.GetAttackHandler.GetColorType;
+            SetFloatingText("Critical", colorFrom);
         }
 
         //Compute the total damage

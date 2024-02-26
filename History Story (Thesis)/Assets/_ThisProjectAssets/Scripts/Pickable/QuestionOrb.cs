@@ -5,21 +5,19 @@ using ThesisLibrary;
 
 public class QuestionOrb : BasePoints
 {
-    [SerializeField] private int minQuestionPoints = 1000;
-    [SerializeField] private int maxQuestionPoints = 1000;
+    [SerializeField] private int minPowerPoints = 3;
+    [SerializeField] private int maxPowerPoints = 7;
 
-    private int questionPoints = 0;
-
+    private int powerPoints;
 
     protected override void OnAwakeBehaviour()
     {
         base.OnAwakeBehaviour();
-        questionPoints = ThesisUtility.RandomGetAmount(minQuestionPoints, maxQuestionPoints);
+        powerPoints = ThesisUtility.RandomGetAmount(minPowerPoints, maxPowerPoints);
     }
 
-    protected override void CollectPoints(PlayerScript player, int powerPoints)
+    protected override void CollectedBehaviour(PlayerScript player, int points)
     {
-        QuestionsManager.Instance.QuestionTriggerUI(powerPoints, questionPoints);
+        QuestionsManager.Instance.QuestionTriggerUI(powerPoints, points);
     }
-
 }

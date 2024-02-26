@@ -9,14 +9,18 @@ using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using PixelCrushers.DialogueSystem;
 using Cysharp.Threading.Tasks;
+using MoreMountains.Feedbacks;
+
+
 
 public class PlayerScript : Entities
 {
     [Space(15)]
     [SerializeField] private Transform playerVisuals;
 
-    public PlayerInteractHandler GetInteractHandler { get; private set; }
+    [SerializeField] private MMF_Player collectedFeedback;
 
+    public PlayerInteractHandler GetInteractHandler { get; private set; }
 
     protected override async void Awake()
     {
@@ -73,6 +77,15 @@ public class PlayerScript : Entities
     {
         base.Update();
         FlipEntity(rb.velocity);
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            CollectFeedbackModified("FUCK YOU UNITY");
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SetFloatingText("HAHAHAHAH", Color.green);
+        }
     }
 
 
@@ -96,15 +109,28 @@ public class PlayerScript : Entities
     {
         Debug.Log($"ARTIFACT COLLECTED {artifactsName}");
         GameManager.Instance.CollectArtifacts(artifactsName);
+        CollectFeedbackModified("Ability Collected: " + artifactsName);
     }
     private void CollectAbilities(string abilityName)
     {
         Debug.Log($"ABILITY COLLECTED {abilityName}");
         GameManager.Instance.CollectedAbilities(abilityName);
+        CollectFeedbackModified("Ability Collected: " + abilityName);
     }
     private void ShowAlertUI(string message, double delay)
     {
         DialogueManager.ShowAlert(message, (float)delay);
+    }
+
+    public void CollectFeedbackModified(string valueText)
+    {
+        if(collectedFeedback == null) { return; }
+
+
+        MMF_FloatingText newFT = collectedFeedback.GetFeedbackOfType<MMF_FloatingText>();
+        newFT.Value = valueText;
+
+        collectedFeedback.PlayFeedbacks(transform.position);
     }
 
     #endregion

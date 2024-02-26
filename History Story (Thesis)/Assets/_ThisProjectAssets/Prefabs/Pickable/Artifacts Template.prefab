@@ -292,8 +292,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3308957bf1f64fe438f8584ed0d89ea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useLifeTime: 0
+  collectSound: {fileID: 8300000, guid: 6b97b96f554fcc24a81fb1df103d31ad, type: 3}
+  minVolume: 1
+  maxVolume: 1
+  minPitch: 0.95
+  maxPitch: 1
+  minPoints: 10
+  maxPoints: 20
+  delayReward: 0
   artifactsSo: {fileID: 0}
   spriteRenderer: {fileID: 1607580546888099201}
+  alternativePoints:
+  - {fileID: 3914543218310036786, guid: 2436bde3ebab0404087b8d19285813c2, type: 3}
+  - {fileID: 3073463177492707499, guid: 5e72ac6fadaf85c4eaafd276227d29a3, type: 3}
 --- !u!210 &7946359547919062860
 SortingGroup:
   m_ObjectHideFlags: 0

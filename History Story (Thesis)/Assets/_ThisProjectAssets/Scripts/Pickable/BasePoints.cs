@@ -52,7 +52,7 @@ public abstract class BasePoints : MonoBehaviour
         lifeSecond = ThesisUtility.RandomGetFloat(MIN_LIFE_SECOND, MAX_LIFE_SECOND);
         amountPoints = ThesisUtility.RandomGetAmount(minPoints, maxPoints);
     }
-    protected abstract void CollectPoints(PlayerScript player, int points);
+    protected abstract void CollectedBehaviour(PlayerScript player, int points);
 
 
     private void PlaySound()
@@ -79,7 +79,7 @@ public abstract class BasePoints : MonoBehaviour
             gameObject.SetActive(false);
             await UniTask.Delay(TimeSpan.FromSeconds(delayReward));
 
-            CollectPoints(player, amountPoints);
+            CollectedBehaviour(player, amountPoints);
         }
     }
 
