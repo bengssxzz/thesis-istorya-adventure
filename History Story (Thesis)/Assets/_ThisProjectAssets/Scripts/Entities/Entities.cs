@@ -6,8 +6,7 @@ using ThesisLibrary;
 using MoreMountains.Feedbacks;
 using System.Linq;
 using System.Threading;
-
-
+using Cysharp.Threading.Tasks;
 
 [RequireComponent(typeof(AbilityController))]
 public class Entities : MonoBehaviour, IDamageable, IRegenHealth
@@ -19,6 +18,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     private EntityStatistics entityStatistics;
     private AbilityController abilityController;
     private CancellationTokenSource entityCancellation;
+
+    private bool isImmuneDamage = false;
 
     [Header("Entity Base")]
     [SerializeField] protected bool debugMode = false;
@@ -38,6 +39,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     public event Action OnHit;
 
 
+    #region public Getter & Setter
     //Getter & Setter
     public CancellationToken GetEntityCancellationToken { get { return entityCancellation.Token; } }
     public Rigidbody2D GetRigidbody2D { get { return rb; } } //Get Rigidbody2D
@@ -53,7 +55,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
     //Private variables
     private bool facingLeft = false;
-
+    #endregion
 
 
     private void OnDestroy()
@@ -211,9 +213,28 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     {
         //Debug.Log("Victim: " + victimEntity.name + " :: Killer: " + killerEntity.name);
     }
+    public async void TempImmunity(float timeAmount)
+    {
+        isImmuneDamage = true;
+
+        await UniTask.Delay(TimeSpan.FromSeconds(timeAmount));
+
+        isImmuneDamage = false;
+
+    }
     public void TakeDamage(float damage, Entities sourceDamage = null, bool isCritical = false)
     {
-        if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) { return; } //if dodge is true, dont take damage
+        if (isImmuneDamage) { return; } //If immune to damage is true, dont take damage;
+
+        if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) {
+            TempImmunity(0.5f);
+            return; } //if dodge is true, dont take damage
+
+
+        if (isCritical)
+        {
+            //Damage is critical
+        }
 
         //Compute the total damage
         //Formula: Damage - defense %

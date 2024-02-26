@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 [RequireComponent(typeof(PlayableDirector))]
 [RequireComponent(typeof(Collider2D))]
@@ -34,26 +35,25 @@ public class TriggerTimeLine : MonoBehaviour
     {
         timelineDirector = GetComponent<PlayableDirector>();
 
+    }
 
+    private async void OnEnable()
+    {
+        var loadedData = await SaveGameDataManager.Instance.LoadTriggerTimelineInScene();
 
-
-        var loadedData = SaveGameDataManager.Instance.LoadTriggerTimelineInScene();
-
-        if(loadedData != null)
+        if (loadedData != null)
         {
             var data = loadedData.FirstOrDefault(x => x.id == GetInstanceID());
 
-            if(data != null)
+            if (data != null)
             {
                 alreadyPlayOnce = data.isAlreadyTrigger;
             }
         }
 
-
-
-
-
+        Debug.Log("WAITING STATS TIMELINE: " + alreadyPlayOnce);
     }
+
 
     private void Start()
     {
@@ -65,7 +65,7 @@ public class TriggerTimeLine : MonoBehaviour
 
 
 
-    public void PlayDirectorTimeline()
+    public async void PlayDirectorTimeline()
     {
         if (timelineDirector == null)
         {
@@ -73,15 +73,38 @@ public class TriggerTimeLine : MonoBehaviour
             return;
         }
 
-        //Play director timeline
-        if (playOnce && !alreadyPlayOnce)
+        await UniTask.Delay(10);
+
+        if (playOnce)
         {
-            DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
-            alreadyPlayOnce = true; 
-        }else if (!playOnce)
+            if (alreadyPlayOnce == false)
+            {
+                Debug.Log("PLAYING ONCE: " + alreadyPlayOnce);
+
+                DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
+                alreadyPlayOnce = true;
+
+            }
+            else
+            {
+                DirectorTimelineManager.Instance.StopTimeline();
+            }
+        }
+        else
         {
+            Debug.Log("PLAY EVERY TIME");
             DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
         }
+
+        ////Play director timeline
+        //if (playOnce && !alreadyPlayOnce)
+        //{
+        //    DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
+        //    alreadyPlayOnce = true; 
+        //}else if (!playOnce)
+        //{
+        //    DirectorTimelineManager.Instance.ChangeCurrentTimeline(timelineDirector, wrapMode);
+        //}
     }
 
 

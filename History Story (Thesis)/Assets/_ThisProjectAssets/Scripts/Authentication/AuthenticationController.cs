@@ -31,9 +31,9 @@ public class AuthenticationController : MonoBehaviour
     [SerializeField] private MMTouchButton signup_signUpBtn;
     [SerializeField] private MMTouchButton signup_backSignInBtn;
 
-    [Space(20)]
-    [Header("For Anonymous Login")]
-    [SerializeField] private MMTouchButton guestSigninBtn;
+    //[Space(20)]
+    //[Header("For Anonymous Login")]
+    //[SerializeField] private MMTouchButton guestSigninBtn;
 
 
 
@@ -41,7 +41,7 @@ public class AuthenticationController : MonoBehaviour
     {
         signin_signInBtn.ButtonReleased.AddListener(SignInBtnPressed);
         signup_signUpBtn.ButtonReleased.AddListener(SignUpBtnPressed);
-        guestSigninBtn.ButtonReleased.AddListener(GuestSignInBtnPressed);
+        //guestSigninBtn.ButtonReleased.AddListener(GuestSignInBtnPressed);
 
         signin_goto_signUpBtn.ButtonPressed.AddListener(() => { OpenSignUpPage(); });
         signup_backSignInBtn.ButtonPressed.AddListener(() => { OpenSignInPage(); });
@@ -144,10 +144,10 @@ public class AuthenticationController : MonoBehaviour
 
 
 
-    private void GuestSignInBtnPressed()
-    {
-        PlayfabManager.Instance.SignInWithDevice();
-    }
+    //private void GuestSignInBtnPressed()
+    //{
+    //    PlayfabManager.Instance.SignInWithDevice();
+    //}
 
 
 //    #region SIGN IN SETUP

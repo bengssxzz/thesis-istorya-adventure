@@ -89,6 +89,8 @@ public class PlayerInteractHandler : MonoBehaviour
             Destroy(pickupObject.gameObject);
             pickupObject = null;
         }
+
+        player.GetAttackHandler.IsCanAttack = !isHoldingSomething;
     }
     #endregion
 

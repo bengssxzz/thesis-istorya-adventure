@@ -51,7 +51,7 @@ public class EnemyBoss : MonoBehaviour
         SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Default);
 
         entity.GetEntityStats.OnCurrentHealthChange -= OnCurrentHealthChange;
-        battleUI.ToggleBossInfo(false);
+        battleUI?.ToggleBossInfo(false);
     }
 
     private void OnCurrentHealthChange(float currentHealth, float maxHealth)

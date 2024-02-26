@@ -32,6 +32,10 @@ public class DirectorTimelineManager : Singleton<DirectorTimelineManager>
         currentTimeline.Play();
     }
 
+    public void StopTimeline()
+    {
+        currentTimeline.Stop();
+    }
     public void PauseTimeline() //Pause the current timeline
     {
         

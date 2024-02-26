@@ -230,11 +230,12 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         ES3.Save("timeline_trigger", saveCutscenes, filePath: GetIdentifier());
         await UniTask.Yield();
     }
-    public List<TimelineCutscenesSaveData> LoadTriggerTimelineInScene()
+    public async UniTask< List<TimelineCutscenesSaveData> >LoadTriggerTimelineInScene()
     {
         if (IsKeyExist("timeline_trigger"))
         {
-            List<TimelineCutscenesSaveData> sceneData = ES3.Load<List<TimelineCutscenesSaveData>>("timeline_trigger", filePath: GetIdentifier()); //Get the scene load
+            var identified = GetIdentifier();
+            List<TimelineCutscenesSaveData> sceneData = await UniTask.RunOnThreadPool(() => ES3.Load<List<TimelineCutscenesSaveData>>("timeline_trigger", filePath: identified)); //Get the scene load
 
             if (sceneData != null)
             {
@@ -243,6 +244,19 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         }
         return null;
     }
+    //public List<TimelineCutscenesSaveData> LoadTriggerTimelineInScene()
+    //{
+    //    if (IsKeyExist("timeline_trigger"))
+    //    {
+    //        List<TimelineCutscenesSaveData> sceneData = ES3.Load<List<TimelineCutscenesSaveData>>("timeline_trigger", filePath: GetIdentifier()); //Get the scene load
+
+    //        if (sceneData != null)
+    //        {
+    //            return new List<TimelineCutscenesSaveData>(sceneData);
+    //        }
+    //    }
+    //    return null;
+    //}
 
     #endregion
 

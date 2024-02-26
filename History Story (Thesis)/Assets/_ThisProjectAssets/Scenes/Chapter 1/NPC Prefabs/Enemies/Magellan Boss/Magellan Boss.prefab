@@ -4442,8 +4442,8 @@ MonoBehaviour:
   minRandomWait: 1
   maxRandomWait: 5
   useAbility_Range: 3.18
-  minUseTimerDelay: 30
-  maxUseTimerDelay: 60
+  minUseTimerDelay: 10
+  maxUseTimerDelay: 15
 --- !u!50 &3719126659226642804
 Rigidbody2D:
   serializedVersion: 4
@@ -4488,6 +4488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropForce: 100
   listOfDropLoot:
   - lootPrefab: {fileID: 7720255052265319275, guid: 169182babb56f924fbad12e0a9552186, type: 3}
     randomAmountDrop: 0

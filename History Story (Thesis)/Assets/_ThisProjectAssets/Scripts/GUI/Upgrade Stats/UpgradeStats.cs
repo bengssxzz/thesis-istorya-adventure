@@ -71,11 +71,11 @@ public class UpgradeStats : MonoBehaviour
                 if (!holding)
                 {
                     holding = true;
-                    await UniTask.Delay(TimeSpan.FromSeconds(holdingDelay), cancellationToken: pressingCanellation.Token);
+                    await UniTask.Delay(TimeSpan.FromSeconds(holdingDelay), cancellationToken: pressingCanellation.Token, ignoreTimeScale: true);
                 }
 
 
-                await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay), cancellationToken: pressingCanellation.Token);
+                await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay), cancellationToken: pressingCanellation.Token, ignoreTimeScale: true);
             }
         }
         catch (OperationCanceledException)
@@ -99,10 +99,10 @@ public class UpgradeStats : MonoBehaviour
                 if (!holding)
                 {
                     holding = true;
-                    await UniTask.Delay(TimeSpan.FromSeconds(holdingDelay), cancellationToken: pressingCanellation.Token);
+                    await UniTask.Delay(TimeSpan.FromSeconds(holdingDelay), cancellationToken: pressingCanellation.Token, ignoreTimeScale: true);
                 }
 
-                await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay), cancellationToken: pressingCanellation.Token);
+                await UniTask.Delay(TimeSpan.FromSeconds(pressingDelay), cancellationToken: pressingCanellation.Token, ignoreTimeScale: true);
             }
         }
         catch(OperationCanceledException)

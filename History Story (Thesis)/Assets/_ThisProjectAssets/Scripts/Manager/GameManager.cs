@@ -102,7 +102,7 @@ public class GameManager : Singleton<GameManager>
 
     private void SceneUnloaded(Scene scene)
     {
-        throw new NotImplementedException();
+        
     }
 
     private async void SceneLoaded(Scene scene, LoadSceneMode load)
