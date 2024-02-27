@@ -65,20 +65,20 @@ public class ChapterSelection : MonoBehaviour
     }
     private void Start()
     {
-        //TESTING
-        Debug.Log("TESTING");
-        GameManager.Instance.UnlockSceneChapter("Introduction");
+        ////TESTING
+        //Debug.Log("TESTING");
+        //GameManager.Instance.UnlockSceneChapter("Introduction");
 
 
-        foreach (var item in GameManager.Instance.GetDictUnlockedChapters)
-        {
-            Debug.Log($"CHAPTER: {item.Key.chapterName} || UNLOCKED: {item.Value}");
-        }
-        //GameManager.Instance.CollectArtifacts("Hunters Insignia");
-        //GameManager.Instance.CollectedAbilities("Dodge");
-        GameManager.Instance.UnlockSceneChapter("Chapter 2");
-        GameManager.Instance.UnlockSceneChapter("Chapter 3");
-        GameManager.Instance.UnlockSceneChapter("Chapter 4");
+        //foreach (var item in GameManager.Instance.GetDictUnlockedChapters)
+        //{
+        //    Debug.Log($"CHAPTER: {item.Key.chapterName} || UNLOCKED: {item.Value}");
+        //}
+        ////GameManager.Instance.CollectArtifacts("Hunters Insignia");
+        ////GameManager.Instance.CollectedAbilities("Dodge");
+        //GameManager.Instance.UnlockSceneChapter("Chapter 2");
+        //GameManager.Instance.UnlockSceneChapter("Chapter 3");
+        //GameManager.Instance.UnlockSceneChapter("Chapter 4");
 
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
@@ -90,16 +90,6 @@ public class ChapterSelection : MonoBehaviour
 
             //Debug.Log($"INDEX: {i} || NAME: {name} || DIRECTORY: {directoryName} || FolderName: {folderNameOnly} ||| FULL PATH: {fullPath}");
         }
-
-
-
-
-
-
-
-
-
-
 
         var allScene = GameManager.Instance.GetListOfChapters;
         foreach (Chapter_LevelSO item in allScene)
@@ -215,6 +205,7 @@ public class ChapterSelection : MonoBehaviour
         artifactPage.SetListOfArtifacts(infoSO.collections.artifacts);
         abilityPage.SetListOfAbility(infoSO.collections.abilities);
     }
+
 
     private async void ShowDescriptionPage()
     {

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -7,6 +8,7 @@ public class ChangeSceneReciever : MonoBehaviour, INotificationReceiver
 
     private string sceneName;
     private string transitionID;
+    private bool resetFile;
     private SceneLoadingMethod loadingSceneMethod;
    
 
@@ -18,6 +20,7 @@ public class ChangeSceneReciever : MonoBehaviour, INotificationReceiver
             sceneName = marker.sceneName;
             transitionID = marker.transitionID;
 
+            resetFile = marker.resetSceneFile;
             loadingSceneMethod = marker.loadingMethod;
 
 
@@ -25,7 +28,7 @@ public class ChangeSceneReciever : MonoBehaviour, INotificationReceiver
         }
     }
 
-    private void ChangeScene()
+    private async void ChangeScene()
     {
         switch (loadingSceneMethod)
         {
@@ -35,7 +38,23 @@ public class ChangeSceneReciever : MonoBehaviour, INotificationReceiver
                 break;
             case SceneLoadingMethod.LoadingToMenu:
                 Debug.Log("TIMELINE CHANGE SCENE TO MAIN MENU");
-                SceneTransitionManager.Instance.SceneTransitionInstant(MENU_SCENE);
+                try
+                {
+                    if (resetFile)
+                    {
+                        if (ES3.DirectoryExists(SaveGameDataManager.Instance.GetCurrentFolderName()))
+                        {
+                            ES3.DeleteDirectory(SaveGameDataManager.Instance.GetCurrentFolderName());
+                        }
+                    }
+                    await UniTask.Delay(100, cancellationToken: GameManager.Instance.GetMainMenuCancellationToken);
+
+                }
+                finally
+                {
+                    SceneTransitionManager.Instance.SceneTransitionInstant(MENU_SCENE);
+                }
+
                 break;
         }
     }

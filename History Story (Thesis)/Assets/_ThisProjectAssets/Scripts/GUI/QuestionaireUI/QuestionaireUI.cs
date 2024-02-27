@@ -145,9 +145,14 @@ public class QuestionaireUI : MonoBehaviour
             //UI_Manager.Instance.OpenMenu("UpgradeStats UI");
             var upgradeMenu = UI_Manager.Instance.GetMenu("UpgradeStats UI"); //Menu
             
+
             //Modifying mmf canvas group
             MMF_CanvasGroup mmfScale = correctFeedback?.GetFeedbackOfType<MMF_CanvasGroup>("SetUpgradeCanvas");
             mmfScale.TargetCanvasGroup = upgradeMenu.GetComponent<CanvasGroup>();
+
+            //Modifying mmf TMPRO Counter
+            MMF_TMPCountTo mmfCounter = correctFeedback?.GetFeedbackOfType<MMF_TMPCountTo>("Reward Counter");
+            mmfCounter.CountTo = questionPoints;
 
             //Rewards
             var upgradeStats = await UI_Manager.Instance.FindComponentInUIMenu<UpgradeStatsSystem>("UpgradeStats UI");

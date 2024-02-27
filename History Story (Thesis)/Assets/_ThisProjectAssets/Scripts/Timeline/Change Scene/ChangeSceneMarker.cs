@@ -17,6 +17,8 @@ public class ChangeSceneMarker : Marker, INotification, INotificationOptionProvi
     [Tooltip("No need to add details if 'LoadingToMenu', this method will direct to the main menu scene.")]
     public SceneLoadingMethod loadingMethod = SceneLoadingMethod.LoadingToGameScene;
 
+    public bool resetSceneFile = false;
+
     [Header("For LoadingToGameScene")]
     public string sceneName;
     public string transitionID;

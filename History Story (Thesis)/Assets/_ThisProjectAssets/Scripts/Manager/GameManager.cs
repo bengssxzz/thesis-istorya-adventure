@@ -190,6 +190,20 @@ public class GameManager : Singleton<GameManager>
 
 
     #region FOR SCENE CHAPTERS
+    public bool IsChapterSceneExist(Chapter_LevelSO chapterlevelSO, out bool chapterUnlocked)
+    {
+        if (dictChapterUnlocked.ContainsKey(chapterlevelSO))
+        {
+            chapterUnlocked = dictChapterUnlocked[chapterlevelSO];
+            return true;
+        }
+        else
+        {
+            Debug.LogWarning($"{chapterlevelSO.chapterName} IS NOT REGISTER IN THE GAME");
+            chapterUnlocked = false;
+            return false;
+        }
+    }
     private void InitializeSceneChapter()
     {
         if (listOfAllChapters.Count == 0 || listOfAllChapters == null)
@@ -212,22 +226,7 @@ public class GameManager : Singleton<GameManager>
 
 
     }
-    public bool IsChapterSceneExist(Chapter_LevelSO chapterlevelSO, out bool chapterUnlocked)
-    {
-        if (dictChapterUnlocked.ContainsKey(chapterlevelSO))
-        {
-            chapterUnlocked = dictChapterUnlocked[chapterlevelSO];
-            return true;
-        }
-        else
-        {
-            Debug.LogWarning($"{chapterlevelSO.chapterName} IS NOT REGISTER IN THE GAME");
-            chapterUnlocked = false;
-            return false;
-        }
-    }
-    public void UnlockSceneChapter(string chapterName) //Unlock the chapter
-                                                       //scene
+    public void UnlockSceneChapter(string chapterName) //Unlock the chapter scene
     {
         var selectedScene = dictChapterUnlocked.FirstOrDefault(x => x.Key.chapterName == chapterName);
 

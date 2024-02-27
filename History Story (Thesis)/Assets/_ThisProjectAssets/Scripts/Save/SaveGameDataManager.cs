@@ -346,7 +346,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
     }
 
-    private string GetCurrentFolderName() //Get the file name
+    public string GetCurrentFolderName() //Get the file name
     {
         // Get the full path of the current scene
         string scenePath = SceneManager.GetActiveScene().path;
