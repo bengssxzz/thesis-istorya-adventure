@@ -141,6 +141,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        InitializeAbilities();
     }
 
 
@@ -300,7 +301,7 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            Debug.LogError($"{artifacts.artifactName} IS NOT YET COLLECTED");
+            Debug.LogWarning($"{artifacts.artifactName} IS NOT YET COLLECTED");
             return false;
         }
     }
@@ -368,6 +369,13 @@ public class GameManager : Singleton<GameManager>
         if (ability != null)
         {
             listOfCollectedAbilities.Add(ability);
+        }
+    }
+    private void InitializeAbilities()
+    {
+        foreach (var ability in GetListOfAllAbility)
+        {
+            ability.InitializeAbility();
         }
     }
 

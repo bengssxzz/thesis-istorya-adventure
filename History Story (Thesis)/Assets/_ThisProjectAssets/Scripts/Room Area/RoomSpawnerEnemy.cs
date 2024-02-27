@@ -272,23 +272,6 @@ public class RoomSpawnerEnemy : MonoBehaviour
             {
                 Debug.Log("GetAllEnemiesInRoom task was cancelled.");
             }
-
-
-            //do
-            //{
-            //    cancellationToken.ThrowIfCancellationRequested();
-            //    // Create a list to store colliders of enemies
-            //    List<Collider2D> enemyColliders = new List<Collider2D>(); // Assuming a maximum of 10 enemies
-
-            //    ContactFilter2D contactFilter = new ContactFilter2D();
-            //    contactFilter.SetLayerMask(LayerMask.GetMask("Enemy")); // Set the layer mask to include only the "Enemy" layer
-
-            //    totalEnemyInRoom = roomAreaCollider.OverlapCollider(contactFilter, enemyColliders);
-
-            //    // Check if cancellation was requested
-            //    await UniTask.DelayFrame(1); // Add a small delay to allow other operations to run
-
-            //} while (true);
         }
         else
         {
@@ -315,7 +298,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
             for (int i = 0; i < toSpawn; i++)
             {
-                Vector2 randomPosition = await ThesisUtility.RandomGetVector2InCollider2DArea(roomAreaCollider, 0.1f, cannotSpawn);
+                Vector2 randomPosition = await ThesisUtility.RandomGetVector2InCollider2DArea(roomAreaCollider, 0.3f, cannotSpawn);
 
                 GameObject selectedEnemy = ObjectPooling.Instance.GetObjectInPool("enemy", waveInfo.enemyArray.RandomGetObject(), Vector3.zero);
                 selectedEnemy.GetComponent<Entities>()?.GetEntityStats.ResetCurrentStats();

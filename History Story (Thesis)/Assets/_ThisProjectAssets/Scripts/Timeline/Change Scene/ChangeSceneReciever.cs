@@ -30,6 +30,8 @@ public class ChangeSceneReciever : MonoBehaviour, INotificationReceiver
 
     private async void ChangeScene()
     {
+        _ = SaveGameDataManager.Instance.SavePlayerStatsData();
+
         switch (loadingSceneMethod)
         {
             case SceneLoadingMethod.LoadingToGameScene:

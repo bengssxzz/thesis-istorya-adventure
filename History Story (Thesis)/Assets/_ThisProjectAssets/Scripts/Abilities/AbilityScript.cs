@@ -79,6 +79,13 @@ public class AbilityScript : ScriptableObject
 
 
     #endregion
+    public void InitializeAbility()
+    {
+        remainingCD = 0;
+        isOnCoolDown = false;
+        state = AbilityState.PreCasting;
+    }
+
 
     public void Reset()
     {
