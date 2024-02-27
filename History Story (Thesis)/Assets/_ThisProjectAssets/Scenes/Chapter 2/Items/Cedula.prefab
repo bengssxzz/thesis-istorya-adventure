@@ -168,6 +168,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4511331393178708559}
     m_Modifications:
+    - target: {fileID: 1335845812455099327, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
+      propertyPath: showIndicatorForever
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6755290643760329882, guid: 94599a1018d0c6946a03d9e4667b04b3, type: 3}
       propertyPath: m_Name
       value: Visual
@@ -252,7 +256,7 @@ MonoBehaviour:
   setAnotherQuestEntryState: 0
   anotherQuestEntryNumber: 1
   anotherQuestEntryState: 0
-  luaCode: Variable["CedulasCollected"] = Variable["CedulasCollected"] + 1
+  luaCode: Variable["CedulasCollected"] = Variable["CedulasCollected"] + 1;
   sequence: 
   sequenceSpeaker: {fileID: 0}
   sequenceListener: {fileID: 0}

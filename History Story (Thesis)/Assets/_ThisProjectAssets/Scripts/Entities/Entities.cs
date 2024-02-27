@@ -117,7 +117,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         //Color
         colorKey[0].time = 0f;
         colorKey[0].color = colorText;
-        colorKey[1].time = 0f;
+
+        colorKey[1].time = 1f;
         colorKey[1].color = colorText;
 
         //Alpha
@@ -260,7 +261,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) {
             SetFloatingText("Dodge", selfColorText);
             TempImmunity(0.5f);
-            return; } //if dodge is true, dont take damage
+            return; 
+        } //if dodge is true, dont take damage
 
 
         if (isCritical)

@@ -20,6 +20,7 @@ public class VisualSelector : MonoBehaviour
     [SerializeField] private MobileInteractButtonState interactVisualState;
     [SerializeField] private GameObject selector;
 
+    [SerializeField] private bool showIndicatorForever = false;
 
     public Usable GetVisualUsable { get { return usable; } }
     public MobileInteractButtonState GetVisualIndicator { get { return interactVisualState; } }
@@ -34,7 +35,14 @@ public class VisualSelector : MonoBehaviour
 
     private void Start()
     {
-        selector?.SetActive(false);
+        if (showIndicatorForever)
+        {
+            selector?.SetActive(true);
+        }
+        else
+        {
+            selector?.SetActive(false);
+        }
     }
 
     private void OnEnable()
@@ -63,7 +71,8 @@ public class VisualSelector : MonoBehaviour
     }
     private void OnDeselectObject()
     {
-        selector?.SetActive(false);
+        if(!showIndicatorForever)
+            selector?.SetActive(false);
 
         //UI_Manager.Instance.CloseMenu("Interact Button");
         OnEventDeselectObject?.Invoke();

@@ -8,6 +8,9 @@ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using MoreMountains.Tools;
+
+
 
 public class GameManager : Singleton<GameManager>
 {
@@ -132,7 +135,10 @@ public class GameManager : Singleton<GameManager>
 
     private async void SceneLoaded(Scene scene, LoadSceneMode load)
     {
+        MMSoundManager.Instance.LoadSettings();
+
         await UniTask.Delay(150);
+
         if (dictChapterScores.ContainsKey(GetCurrentFolderName()))
         {
             OnChangeChapterPoints?.Invoke(dictChapterScores[GetCurrentFolderName()]);
