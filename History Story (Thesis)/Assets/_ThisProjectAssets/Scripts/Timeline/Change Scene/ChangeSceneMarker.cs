@@ -8,7 +8,8 @@ using UnityEngine.Playables;
 public enum SceneLoadingMethod
 {
     LoadingToGameScene,
-    LoadingToMenu
+    LoadingToMenu,
+    None
 }
 
 public class ChangeSceneMarker : Marker, INotification, INotificationOptionProvider
