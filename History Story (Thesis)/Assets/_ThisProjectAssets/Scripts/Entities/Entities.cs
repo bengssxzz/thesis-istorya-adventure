@@ -255,9 +255,10 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     {
         if (isImmuneDamage) { return; } //If immune to damage is true, dont take damage;
 
+        var selfColorText = attackHandler.GetColorType.a <= 0.3 ? Color.red : attackHandler.GetColorType;
+
         if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) {
-            var colorSelf = attackHandler.GetColorType.a <= 0.3 ? Color.cyan : attackHandler.GetColorType;
-            SetFloatingText("Dodge", colorSelf);
+            SetFloatingText("Dodge", selfColorText);
             TempImmunity(0.5f);
             return; } //if dodge is true, dont take damage
 
@@ -265,8 +266,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         if (isCritical)
         {
             //Damage is critical
-            var colorFrom = sourceDamage == null ? Color.red : sourceDamage.GetAttackHandler.GetColorType;
-            SetFloatingText("Critical", colorFrom);
+            SetFloatingText("Critical", selfColorText);
         }
 
         //Compute the total damage

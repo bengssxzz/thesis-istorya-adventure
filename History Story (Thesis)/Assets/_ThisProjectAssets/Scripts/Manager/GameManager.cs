@@ -79,17 +79,22 @@ public class GameManager : Singleton<GameManager>
 
         InitializeSceneChapter();
 
+        RetrievePlayerData();
+
+
         gameMainMenuCancellationToken = new CancellationTokenSource();
     }
 
     private void OnDestroy()
     {
+
         gameMainMenuCancellationToken?.Cancel();
         gameMainMenuCancellationToken?.Dispose();
     }
 
     private void OnEnable()
     {
+
         SceneManager.sceneLoaded += SceneLoaded;
         SceneManager.sceneUnloaded += SceneUnloaded;
     }
@@ -116,7 +121,6 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        RetrievePlayerData();
     }
 
 

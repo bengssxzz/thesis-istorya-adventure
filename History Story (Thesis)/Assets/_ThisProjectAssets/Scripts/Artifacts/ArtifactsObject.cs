@@ -38,6 +38,13 @@ public class ArtifactsObject : BasePoints
         spriteRenderer.sprite = artifactsSo.artifactsSprite;
         await UniTask.Delay(20);
 
+
+        //TESTING
+        foreach (var item in GameManager.Instance.GetListOfAllArtifacts)
+        {
+            Debug.Log("Artifacts ID: " + item.GetInstanceID());
+        }
+
         
         var alreadyCollected = GameManager.Instance.GetListOfCollectedArtifacts.Contains(artifactsSo);
 

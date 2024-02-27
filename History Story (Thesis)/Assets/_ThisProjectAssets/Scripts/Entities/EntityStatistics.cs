@@ -118,32 +118,32 @@ public class EntityStatistics
 
     public EntityStatistics(EntityStatsSO entityStatsSO)
     {
-        _maxHealth = entityStatsSO.maxHealth;
+        _maxHealth = Mathf.Clamp(entityStatsSO.maxHealth, 0, maxHealthBoundValue);
         _currentHealth = maxHealth;
 
-        _maxDamage = entityStatsSO.damage;
+        _maxDamage = Mathf.Clamp(entityStatsSO.damage, 0, maxDamageBoundValue);
         _currentDamage = maxDamage;
 
-        _maxDefense = entityStatsSO.defense;
+        _maxDefense = Mathf.Clamp(entityStatsSO.defense, 0, maxDefenseBoundValue);
         _currentDefense = maxDefense;
 
-        _maxAttackSpeed = entityStatsSO.attackSpeed;
+        _maxAttackSpeed =Mathf.Clamp(entityStatsSO.attackSpeed, 0, maxAttackSpeedBoundValue);
         _currentAttackSpeed = maxAttackSpeed;
 
-        _maxMoveSpeed = entityStatsSO.maxMoveSpeed;
+        _maxMoveSpeed = Mathf.Clamp(entityStatsSO.maxMoveSpeed, 0, maxMoveSpeedBoundValue);
         _currentMoveSpeed = maxMoveSpeed;
 
-        _maxCriticalDamage = entityStatsSO.criticalDamage;
+        _maxCriticalDamage = Mathf.Clamp(entityStatsSO.criticalDamage, 0, maxCriticalDamageBoundValue);
         _currentCriticalDamage = maxCriticalDamage;
 
-        _maxDodgeChance = entityStatsSO.dodgingChance;
+        _maxDodgeChance = Mathf.Clamp(entityStatsSO.dodgingChance, 0, maxDodgeChanceBoundValue);
         _currentDodgeChance = maxDodgeChance;
 
-        _maxCriticalChance = entityStatsSO.criticalChance;
+        _maxCriticalChance = Mathf.Clamp(entityStatsSO.criticalChance, 0, maxCriticalChanceBoundValue);
         _currentCriticalChance = maxCriticalChance;
 
 
-        lifeSteal = entityStatsSO.lifeSteal;
+        lifeSteal = Mathf.Clamp(entityStatsSO.lifeSteal, 0, lifeStealBoundValue);
     }
     public void InitializeCancellationToken(CancellationToken token)
     {
