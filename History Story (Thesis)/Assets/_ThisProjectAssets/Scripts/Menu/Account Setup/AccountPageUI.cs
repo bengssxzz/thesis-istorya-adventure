@@ -55,7 +55,8 @@ public class AccountPageUI : MonoBehaviour
         if (gameSavedFile != null)
         {
             characterStatsInfo.text = SetPlayerStats(gameSavedFile.playerStats);
-            artifactsCollected.text = SetPlayerTotalArtifactsCollected(gameSavedFile.artifactsCollected.Count);
+            //artifactsCollected.text = SetPlayerTotalArtifactsCollected(gameSavedFile.artifactsCollected.Count);
+            artifactsCollected.text = SetPlayerTotalArtifactsCollected(gameSavedFile.artifactsCollected_ID.Count);
             abilitiesCollected.text = SetPlayerTotalAbilitiesCollected(gameSavedFile.abilitiesCollected.Count);
             totalPoints.text = SetPlayerTotalScore(gameSavedFile.chapterScores.Values.Sum());
         }

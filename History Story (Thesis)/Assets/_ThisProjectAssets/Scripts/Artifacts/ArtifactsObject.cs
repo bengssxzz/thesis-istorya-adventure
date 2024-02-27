@@ -36,17 +36,12 @@ public class ArtifactsObject : BasePoints
         base.OnAwakeBehaviour();
 
         spriteRenderer.sprite = artifactsSo.artifactsSprite;
-        await UniTask.Delay(20);
+        await UniTask.Delay(100);
 
-
-        //TESTING
-        foreach (var item in GameManager.Instance.GetListOfAllArtifacts)
-        {
-            Debug.Log("Artifacts ID: " + item.GetInstanceID());
-        }
 
         
-        var alreadyCollected = GameManager.Instance.GetListOfCollectedArtifacts.Contains(artifactsSo);
+        
+        var alreadyCollected = GameManager.Instance.IsArtifactsCollected(artifactsSo);
 
         if (alreadyCollected)
         {

@@ -7,7 +7,8 @@ public class PlayerData
     public EntityStatistics playerStats;
 
     //Save the artifacts collected
-    public List<ArtifactsSO> artifactsCollected;
+    //public List<ArtifactsSO> artifactsCollected;
+    public List<string> artifactsCollected_ID;
 
     //Save the unlocked abilities and current used ability
     public List<AbilityScript> abilitiesCollected;

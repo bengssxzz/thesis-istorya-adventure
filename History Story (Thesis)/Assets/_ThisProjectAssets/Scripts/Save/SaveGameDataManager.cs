@@ -65,7 +65,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         {
             playerStats = player.GetEntityStats,
 
-            artifactsCollected = GameManager.Instance.GetListOfCollectedArtifacts,
+            //artifactsCollected = GameManager.Instance.GetListOfCollectedArtifacts,
+            artifactsCollected_ID = GameManager.Instance.GetListOfCollectedArtifactsStringID,
             abilitiesCollected = GameManager.Instance.GetListOfCollectedAbility,
             unlockedChapters = GameManager.Instance.GetDictUnlockedChapters,
 

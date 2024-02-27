@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PixelCrushers.DialogueSystem;
 using UnityEngine.SceneManagement;
+using Cysharp.Threading.Tasks;
 
 [RequireComponent(typeof(Collider2D))]
 public class SafeArea : MonoBehaviour
@@ -41,22 +42,26 @@ public class SafeArea : MonoBehaviour
     ////    }
     ////}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private async void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) { return; }
 
         Debug.Log("PLAYER ENTER THE SAFE LOCATION");
         DialogueManager.ShowAlert(alertMessageEnterRoom, 2f);
 
+        await UniTask.Delay(100);
+
         SaveGameDataManager.Instance.SaveChapterScene().Forget(); //Save the changes in the level scene
         SaveGameDataManager.Instance.SavePlayerScene(spawnPosition.position).Forget(); //Save the player in the scene
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    private async void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) { return; }
 
         Debug.Log("PLAYER EXIT THE SAFE LOCATION");
         DialogueManager.ShowAlert(alertMessageExitRoom, 2f);
+
+        await UniTask.Delay(100);
 
         SaveGameDataManager.Instance.SaveChapterScene().Forget(); //Save the scene
         SaveGameDataManager.Instance.SavePlayerScene(spawnPosition.position).Forget();

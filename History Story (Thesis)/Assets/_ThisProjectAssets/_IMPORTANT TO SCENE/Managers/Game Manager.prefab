@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8052354834864684066}
   - component: {fileID: 7964100580416355061}
   - component: {fileID: 4831046440324676475}
-  - component: {fileID: 4831046440324676476}
   - component: {fileID: 5243131242435796587}
+  - component: {fileID: 7125352685113205710}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -82,6 +82,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3743ba21bfae474a8432ebafb86d500, type: 2}
   - {fileID: 11400000, guid: a47575ccb14829144a039dcb5041d0ca, type: 2}
   - {fileID: 11400000, guid: 820e02d9adbe464479a25a26a0aeeb7c, type: 2}
+  listOfCollectedArtifacts: []
   listOfCollectedAbilities:
   - {fileID: 11400000, guid: 4b1a7227656ac1b4db897d51f5555db2, type: 2}
   - {fileID: 11400000, guid: ce2131ab500c5ad4798dd53e06246972, type: 2}
@@ -117,19 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07c94cd1d023c14c99bb89de2e7391b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadingScreen: {fileID: 0}
   sqlManagerLeaderboard: {fileID: 5243131242435796587}
---- !u!114 &4831046440324676476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8052354834864684064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4490e959d6531424f947035b6981f72c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5243131242435796587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,3 +139,15 @@ MonoBehaviour:
   workingName: 
   overwriteIfExists: 1
   debugTrace: 0
+--- !u!114 &7125352685113205710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8052354834864684064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4490e959d6531424f947035b6981f72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

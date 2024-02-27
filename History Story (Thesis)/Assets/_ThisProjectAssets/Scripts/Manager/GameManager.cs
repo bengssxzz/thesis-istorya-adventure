@@ -36,35 +36,57 @@ public class GameManager : Singleton<GameManager>
 
     public List<Chapter_LevelSO> GetListOfChapters { get { return listOfAllChapters; } }
 
-    public List<AbilityScript> GetListOfAllAbility { get 
+    public List<AbilityScript> GetListOfAllAbility
+    {
+        get
         {
             // Get unique elements using HashSet
             HashSet<AbilityScript> newList = new HashSet<AbilityScript>(listOfAllAbilities);
 
             return new List<AbilityScript>(newList);
-        } }
-    public List<AbilityScript> GetListOfCollectedAbility { get 
+        }
+    }
+    public List<AbilityScript> GetListOfCollectedAbility
+    {
+        get
         {
             // Get unique elements using HashSet
             HashSet<AbilityScript> newList = new HashSet<AbilityScript>(listOfCollectedAbilities);
 
             return new List<AbilityScript>(newList);
-        } }
+        }
+    }
 
-    public List<ArtifactsSO> GetListOfAllArtifacts { get 
+    public List<ArtifactsSO> GetListOfAllArtifacts
+    {
+        get
         {
             // Get unique elements using HashSet
             HashSet<ArtifactsSO> newList = new HashSet<ArtifactsSO>(listOfAllArtifacts);
 
             return new List<ArtifactsSO>(newList);
-        } }
-    public List<ArtifactsSO> GetListOfCollectedArtifacts { get 
+        }
+    }
+    public List<ArtifactsSO> GetListOfCollectedArtifacts
+    {
+        get
         {
             // Get unique elements using HashSet
             HashSet<ArtifactsSO> newList = new HashSet<ArtifactsSO>(listOfCollectedArtifacts);
 
             return new List<ArtifactsSO>(newList);
-        } 
+        }
+    }
+    public List<string> GetListOfCollectedArtifactsStringID
+    {
+        get
+        {
+            // Get unique elements using HashSet
+            HashSet<ArtifactsSO> newList = new HashSet<ArtifactsSO>(listOfCollectedArtifacts);
+            List<string> stringID = newList.Select(artifact => artifact.GetInstanceID().ToString()).ToList();
+
+            return new List<string>(stringID);
+        }
     }
 
     public Dictionary<Chapter_LevelSO, bool> GetDictUnlockedChapters { get { return dictChapterUnlocked; } }
@@ -79,9 +101,6 @@ public class GameManager : Singleton<GameManager>
 
         InitializeSceneChapter();
 
-        RetrievePlayerData();
-
-
         gameMainMenuCancellationToken = new CancellationTokenSource();
     }
 
@@ -94,6 +113,7 @@ public class GameManager : Singleton<GameManager>
 
     private void OnEnable()
     {
+        RetrievePlayerData();
 
         SceneManager.sceneLoaded += SceneLoaded;
         SceneManager.sceneUnloaded += SceneUnloaded;
@@ -107,7 +127,7 @@ public class GameManager : Singleton<GameManager>
 
     private void SceneUnloaded(Scene scene)
     {
-        
+
     }
 
     private async void SceneLoaded(Scene scene, LoadSceneMode load)
@@ -131,25 +151,31 @@ public class GameManager : Singleton<GameManager>
         if (loadedData != null)
         {
             //Load Artifacts
-            if(loadedData.artifactsCollected != null)
+            if (loadedData.artifactsCollected_ID != null)
             {
-                List<ArtifactsSO> collectedArtifacts = new List<ArtifactsSO>(loadedData.artifactsCollected);
+                List<string> artifactsInstanceIDs = new List<string>(loadedData.artifactsCollected_ID);
+
+
+                List<ArtifactsSO> collectedArtifacts = listOfAllArtifacts.Where(artifact => artifactsInstanceIDs.Contains(artifact.GetInstanceID().ToString())).ToList();
+
                 listOfCollectedArtifacts = collectedArtifacts;
             }
 
-            if(loadedData.abilitiesCollected != null)
+            //Load Abilities
+            if (loadedData.abilitiesCollected != null)
             {
                 List<AbilityScript> collectedAbilities = new List<AbilityScript>(loadedData.abilitiesCollected);
                 listOfCollectedAbilities = collectedAbilities;
             }
 
-            if(loadedData.unlockedChapters != null)
+            //Load chapters
+            if (loadedData.unlockedChapters != null)
             {
                 Dictionary<Chapter_LevelSO, bool> unlockedChapters = new Dictionary<Chapter_LevelSO, bool>(loadedData.unlockedChapters);
                 dictChapterUnlocked = unlockedChapters;
             }
 
-            if(loadedData.chapterScores != null)
+            if (loadedData.chapterScores != null)
             {
                 Dictionary<string, int> chapterScores = new Dictionary<string, int>(loadedData.chapterScores);
                 dictChapterScores = chapterScores;
@@ -267,19 +293,35 @@ public class GameManager : Singleton<GameManager>
 
 
     #region FOR ARTIFACTS
+    public bool IsArtifactsCollected(ArtifactsSO artifacts)
+    {
+        if (GetListOfCollectedArtifacts.Contains(artifacts))
+        {
+            return true;
+        }
+        else
+        {
+            Debug.LogError($"{artifacts.artifactName} IS NOT YET COLLECTED");
+            return false;
+        }
+    }
     public void CollectArtifacts(ArtifactsSO artifacts)
     {
-        if (GetListOfCollectedArtifacts.Contains(artifacts)){
+        if (GetListOfCollectedArtifacts.Contains(artifacts))
+        {
             Debug.Log($"{artifacts.artifactName} IS ALREADY COLLECTED");
-            return; }
+            return;
+        }
 
         listOfCollectedArtifacts.Add(artifacts);
     }
     public void CollectArtifacts(string artifactName)
     {
-        if(GetListOfCollectedArtifacts.Any(collectedArtifacts => collectedArtifacts != null && collectedArtifacts.artifactName == artifactName)) {
+        if (GetListOfCollectedArtifacts.Any(collectedArtifacts => collectedArtifacts != null && collectedArtifacts.artifactName == artifactName))
+        {
             Debug.Log($"{artifactName} IS ALREADY COLLECTED");
-            return; }
+            return;
+        }
 
         var artifact = GetListOfAllArtifacts.FirstOrDefault(x => x.artifactName == artifactName);
 
@@ -306,9 +348,11 @@ public class GameManager : Singleton<GameManager>
     #region FOR ABILITIES
     public void CollectedAbilities(AbilityScript ability)
     {
-        if (listOfCollectedAbilities.Contains(ability)) {
+        if (listOfCollectedAbilities.Contains(ability))
+        {
             Debug.Log($"{ability.abilityName} IS ALREADY COLLECTED");
-            return; }
+            return;
+        }
 
         listOfCollectedAbilities.Add(ability);
     }
@@ -369,11 +413,11 @@ public class GameManager : Singleton<GameManager>
     //}
 
 
-    
 
-    
-    
-    
+
+
+
+
 
 
 

@@ -5316,43 +5316,43 @@ MonoBehaviour:
         Owner: {fileID: 7083957339549146857}
         DebugActive: 0
         Intensity: 1
-        Value: 100
+        Value: 'Ability Collected: Reduced Damage'
         UseIntensityAsValue: 0
         RoundingMethod: 0
-        ForceColor: 0
+        ForceColor: 1
         AnimateColorGradient:
           serializedVersion: 2
-          key0: {r: 1, g: 1, b: 1, a: 1}
-          key1: {r: 1, g: 1, b: 1, a: 1}
-          key2: {r: 0, g: 0, b: 0, a: 0}
+          key0: {r: 1, g: 0.95173645, b: 0, a: 1}
+          key1: {r: 0.96946514, g: 1, b: 0.83647794, a: 1}
+          key2: {r: 1, g: 1, b: 1, a: 0}
           key3: {r: 0, g: 0, b: 0, a: 0}
           key4: {r: 0, g: 0, b: 0, a: 0}
           key5: {r: 0, g: 0, b: 0, a: 0}
           key6: {r: 0, g: 0, b: 0, a: 0}
           key7: {r: 0, g: 0, b: 0, a: 0}
           ctime0: 0
-          ctime1: 65535
-          ctime2: 0
+          ctime1: 21010
+          ctime2: 65535
           ctime3: 0
           ctime4: 0
           ctime5: 0
           ctime6: 0
           ctime7: 0
           atime0: 0
-          atime1: 65535
-          atime2: 0
-          atime3: 0
+          atime1: 30647
+          atime2: 65535
+          atime3: 65535
           atime4: 0
           atime5: 0
           atime6: 0
           atime7: 0
           m_Mode: 0
-          m_NumColorKeys: 2
-          m_NumAlphaKeys: 2
+          m_NumColorKeys: 3
+          m_NumAlphaKeys: 3
         ForceLifetime: 0
         Lifetime: 0.5
-        PositionMode: 1
-        TargetTransform: {fileID: 0}
+        PositionMode: 0
+        TargetTransform: {fileID: 7083957339373581172}
         Direction: {x: 0, y: 0, z: 0}
     - rid: 6094492232681783296
       type: {class: MMF_Particles, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
@@ -6338,6 +6338,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RecieveParticle
       objectReference: {fileID: 0}
+    - target: {fileID: 4110242418006389250, guid: f9f9311b40763184c9ef42cf93a3e111, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 5128947648165793733, guid: f9f9311b40763184c9ef42cf93a3e111, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -6912,7 +6916,7 @@ MonoBehaviour:
   hurtFeedback: {fileID: 7083957338772371100}
   diedFeedback: {fileID: 0}
   playerVisuals: {fileID: 8006469770189766998}
-  collectedFeedback: {fileID: 0}
+  collectedFeedback: {fileID: 7083957339549146857}
 --- !u!114 &7083957337534718305
 MonoBehaviour:
   m_ObjectHideFlags: 0
