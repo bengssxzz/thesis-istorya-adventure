@@ -7,13 +7,7 @@ using SimpleSQL;
 using ThesisLibrary;
 using System.Linq;
 using UnityEngine.SceneManagement;
-
-
-
-
-
-
-
+using Cysharp.Threading.Tasks;
 
 [Serializable]
 public class QuestionsAnswer
@@ -36,7 +30,7 @@ public class QuestionsManager : Singleton<QuestionsManager>
         public string qandATable;
     }
 
-    
+
 
     public event Action<int, string, string[]> OnQuestionUITrigger;
 
@@ -48,6 +42,8 @@ public class QuestionsManager : Singleton<QuestionsManager>
     private Dictionary<string, List<QuestionsAnswer>> questionList;
 
     //[SerializeField] private string[] questionTableName;
+    private List<int> doneQuestionList;
+    private int maxDoneQuestion;
 
     private int currentQandAId = -1;
     private string currentSceneTable;
@@ -80,7 +76,7 @@ public class QuestionsManager : Singleton<QuestionsManager>
             Debug.Log("TABLE NAME REGISTERED: " + tableName);
             string sql = String.Format("SELECT * FROM {0}", tableName);
             List<QuestionsAnswer> qanda = dbManager.Query<QuestionsAnswer>(sql);
-            
+
             questionList.Add(tableName, qanda); //TableName Key : QandAInfo Value
         }
     }
@@ -92,7 +88,16 @@ public class QuestionsManager : Singleton<QuestionsManager>
         //Check if the current is registered to have a table name
         if (registerSceneQandA.Exists(x => x.sceneName == currentScene))
         {
-            var _tablename = registerSceneQandA.FirstOrDefault(x => x.sceneName == currentScene).qandATable;
+            var sceneQandA = registerSceneQandA.FirstOrDefault(x => x.sceneName == currentScene);
+            var _tablename = sceneQandA.qandATable;
+
+            if (currentSceneTable != _tablename)
+            {
+                //Reset the already done list
+                doneQuestionList = new List<int>();
+                maxDoneQuestion = questionList[_tablename].Count - 5;
+            }
+
             currentSceneTable = _tablename; //Set a current use table name
         }
         else
@@ -101,16 +106,55 @@ public class QuestionsManager : Singleton<QuestionsManager>
         }
 
     }
+    private bool CheckValidQuestion(int questionID)
+    {
+        if (doneQuestionList != null)
+        {
+            if (doneQuestionList.Contains(questionID))
+            {
+                //Question is already show up
+                return false;
+            }
+            else
+            {
+                //Question is not yet show up
+                if(doneQuestionList.Count >= maxDoneQuestion) { doneQuestionList = new List<int>(); }
 
-    
-    public void QuestionTriggerUI(int powerPoints, int questionPoint) //Trigger the UI question
+                doneQuestionList.Add(questionID);
+                return true;
+            }
+        }
+        else
+        {
+            doneQuestionList = new List<int>();
+            maxDoneQuestion = questionList[currentSceneTable].Count - 5;
+
+            return true;
+        }
+
+    }
+    private async UniTask<QuestionsAnswer> GetRandomQuestionInfo(string tableName)
+    {
+        do
+        {
+            var questionInfo = ThesisUtility.RandomGetObject(questionList[tableName].ToArray()); //Get random list
+
+            if (CheckValidQuestion(questionInfo.id))
+            {
+                return questionInfo;
+            }
+
+            await UniTask.Yield();
+        } while (true);
+    }
+
+
+    public async void QuestionTriggerUI(int powerPoints, int questionPoint) //Trigger the UI question
     {
         questionScorePointHolder = questionPoint;
         powerPointHolder = powerPoints;
 
-        SetCurrentTableScene();
-
-        var qandaInfos = RequestQandA(4);
+        var qandaInfos = await RequestQandA(4);
 
         UI_Manager.Instance.OpenMenu("Question UI");
         OnQuestionUITrigger?.Invoke(qandaInfos.Item1, qandaInfos.Item2, qandaInfos.Item3);
@@ -120,7 +164,7 @@ public class QuestionsManager : Singleton<QuestionsManager>
     {
         var questionInfo = questionList[currentSceneTable].FirstOrDefault(x => x.id == questionID);
 
-        if(questionInfo != null)
+        if (questionInfo != null)
         {
             return questionInfo;
         }
@@ -130,19 +174,9 @@ public class QuestionsManager : Singleton<QuestionsManager>
     }
 
     public delegate void QandAInfos((int, string, string[]) info);
-    //public void TriggerQuestion(string questionFrom, int totalChoices = 2) //Trigger questions behaviour
-    //{
-    //    //UIManager.Instance.ChangeUIState = UIManager.GUIState.QandA;
-    //    UI_Manager.Instance.OpenMenu("Question UI");
 
-    //    CurrentQuestionTable = questionFrom;
-    //    var info = RequestQandA(questionFrom, totalChoices);
-    //    CurrentIDQuestion = info.Item1;
-    //    OnQuestionUITrigger?.Invoke(info.Item1, info.Item2, info.Item3);
-    //}
-    
 
-    public (int, string, string[]) RequestQandA(string desiredTableName, int totalChoicesCount = 2) //Request a question with desired table
+    public async UniTask<(int, string, string[])> RequestQandA(string desiredTableName, int totalChoicesCount = 2) //Request a question with desired table
     {
         if (questionList.ContainsKey(desiredTableName))
         {
@@ -157,7 +191,14 @@ public class QuestionsManager : Singleton<QuestionsManager>
 
             List<string> choicesList = new List<string>();
 
-            var questionInfo = ThesisUtility.RandomGetObject(questionList[desiredTableName].ToArray()); //Get random list
+            //var questionInfo = ThesisUtility.RandomGetObject(questionList[desiredTableName].ToArray()); //Get random list
+            //var questionInfoList = questionList[desiredTableName].Where(info => !doneQuestionList.Contains(info.id)).ToArray();
+            //var questionInfo = questionInfoList.RandomGetObject();
+
+            var questionInfo = await GetRandomQuestionInfo(desiredTableName);
+
+
+
 
             currentQandAId = questionInfo.id; //Set the id
 
@@ -209,13 +250,13 @@ public class QuestionsManager : Singleton<QuestionsManager>
             return default;
         }
 
-        
+
     }
-    public (int, string, string[]) RequestQandA(int totalChoicesCount = 2) //Request a question with current table
+    public async UniTask<(int, string, string[])> RequestQandA(int totalChoicesCount = 2) //Request a question with current table
     {
         SetCurrentTableScene();
 
-        return RequestQandA(currentSceneTable, totalChoicesCount);
+        return await RequestQandA(currentSceneTable, totalChoicesCount);
     }
     public bool CheckQuestionAnswer(int QuestionId, string tableName, string user_answer) //Checking the answer
     {
@@ -276,26 +317,9 @@ public class QuestionsManager : Singleton<QuestionsManager>
 
 
 
-    private string GetCurrentTable()
-    {
-        switch (GetCurrentFolderName())
-        {
-            case "_Introduction":
-                return "";
-            case "Chapter 1":
-                return "Chapter1";
-            case "Chapter 2":
-                return "Chapter2";
-            case "Chapter 3":
-                return "Chapter3";
-            case "Chapter 4":
-                return "Chapter4";
-            case "Chapter 5":
-                return "Chapter5";
-            default:
-                return "";
-        }
-    }
+
+
+
 
     private string GetCurrentFolderName() //Get the folder name of the current scene
     {
@@ -310,15 +334,5 @@ public class QuestionsManager : Singleton<QuestionsManager>
 
         return folderNameOnly;
     }
-
-
-
-
-
-
-
-
-
-
 
 }

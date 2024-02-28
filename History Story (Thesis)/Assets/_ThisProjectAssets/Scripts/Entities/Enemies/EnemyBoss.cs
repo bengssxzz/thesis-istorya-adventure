@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Events;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,16 +11,26 @@ using UnityEditor;
 [RequireComponent(typeof(AIEntity))]
 public class EnemyBoss : MonoBehaviour
 {
+    [Serializable]
+    public class HealthStateEvents
+    {
+        public int healthPercent;
+        public UnityEvent TriggerEvent;
+
+        private bool doneTrigger;
+
+        public bool IsDoneTrigger { get { return doneTrigger; } set { doneTrigger = value; } }
+    }
+
+
+
     private Entities entity;
     private BattleSystemUI battleUI;
     private EntityStatistics entityStats;
 
     [SerializeField] private string bossName;
 
-    /* When the player is in range of this boss, the boss health
-     * and name will appear in the middle of the screen
-     */
-    //[SerializeField] private float bossRange;
+    [SerializeField] private List<HealthStateEvents> HealthEvents = new List<HealthStateEvents>();
 
 
 
@@ -57,7 +68,26 @@ public class EnemyBoss : MonoBehaviour
     private void OnCurrentHealthChange(float currentHealth, float maxHealth)
     {
         battleUI.UpdateBossHealth(currentHealth, maxHealth);
+
+
+        var currentHealthPercentage = (currentHealth / maxHealth) * 100;
+        CheckTriggerEvents(currentHealthPercentage);
     }
+
+
+    private void CheckTriggerEvents(float currentHealthPercentage)
+    {
+        foreach (HealthStateEvents state in HealthEvents)
+        {
+            if(currentHealthPercentage <= state.healthPercent && !state.IsDoneTrigger)
+            {
+                //Trigger events
+                state.TriggerEvent.Invoke();
+                state.IsDoneTrigger = true; // Mark as triggered
+            }
+        }
+    }
+
 
 
 //    private IEnumerator FindPlayer()

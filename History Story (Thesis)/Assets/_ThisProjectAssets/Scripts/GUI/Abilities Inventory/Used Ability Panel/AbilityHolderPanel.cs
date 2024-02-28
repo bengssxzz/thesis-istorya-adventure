@@ -73,7 +73,8 @@ public class AbilityHolderPanel : MonoBehaviour
    
     private void UpdateHolderSlotOnOpen()
     {
-        player = FindObjectOfType<PlayerScript>(true);
+        //player = FindObjectOfType<PlayerScript>(true);
+        player = PlayerSingleton.Instance.GetPlayerScript;
 
         AbilityScript[] playerCurrentAbilities;
 
