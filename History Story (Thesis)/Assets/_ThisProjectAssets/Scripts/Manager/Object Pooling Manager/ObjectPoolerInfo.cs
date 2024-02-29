@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class ObjectPoolerInfo : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private string pool_ID;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
+    public string GetPoolID { get { return pool_ID; } }
+    public GameObject GetObjectToPool { get { return gameObject; } }
+
+
+
+
+
+
+
+
+
+
+
 }
