@@ -24,7 +24,6 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     const string SCENE_FILE_PATH = "Scene_Path/";
 
 
-
     //protected override void Awake()
     //{
     //    base.Awake();
@@ -48,9 +47,17 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     //    //ES3.Save(PLAYER_DATA_KEY, SavePlayerData(), PLAYER_DATA_FILE);
     //    //SavePlayerDataCloud();
     //}
+    private ES3Settings SaveLoadSettings()
+    {
+        return new ES3Settings()
+        {
+            encryptionPassword = "thesis200",
+            encryptionType = ES3.EncryptionType.None //TEMPORARY
+        };
+    }
 
     #region LOCAL SAVING
-    
+
     public PlayerSceneSaveData GetLatestSavedScene()
     {
         return LoadPlayerScene(GetCurrentFolderName());
@@ -221,7 +228,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         {
             TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
             {
-                id = item.GetInstanceID(),
+                //id = item.GetInstanceID(),
+                stringId = item.gameObject.name,
                 isAlreadyTrigger = item.IsTimelinePlayOnce
             };
 

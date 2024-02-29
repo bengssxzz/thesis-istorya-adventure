@@ -43,15 +43,22 @@ public class TriggerTimeLine : MonoBehaviour
 
         if (loadedData != null)
         {
-            var data = loadedData.FirstOrDefault(x => x.id == GetInstanceID());
+            //var data = loadedData.FirstOrDefault(x => x.id == GetInstanceID());
+            var data = loadedData.FirstOrDefault(x => x.stringId == gameObject.name);
 
             if (data != null)
             {
                 alreadyPlayOnce = data.isAlreadyTrigger;
             }
+            else
+            {
+                Debug.LogError($"THERE ARE NO {gameObject.name} ID FOUND IN LOADED FILE FOR TRIGGER TIMELINE");
+            }
         }
-
-        Debug.Log("WAITING STATS TIMELINE: " + alreadyPlayOnce);
+        else
+        {
+            Debug.LogWarning("THERE ARE NO FILE FOUND FOR TRIGGER TIMELINE IN THIS SCENE");
+        }
     }
 
 
