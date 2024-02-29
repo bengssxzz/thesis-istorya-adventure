@@ -14,7 +14,7 @@ public class EnemyBoss : MonoBehaviour
     [Serializable]
     public class HealthStateEvents
     {
-        public int healthPercent;
+        [Range(0, 100)] public int healthPercent;
         public UnityEvent TriggerEvent;
 
         private bool doneTrigger;

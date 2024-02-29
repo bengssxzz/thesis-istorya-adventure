@@ -80,7 +80,33 @@ public class UpgradeStatsSystem : MonoBehaviour
 
         //SetPowerPoints(5); //FOR TESTING PURPOSES
     }
-
+    private float GetStatsUpgradePercent(EntityStats stats) //Percentage of adding stats amount
+    {
+        switch (stats)
+        {
+            case EntityStats.Health:
+                return 5f;
+            case EntityStats.Damage:
+                return 3f;
+            case EntityStats.Defense: // LIMITED
+                return 0.3f;
+            case EntityStats.MoveSpeed:// LIMITED
+                return 0.25f;
+            case EntityStats.AttackSpeed:// LIMITED
+                return 0.5f;
+            case EntityStats.CriticalChance:// LIMITED
+                return 0.2f;
+            case EntityStats.CriticalDamage:
+                return 2f;
+            case EntityStats.Dodging:// LIMITED
+                return 0.3f;
+            case EntityStats.LifeSteal:// LIMITED
+                return 0.3f;
+            default:
+                Debug.LogError($"THERE ARE NO {stats} IN THE ENTITY STATISTICS");
+                return 0f;
+        }
+    }
     public void SetPowerPoints(int amount) //Set the points
     {
         maxAvailablePoints = amount;
@@ -108,33 +134,7 @@ public class UpgradeStatsSystem : MonoBehaviour
         await SaveGameDataManager.Instance.SavePlayerStatsData();
     }
 
-    private float GetStatsUpgradePercent(EntityStats stats) //Percentage of adding stats amount
-    {
-        switch (stats)
-        {
-            case EntityStats.Health:
-                return 15f;
-            case EntityStats.Damage:
-                return 3f;
-            case EntityStats.Defense: // LIMITED
-                return 0.5f;
-            case EntityStats.MoveSpeed:// LIMITED
-                return 0.5f;
-            case EntityStats.AttackSpeed:// LIMITED
-                return 0.5f;
-            case EntityStats.CriticalChance:// LIMITED
-                return 0.5f;
-            case EntityStats.CriticalDamage:
-                return 3f;
-            case EntityStats.Dodging:// LIMITED
-                return 0.5f;
-            case EntityStats.LifeSteal:// LIMITED
-                return 1.2f;
-            default:
-                Debug.LogError($"THERE ARE NO {stats} IN THE ENTITY STATISTICS");
-                return 0f;
-        }
-    }
+    
 
     private void ChangeCurrentVisualPowerText(int value)
     {
