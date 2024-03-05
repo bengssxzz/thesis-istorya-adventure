@@ -10,7 +10,7 @@ public class ArtifactsObject : BasePoints
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Tooltip("If the ability is already collected, instantiate this")]
-    [SerializeField] private BasePoints[] alternativePoints;
+    [SerializeField] private ObjectPoolerInfo[] alternativePoints;
 
     //private void OnEnable()
     //{
@@ -47,8 +47,8 @@ public class ArtifactsObject : BasePoints
         {
             if (alternativePoints.Length > 0)
             {
-                var objectRandom = alternativePoints.RandomGetObject().gameObject;
-                var newObject = ObjectPooling.Instance.GetObjectInPool("loot", objectRandom, transform.position, true);
+                var objectRandom = alternativePoints.RandomGetObject();
+                var newObject = ObjectPoolingManager.Instance.GetItemFromPool(objectRandom);
                 newObject.transform.position = transform.position;
                 newObject.GetComponent<BasePoints>().GetAmountPoints = GetAmountPoints;
             }

@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 using PixelCrushers.DialogueSystem;
+using System.Threading;
 
 
 /*Save all pickup object in the scene
@@ -22,10 +23,11 @@ using PixelCrushers.DialogueSystem;
 public class LevelManager : Singleton<LevelManager>
 {
     private CinemachineVirtualCamera sceneCamera;
-
+    private CancellationTokenSource cancellationSceneLevel;
 
     public PlayerScript player { get; private set; }
     public PlayableDirector currentDirector { get; private set; }
+    public CancellationToken GetCancellationOnLevel { get { return cancellationSceneLevel.Token; } }
 
 
     private string currentScene;
@@ -42,11 +44,14 @@ public class LevelManager : Singleton<LevelManager>
     private void OnEnable()
     {
         //LoadedNewScene();
+        cancellationSceneLevel?.Cancel();
+        cancellationSceneLevel = new CancellationTokenSource();
     }
 
     private void OnDisable()
     {
         //UnloadedCurrentScene();
+        cancellationSceneLevel?.Cancel();
     }
 
 

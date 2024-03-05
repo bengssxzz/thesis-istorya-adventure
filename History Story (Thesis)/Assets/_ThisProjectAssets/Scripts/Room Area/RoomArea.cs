@@ -34,7 +34,7 @@ public class RoomArea : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Player enter the room
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !isPlayerInsideRoom)
         {
             isPlayerInsideRoom = true;
             OnPlayerEnterRoom?.Invoke();
@@ -43,7 +43,7 @@ public class RoomArea : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         //Player exit the room
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && isPlayerInsideRoom)
         {
             isPlayerInsideRoom = false;
             OnPlayerExitRoom?.Invoke();

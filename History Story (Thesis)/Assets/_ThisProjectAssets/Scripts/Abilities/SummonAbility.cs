@@ -40,7 +40,7 @@ public class SummonAbility : AbilityScript
     protected override async UniTask PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         await base.PreCastingBehaviour(mono, entity);
-        Debug.Log(entity.name + " CASTING SUMMONING");
+        //Debug.Log(entity.name + " CASTING SUMMONING");
 
         if (!canMoveWhileSummon)
             entity.StopMovement(true);
@@ -52,14 +52,14 @@ public class SummonAbility : AbilityScript
     protected override async UniTask CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         await base.CastingBehaviour(mono, entity);
-        Debug.Log("casting");
+        //Debug.Log("casting");
 
         for (int i = 0; i < spawnCount; i++)
         {
             var generatedPosition = await GenerateRandomPosition(entity, randomRangePosition);
             var spawner = SummonObject(entity, generatedPosition);
 
-            if(spawner != null)
+            if (spawner != null)
             {
                 if (createLight)
                 {
@@ -91,7 +91,7 @@ public class SummonAbility : AbilityScript
     protected override async UniTask FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         await base.FinishedCastingBehaviour(mono, entity);
-        Debug.Log("Finish casting");
+        //Debug.Log("Finish casting");
 
         entity.StopMovement(false);
         entity.GetAttackHandler.IsCanAttack = true;
@@ -113,12 +113,14 @@ public class SummonAbility : AbilityScript
     }
     private GameObject SummonObject(Entities entity, Vector2 spawnPosition)
     {
-        if(summonPrefab == null) { return null; }
+        if (summonPrefab == null) { return null; }
         var position = spawnPosition == null ? Vector2.zero : spawnPosition;
         //To summon object
         var spawningPosition = (Vector2)entity.transform.position + position;
 
-        var spawner = ObjectPooling.Instance.GetObjectInPool("ability_spawner", summonPrefab.gameObject, spawningPosition);
+        //var spawner = ObjectPooling.Instance.GetObjectInPool("ability_spawner", summonPrefab.gameObject, spawningPosition);
+        var prefab = summonPrefab.GetComponent<ObjectPoolerInfo>();
+        var spawner = ObjectPoolingManager.Instance.GetItemFromPool(prefab);
         AIEntity _spawner = spawner.GetComponent<AIEntity>();
 
         RemoveComponents(_spawner);

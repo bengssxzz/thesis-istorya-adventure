@@ -196,16 +196,6 @@ public class PlayerScript : Entities
 
 
 
-    protected override void KillerReward(Entities killerEntity, Entities victimEntity) //When I killed the enemy
-    {
-        
-        GenerateHealth(GetEntityStats.lifeSteal);
-
-        //TODO: Invoke some achievement
-    }
-
-
-
     protected override void DeathBehaviour()
     {
         //Open deathscreen

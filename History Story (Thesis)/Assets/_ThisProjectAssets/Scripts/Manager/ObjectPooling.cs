@@ -11,7 +11,7 @@ public class ObjectPooling : Singleton<ObjectPooling>
     private Dictionary<string, List<GameObject>> poolObjects = new Dictionary<string, List<GameObject>>();
 
 
-    public GameObject GetObjectInPool(string objectTag, GameObject prefabObject, Vector3 setPosition, bool setToggle = false, bool getActiveObject = false)
+    public GameObject GetObjectInPool1(string objectTag, GameObject prefabObject, Vector3 setPosition, bool setToggle = false, bool getActiveObject = false)
     {
         GameObject requestNewObj = null;
 

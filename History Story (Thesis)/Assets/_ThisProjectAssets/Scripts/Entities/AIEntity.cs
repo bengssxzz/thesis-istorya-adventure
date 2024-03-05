@@ -13,6 +13,7 @@ using UnityEditor;
 
 [RequireComponent(typeof(AIPath))]
 [RequireComponent(typeof(ScanningEntities))]
+[RequireComponent(typeof(ObjectPoolerInfo))]
 public class AIEntity : Entities
 {
     private enum MoveBehaviourType { Follow, Random }
@@ -128,7 +129,7 @@ public class AIEntity : Entities
 
                 if (distance < useAbility_Range)
                 {
-                    Debug.Log("TARGET IN RANGE");
+                    //Debug.Log("TARGET IN RANGE");
                     if (ThesisUtility.RandomGetChanceBool()) //Trigger ability in 80% chance
                     {
                         //Use ability, the target is in range
@@ -139,11 +140,11 @@ public class AIEntity : Entities
                             abilityToUse.TriggerAbility(this).Forget();
                         }
 
-                        Debug.Log("USING ABILITY");
+                        //Debug.Log("USING ABILITY");
                     }
                     else
                     {
-                        Debug.Log("NO TIME TO USE ABILITY");
+                        //Debug.Log("NO TIME TO USE ABILITY");
                     }
                     var delayTimer = ThesisUtility.RandomGetFloat(minUseTimerDelay, maxUseTimerDelay);
                     await UniTask.Delay(TimeSpan.FromSeconds(delayTimer), cancellationToken: GetEntityCancellationToken);

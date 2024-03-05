@@ -9,7 +9,6 @@ public class EntityStatsSO : ScriptableObject
 
     [Header("Health")]
     public int maxHealth = 100;
-    public int maxMana = 100;
     public float lifeSteal = 0;
 
     [Header("Damage")]

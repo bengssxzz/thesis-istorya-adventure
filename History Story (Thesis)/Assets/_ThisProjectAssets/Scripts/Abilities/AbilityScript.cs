@@ -53,7 +53,9 @@ public class AbilityScript : ScriptableObject
     [Header("Ability Timer")]
     public float cooldownTime;
 
-    [Header("Ability Stats")]
+    [Header("Casting Ability")]
+    public bool canAttack;
+    public bool canMove;
     //TODO: Add the list of stats to be added to player stats
 
     [Space(10)]
@@ -211,6 +213,7 @@ public class AbilityScript : ScriptableObject
         AbilityPlayFeedbacks(entity, precastingAtStartFeedback);
         PlaySoundEffect(preCastingAtStart_SoundFX);
         CooldownTimer().Forget();
+
         await UniTask.Yield(); // Yield to allow other operations
     }
     protected virtual async UniTask CastingBehaviour(MonoBehaviour mono, Entities entity)
@@ -258,14 +261,29 @@ public class AbilityScript : ScriptableObject
         ModifyCastingFeedback(entity, castingAtStartFeedback);
         ModifyFinishedCastingFeedback(entity, finishedAtStartFeedback);
 
-        MMF_Player newPlayerFeedback = ObjectPooling.Instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject, Vector3.zero, true).GetComponent<MMF_Player>();
+        //MMF_Player newPlayerFeedback = ObjectPooling.Instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject, Vector3.zero, true).GetComponent<MMF_Player>();
+        var newFeedback = new GameObject().AddComponent<MMF_Player>();
+        newFeedback.name = "Feedbacks";
+        MMF_Player newPlayerFeedback = ObjectPoolingManager.Instance.GetItemFromPool("feedbacks", newFeedback.gameObject).GetComponent<MMF_Player>();
 
+        newPlayerFeedback.FeedbacksList.Clear();
+        newPlayerFeedback.FeedbacksList = new List<MMF_Feedback>(feedbackPrefab.FeedbacksList);
 
+        newPlayerFeedback.gameObject.SetActive(true);
 
+        //await newPlayerFeedback.PlayFeedbacksTask();
         newPlayerFeedback.PlayFeedbacks();
-        //newPlayerFeedback.gameObject.SetActive(false);
     }
 
+    public virtual void InitializeAbility_Used()
+    {
+        var newFeedback = new GameObject().AddComponent<MMF_Player>();
+        newFeedback.name = "Feedbacks";
+        ObjectPoolingManager.Instance.CreateNewPool("feedbacks", newFeedback.gameObject, 20);
+        //var newFeedbackObject = feedbackPrefab.gameObject.AddComponent<ObjectPoolerInfo>();
+        //newFeedbackObject.SetPoolID = feedbackPrefab.gameObject.name;
+        //MMF_Player newPlayerFeedback = ObjectPoolingManager.Instance.GetItemFromPool(newFeedbackObject).GetComponent<MMF_Player>();
+    }
     protected virtual void ModifyPrecastingFeedback(Entities entity, MMF_Player precastingFeedback) { }
     protected virtual void ModifyCastingFeedback(Entities entity, MMF_Player castingFeedback) { }
     protected virtual void ModifyFinishedCastingFeedback(Entities entity, MMF_Player finishFeedback) { }

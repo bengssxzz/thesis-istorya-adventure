@@ -192,6 +192,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.046223998
       objectReference: {fileID: 0}
+    - target: {fileID: 690065669538881573, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: pool_ID
+      value: normal_wolf
+      objectReference: {fileID: 0}
     - target: {fileID: 2241493816545232910, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0.5
@@ -319,6 +323,30 @@ PrefabInstance:
     - target: {fileID: 5298546594413584754, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].maxAmount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].minAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].dropChance
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].lootPrefab
+      value: 
+      objectReference: {fileID: 3188640505216282857, guid: fad81b89309ccd648b57610ef313a230, type: 3}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].randomAmountDrop
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}

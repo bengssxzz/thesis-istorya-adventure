@@ -30,6 +30,7 @@ public class EnemyBoss : MonoBehaviour
 
     [SerializeField] private string bossName;
 
+    [Space(10)]
     [SerializeField] private List<HealthStateEvents> HealthEvents = new List<HealthStateEvents>();
 
 

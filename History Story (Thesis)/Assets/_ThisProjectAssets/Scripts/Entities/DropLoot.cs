@@ -10,7 +10,7 @@ public class DropLoot : MonoBehaviour
     private class Loot
     {
         [Tooltip("Loot prefab to be dropped when entity died")]
-        public GameObject lootPrefab;
+        public ObjectPoolerInfo lootPrefab;
         [Tooltip("Check if you want to randomize the amount to drop, else fix amount loot drop and the minAmount will no longer use")]
         public bool randomAmountDrop = false;
 
@@ -32,7 +32,9 @@ public class DropLoot : MonoBehaviour
 
         for (int i = 0; i < amount; i++)
         {
-            GameObject _loot = ObjectPooling.Instance.GetObjectInPool("loot", itemLoot.lootPrefab, transform.position, true);
+            //GameObject _loot = ObjectPooling.Instance.GetObjectInPool("loot", itemLoot.lootPrefab, transform.position, true);
+            GameObject _loot = ObjectPoolingManager.Instance.GetItemFromPool(itemLoot.lootPrefab);
+            _loot.SetActive(true);
             dropList.Add(_loot);
         }
 

@@ -260,7 +260,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
         if (ThesisUtility.RandomGetChanceBool(GetEntityStats.maxDodgeChance.ConvertNumberToPercent())) {
             SetFloatingText("Dodge", selfColorText);
-            TempImmunity(0.5f);
+            TempImmunity(0.1f);
             return; 
         } //if dodge is true, dont take damage
 
@@ -319,7 +319,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         if (diedParticle != null)
         {
             var centerPosition = attackHandler.GetBaseAttackPosition.position;
-            var particle = ObjectPooling.Instance.GetObjectInPool("particle", diedParticle.gameObject, centerPosition, true);
+            //var particle = ObjectPooling.Instance.GetObjectInPool("particle", diedParticle.gameObject, centerPosition, true);
+            var particle = ObjectPoolingManager.Instance.GetItemFromPool("particle", diedParticle.gameObject);
             particle.GetComponent<ParticleSystem>().Play();
         }
 

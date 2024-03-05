@@ -15,6 +15,12 @@ public class AbilityController : MonoBehaviour
         {
             currentAbilities = new List<AbilityScript>(value);
             ResetAbilitiesOnStart();
+
+            foreach (var item in currentAbilities)
+            {
+                if(item == null) { continue; }
+                item.InitializeAbility_Used();
+            }
         } 
     }
 

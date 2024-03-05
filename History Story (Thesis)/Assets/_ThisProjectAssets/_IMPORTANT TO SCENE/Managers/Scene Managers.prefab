@@ -230,6 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5867793345101628742}
   - component: {fileID: 5867793345101628743}
+  - component: {fileID: 8852384142584733353}
   m_Layer: 0
   m_Name: Pooling Manager
   m_TagString: Untagged
@@ -264,6 +265,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a6dbcf179b26ab4f807f30a9694418c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8852384142584733353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867793345101628729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ef5bafc8bfb6e44ba9abe068a3ccee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectPoolInfoList:
+  - poolerInfo: {fileID: 739670100207712584, guid: 9737120ce36200b47ac72589c8d4abe9, type: 3}
+    createPool: 25
+    canExpand: 1
 --- !u!1 &5993651875246256961
 GameObject:
   m_ObjectHideFlags: 0

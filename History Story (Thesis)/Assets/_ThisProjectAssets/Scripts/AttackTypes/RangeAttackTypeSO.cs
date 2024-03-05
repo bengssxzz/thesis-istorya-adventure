@@ -8,7 +8,8 @@ using System;
 
 public abstract class RangeAttackTypeSO : ScriptableObject
 {
-    [SerializeField] private BaseProjectile projectilePrefab;
+    [SerializeField] private ObjectPoolerInfo poolerInfo;
+
     [SerializeField] private float amount = 0;
     [SerializeField] private bool useTimer = false;
     [SerializeField] private float intervalDelay = 0.1f;
@@ -32,11 +33,23 @@ public abstract class RangeAttackTypeSO : ScriptableObject
     }
     protected void InitializeProjectile(Entities hostEntity, AttackHandler attackHandler, Vector3 startPosition, Vector3 direction, float distance)
     {
+        GameObject newBul = ObjectPoolingManager.Instance.GetItemFromPool(poolerInfo);
+
+        if(newBul == null) { return; }
+
         var targetLayer = attackHandler.GetScannerEntities.GetTargetLayerMask;
-        GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject, startPosition);
+
+        newBul.transform.position = startPosition;
         newBul.GetComponent<BaseProjectile>().InitializeProjectile(hostEntity, direction, startPosition, distance, targetLayer, attackHandler.GetColorType);
         newBul.SetActive(true);
     }
+    //protected void InitializeProjectile(Entities hostEntity, AttackHandler attackHandler, Vector3 startPosition, Vector3 direction, float distance)
+    //{
+    //    var targetLayer = attackHandler.GetScannerEntities.GetTargetLayerMask;
+    //    GameObject newBul = ObjectPooling.Instance.GetObjectInPool("bullet", projectilePrefab.gameObject, startPosition);
+    //    newBul.GetComponent<BaseProjectile>().InitializeProjectile(hostEntity, direction, startPosition, distance, targetLayer, attackHandler.GetColorType);
+    //    newBul.SetActive(true);
+    //}
 
 
 
@@ -55,14 +68,14 @@ public abstract class RangeAttackTypeSO : ScriptableObject
 
     private async UniTask AttackType_Amount(AttackHandler attackHandler, CancellationToken token, Action triggerCallBack)
     {
-        Debug.LogWarning("ATTACK TYPE AMOUNT");
+        //Debug.LogWarning("ATTACK TYPE AMOUNT");
         isDone = false;
         await FireBehaviourForLoop(attackHandler, Mathf.RoundToInt(amount), intervalDelay, token, triggerCallBack);
         isDone = true;
     }
     private async UniTask AttackType_Timer(AttackHandler attackHandler, CancellationToken token, Action triggerCallBack)
     {
-        Debug.LogWarning("ATTACK TYPE TIMER");
+        //Debug.LogWarning("ATTACK TYPE TIMER");
         startTimer = Time.time;
         isDone = false;
         await FireBehaviourWhileLoop(attackHandler, amount, intervalDelay, token, triggerCallBack);

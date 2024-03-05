@@ -192,6 +192,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.09805837
       objectReference: {fileID: 0}
+    - target: {fileID: 690065669538881573, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: pool_ID
+      value: mother_wolf
+      objectReference: {fileID: 0}
     - target: {fileID: 1304460008906215409, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: scanRadius
       value: 10
@@ -332,6 +336,46 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.324
       objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].maxAmount
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].minAmount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].maxAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].minAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].dropChance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].lootPrefab
+      value: 
+      objectReference: {fileID: 3188640505216282857, guid: fad81b89309ccd648b57610ef313a230, type: 3}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].dropChance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].lootPrefab
+      value: 
+      objectReference: {fileID: 3503459824970762297, guid: 4f060a9e373a15846a8cfa570dd37592, type: 3}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[0].randomAmountDrop
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
 --- !u!1 &3658767040671979712 stripped
@@ -378,6 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossName: 
+  HealthEvents: []
 --- !u!114 &7019430174920432619
 MonoBehaviour:
   m_ObjectHideFlags: 0

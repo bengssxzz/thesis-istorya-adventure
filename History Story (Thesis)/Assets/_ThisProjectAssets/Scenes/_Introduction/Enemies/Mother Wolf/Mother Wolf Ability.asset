@@ -19,15 +19,17 @@ MonoBehaviour:
   abilityName: Mother Wolf Ability
   abilityIcon: {fileID: 0}
   abilityDescription: 
-  cooldownTime: 15
+  cooldownTime: 25
+  canAttack: 0
+  canMove: 0
   precastingAtStartFeedback: {fileID: 0}
   castingAtStartFeedback: {fileID: 0}
   finishedAtStartFeedback: {fileID: 0}
   preCastingAtStart_SoundFX:
-    sound_FX: {fileID: 0}
+    sound_FX: {fileID: 8300000, guid: 55399c6c668a60a438d0320216214038, type: 3}
     minVolume: 1
     maxVolume: 1
-    minPitch: 1
+    minPitch: 0.8
     maxPitch: 1
   castingAtStart_SoundFX:
     sound_FX: {fileID: 0}
@@ -36,10 +38,10 @@ MonoBehaviour:
     minPitch: 1
     maxPitch: 1
   finishedAtStart_SoundFX:
-    sound_FX: {fileID: 0}
+    sound_FX: {fileID: 8300000, guid: e4b1415de40f4b64a9231146c0a3da82, type: 3}
     minVolume: 1
     maxVolume: 1
-    minPitch: 1
+    minPitch: 0.8
     maxPitch: 1
   canMoveWhileSummon: 0
   canAttackWhileSummon: 0
@@ -50,7 +52,7 @@ MonoBehaviour:
   delay: 1.2
   createLight: 0
   followHost: 0
-  lifeTimer: 10
+  lifeTimer: 0
   overrideScanRadius: 0
   overrideHealth: 0
   overrideDamage: 0

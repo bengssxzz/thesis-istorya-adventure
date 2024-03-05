@@ -11,7 +11,7 @@ public class NPCBehaviour : MonoBehaviour
 {
     private enum MovementBehaviourState
     {
-        Idle, RandomArea, SetLocation
+        Idle, /*RandomArea,*/ SetLocation
     }
     private enum Loops 
     { 
@@ -74,10 +74,10 @@ public class NPCBehaviour : MonoBehaviour
                 aiPath.canMove = false;
                 break;
 
-            case MovementBehaviourState.RandomArea:
-                //StartCoroutine(RandomAreaMoveBehaviour());
-                RandomAreaMoveBehaviour().Forget();
-                break;
+            //case MovementBehaviourState.RandomArea:
+            //    //StartCoroutine(RandomAreaMoveBehaviour());
+            //    RandomAreaMoveBehaviour().Forget();
+            //    break;
 
             case MovementBehaviourState.SetLocation:
                 switch (loopState)
@@ -167,31 +167,6 @@ public class NPCBehaviour : MonoBehaviour
 
         } while (true);
     }
-
-    //private async IEnumerator RandomAreaMoveBehaviour()
-    //{
-    //    while (true)
-    //    {
-    //        Vector2 randomPosition = ThesisUtility.RandomGetVector2InCollider2DArea(areaCollider, 0.02f, invalidPositionLayer);
-
-    //        // Move to the selected position
-    //        aiPath.destination = randomPosition;
-    //        aiPath.maxSpeed = moveSpeed * Time.fixedDeltaTime;
-    //        aiPath.canMove = true;
-
-    //        aiPath.SearchPath();
-
-    //        while (aiPath.pathPending || !aiPath.reachedEndOfPath) // Wait until we know for sure that the agent has calculated a path to the destination
-    //            yield return null;
-
-    //        //Reached the distination
-    //        //Wait in the destination position
-    //        aiPath.canMove = false;
-    //        yield return new WaitForSeconds(ThesisUtility.RandomGetFloat(minWaitTime, maxWaitTime));
-
-    //    }
-    //}
-
 
     #region Loop States
     private IEnumerator ForPingPongState()

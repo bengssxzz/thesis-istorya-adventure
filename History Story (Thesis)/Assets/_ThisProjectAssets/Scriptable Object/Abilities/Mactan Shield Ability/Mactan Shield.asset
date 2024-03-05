@@ -21,6 +21,8 @@ MonoBehaviour:
   abilityDescription: Raises your Defense stat for a while, and then explodes. Damaging
     enemies around you.
   cooldownTime: 1
+  canAttack: 0
+  canMove: 0
   precastingAtStartFeedback: {fileID: 0}
   castingAtStartFeedback: {fileID: -3038244309737551539, guid: b66bc03cf0ba5bb42bcdb765edeb41e5, type: 3}
   finishedAtStartFeedback: {fileID: 2019878248400037875, guid: c6daf8bafd462df47a8bd1c1e4797ed2, type: 3}
@@ -42,10 +44,9 @@ MonoBehaviour:
     maxVolume: 1
     minPitch: 1
     maxPitch: 1
-  projectile: {fileID: 3426663183919985448, guid: 86a8b49f5c86e0342aa52ce03c2773a8, type: 3}
+  projectile: {fileID: 7779801430589193145, guid: 86a8b49f5c86e0342aa52ce03c2773a8, type: 3}
   projectileMaxCount: 6
   projectileMaxDistance: 1
-  projectileSpeed: 1
-  projectileAdditionalDamage: 20
-  addDefensePercentage: 40
-  time: 2.5
+  projectileSpeed: 1.5
+  projectileAddDamagePercent: 10
+  timeDelay: 3
