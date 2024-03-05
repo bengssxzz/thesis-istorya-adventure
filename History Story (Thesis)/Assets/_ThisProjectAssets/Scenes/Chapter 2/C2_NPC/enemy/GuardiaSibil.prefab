@@ -2981,6 +2981,7 @@ GameObject:
   - component: {fileID: 3015861862116703194}
   - component: {fileID: 1304460008906215409}
   - component: {fileID: 5859967434095430936}
+  - component: {fileID: 690065669538881573}
   m_Layer: 7
   m_Name: GuardiaSibil
   m_TagString: Enemy
@@ -3163,11 +3164,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropForce: 100
   listOfDropLoot:
-  - lootPrefab: {fileID: 4659685974505659230, guid: 17db92601f45da047b069a396798ec9f, type: 3}
+  - lootPrefab: {fileID: 3188640505216282857, guid: 17db92601f45da047b069a396798ec9f, type: 3}
     randomAmountDrop: 0
-    minAmount: 3
-    maxAmount: 8
-    dropChance: 100
+    minAmount: 5
+    maxAmount: 15
+    dropChance: 50
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3267,6 +3268,19 @@ MonoBehaviour:
   overrideAttackSpeed: 0
   attackRadius: 0.28
   attackFeedback: {fileID: 0}
+--- !u!114 &690065669538881573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed20d8deb9459541967f4129acc75a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool_ID: GuardiaSibil
 --- !u!1 &3816278106701158378
 GameObject:
   m_ObjectHideFlags: 0

@@ -80,7 +80,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         roomArea = GetComponentInParent<RoomArea>();
         roomAreaCollider = roomArea.GetComponent<PolygonCollider2D>();
 
-        positionList = transform.GetChild(0).GetComponentsInChildren<Transform>().Skip(1).ToArray();
+        positionList = transform.GetChild(0)?.GetComponentsInChildren<Transform>().Skip(1).ToArray();
 
         RetriveData();
     }
@@ -439,6 +439,11 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         if (battleMode == BattleStartState.OnTrigger)
         {
+            if (!isAlreadyTrigger || (chanceToBattle && desiredToBattleInRoom))
+            {
+                BarriersToggler(true);
+            }
+
             StartWaveBattle();
         }
     }

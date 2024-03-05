@@ -4318,6 +4318,7 @@ GameObject:
   - component: {fileID: 1304460008906215409}
   - component: {fileID: 7084954026720231651}
   - component: {fileID: 4534897634231879172}
+  - component: {fileID: 690065669538881573}
   m_Layer: 7
   m_Name: MajorLieutenant
   m_TagString: Enemy
@@ -4497,13 +4498,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropForce: 150
   listOfDropLoot:
-  - lootPrefab: {fileID: 4659685974505659230, guid: 17db92601f45da047b069a396798ec9f, type: 3}
+  - lootPrefab: {fileID: 3188640505216282857, guid: 17db92601f45da047b069a396798ec9f, type: 3}
     randomAmountDrop: 0
-    minAmount: 5
-    maxAmount: 10
+    minAmount: 15
+    maxAmount: 30
     dropChance: 100
-  - lootPrefab: {fileID: 801891879412706702, guid: 2afcb7f4cbea06d4a877ef78e93cfc5a, type: 3}
+  - lootPrefab: {fileID: 3503459824970762297, guid: 2afcb7f4cbea06d4a877ef78e93cfc5a, type: 3}
     randomAmountDrop: 0
     minAmount: 1
     maxAmount: 1
@@ -4548,6 +4550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossName: Lieutenant Manuel Ros
+  HealthEvents: []
 --- !u!70 &4237691407849884289
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -4643,6 +4646,19 @@ MonoBehaviour:
     canMoveWhileCasting: 0
     attackTypes:
     - {fileID: 11400000, guid: 04335cc60c963714997e535563274357, type: 2}
+--- !u!114 &690065669538881573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed20d8deb9459541967f4129acc75a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool_ID: MajorLieutenant
 --- !u!1 &3735795774933696482
 GameObject:
   m_ObjectHideFlags: 0

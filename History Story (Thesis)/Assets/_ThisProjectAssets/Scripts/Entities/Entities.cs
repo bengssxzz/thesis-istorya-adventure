@@ -300,7 +300,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     }
     public void RegenHealth(float healthAmount)
     {
-        var calculateRegen = healthAmount * (GetEntityStats.lifeSteal / 100);
+        var calculateRegen = healthAmount * GetEntityStats.lifeSteal.ConvertNumberToPercent();
         GetEntityStats.SetCurrentHealth(calculateRegen);    
     }
 
