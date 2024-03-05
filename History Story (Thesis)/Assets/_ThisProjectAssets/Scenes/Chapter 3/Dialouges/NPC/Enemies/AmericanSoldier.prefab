@@ -2253,6 +2253,7 @@ GameObject:
   - component: {fileID: 3015861862116703194}
   - component: {fileID: 1304460008906215409}
   - component: {fileID: 3013911745938004072}
+  - component: {fileID: 690065669538881573}
   m_Layer: 7
   m_Name: AmericanSoldier
   m_TagString: Enemy
@@ -2451,16 +2452,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropForce: 80
   listOfDropLoot:
-  - lootPrefab: {fileID: 4659685974505659230, guid: ec64678380a06ef46b2407d4f1b5ac0b, type: 3}
+  - lootPrefab: {fileID: 3188640505216282857, guid: ec64678380a06ef46b2407d4f1b5ac0b, type: 3}
     randomAmountDrop: 1
-    minAmount: 1
-    maxAmount: 5
-    dropChance: 100
-  - lootPrefab: {fileID: 801891879412706702, guid: f7a5984780fae094292451feb7e256f6, type: 3}
-    randomAmountDrop: 1
-    minAmount: 1
-    maxAmount: 1
-    dropChance: 20
+    minAmount: 5
+    maxAmount: 20
+    dropChance: 50
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2544,6 +2540,19 @@ MonoBehaviour:
   overrideAttackSpeed: 0
   attackRadius: 0.28
   attackFeedback: {fileID: 8092953807666958388}
+--- !u!114 &690065669538881573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed20d8deb9459541967f4129acc75a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool_ID: AmericanSoldier
 --- !u!1 &3775378508127148436
 GameObject:
   m_ObjectHideFlags: 0
