@@ -318,9 +318,12 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
 
         if (diedParticle != null)
         {
+            var particle = ObjectPoolingManager.Instance.GetItemFromPool(diedParticle.gameObject.name, diedParticle.gameObject);
+
+
             var centerPosition = attackHandler.GetBaseAttackPosition.position;
-            //var particle = ObjectPooling.Instance.GetObjectInPool("particle", diedParticle.gameObject, centerPosition, true);
-            var particle = ObjectPoolingManager.Instance.GetItemFromPool("particle", diedParticle.gameObject);
+            particle.transform.position = centerPosition;
+            particle.SetActive(true);
             particle.GetComponent<ParticleSystem>().Play();
         }
 

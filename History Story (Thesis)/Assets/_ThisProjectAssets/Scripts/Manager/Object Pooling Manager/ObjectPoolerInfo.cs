@@ -18,6 +18,15 @@ public class ObjectPoolerInfo : MonoBehaviour
     //public bool SetWaitToDisable { set { waitToDisable = value; } }
     public bool SetDoneSerializeItem { set { doneSerialize = value; } }
 
+
+
+    private void OnValidate()
+    {
+#if UNITY_EDITOR
+        pool_ID = this.name;
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
     private void Awake()
     {
         InitializePoolerInfo();

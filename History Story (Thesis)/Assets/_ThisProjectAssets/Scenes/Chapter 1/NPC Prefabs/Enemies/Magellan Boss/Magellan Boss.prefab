@@ -4308,6 +4308,7 @@ GameObject:
   - component: {fileID: 1304460008906215409}
   - component: {fileID: 5983833373772745804}
   - component: {fileID: 134663130}
+  - component: {fileID: 690065669538881573}
   m_Layer: 7
   m_Name: Magellan Boss
   m_TagString: Enemy
@@ -4490,20 +4491,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropForce: 100
   listOfDropLoot:
-  - lootPrefab: {fileID: 7720255052265319275, guid: 169182babb56f924fbad12e0a9552186, type: 3}
+  - lootPrefab: {fileID: 3503459824970762297, guid: 4448fe637fb150e43915ea4001d12a65, type: 3}
     randomAmountDrop: 0
     minAmount: 1
     maxAmount: 1
     dropChance: 100
-  - lootPrefab: {fileID: 4659685974505659230, guid: f8bf8dc642fef2145bb5fe2b2a03e498, type: 3}
+  - lootPrefab: {fileID: 3188640505216282857, guid: f8bf8dc642fef2145bb5fe2b2a03e498, type: 3}
     randomAmountDrop: 1
-    minAmount: 20
+    minAmount: 15
     maxAmount: 20
-    dropChance: 100
-  - lootPrefab: {fileID: 801891879412706702, guid: 4448fe637fb150e43915ea4001d12a65, type: 3}
-    randomAmountDrop: 0
-    minAmount: 1
-    maxAmount: 1
     dropChance: 100
 --- !u!114 &8780504999550975509
 MonoBehaviour:
@@ -4545,6 +4541,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossName: Magellan
+  HealthEvents: []
 --- !u!70 &5100532100692619887
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -4640,6 +4637,19 @@ MonoBehaviour:
     canMoveWhileCasting: 0
     attackTypes:
     - {fileID: 11400000, guid: 2f9e5173b8576584999d4ebb53c77caf, type: 2}
+--- !u!114 &690065669538881573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed20d8deb9459541967f4129acc75a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool_ID: Magellan Boss
 --- !u!1 &4282188705486736009
 GameObject:
   m_ObjectHideFlags: 0
