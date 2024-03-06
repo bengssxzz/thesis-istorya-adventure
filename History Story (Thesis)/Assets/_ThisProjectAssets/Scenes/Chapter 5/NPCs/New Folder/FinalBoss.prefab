@@ -1078,6 +1078,7 @@ GameObject:
   - component: {fileID: 1304460008906215409}
   - component: {fileID: 4075415069187431296}
   - component: {fileID: 1279457149716260668}
+  - component: {fileID: 690065669538881573}
   m_Layer: 7
   m_Name: FinalBoss
   m_TagString: Enemy
@@ -1210,6 +1211,9 @@ MonoBehaviour:
   fleeDistance: 0
   minRandomWait: 1
   maxRandomWait: 5
+  useAbility_Range: 1
+  minUseTimerDelay: 5
+  maxUseTimerDelay: 5
 --- !u!50 &3719126659226642804
 Rigidbody2D:
   serializedVersion: 4
@@ -1254,6 +1258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropForce: 150
   listOfDropLoot: []
 --- !u!114 &8780504999550975509
 MonoBehaviour:
@@ -1295,6 +1300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossName: ???
+  HealthEvents: []
 --- !u!60 &3835376091111311417
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1358,6 +1364,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmos: 1
+  followHostLayer:
+    serializedVersion: 2
+    m_Bits: 0
   avoidLayer:
     serializedVersion: 2
     m_Bits: 83992
@@ -1413,6 +1422,19 @@ MonoBehaviour:
     canMoveWhileCasting: 0
     attackTypes:
     - {fileID: 11400000, guid: ad327ffea9bdfec40aadcb5354fb07c3, type: 2}
+--- !u!114 &690065669538881573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed20d8deb9459541967f4129acc75a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool_ID: FinalBoss
 --- !u!1 &8245479333427039281
 GameObject:
   m_ObjectHideFlags: 0
