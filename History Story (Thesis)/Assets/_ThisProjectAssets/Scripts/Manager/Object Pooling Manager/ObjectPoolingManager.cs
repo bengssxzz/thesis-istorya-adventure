@@ -59,7 +59,7 @@ public class ObjectPoolingManager : Singleton<ObjectPoolingManager>
     {
         foreach (var pool in objectPoolInfoList)
         {
-            if(pool.poolerInfo == null) { continue; }
+            if(pool.poolerInfo == null || objectPoolDict.ContainsKey(pool.poolerInfo.GetPoolID)) { continue; }
 
             pool.poolerInfo.InitializePoolerInfo();
             objectPoolDict.Add(pool.poolerInfo.GetPoolID, new Queue<GameObject>());

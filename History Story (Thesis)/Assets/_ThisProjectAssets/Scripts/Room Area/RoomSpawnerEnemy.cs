@@ -36,6 +36,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
 
     [SerializeField] private BattleStartState battleMode = BattleStartState.Idle;
+    [SerializeField] private bool alwaysTriggerBattle = false;
     [SerializeField] private bool chanceToBattle = false;
     [SerializeField] private bool showBattleInfoUI = true;
 
@@ -64,6 +65,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
     private bool desiredToBattleInRoom = false;
     private bool isAlreadyTrigger = false;
 
+    private bool doneInitializeTrigger = false;
+
     private Transform[] positionList;
     private List<Transform> enemyDetected;
 
@@ -83,6 +86,9 @@ public class RoomSpawnerEnemy : MonoBehaviour
         positionList = transform.GetChild(0)?.GetComponentsInChildren<Transform>().Skip(1).ToArray();
 
         RetriveData();
+
+        BarriersToggler(false);
+        AstarPath.active.Scan();
     }
 
 
@@ -105,8 +111,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
     private void Start()
     {
         battleUI = BattleSystemUI.Instance;
-
-        BarriersToggler(false);
+        doneInitializeTrigger = true;
     }
 
     private void RetriveData()
@@ -213,25 +218,76 @@ public class RoomSpawnerEnemy : MonoBehaviour
     }
     private void BarriersToggler(bool toggle)
     {
-        if(listOfBarriers.Count == 0) { return; }
+        if (listOfBarriers.Count == 0) { return; }
 
         foreach (var barrier in listOfBarriers)
         {
             barrier.SetActive(toggle);
         }
 
-        _ = UpdateGraphNode();
+        if (doneInitializeTrigger)
+            _ = UpdateGraphNode();
+        //StartCoroutine(UpdateGraphNode());
     }
     private async UniTask UpdateGraphNode()
     {
         Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
         var guo = new GraphUpdateObject(bounds);
 
+        await UniTask.Yield(); // Yield back to the main thread before starting
+
         //await UniTask.WaitForEndOfFrame(this);
         AstarPath.active.UpdateGraphs(guo, 0.3f); //Update the node according to bound
 
         await UniTask.Yield();
+
+        ////////////////////////////////////////////
+
+        //Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
+        //var guo = new GraphUpdateObject(bounds);
+
+        //// Run AstarPath.active.UpdateGraphs in a separate task
+        //await UniTask.RunOnThreadPool(() =>
+        //{
+        //    AstarPath.active.UpdateGraphs(guo, 0.3f); // Update the graphs
+        //});
+
+        //await UniTask.Yield(); // Yield back to the main thread
+
+        ///////////////////////////////////////////
+
+        //Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
+        //var guo = new GraphUpdateObject(bounds);
+
+
+        //AstarPath.active.AddWorkItem(() =>
+        //{
+        //    // Safe to update graphs here
+        //    AstarPath.active.UpdateGraphs(guo, 0.3f); // Update the graphs
+        //});
+
+        //await UniTask.Yield(); // Yield back to the main thread
     }
+    //private IEnumerator UpdateGraphNode()
+    //{
+    //    Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
+    //    var guo = new GraphUpdateObject(bounds);
+
+    //    // Offload heavy processing to a background task
+    //    yield return UniTask.ToCoroutine(async () =>
+    //    {
+    //        AstarPath.active.AddWorkItem(() =>
+    //        {
+    //            // Safe to update graphs here
+    //            AstarPath.active.UpdateGraphs(guo); // Update the graphs
+    //        });
+
+    //        await UniTask.Yield();
+    //    });
+
+    //    yield return null; // Yield back to the main thread
+    //}
+
     private async void CalculateChanceBattle()
     {
         if (randomDesiredTimer || battleMode == BattleStartState.None) { return; }
@@ -403,7 +459,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
     public async void StartWaveBattle()
     {
-        if (isAlreadyTrigger && !(chanceToBattle && desiredToBattleInRoom)) { return; }
+        if (!alwaysTriggerBattle)
+            if (isAlreadyTrigger && !(chanceToBattle && desiredToBattleInRoom)) { return; }
 
         if (onPendingBattle) { return; }
         onPendingBattle = true;
