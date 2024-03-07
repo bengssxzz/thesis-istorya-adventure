@@ -106,6 +106,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         battleUI = BattleSystemUI.Instance;
 
+        BarriersToggler(false);
     }
 
     private void RetriveData()
@@ -212,10 +213,14 @@ public class RoomSpawnerEnemy : MonoBehaviour
     }
     private void BarriersToggler(bool toggle)
     {
+        if(listOfBarriers.Count == 0) { return; }
+
         foreach (var barrier in listOfBarriers)
         {
             barrier.SetActive(toggle);
         }
+
+        _ = UpdateGraphNode();
     }
     private async UniTask UpdateGraphNode()
     {
@@ -265,7 +270,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         if (showBattleInfoUI)
             battleUI?.ToggleWaveInfo(true);
 
-        _ = UpdateGraphNode();
+        //_ = UpdateGraphNode();
     }
     private async void BattleEnded()
     {
@@ -285,7 +290,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
             if (showBattleInfoUI)
                 battleUI?.ToggleWaveInfo(false);
 
-            _ = UpdateGraphNode();
+            //_ = UpdateGraphNode();
 
 
             onPendingBattle = false;

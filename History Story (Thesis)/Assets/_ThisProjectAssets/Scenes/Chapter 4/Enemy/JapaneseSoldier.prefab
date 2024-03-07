@@ -1738,6 +1738,7 @@ GameObject:
   - component: {fileID: 3015861862116703194}
   - component: {fileID: 1304460008906215409}
   - component: {fileID: 8618492964405431446}
+  - component: {fileID: 690065669538881573}
   m_Layer: 7
   m_Name: JapaneseSoldier
   m_TagString: Enemy
@@ -1862,7 +1863,7 @@ MonoBehaviour:
   debugMode: 1
   entityStatsSO: {fileID: 11400000, guid: 6aa454cfadd3e8544afb14ea4c33c3ea, type: 2}
   actorTransform: {fileID: 3719126659225698073}
-  animator_controller: {fileID: 0}
+  animator_controller: {fileID: 6076256516638644480}
   diedParticle: {fileID: 6306676771170447889}
   hurtFeedback: {fileID: 0}
   diedFeedback: {fileID: 0}
@@ -1871,6 +1872,9 @@ MonoBehaviour:
   fleeDistance: 0
   minRandomWait: 1
   maxRandomWait: 5
+  useAbility_Range: 1
+  minUseTimerDelay: 5
+  maxUseTimerDelay: 5
 --- !u!50 &3719126659226642804
 Rigidbody2D:
   serializedVersion: 4
@@ -1931,7 +1935,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718204c2d65404d419b4fcbf5c724b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listOfDropLoot: []
+  dropForce: 150
+  listOfDropLoot:
+  - lootPrefab: {fileID: 3188640505216282857, guid: dca2c6d8e1085d4459652c519eba932a, type: 3}
+    randomAmountDrop: 0
+    minAmount: 5
+    maxAmount: 15
+    dropChance: 80
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1988,6 +1998,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmos: 1
+  followHostLayer:
+    serializedVersion: 2
+    m_Bits: 0
   avoidLayer:
     serializedVersion: 2
     m_Bits: 83992
@@ -2012,6 +2025,19 @@ MonoBehaviour:
   overrideAttackSpeed: 0
   attackRadius: 0.26
   attackFeedback: {fileID: 1260270023726720735}
+--- !u!114 &690065669538881573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719126659226642796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed20d8deb9459541967f4129acc75a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool_ID: JapaneseSoldier
 --- !u!1 &3787533690506659284
 GameObject:
   m_ObjectHideFlags: 0
@@ -4827,6 +4853,11 @@ PrefabInstance:
 --- !u!4 &2838514304892815123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3272832204859969410, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
+  m_PrefabInstance: {fileID: 724800489356740753}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6076256516638644480 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6799363618363494801, guid: ff6adadc3de94bf44b69dc50da300f0d, type: 3}
   m_PrefabInstance: {fileID: 724800489356740753}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &9007583382284684366 stripped

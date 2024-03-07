@@ -109,7 +109,7 @@ public class PlayerScript : Entities
     {
         Debug.Log($"ARTIFACT COLLECTED {artifactsName}");
         GameManager.Instance.CollectArtifacts(artifactsName);
-        CollectFeedbackModified("Ability Collected: " + artifactsName);
+        CollectFeedbackModified("Artifact Collected: " + artifactsName);
     }
     private void CollectAbilities(string abilityName)
     {
@@ -155,9 +155,6 @@ public class PlayerScript : Entities
         InputManager.Instance.OnSkill2_Released -= Skill2Trigger;
         InputManager.Instance.OnSkill3_Released -= Skill3Trigger;
     }
-
-
-
 
 
     private void InitializedDefaultAbilities(List<AbilityScript> defaultAbility)
