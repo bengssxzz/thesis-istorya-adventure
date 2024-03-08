@@ -23,6 +23,9 @@ public class RangeAttackBehaviour : MonoBehaviour
     {
         public float delayCast = 0; //Delay before casting the attack types
         public bool canMoveWhileCasting = true; //Is player can move while casting
+
+        [Space(15)]
+        public MMF_Player beforePlayAttacks;
         public List<RangeAttackTypeSO> attackTypes = new List<RangeAttackTypeSO>();
     }
 
@@ -260,6 +263,7 @@ public class RangeAttackBehaviour : MonoBehaviour
 
             beforeCastingFeedback?.PlayFeedbacks();
 
+            attackType.beforePlayAttacks?.PlayFeedbacks();
             await UniTask.Delay(TimeSpan.FromSeconds(attackType.delayCast), cancellationToken: attackHandler.GetCancellationToken.Token); //Delay casting
 
 

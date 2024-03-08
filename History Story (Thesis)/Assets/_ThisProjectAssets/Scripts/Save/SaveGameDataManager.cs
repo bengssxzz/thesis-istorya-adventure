@@ -226,7 +226,6 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         foreach (TriggerTimeLine item in FindAllTriggerTimelineInScene())
         {
-            Debug.LogWarning(item.gameObject.name + " TIMELINE NAME");
 
             TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
             {
@@ -332,6 +331,12 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
     private bool IsKeyExist(string findKey, string overrideFile = "") //To check if this scene is already saved
     {
+        if (!ES3.FileExists(GetIdentifier()))
+        {
+            Debug.LogWarning($"THERE ARE NO SAVED FILE FOR {GetIdentifier()} YET");
+            return false;
+        }
+
         if (string.IsNullOrEmpty(overrideFile))
         {
             return ES3.KeyExists(findKey, filePath: GetIdentifier());

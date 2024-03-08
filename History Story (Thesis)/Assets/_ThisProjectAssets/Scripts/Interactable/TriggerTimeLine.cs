@@ -43,8 +43,15 @@ public class TriggerTimeLine : MonoBehaviour
 
         if (loadedData != null)
         {
+            foreach (var item in loadedData)
+            {
+                Debug.LogWarning($"ID: {item.stringId} : FIND: {gameObject.name} : RESULT: {item.stringId == gameObject.name}");
+            }
+
             //var data = loadedData.FirstOrDefault(x => x.id == GetInstanceID());
-            var data = loadedData.FirstOrDefault(x => x.stringId == gameObject.name);
+            var data = loadedData.FirstOrDefault(x => {
+                return x.stringId == gameObject.name;
+            });
 
             if (data != null)
             {

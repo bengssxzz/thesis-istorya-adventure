@@ -32500,6 +32500,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6677079844424197155, guid: a33733cb51bf2dc4ba0f67ff88271f6a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7193205757900120090, guid: a33733cb51bf2dc4ba0f67ff88271f6a, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -34011,7 +34015,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerState: 0
   wrapMode: 2
-  playOnce: 1
+  playOnce: 0
 --- !u!61 &286529599
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -34019,10 +34023,10 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 286529595}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -35587,39 +35591,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4431064504003171187, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
-      value: 1.7202982
+      value: 1.4608102
       objectReference: {fileID: 0}
     - target: {fileID: 4431064504003171187, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
-      value: 1.0682657
+      value: 1.260479
       objectReference: {fileID: 0}
     - target: {fileID: 4431064504003171187, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
-      value: -0.62338066
+      value: -1.1602278
       objectReference: {fileID: 0}
     - target: {fileID: 4431064504003171187, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
-      value: 1.0804207
+      value: 1.2740378
       objectReference: {fileID: 0}
     - target: {fileID: 4431064504003171187, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
-      value: -0.5809591
+      value: -1.1530089
       objectReference: {fileID: 0}
     - target: {fileID: 4431064504003171187, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
-      value: -0.63835275
+      value: -0.8847743
       objectReference: {fileID: 0}
     - target: {fileID: 4431064504003171187, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
-      value: 1.8097432
+      value: 1.4349275
       objectReference: {fileID: 0}
     - target: {fileID: 4431064504003171187, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
-      value: -0.6861384
+      value: -0.90718365
       objectReference: {fileID: 0}
     - target: {fileID: 6277453959247820858, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Name
       value: Safe Area
+      objectReference: {fileID: 0}
+    - target: {fileID: 8822973437287468295, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
+      propertyPath: alertMessageEnterRoom
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
@@ -37075,10 +37083,10 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080440936}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -38066,7 +38074,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1361447370}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.3762963, y: 3.4368503, z: -9.927256}
+  m_LocalPosition: {x: -4.38, y: 4.98, z: -9.927256}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38140,10 +38148,10 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1361447370}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -38470,6 +38478,10 @@ PrefabInstance:
     - target: {fileID: 6277453959247820858, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
       propertyPath: m_Name
       value: Safe Area (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8822973437287468295, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
+      propertyPath: alertMessageEnterRoom
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 783ac2a621999094dbfc42c01a25b2e7, type: 3}
@@ -38996,6 +39008,10 @@ PrefabInstance:
     - target: {fileID: 2828505375538326302, guid: 74e1a4ba0418d3c458bbe690df837c9b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5167402668523107294, guid: 74e1a4ba0418d3c458bbe690df837c9b, type: 3}
+      propertyPath: interactVisualState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8764149005723321443, guid: 74e1a4ba0418d3c458bbe690df837c9b, type: 3}
       propertyPath: m_RootOrder

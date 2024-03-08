@@ -78,9 +78,9 @@ public class ScanningEntities : MonoBehaviour
     {
     }
 
-    private async UniTask RescanningArea(CancellationToken cancellationToken)
+    private async UniTask RescanningArea(CancellationToken scanningCancellationToken)
     {
-        while (!cancellationToken.IsCancellationRequested)
+        while (!scanningCancellationToken.IsCancellationRequested)
         {
             Collider2D[] circleArea = Physics2D.OverlapCircleAll(attackHandler.GetBaseAttackPosition.position, scanRadius, targetLayer);
             var scannedEntitiesInArea = circleArea.Select(collider => collider.transform).Distinct().ToList();
@@ -124,7 +124,7 @@ public class ScanningEntities : MonoBehaviour
                 targetInArea = new List<Transform>();
             }
 
-            await UniTask.Delay(150);
+            await UniTask.Delay(150, cancellationToken: scanningCancellationToken);
             await UniTask.Yield();
         }
     }
