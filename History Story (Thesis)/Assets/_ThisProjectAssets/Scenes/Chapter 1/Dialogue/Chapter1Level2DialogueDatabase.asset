@@ -3588,7 +3588,82 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: EventGuid
-        value: e0e9d50c-f6c5-48aa-9a39-32e1448eaf2d
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 5
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 5
+        originDialogueID: 2
+        destinationConversationID: 5
+        destinationDialogueID: 3
+        isConnector: 0
+        priority: 2
+      conditionsString: GetHoldingSomething("SantoNino")  == true
+      userScript: "CollectArtifacts(\"Santo Ni\xF1o\");\nGetTheItemHolding()"
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 261
+        y: 95
+        width: 160
+        height: 30
+    - id: 3
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Pictures
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 3
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Parenthetical
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Audio Files
+        value: '[]'
+        type: 3
+        typeString: CustomFieldType_Files
+      - title: Video File
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: EventGuid
+        value: ae3aa661-ac11-4424-9b38-abab9791cdbb
         type: 0
         typeString: 
       conversationID: 5
@@ -3599,15 +3674,15 @@ MonoBehaviour:
       falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks: []
-      conditionsString: GetHoldingSomething("SantoNino")  == true
-      userScript: "CollectArtifacts(\"Santo Ni\xF1o\");\nGetTheItemHolding()"
+      conditionsString: 
+      userScript: 
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
         x: 260
-        y: 95
+        y: 145
         width: 160
         height: 30
     entryGroups: []
