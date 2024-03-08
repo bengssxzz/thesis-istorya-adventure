@@ -124,6 +124,7 @@ public class ScanningEntities : MonoBehaviour
                 targetInArea = new List<Transform>();
             }
 
+            await UniTask.Delay(150);
             await UniTask.Yield();
         }
     }

@@ -40,6 +40,13 @@ public abstract class RangeAttackTypeSO : ScriptableObject
         var targetLayer = attackHandler.GetScannerEntities.GetTargetLayerMask;
 
         newBul.transform.position = startPosition;
+
+        // Calculate the rotation angle around the y-axis
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Rotate the object around the z-axis to align its x-axis with the direction
+        newBul.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
         newBul.GetComponent<BaseProjectile>().InitializeProjectile(hostEntity, direction, startPosition, distance, targetLayer, attackHandler.GetColorType);
         newBul.SetActive(true);
     }

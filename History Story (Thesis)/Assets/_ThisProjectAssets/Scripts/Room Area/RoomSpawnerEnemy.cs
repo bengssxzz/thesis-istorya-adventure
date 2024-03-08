@@ -231,15 +231,15 @@ public class RoomSpawnerEnemy : MonoBehaviour
     }
     private async UniTask UpdateGraphNode()
     {
-        Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
-        var guo = new GraphUpdateObject(bounds);
+        //Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
+        //var guo = new GraphUpdateObject(bounds);
 
-        await UniTask.Yield(); // Yield back to the main thread before starting
+        //await UniTask.Yield(); // Yield back to the main thread before starting
 
-        //await UniTask.WaitForEndOfFrame(this);
-        AstarPath.active.UpdateGraphs(guo, 0.3f); //Update the node according to bound
+        ////await UniTask.WaitForEndOfFrame(this);
+        //AstarPath.active.UpdateGraphs(guo, 0.3f); //Update the node according to bound
 
-        await UniTask.Yield();
+        //await UniTask.Yield();
 
         ////////////////////////////////////////////
 
@@ -256,17 +256,18 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         ///////////////////////////////////////////
 
-        //Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
-        //var guo = new GraphUpdateObject(bounds);
+        Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
 
 
-        //AstarPath.active.AddWorkItem(() =>
-        //{
-        //    // Safe to update graphs here
-        //    AstarPath.active.UpdateGraphs(guo, 0.3f); // Update the graphs
-        //});
+        AstarPath.active.AddWorkItem(() =>
+        {
+            // Safe to update graphs here
+            var guo = new GraphUpdateObject(bounds);
 
-        //await UniTask.Yield(); // Yield back to the main thread
+            AstarPath.active.UpdateGraphs(guo, 0.3f); // Update the graphs
+        });
+
+        await UniTask.Yield(); // Yield back to the main thread
     }
     //private IEnumerator UpdateGraphNode()
     //{
@@ -326,7 +327,6 @@ public class RoomSpawnerEnemy : MonoBehaviour
         if (showBattleInfoUI)
             battleUI?.ToggleWaveInfo(true);
 
-        //_ = UpdateGraphNode();
     }
     private async void BattleEnded()
     {
@@ -346,7 +346,6 @@ public class RoomSpawnerEnemy : MonoBehaviour
             if (showBattleInfoUI)
                 battleUI?.ToggleWaveInfo(false);
 
-            //_ = UpdateGraphNode();
 
 
             onPendingBattle = false;
@@ -501,10 +500,10 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         if (battleMode == BattleStartState.OnTrigger)
         {
-            if (!isAlreadyTrigger || (chanceToBattle && desiredToBattleInRoom))
-            {
-                BarriersToggler(true);
-            }
+            //if (!isAlreadyTrigger || (chanceToBattle && desiredToBattleInRoom))
+            //{
+            //    BarriersToggler(true);
+            //}
 
             StartWaveBattle();
         }

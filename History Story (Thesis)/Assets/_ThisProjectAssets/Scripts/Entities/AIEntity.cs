@@ -114,6 +114,8 @@ public class AIEntity : Entities
 
     private async UniTask UseAbilityController()
     {
+        if(useAbility_Range == 0) { return; }
+
         List<AbilityScript> availableAbility = new List<AbilityScript>();
 
         if (GetAbility_Controller.ListOfCurrentAbilities.Count > 0)

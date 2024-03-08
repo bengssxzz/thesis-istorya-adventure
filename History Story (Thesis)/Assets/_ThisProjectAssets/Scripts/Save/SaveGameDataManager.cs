@@ -215,7 +215,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     //Chapter scene saving
     private List<TriggerTimeLine> FindAllTriggerTimelineInScene() //Find all the trigger timeline in the scene
     {
-        TriggerTimeLine[] triggerTimeLines = FindObjectsOfType<TriggerTimeLine>();
+        TriggerTimeLine[] triggerTimeLines = FindObjectsOfType<TriggerTimeLine>(true);
         return new List<TriggerTimeLine>(triggerTimeLines);
     }
     private async UniTask SaveTriggerTimelineInScene()
@@ -226,6 +226,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         foreach (TriggerTimeLine item in FindAllTriggerTimelineInScene())
         {
+            Debug.LogWarning(item.gameObject.name + " TIMELINE NAME");
+
             TimelineCutscenesSaveData data = new TimelineCutscenesSaveData()
             {
                 //id = item.GetInstanceID(),
