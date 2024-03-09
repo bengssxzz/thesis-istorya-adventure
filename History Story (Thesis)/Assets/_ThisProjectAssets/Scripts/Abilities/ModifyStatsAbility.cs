@@ -2,6 +2,8 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
+
 
 [CreateAssetMenu(fileName = "New Modify Stats Ability", menuName = "Abilities/Modify Stats")]
 public class ModifyStatsAbility : AbilityScript
@@ -65,6 +67,29 @@ public class ModifyStatsAbility : AbilityScript
         await base.FinishedCastingBehaviour(mono, entity);
         //Not needed
     }
+
+
+
+    private void AddFeedbacks(ParticleSystem particle, float duration)
+    {
+        MMF_Particles newParticle = new MMF_Particles();
+        newParticle.Mode = MMF_Particles.Modes.Play;
+        newParticle.BoundParticleSystem = particle;
+        newParticle.DeclaredDuration = duration;
+
+        castingAtStartFeedback.AddFeedback(newParticle);
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
 
 //public class ModifyStatsAbility : AbilityScript
