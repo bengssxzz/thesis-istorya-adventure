@@ -74,7 +74,8 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         //GetAttack_Controller = GetComponent<AttackController>();
         abilityController = GetComponent<AbilityController>();
         //GetAbility_Controller.InitializedDefaultAbilities(entityStatsSO.abilities);
-
+        if(animator_controller != null)
+            animator_controller.keepAnimatorControllerStateOnDisable = true;
 
         TryGetComponent<DropLoot>(out dropLoot);
         TryGetComponent<AttackHandler>(out attackHandler);
@@ -90,6 +91,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     protected virtual void OnDisable()
     {
         entityCancellation?.Cancel();
+        GetMoveDirection = Vector2.zero;
     }
 
 

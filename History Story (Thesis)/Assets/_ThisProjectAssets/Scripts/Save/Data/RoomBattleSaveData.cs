@@ -10,7 +10,8 @@ public class RoomBattleSaveData
     //Is already trigger?
     //What is the desired battle when player enter the room?
 
-    public int roomId;
+    //public int roomId;
+    public string idName;
     public bool desiredBattleNextEnter;
     public bool isAlreadyTrigger;
 

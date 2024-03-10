@@ -87,7 +87,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         positionList = transform.GetChild(0)?.GetComponentsInChildren<Transform>().Skip(1).ToArray();
 
-        RetriveData();
+        
 
         BarriersToggler(false);
         AstarPath.active.Scan();
@@ -97,6 +97,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
     private void OnEnable()
     {
+        RetriveData();
+
         roomArea.OnPlayerEnterRoom.AddListener(PlayerEnterRoom);
         roomArea.OnPlayerExitRoom.AddListener(PlayerExitRoom);
     }
@@ -122,7 +124,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         if (loadedData != null)
         {
-            var data = loadedData.FirstOrDefault(x => x.roomId == GetInstanceID());
+            //var data = loadedData.FirstOrDefault(x => x.roomId == GetInstanceID());
+            var data = loadedData.FirstOrDefault(x => x.idName == roomArea.gameObject.name);
 
             if (data != null)
             {

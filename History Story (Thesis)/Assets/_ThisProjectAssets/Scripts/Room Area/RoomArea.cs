@@ -59,6 +59,7 @@ public class RoomArea : MonoBehaviour
                 colliderList = new List<Collider2D>(); // Initialize inside the loop to clear it in each iteration
 
                 ContactFilter2D contactFilter = new ContactFilter2D();
+                contactFilter.useTriggers = true;
                 contactFilter.SetLayerMask(detectTarget); 
 
                 roomAreaCollider.OverlapCollider(contactFilter, colliderList);
@@ -69,6 +70,8 @@ public class RoomArea : MonoBehaviour
 
                 await UniTask.Yield();
             }
+
+            roomCancellation.Token.ThrowIfCancellationRequested();
 
         }
         catch (OperationCanceledException)

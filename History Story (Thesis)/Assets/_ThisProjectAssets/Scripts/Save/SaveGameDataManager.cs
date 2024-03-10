@@ -183,7 +183,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
             RoomBattleSaveData data = new RoomBattleSaveData()
             {
-                roomId = room.GetBattleTrigger.GetInstanceID(),
+                //roomId = room.GetBattleTrigger.GetInstanceID(),
+                idName = room.gameObject.name,
                 desiredBattleNextEnter = room.GetBattleTrigger.GetNextDesiredBattleTrigger,
                 isAlreadyTrigger = room.GetBattleTrigger.IsAlreadyTriggerArea
             };
