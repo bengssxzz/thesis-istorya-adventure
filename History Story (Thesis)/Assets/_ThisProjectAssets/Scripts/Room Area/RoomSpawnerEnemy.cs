@@ -60,15 +60,16 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
     private CancellationTokenSource cancelBattleTrigger;
 
-    private bool onPendingBattle = false;
+    //private bool onPendingBattle = false;
     private bool randomDesiredTimer = false;
-    private bool desiredToBattleInRoom = false;
-    private bool isAlreadyTrigger = false;
+
+    private bool desiredToBattleInRoom = false; //To be saved
+    private bool isAlreadyTrigger = false; //To be saved
 
     private bool doneInitializeTrigger = false;
 
     private Transform[] positionList;
-    private List<Transform> enemyDetected;
+    //private List<Transform> enemyDetected;
 
 
     public bool GetNextDesiredBattleTrigger { get { return desiredToBattleInRoom; } set { desiredToBattleInRoom = value; } }
@@ -81,6 +82,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
     private void Awake()
     {
         roomArea = GetComponentInParent<RoomArea>();
+
         roomAreaCollider = roomArea.GetComponent<PolygonCollider2D>();
 
         positionList = transform.GetChild(0)?.GetComponentsInChildren<Transform>().Skip(1).ToArray();
@@ -145,7 +147,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         {
             cancelBattleTrigger?.Cancel();
             cancelBattleTrigger = new CancellationTokenSource();
-            enemyDetected = new List<Transform>();
+            //enemyDetected = new List<Transform>();
 
             //StartRoomScannerEnemies().Forget();
 
@@ -154,7 +156,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
         }
         catch (OperationCanceledException)
         {
-            enemyDetected = new List<Transform>();
+            //enemyDetected = new List<Transform>();
         }
 
     }
@@ -171,51 +173,51 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
 
     //Start scanning the enemies in the room
-    private async UniTaskVoid StartRoomScannerEnemies()
-    {
-        List<Collider2D> colliderList;
+    //private async UniTaskVoid StartRoomScannerEnemies()
+    //{
+    //    List<Collider2D> colliderList;
 
 
-        if (roomAreaCollider != null)
-        {
-            try
-            {
-                while (!cancelBattleTrigger.Token.IsCancellationRequested)
-                {
+    //    if (roomAreaCollider != null)
+    //    {
+    //        try
+    //        {
+    //            while (!cancelBattleTrigger.Token.IsCancellationRequested)
+    //            {
 
-                    colliderList = new List<Collider2D>(); // Initialize inside the loop to clear it in each iteration
+    //                colliderList = new List<Collider2D>(); // Initialize inside the loop to clear it in each iteration
 
-                    ContactFilter2D contactFilter = new ContactFilter2D();
-                    contactFilter.SetLayerMask(LayerMask.GetMask("Enemy")); // Set the layer mask to include only the "Enemy" layer
+    //                ContactFilter2D contactFilter = new ContactFilter2D();
+    //                contactFilter.SetLayerMask(LayerMask.GetMask("Enemy")); // Set the layer mask to include only the "Enemy" layer
 
-                    roomAreaCollider.OverlapCollider(contactFilter, colliderList);
+    //                roomAreaCollider.OverlapCollider(contactFilter, colliderList);
 
-                    // Extract the transforms from the colliders
-                    enemyDetected = colliderList.Select(collider => collider.transform).ToList();
-
-
-                    await UniTask.Yield();
-                }
-
-            }
-            catch (OperationCanceledException)
-            {
-                Debug.Log("Scanning enemies in the room task was cancelled.");
-            }
-            catch (ObjectDisposedException)
-            {
-                Debug.Log("Scanning enemies in the room task was cancelled.");
-                colliderList = new List<Collider2D>();
-            }
+    //                // Extract the transforms from the colliders
+    //                enemyDetected = colliderList.Select(collider => collider.transform).ToList();
 
 
-        }
-        else
-        {
-            Debug.LogError("Polygon collider not assigned!");
-        }
+    //                await UniTask.Yield();
+    //            }
 
-    }
+    //        }
+    //        catch (OperationCanceledException)
+    //        {
+    //            Debug.Log("Scanning enemies in the room task was cancelled.");
+    //        }
+    //        catch (ObjectDisposedException)
+    //        {
+    //            Debug.Log("Scanning enemies in the room task was cancelled.");
+    //            colliderList = new List<Collider2D>();
+    //        }
+
+
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Polygon collider not assigned!");
+    //    }
+
+    //}
     private void BarriersToggler(bool toggle)
     {
         if (listOfBarriers.Count == 0) { return; }
@@ -227,35 +229,9 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         if (doneInitializeTrigger)
             _ = UpdateGraphNode();
-        //StartCoroutine(UpdateGraphNode());
     }
     private async UniTask UpdateGraphNode()
     {
-        //Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
-        //var guo = new GraphUpdateObject(bounds);
-
-        //await UniTask.Yield(); // Yield back to the main thread before starting
-
-        ////await UniTask.WaitForEndOfFrame(this);
-        //AstarPath.active.UpdateGraphs(guo, 0.3f); //Update the node according to bound
-
-        //await UniTask.Yield();
-
-        ////////////////////////////////////////////
-
-        //Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
-        //var guo = new GraphUpdateObject(bounds);
-
-        //// Run AstarPath.active.UpdateGraphs in a separate task
-        //await UniTask.RunOnThreadPool(() =>
-        //{
-        //    AstarPath.active.UpdateGraphs(guo, 0.3f); // Update the graphs
-        //});
-
-        //await UniTask.Yield(); // Yield back to the main thread
-
-        ///////////////////////////////////////////
-
         Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
 
 
@@ -269,25 +245,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         await UniTask.Yield(); // Yield back to the main thread
     }
-    //private IEnumerator UpdateGraphNode()
-    //{
-    //    Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
-    //    var guo = new GraphUpdateObject(bounds);
 
-    //    // Offload heavy processing to a background task
-    //    yield return UniTask.ToCoroutine(async () =>
-    //    {
-    //        AstarPath.active.AddWorkItem(() =>
-    //        {
-    //            // Safe to update graphs here
-    //            AstarPath.active.UpdateGraphs(guo); // Update the graphs
-    //        });
-
-    //        await UniTask.Yield();
-    //    });
-
-    //    yield return null; // Yield back to the main thread
-    //}
 
     private async void CalculateChanceBattle()
     {
@@ -332,7 +290,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
     {
         try
         {
-            await UniTask.WaitUntil(() => enemyDetected.Count == 0, cancellationToken: cancelBattleTrigger.Token);
+            //await UniTask.WaitUntil(() => enemyDetected.Count == 0, cancellationToken: cancelBattleTrigger.Token);
+            await UniTask.WaitUntil(() => roomArea.GetTargetDetectedList.Count == 0, cancellationToken: cancelBattleTrigger.Token);
 
             await UniTask.Delay(TimeSpan.FromSeconds(ThesisUtility.RandomGetFloat(1.7f, 2.5f)), cancellationToken: cancelBattleTrigger.Token);
         }
@@ -348,7 +307,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
 
 
-            onPendingBattle = false;
+            roomArea.IsBattlePending = false;
             isAlreadyTrigger = true;
         }
     }
@@ -389,7 +348,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
                 await SpawnEnemyWave(i); //Wait to finish spawning
 
-                await UniTask.WaitUntil(() => enemyDetected.Count == 0, PlayerLoopTiming.LastUpdate, cancelBattleTrigger.Token); //Wait until the wave clear
+                await UniTask.WaitUntil(() => roomArea.GetTargetDetectedList.Count == 0, PlayerLoopTiming.LastUpdate, cancelBattleTrigger.Token); //Wait until the wave clear
 
                 TriggerWaveEvents(i)?.waveEnd.Invoke(); //Wave ended
             }
@@ -441,7 +400,7 @@ public class RoomSpawnerEnemy : MonoBehaviour
                     await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: cancelBattleTrigger.Token);
                 }
 
-                await UniTask.WaitUntil(() => enemyDetected.Count <= 1, PlayerLoopTiming.LastUpdate, cancelBattleTrigger.Token); //Wait until the remaining enemy become 1
+                await UniTask.WaitUntil(() => roomArea.GetTargetDetectedList.Count <= 1, PlayerLoopTiming.LastUpdate, cancelBattleTrigger.Token); //Wait until the remaining enemy become 1
             } while (desiredToSpawn > 0 && !cancelBattleTrigger.Token.IsCancellationRequested);
 
 
@@ -461,8 +420,8 @@ public class RoomSpawnerEnemy : MonoBehaviour
         if (!alwaysTriggerBattle)
             if (isAlreadyTrigger && !(chanceToBattle && desiredToBattleInRoom)) { return; }
 
-        if (onPendingBattle) { return; }
-        onPendingBattle = true;
+        if (roomArea.IsBattlePending) { return; }
+        roomArea.IsBattlePending = true;
 
         var timer = 0f;
 
@@ -471,11 +430,12 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
         if (!roomArea.isPlayerInsideRoom)
         {
-            onPendingBattle = false;
+            roomArea.IsBattlePending = false;
             return;
         }
 
-        StartRoomScannerEnemies().Forget();
+        //StartRoomScannerEnemies().Forget();
+        roomArea.StartRoomScannerEnemies().Forget();
 
         await UniTask.Yield();
 
@@ -564,9 +524,15 @@ public class RoomSpawnerEnemy : MonoBehaviour
 //    [System.Serializable]
 //    private class WaveSystem
 //    {
-//        public int spawnCount = 5;
-//        //public GameObject[] enemyArray;
-//        public ObjectPoolerInfo[] enemies;
+//        public int maxSpawnCount = 5;
+//        public ObjectPoolerInfo[] enemyTypes;
+//    }
+//    [System.Serializable]
+//    private class WaveEventsTrigger
+//    {
+//        public int waveIndex = 0;
+//        public UnityEvent waveStart;
+//        public UnityEvent waveEnd;
 //    }
 
 
@@ -578,30 +544,39 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
 
 //    [SerializeField] private BattleStartState battleMode = BattleStartState.Idle;
+//    [SerializeField] private bool alwaysTriggerBattle = false;
 //    [SerializeField] private bool chanceToBattle = false;
 //    [SerializeField] private bool showBattleInfoUI = true;
 
-//    [Space(25)]
-//    [Header("Wave System")]
-//    [SerializeField] private int maxEnemySpawnInRoom = 5;
-//    [SerializeField] private WaveSystem[] waveInfoList;
-//    [SerializeField] private LayerMask cannotSpawn;
 
-//    [Space(10)]
+//    [Space(15)]
 //    [SerializeField] private List<GameObject> listOfBarriers = new List<GameObject>();
 
-//    [Space(30)]
+//    [Space(25)]
+//    [Header("Wave System")]
+//    [SerializeField] private LayerMask cannotSpawn;
+//    [SerializeField] private int maxEnemySpawnInRoom = 5;
+
+//    [Space(15)]
+//    [SerializeField] private WaveSystem[] waveInfoList;
+//    [SerializeField] private WaveEventsTrigger[] waveTriggerSystem;
+
+//    [Space(50)]
 //    public UnityEvent OnStartBattleTrigger; //When the battle started
-//    public UnityEvent OnFinishWaveBattle;
-//    public UnityEvent OnFinishedBattleTrigger; //When the battle finish
+//    public UnityEvent OnEndedBattleTrigger; //When the battle finish
+
+
+//    private CancellationTokenSource cancelBattleTrigger;
 
 //    private bool onPendingBattle = false;
 //    private bool randomDesiredTimer = false;
 //    private bool desiredToBattleInRoom = false;
 //    private bool isAlreadyTrigger = false;
-//    private CancellationTokenSource getAllEnemiesTokenSource;
 
-//    private int totalEnemyInRoom = 0;
+//    private bool doneInitializeTrigger = false;
+
+//    private Transform[] positionList;
+//    private List<Transform> enemyDetected;
 
 
 //    public bool GetNextDesiredBattleTrigger { get { return desiredToBattleInRoom; } set { desiredToBattleInRoom = value; } }
@@ -616,29 +591,35 @@ public class RoomSpawnerEnemy : MonoBehaviour
 //        roomArea = GetComponentInParent<RoomArea>();
 //        roomAreaCollider = roomArea.GetComponent<PolygonCollider2D>();
 
+//        positionList = transform.GetChild(0)?.GetComponentsInChildren<Transform>().Skip(1).ToArray();
 
 //        RetriveData();
+
+//        BarriersToggler(false);
+//        AstarPath.active.Scan();
 //    }
 
 
 
 //    private void OnEnable()
 //    {
-//        roomArea.OnPlayerEnterRoom.AddListener(CallPlayerEnterRoom);
-//        roomArea.OnPlayerExitRoom.AddListener(CallPlayerExitRoom);
+//        roomArea.OnPlayerEnterRoom.AddListener(PlayerEnterRoom);
+//        roomArea.OnPlayerExitRoom.AddListener(PlayerExitRoom);
 //    }
 //    private void OnDisable()
 //    {
-//        roomArea.OnPlayerEnterRoom.RemoveListener(CallPlayerEnterRoom);
-//        roomArea.OnPlayerExitRoom.RemoveListener(CallPlayerExitRoom);
-
-//        CancelGetAllEnemiesTask();
+//        roomArea.OnPlayerEnterRoom.RemoveListener(PlayerEnterRoom);
+//        roomArea.OnPlayerExitRoom.RemoveListener(PlayerExitRoom);
+//    }
+//    private void OnDestroy()
+//    {
+//        cancelBattleTrigger?.Dispose();
 //    }
 
 //    private void Start()
 //    {
 //        battleUI = BattleSystemUI.Instance;
-
+//        doneInitializeTrigger = true;
 //    }
 
 //    private void RetriveData()
@@ -659,168 +640,83 @@ public class RoomSpawnerEnemy : MonoBehaviour
 //    }
 
 
-//    private void CallPlayerEnterRoom()
+
+
+
+//    private void PlayerEnterRoom()
 //    {
-//        CancelGetAllEnemiesTask();
-//        getAllEnemiesTokenSource = new CancellationTokenSource();
+//        if (battleMode == BattleStartState.None) { return; }
 
-//        GetAllEnemiesInRoom(getAllEnemiesTokenSource.Token).Forget();
-
-//        OnPlayerEnterRooom().Forget();
-//    }
-//    private void CallPlayerExitRoom()
-//    {
-//        CancelGetAllEnemiesTask();
-
-//        OnPlayerExitRoom().Forget();
-//    }
-
-//    public void TriggerBattle()
-//    {
-//        TriggerBattleStart().Forget();
-//    }
-
-//    private async UniTaskVoid OnPlayerEnterRooom() //When the player enter the room
-//    {
-//        if (battleMode == BattleStartState.None) { return; } //Do nothing when it set to none
-
-//        if (battleMode == BattleStartState.OnEnterRoom)
+//        //Start the scan
+//        Debug.Log("PLAYER ENTER THE ROOM");
+//        try
 //        {
-//            Debug.Log("PLAYER ENTERED THE ROOM");
-//            if (!isAlreadyTrigger) //If the room is not yet trigger
-//            {
-//                //Start the battle
-//                TriggerBattleStart().Forget();
-//            }
-//            else
-//            {
-//                if (chanceToBattle && desiredToBattleInRoom) //If the room is already trigger and has chance to battle
-//                {
-//                    //Start the battle
-//                    TriggerBattleStart().Forget();
-//                }
-//            }
+//            cancelBattleTrigger?.Cancel();
+//            cancelBattleTrigger = new CancellationTokenSource();
+//            enemyDetected = new List<Transform>();
+
+//            //StartRoomScannerEnemies().Forget();
+
+//            if (battleMode == BattleStartState.OnEnterRoom)
+//                StartWaveBattle();
 //        }
-//        else if (battleMode == BattleStartState.Idle)
+//        catch (OperationCanceledException)
 //        {
-//            if (chanceToBattle && desiredToBattleInRoom) //If the room has chance to battle
-//            {
-//                //Start the battle
-//                TriggerBattleStart().Forget();
-//            }
+//            enemyDetected = new List<Transform>();
 //        }
 
-//        await UniTask.Yield();
 //    }
-//    private async UniTaskVoid OnPlayerExitRoom()//When the player exit the room
+//    private void PlayerExitRoom()
 //    {
-//        //Generate next battle when trigger the room again
-//        if (battleMode == BattleStartState.None) { return; } //Do nothing when it set to none
+//        if (battleMode == BattleStartState.None) { return; }
 
-//        if (randomDesiredTimer) { return; }
+//        CalculateChanceBattle();
 
-//        //Start time for timer
-//        if (chanceToBattle)
-//        {
-//            randomDesiredTimer = true;
-//            desiredToBattleInRoom = ThesisUtility.RandomGetChanceBool();
-
-//            var timer = ThesisUtility.RandomGetAmount(5, 10);
-//            await UniTask.Delay(TimeSpan.FromSeconds(timer));
-
-//            randomDesiredTimer = false;
-//        }
+//        //stop the scan
+//        Debug.Log("PLAYER EXIT THE ROOM");
+//        cancelBattleTrigger?.Cancel();
 //    }
 
 
-//    private async void BattleStarted() //Battle started
+//    //Start scanning the enemies in the room
+//    private async UniTaskVoid StartRoomScannerEnemies()
 //    {
-//        //Activate the barriers
-//        foreach (var item in listOfBarriers)
-//        {
-//            item.SetActive(true);
-//        }
+//        List<Collider2D> colliderList;
 
-//        OnStartBattleTrigger?.Invoke();
-
-//        if (showBattleInfoUI)
-//            battleUI?.ToggleWaveInfo(true);
-
-
-//        await UpdateGraphNode();
-
-//        SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Combat).Forget();
-
-//    }
-//    private async void BattleEnded() //Battle ended
-//    {
-//        //Deactivate the barriers
-//        foreach (var item in listOfBarriers)
-//        {
-//            item.SetActive(false);
-//        }
-
-//        OnFinishedBattleTrigger?.Invoke();
-
-//        if (showBattleInfoUI)
-//            battleUI?.ToggleWaveInfo(false);
-
-//        await UpdateGraphNode();
-
-//        SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Default).Forget();
-
-//        onPendingBattle = false;
-//        isAlreadyTrigger = true;
-//    }
-
-
-//    private async UniTask UpdateGraphNode()
-//    {
-//        Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
-//        var guo = new GraphUpdateObject(bounds);
-
-//        AstarPath.active.UpdateGraphs(guo, 0.3f); //Update the node according to bound
-
-
-//        await UniTask.WaitForEndOfFrame(this);
-//    }
-//    private void CancelGetAllEnemiesTask()
-//    {
-//        // Cancel the task if it's running and dispose the CancellationTokenSource
-//        if (getAllEnemiesTokenSource != null)
-//        {
-//            getAllEnemiesTokenSource.Cancel();
-//            getAllEnemiesTokenSource.Dispose();
-//            getAllEnemiesTokenSource = null;
-//        }
-//    }
-//    private async UniTaskVoid GetAllEnemiesInRoom(CancellationToken cancellationToken) //Getting all the enemies alive in the area
-//    {
 
 //        if (roomAreaCollider != null)
 //        {
 //            try
 //            {
-//                do
+//                while (!cancelBattleTrigger.Token.IsCancellationRequested)
 //                {
-//                    cancellationToken.ThrowIfCancellationRequested();
-//                    // Create a list to store colliders of enemies
-//                    List<Collider2D> enemyColliders = new List<Collider2D>(); // Assuming a maximum of 10 enemies
+
+//                    colliderList = new List<Collider2D>(); // Initialize inside the loop to clear it in each iteration
 
 //                    ContactFilter2D contactFilter = new ContactFilter2D();
 //                    contactFilter.SetLayerMask(LayerMask.GetMask("Enemy")); // Set the layer mask to include only the "Enemy" layer
 
-//                    totalEnemyInRoom = roomAreaCollider.OverlapCollider(contactFilter, enemyColliders);
+//                    roomAreaCollider.OverlapCollider(contactFilter, colliderList);
 
-//                    // Check if cancellation was requested
-//                    await UniTask.DelayFrame(1); // Add a small delay to allow other operations to run
+//                    // Extract the transforms from the colliders
+//                    enemyDetected = colliderList.Select(collider => collider.transform).ToList();
 
-//                } while (true);
+
+//                    await UniTask.Yield();
+//                }
+
 //            }
 //            catch (OperationCanceledException)
 //            {
-//                Debug.Log("GetAllEnemiesInRoom task was cancelled.");
+//                Debug.Log("Scanning enemies in the room task was cancelled.");
 //            }
+//            catch (ObjectDisposedException)
+//            {
+//                Debug.Log("Scanning enemies in the room task was cancelled.");
+//                colliderList = new List<Collider2D>();
+//            }
+
+
 //        }
 //        else
 //        {
@@ -828,68 +724,232 @@ public class RoomSpawnerEnemy : MonoBehaviour
 //        }
 
 //    }
-
-
-//    private async UniTask SpawnEnemyWaves(int waveIndex) //Spawn the enemies
+//    private void BarriersToggler(bool toggle)
 //    {
-//        if (waveIndex > waveInfoList.Length - 1) { return; }
+//        if (listOfBarriers.Count == 0) { return; }
 
-//        WaveSystem waveInfo = waveInfoList[waveIndex];
-
-
-//        int desiredToSpawn = waveInfo.spawnCount; //Max enemy to spawn
-//                                                       //int remainingToSpawn = desiredToSpawn - spawnedCount;
-
-
-//        do
+//        foreach (var barrier in listOfBarriers)
 //        {
-//            int toSpawn = desiredToSpawn > maxEnemySpawnInRoom ? maxEnemySpawnInRoom : desiredToSpawn; //Calcaulate 
+//            barrier.SetActive(toggle);
+//        }
 
-//            for (int i = 0; i < toSpawn; i++)
+//        if (doneInitializeTrigger)
+//            _ = UpdateGraphNode();
+//    }
+//    private async UniTask UpdateGraphNode()
+//    {
+//        //Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; //Set the bound
+//        //var guo = new GraphUpdateObject(bounds);
+
+//        //await UniTask.Yield(); // Yield back to the main thread before starting
+
+//        ////await UniTask.WaitForEndOfFrame(this);
+//        //AstarPath.active.UpdateGraphs(guo, 0.3f); //Update the node according to bound
+
+//        //await UniTask.Yield();
+
+//        ////////////////////////////////////////////
+
+//        //Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
+//        //var guo = new GraphUpdateObject(bounds);
+
+//        //// Run AstarPath.active.UpdateGraphs in a separate task
+//        //await UniTask.RunOnThreadPool(() =>
+//        //{
+//        //    AstarPath.active.UpdateGraphs(guo, 0.3f); // Update the graphs
+//        //});
+
+//        //await UniTask.Yield(); // Yield back to the main thread
+
+//        ///////////////////////////////////////////
+
+//        Bounds bounds = roomArea.GetComponent<PolygonCollider2D>().bounds; // Set the bound
+
+
+//        AstarPath.active.AddWorkItem(() =>
+//        {
+//            // Safe to update graphs here
+//            var guo = new GraphUpdateObject(bounds);
+
+//            AstarPath.active.UpdateGraphs(guo, 0.3f); // Update the graphs
+//        });
+
+//        await UniTask.Yield(); // Yield back to the main thread
+//    }
+
+
+//    private async void CalculateChanceBattle()
+//    {
+//        if (randomDesiredTimer || battleMode == BattleStartState.None) { return; }
+
+//        try
+//        {
+//            if (chanceToBattle)
 //            {
-//                Vector2 randomPosition = await ThesisUtility.RandomGetVector2InCollider2DArea(roomAreaCollider, 0.3f, cannotSpawn);
+//                randomDesiredTimer = true;
 
-//                //GameObject selectedEnemy = ObjectPooling.Instance.GetObjectInPool("enemy", waveInfo.enemyArray.RandomGetObject(), Vector3.zero);
-//                GameObject selectedEnemy = ObjectPoolingManager.Instance.GetItemFromPool(waveInfo.enemies.RandomGetObject());
-//                selectedEnemy.GetComponent<Entities>()?.GetEntityStats.ResetCurrentStats();
-//                selectedEnemy.transform.position = randomPosition;
-//                selectedEnemy.SetActive(true);
+//                var timer = ThesisUtility.RandomGetAmount(2, 5);
+//                await UniTask.Delay(TimeSpan.FromSeconds(timer), cancellationToken: LevelManager.Instance.GetCancellationOnLevel);
 
-//                desiredToSpawn--;
 
-//                battleUI?.UpdateEnemyRemain(desiredToSpawn);
-//                var randomCalc = ThesisUtility.RandomGetFloat(1f, 1.5f);
-//                await UniTask.Delay(TimeSpan.FromSeconds(randomCalc));
+//                desiredToBattleInRoom = ThesisUtility.RandomGetChanceBool();
+
+//                randomDesiredTimer = false;
 //            }
-
-//            await UniTask.WaitUntil(() => totalEnemyInRoom <= 1); //Wait until the remaining enemy become 1
-//        } while (desiredToSpawn > 0);
+//        }
+//        finally
+//        {
+//            randomDesiredTimer = false;
+//        }
 
 //    }
-//    private async UniTask ExecuteWaves() //Execute the wave list
+
+
+
+//    private void BattleStarted()
 //    {
-//        if (waveInfoList.Length == 0) { return; }
+//        BarriersToggler(true);
 
-//        for (int i = 0; i < waveInfoList.Length; i++)
+//        OnStartBattleTrigger?.Invoke();
+//        SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Combat).Forget();
+
+//        if (showBattleInfoUI)
+//            battleUI?.ToggleWaveInfo(true);
+
+//    }
+//    private async void BattleEnded()
+//    {
+//        try
 //        {
-//            battleUI?.UpdateWaveInfo(i + 1, waveInfoList.Length);
+//            await UniTask.WaitUntil(() => enemyDetected.Count == 0, cancellationToken: cancelBattleTrigger.Token);
 
-//            await SpawnEnemyWaves(i); //Wait to finish the spawn
+//            await UniTask.Delay(TimeSpan.FromSeconds(ThesisUtility.RandomGetFloat(1.7f, 2.5f)), cancellationToken: cancelBattleTrigger.Token);
+//        }
+//        finally
+//        {
+//            BarriersToggler(false);
 
-//            await UniTask.WaitUntil(() => totalEnemyInRoom == 0); //Wait until the total enemy become 0
+//            OnEndedBattleTrigger?.Invoke();
+//            SceneMusicController.Instance?.ChangeMusic(SceneMusicController.MusicState.Default).Forget();
+
+//            if (showBattleInfoUI)
+//                battleUI?.ToggleWaveInfo(false);
+
+
+
+//            onPendingBattle = false;
+//            isAlreadyTrigger = true;
+//        }
+//    }
+
+
+//    private WaveEventsTrigger TriggerWaveEvents(int currentWave)
+//    {
+//        if (waveTriggerSystem.Length == 0)
+//        {
+//            return null;
+//        }
+
+//        var trigger = waveTriggerSystem.FirstOrDefault(wave => wave.waveIndex == currentWave);
+
+//        if (trigger != null)
+//        {
+//            return trigger;
+//        }
+
+//        return null;
+//    }
+
+//    //Start the wave
+//    private async UniTask Battle_StartWave()
+//    {
+//        if (waveInfoList.Length == 0)
+//        {
+//            Debug.LogWarning("WAVE INFO IS EMPTY");
+//            return;
+//        }
+
+//        try
+//        {
+//            for (int i = 0; i < waveInfoList.Length; i++)
+//            {
+//                battleUI?.UpdateWaveInfo(i + 1, waveInfoList.Length);
+//                TriggerWaveEvents(i)?.waveStart.Invoke(); //Wave started
+
+//                await SpawnEnemyWave(i); //Wait to finish spawning
+
+//                await UniTask.WaitUntil(() => enemyDetected.Count == 0, PlayerLoopTiming.LastUpdate, cancelBattleTrigger.Token); //Wait until the wave clear
+
+//                TriggerWaveEvents(i)?.waveEnd.Invoke(); //Wave ended
+//            }
+//        }
+//        finally
+//        {
+//            //Finish battle
+//            BattleEnded();
+//        }
+
+
+
+//    }
+//    //Start spawning enemies in wave
+//    private async UniTask SpawnEnemyWave(int waveIndex)
+//    {
+//        try
+//        {
+//            var waveInfo = waveInfoList[waveIndex];
+
+//            if (waveInfo.enemyTypes.Length == 0)
+//            {
+//                Debug.LogWarning($"ENEMY TO SPAWN AT WAVE {waveIndex} IS EMPTY IN {transform.root.name}");
+//                return;
+//            }
+
+
+//            int desiredToSpawn = waveInfo.maxSpawnCount; //Max enemy to spawn
+
+//            do
+//            {
+//                int toSpawn = desiredToSpawn > maxEnemySpawnInRoom ? maxEnemySpawnInRoom : desiredToSpawn; //Calcaulate 
+
+//                for (int i = 0; i < toSpawn; i++)
+//                {
+//                    var desiredPosition = positionList.RandomGetObject().position;
+//                    var desiredEnemySpawn = ObjectPoolingManager.Instance.GetItemFromPool(waveInfo.enemyTypes.RandomGetObject());
+
+//                    //Debug.LogWarning($"ENEMY: {desiredEnemySpawn.name} || POSITION: {desiredPosition}");
+
+//                    desiredEnemySpawn.GetComponent<Entities>()?.GetEntityStats.ResetCurrentStats();
+//                    desiredEnemySpawn.transform.position = desiredPosition;
+//                    desiredEnemySpawn.SetActive(true);
+
+//                    desiredToSpawn--;
+
+//                    battleUI?.UpdateEnemyRemain(desiredToSpawn);
+//                    var delay = ThesisUtility.RandomGetFloat(1f, 1.5f);
+//                    await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: cancelBattleTrigger.Token);
+//                }
+
+//                await UniTask.WaitUntil(() => enemyDetected.Count <= 1, PlayerLoopTiming.LastUpdate, cancelBattleTrigger.Token); //Wait until the remaining enemy become 1
+//            } while (desiredToSpawn > 0 && !cancelBattleTrigger.Token.IsCancellationRequested);
+
+
+//        }
+//        catch
+//        {
 
 //        }
 
-//        await UniTask.Delay(ThesisUtility.RandomGetAmount(1000, 1700)); //From 1sec to 1.7sec
-
-//        Debug.Log("BATTLE WAVE IS COMPLETED");
-//        OnFinishWaveBattle?.Invoke();
-
 //    }
 
 
-//    private async UniTaskVoid TriggerBattleStart()
+
+
+//    public async void StartWaveBattle()
 //    {
+//        if (!alwaysTriggerBattle)
+//            if (isAlreadyTrigger && !(chanceToBattle && desiredToBattleInRoom)) { return; }
+
 //        if (onPendingBattle) { return; }
 //        onPendingBattle = true;
 
@@ -904,6 +964,11 @@ public class RoomSpawnerEnemy : MonoBehaviour
 //            return;
 //        }
 
+//        StartRoomScannerEnemies().Forget();
+//        roomArea.StartRoomScannerEnemies().Forget();
+
+//        await UniTask.Yield();
+
 //        BattleStarted();
 
 //        timer = ThesisUtility.RandomGetFloat(1.2f, 1.7f);
@@ -911,14 +976,28 @@ public class RoomSpawnerEnemy : MonoBehaviour
 
 
 //        //Start the battle
-//        await ExecuteWaves(); //Wait to finish
-
+//        await Battle_StartWave(); //Wait to finish
 
 //        await UniTask.Delay(1500);
-//        await UniTask.WaitUntil(() => totalEnemyInRoom == 0); //Wait until the total enemy become 0
 //        BattleEnded();
 //    }
 
+
+
+
+
+//    private void OnTriggerEnter2D(Collider2D collision)
+//    {
+//        if (battleMode == BattleStartState.OnTrigger)
+//        {
+//            //if (!isAlreadyTrigger || (chanceToBattle && desiredToBattleInRoom))
+//            //{
+//            //    BarriersToggler(true);
+//            //}
+
+//            StartWaveBattle();
+//        }
+//    }
 
 
 

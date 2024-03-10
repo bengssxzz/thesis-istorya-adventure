@@ -277,6 +277,10 @@ PrefabInstance:
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3719126659226642795, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: entityStatsSO
+      value: 
+      objectReference: {fileID: 11400000, guid: dc10ce729c1e4414daaf975cb58cd53b, type: 2}
+    - target: {fileID: 3719126659226642795, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: actorTransform
       value: 
       objectReference: {fileID: 3658767042528261616}
@@ -338,7 +342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.data[0].maxAmount
@@ -357,6 +361,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[2].maxAmount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[2].minAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.data[0].dropChance
       value: 100
       objectReference: {fileID: 0}
@@ -373,7 +385,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3503459824970762297, guid: 4f060a9e373a15846a8cfa570dd37592, type: 3}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[2].dropChance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[2].lootPrefab
+      value: 
+      objectReference: {fileID: 3384535730190410523, guid: f136ba2a0bf2fe849906a881acd2dfba, type: 3}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.data[0].randomAmountDrop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[2].randomAmountDrop
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

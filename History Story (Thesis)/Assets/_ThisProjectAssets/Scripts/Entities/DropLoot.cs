@@ -14,7 +14,7 @@ public class DropLoot : MonoBehaviour
         [Tooltip("Check if you want to randomize the amount to drop, else fix amount loot drop and the minAmount will no longer use")]
         public bool randomAmountDrop = false;
 
-        [Range(1, 100)] public int minAmount = 1, maxAmount = 1;
+        [Range(0, 100)] public int minAmount = 1, maxAmount = 1;
 
         [Tooltip("Drop loot chance")]
         [Range(0.0f, 100.0f)] public float dropChance;
@@ -25,21 +25,7 @@ public class DropLoot : MonoBehaviour
     [SerializeField] private float dropForce = 150f;
     [SerializeField] private List<Loot> listOfDropLoot;
 
-    private GameObject[] AmountItemDropLoot(Loot itemLoot)
-    {
-        int amount = itemLoot.randomAmountDrop ? ThesisUtility.RandomGetAmount(itemLoot.minAmount, itemLoot.maxAmount) : itemLoot.maxAmount;
-        List<GameObject> dropList = new List<GameObject>();
-
-        for (int i = 0; i < amount; i++)
-        {
-            //GameObject _loot = ObjectPooling.Instance.GetObjectInPool("loot", itemLoot.lootPrefab, transform.position, true);
-            GameObject _loot = ObjectPoolingManager.Instance.GetItemFromPool(itemLoot.lootPrefab);
-            _loot.SetActive(true);
-            dropList.Add(_loot);
-        }
-
-        return dropList.ToArray();
-    }
+    
     public void LootDrop() //Loot to drop
     {
         if(listOfDropLoot == null && listOfDropLoot.Count == 0)
@@ -72,6 +58,24 @@ public class DropLoot : MonoBehaviour
                 }
             }
         }
+    }
+
+    private GameObject[] AmountItemDropLoot(Loot itemLoot)
+    {
+        int amount = itemLoot.randomAmountDrop ? ThesisUtility.RandomGetAmount(itemLoot.minAmount, itemLoot.maxAmount) : itemLoot.maxAmount;
+        List<GameObject> dropList = new List<GameObject>();
+
+        if(amount == 0) { return dropList.ToArray(); }
+
+        for (int i = 0; i < amount; i++)
+        {
+            //GameObject _loot = ObjectPooling.Instance.GetObjectInPool("loot", itemLoot.lootPrefab, transform.position, true);
+            GameObject _loot = ObjectPoolingManager.Instance.GetItemFromPool(itemLoot.lootPrefab);
+            _loot.SetActive(true);
+            dropList.Add(_loot);
+        }
+
+        return dropList.ToArray();
     }
 
 

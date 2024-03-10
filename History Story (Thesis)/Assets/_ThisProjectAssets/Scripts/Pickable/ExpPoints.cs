@@ -5,25 +5,17 @@ using ThesisLibrary;
 
 public class ExpPoints : BasePoints
 {
-    [SerializeField] private int minHealth = 10;
-    [SerializeField] private int maxHealth = 20;
-
-    private int healthPoint;
+    [SerializeField] private float addHealthPercent = 1f;
 
 
-
-    protected override void OnAwakeBehaviour()
-    {
-        base.OnAwakeBehaviour();
-        healthPoint = ThesisUtility.RandomGetAmount(minHealth, maxHealth);
-
-    }
 
 
     protected override void CollectedBehaviour(PlayerScript player, int points)
     {
         //Regen health
-        player?.RegenHealth(healthPoint);
+        var addHealth = player.GetEntityStats.maxHealth * (addHealthPercent / 100);
+
+        player?.RegenHealth(addHealth);
 
         //Add points
         GameManager.Instance.AddCurrentChapterScore(points);

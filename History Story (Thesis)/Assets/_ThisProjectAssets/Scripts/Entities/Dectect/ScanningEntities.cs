@@ -124,8 +124,15 @@ public class ScanningEntities : MonoBehaviour
                 targetInArea = new List<Transform>();
             }
 
-            await UniTask.Delay(150, cancellationToken: scanningCancellationToken);
-            await UniTask.Yield();
+            try
+            {
+                await UniTask.Delay(150, cancellationToken: scanningCancellationToken);
+                await UniTask.Yield();
+            }
+            catch
+            {
+
+            }
         }
     }
     private async UniTask FindObjectToFollow(CancellationToken cancellationToken)

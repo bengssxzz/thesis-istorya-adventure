@@ -342,7 +342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.data[0].maxAmount
@@ -353,15 +353,35 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].maxAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].minAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.data[0].dropChance
-      value: 30
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.data[0].lootPrefab
       value: 
       objectReference: {fileID: 3188640505216282857, guid: fad81b89309ccd648b57610ef313a230, type: 3}
     - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].dropChance
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].lootPrefab
+      value: 
+      objectReference: {fileID: 3384535730190410523, guid: f136ba2a0bf2fe849906a881acd2dfba, type: 3}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
       propertyPath: listOfDropLoot.Array.data[0].randomAmountDrop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7376364347714267823, guid: c8bc49aec6b94d74aaccc08d9bf62151, type: 3}
+      propertyPath: listOfDropLoot.Array.data[1].randomAmountDrop
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
