@@ -509,7 +509,7 @@ Transform:
   - {fileID: 2638328046737629414}
   - {fileID: 1907127210772825992}
   m_Father: {fileID: 8168387100337829835}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &3318821732990733215
 SortingGroup:
@@ -906,13 +906,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NPCActor: {fileID: 3851663602232176334}
+  NPCActorToFlip: {fileID: 0}
+  npcAnimator: {fileID: 0}
   positions: {fileID: 8730457613376819332}
   moveBehaviour: 0
+  minWaitTime: 1
+  maxWaitTime: 2
   invalidPositionLayer:
     serializedVersion: 2
     m_Bits: 83992
-  minRandom: 1
-  maxRandom: 2
   loopState: 1
   moveSpeed: 0
 --- !u!210 &6615504171951595136
@@ -4283,6 +4285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selector: {fileID: 5167402668523107294}
+  NPCCollider: {fileID: 0}
 --- !u!1 &8939493126233972089
 GameObject:
   m_ObjectHideFlags: 0
