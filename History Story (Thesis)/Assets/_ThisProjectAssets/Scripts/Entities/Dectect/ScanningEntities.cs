@@ -14,7 +14,6 @@ using UnityEditor;
 
 
 [DisallowMultipleComponent]
-[RequireComponent(typeof(AttackHandler))]
 public class ScanningEntities : MonoBehaviour
 {
     [SerializeField] private bool showGizmos = false;
