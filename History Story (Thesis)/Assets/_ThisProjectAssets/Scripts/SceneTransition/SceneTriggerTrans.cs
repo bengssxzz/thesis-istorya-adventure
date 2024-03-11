@@ -10,6 +10,9 @@ public class SceneTriggerTrans : MonoBehaviour
 {
     private enum TransitionState { None, OnTrigger}
 
+    [SerializeField] private bool resetSceneFile = false;
+
+    [Space(25)]
     [Header("Transition Info")]
     [SerializeField] private TransitionState state = TransitionState.OnTrigger;
     [SerializeField] private string transitionID;
@@ -67,6 +70,14 @@ public class SceneTriggerTrans : MonoBehaviour
                 _ = SaveGameDataManager.Instance.SavePlayerStatsData();
                 SaveGameDataManager.Instance.SaveChapterScene().Forget(); //Save the changes in the level scene
                 SceneTransitionManager.Instance.SceneTransitionInGame(sceneName, transitionID); //Change scene
+
+                if (resetSceneFile)
+                {
+                    if (ES3.DirectoryExists(SaveGameDataManager.Instance.GetCurrentFolderName()))
+                    {
+                        ES3.DeleteDirectory(SaveGameDataManager.Instance.GetCurrentFolderName());
+                    }
+                }
             }
         }
     }
