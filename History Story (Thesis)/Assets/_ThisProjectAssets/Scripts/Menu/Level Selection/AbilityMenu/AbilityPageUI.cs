@@ -30,6 +30,12 @@ public class AbilityPageUI : MonoBehaviour
             foreach (var slotUI in slotUIPrefabs)
             {
                 slotUI.SetAbilitySlotUILocked();
+                slotUI.gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < listOfAbilities_Chapter.Count; i++)
+            {
+                slotUIPrefabs[i].gameObject.SetActive(true);
             }
         }
 

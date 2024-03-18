@@ -19,7 +19,7 @@ MonoBehaviour:
   abilityName: Wolf Pack
   abilityIcon: {fileID: -106013292, guid: 9d99aef8cf0752d4880c237c5dc98425, type: 3}
   abilityDescription: Summons three wolves to help you fight
-  cooldownTime: 50
+  cooldownTime: 15
   canAttack: 0
   canMove: 0
   precastingAtStartFeedback: {fileID: 0}
@@ -46,10 +46,10 @@ MonoBehaviour:
   canMoveWhileSummon: 0
   canAttackWhileSummon: 1
   lightPrefab: {fileID: 67063377517511961, guid: c34c196fc40992942bdac35e19862ad7, type: 3}
-  summonPrefab: {fileID: 3658767040671979719, guid: b6c811cca62e4914da7e7d9530c6379d, type: 3}
+  summonPoolerInfo: {fileID: 633296513728254345, guid: 63672e7a9c3d7514da49fb37be1bb2d1, type: 3}
   randomRangePosition: 0.8
   spawnCount: 3
-  delay: 0
+  delay: 0.5
   createLight: 1
   followHost: 0
   lifeTimer: 10

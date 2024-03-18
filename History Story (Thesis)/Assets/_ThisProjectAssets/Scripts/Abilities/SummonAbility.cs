@@ -16,7 +16,8 @@ public class SummonAbility : AbilityScript
     [Space(10)]
     [Header("Summon Ability")]
     public Light2D lightPrefab;
-    public AIEntity summonPrefab;
+    //public AIEntity summonPrefab;
+    public ObjectPoolerInfo summonPoolerInfo;
     public float randomRangePosition = 0.5f;
     public int spawnCount = 1;
     public float delay;
@@ -36,6 +37,13 @@ public class SummonAbility : AbilityScript
     public float overrideDamage;
     public float overrideMoveSpeed;
     public float overrideAttackSpeed;
+
+    public override void InitializeAbility_Used()
+    {
+        base.InitializeAbility_Used();
+
+        ObjectPoolingManager.Instance.CreateNewPool(summonPoolerInfo, 5, true);
+    }
 
     protected override async UniTask PreCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
@@ -113,14 +121,15 @@ public class SummonAbility : AbilityScript
     }
     private GameObject SummonObject(Entities entity, Vector2 spawnPosition)
     {
-        if (summonPrefab == null) { return null; }
-        var position = spawnPosition == null ? Vector2.zero : spawnPosition;
+        if (summonPoolerInfo == null) { return null; }
+        var position = spawnPosition == null ? (Vector2)entity.transform.position : spawnPosition;
         //To summon object
         var spawningPosition = (Vector2)entity.transform.position + position;
 
         //var spawner = ObjectPooling.Instance.GetObjectInPool("ability_spawner", summonPrefab.gameObject, spawningPosition);
-        var prefab = summonPrefab.GetComponent<ObjectPoolerInfo>();
-        var spawner = ObjectPoolingManager.Instance.GetItemFromPool(prefab);
+        //var prefab = summonPrefab.GetComponent<ObjectPoolerInfo>();
+        var spawner = ObjectPoolingManager.Instance.GetItemFromPool(summonPoolerInfo);
+        spawner.transform.position = position;
         AIEntity _spawner = spawner.GetComponent<AIEntity>();
 
         RemoveComponents(_spawner);
@@ -193,7 +202,7 @@ public class SummonAbility : AbilityScript
             // Generate a random position within the boundaries of the game area
             var randomPos = ThesisUtility.RandomGetFloat(-randomDistance, randomDistance);
 
-            generatedPosition = new Vector2(randomPos, randomPos);
+            generatedPosition = new Vector2(entity.transform.position.x + randomPos, entity.transform.position.y + randomPos);
 
             // Check if the random position collides with any collider in the avoid layer
             invalidPosition = Physics2D.OverlapCircle(generatedPosition, 0.05f, avoidLayer);

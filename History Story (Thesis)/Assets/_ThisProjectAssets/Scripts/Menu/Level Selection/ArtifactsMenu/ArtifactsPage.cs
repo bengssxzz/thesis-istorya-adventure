@@ -32,6 +32,12 @@ public class ArtifactsPage : MonoBehaviour
             foreach (var slotUI in slotUIPrefabs)
             {
                 slotUI.SetArtifactLocked();
+                slotUI.gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < listOfArtifacts_Chapter.Count; i++)
+            {
+                slotUIPrefabs[i].gameObject.SetActive(true);
             }
         }
 

@@ -12,7 +12,8 @@ public class RestoreHealthAbility : AbilityScript
 {
     [Space(15)]
     [Header("Restore Health Ability")]
-    public int healthRestoreAmount;
+    //public int healthRestoreAmount;
+    public float healthAmountPercent = 5.0f;
     public float time;
 
 
@@ -28,7 +29,8 @@ public class RestoreHealthAbility : AbilityScript
         await base.CastingBehaviour(mono, entity);
 
         //restore health
-        entity.GetEntityStats.SetCurrentHealth(healthRestoreAmount);
+        var amount = entity.GetEntityStats.maxHealth * healthAmountPercent;
+        entity.GetEntityStats.SetCurrentHealth(amount);
 
         await UniTask.Delay(TimeSpan.FromSeconds(time));
     }
