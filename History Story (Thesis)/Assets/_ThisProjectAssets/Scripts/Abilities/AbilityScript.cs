@@ -34,7 +34,7 @@ public class AbilityScript : ScriptableObject
     private float remainingCD = 0;
 
     private CancellationTokenSource cancellationTokenSource;
-
+    private ObjectPoolerInfo feedbackPoolerInfo;
 
 
     public UnityEvent<bool, float> OnAbilityTimeLapse;
@@ -262,9 +262,10 @@ public class AbilityScript : ScriptableObject
         ModifyFinishedCastingFeedback(entity, finishedAtStartFeedback);
 
         //MMF_Player newPlayerFeedback = ObjectPooling.Instance.GetObjectInPool("feedbacks", feedbackPrefab.gameObject, Vector3.zero, true).GetComponent<MMF_Player>();
-        var newFeedback = new GameObject().AddComponent<MMF_Player>();
-        newFeedback.name = "Feedbacks";
-        MMF_Player newPlayerFeedback = ObjectPoolingManager.Instance.GetItemFromPool("feedbacks", newFeedback.gameObject).GetComponent<MMF_Player>();
+        //var newFeedback = new GameObject().AddComponent<MMF_Player>();
+        //newFeedback.name = "Feedbacks";
+        //MMF_Player newPlayerFeedback = ObjectPoolingManager.Instance.GetItemFromPool("feedbacks", newFeedback.gameObject).GetComponent<MMF_Player>();
+        MMF_Player newPlayerFeedback = ObjectPoolingManager.Instance.GetItemFromPool(feedbackPoolerInfo).GetComponent<MMF_Player>();
 
         newPlayerFeedback.FeedbacksList.Clear();
         newPlayerFeedback.FeedbacksList = new List<MMF_Feedback>(feedbackPrefab.FeedbacksList);
@@ -277,9 +278,15 @@ public class AbilityScript : ScriptableObject
 
     public virtual void InitializeAbility_Used()
     {
-        var newFeedback = new GameObject().AddComponent<MMF_Player>();
+        var newObject = new GameObject();
+        var newFeedback = newObject.AddComponent<MMF_Player>();
+        feedbackPoolerInfo = newFeedback.gameObject.AddComponent<ObjectPoolerInfo>();
+        feedbackPoolerInfo.SetPoolID = "Feedbacks";
         newFeedback.name = "Feedbacks";
-        ObjectPoolingManager.Instance.CreateNewPool("feedbacks", newFeedback.gameObject, 20);
+
+
+        ObjectPoolingManager.Instance.CreateNewPool(feedbackPoolerInfo, 20, false);
+        //ObjectPoolingManager.Instance.CreateNewPool("feedbacks", newFeedback.gameObject, 20);
         //var newFeedbackObject = feedbackPrefab.gameObject.AddComponent<ObjectPoolerInfo>();
         //newFeedbackObject.SetPoolID = feedbackPrefab.gameObject.name;
         //MMF_Player newPlayerFeedback = ObjectPoolingManager.Instance.GetItemFromPool(newFeedbackObject).GetComponent<MMF_Player>();

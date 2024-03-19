@@ -28,11 +28,23 @@ public class DodgeAbility : AbilityScript
         }
 
         entity.IsCanMove = false;
+
+        if (entity is PlayerScript)
+        {
+            entity.gameObject.layer = LayerMask.NameToLayer("Player");
+        }
+
     }
 
     protected override async UniTask CastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         await base.CastingBehaviour(mono, entity);
+
+        if (entity is PlayerScript)
+        {
+            entity.gameObject.layer = LayerMask.NameToLayer("P Ignore Collision");
+        }
+
 
         entity.GetRigidbody2D.AddForce(previousDir * dodgePower * Time.fixedDeltaTime, ForceMode2D.Impulse);
         await UniTask.Delay(TimeSpan.FromSeconds(dodgeDistance));
@@ -43,6 +55,13 @@ public class DodgeAbility : AbilityScript
     protected override async UniTask FinishedCastingBehaviour(MonoBehaviour mono, Entities entity)
     {
         await base.FinishedCastingBehaviour(mono, entity);
+
+        if(entity is PlayerScript)
+        {
+            entity.gameObject.layer = LayerMask.NameToLayer("Player");
+            entity.GetActorTransform.rotation = Quaternion.identity;
+        }
+
 
         entity.IsCanMove = true;
     }

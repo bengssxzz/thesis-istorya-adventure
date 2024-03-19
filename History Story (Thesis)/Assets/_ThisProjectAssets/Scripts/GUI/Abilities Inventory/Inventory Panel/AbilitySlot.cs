@@ -37,9 +37,9 @@ public class AbilitySlot : BaseSlot
 
     public void InitializeSlot()
     {
-        abilityImage.sprite = assignedAbility.abilityIcon;
-        abilityName.text = assignedAbility.abilityName;
-        abilityDescription.text = assignedAbility.abilityDescription;
+        abilityImage.sprite = assignedAbility?.abilityIcon;
+        abilityName.text = assignedAbility?.abilityName;
+        abilityDescription.text = assignedAbility?.abilityDescription;
 
 
         if (IsSlotLocked)
