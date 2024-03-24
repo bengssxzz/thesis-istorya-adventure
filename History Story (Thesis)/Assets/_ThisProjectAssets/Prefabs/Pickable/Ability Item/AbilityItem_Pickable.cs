@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using ThesisLibrary;
 using Cysharp.Threading.Tasks;
+using System.Linq;
+using System;
 
 public class AbilityItem_Pickable : BasePoints
 {
@@ -21,7 +23,7 @@ public class AbilityItem_Pickable : BasePoints
         abilityImage.sprite = abilitySO.abilityIcon;
         await UniTask.Delay(20);
 
-        var alreadyCollected = GameManager.Instance.GetListOfCollectedAbility.Contains(abilitySO);
+        bool alreadyCollected = GameManager.Instance.GetListOfCollectedAbility.Contains(abilitySO);
 
         if (alreadyCollected)
         {
@@ -42,9 +44,20 @@ public class AbilityItem_Pickable : BasePoints
     protected override void CollectedBehaviour(PlayerScript player, int points)
     {
         //Add points
+        AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem == abilitySO);
+
+        if(ability == null)
+        {
+            Debug.LogError($"{abilitySO.abilityName} ABILITY IS NOT REGISTERED TO THE GAME MANAGER IN 'LIST OF ALL ABILITIES'");
+            return;
+        }
+
         GameManager.Instance.AddCurrentChapterScore(points);
-        GameManager.Instance.CollectedAbilities(abilitySO);
+        //GameManager.Instance.CollectedAbilities(abilitySO);
+        GameManager.Instance.CollectedAbilities(ability);
         player.CollectFeedbackModified("Ability Collected: " + abilitySO.abilityName);
+
+        Debug.Log($"PLAYER COLLECTED {abilitySO.abilityName} ABILITY");
     }
 
     
