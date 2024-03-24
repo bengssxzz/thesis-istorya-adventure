@@ -25,16 +25,50 @@ public class AbilityController : MonoBehaviour
     }
 
 
+    [SerializeField] private List<GameObject> abilityAttached = new List<GameObject>();
+    private Dictionary<string, GameObject> abilityAttachedDict = new Dictionary<string, GameObject>();
 
     private void Awake()
     {
         entity = GetComponent<Entities>();
+        InitializedAttachedAbility();
     }
 
     public void InitializedDefaultAbilities(List<AbilityScript> defaultAbility)
     {
         HashSet<AbilityScript> newList = new HashSet<AbilityScript>(defaultAbility);
         ListOfCurrentAbilities = new List<AbilityScript>(newList);
+    }
+
+    private void InitializedAttachedAbility()
+    {
+
+        foreach (var abilityObject in abilityAttached)
+        {
+            if(abilityObject == null) { continue; }
+
+            if (abilityAttachedDict.ContainsKey(abilityObject.name))
+            {
+                Debug.LogWarning($"{abilityObject.name} OBJECT IS INPUTED TWICE");
+                continue;
+            }
+
+            abilityAttachedDict.Add(abilityObject.name, abilityObject);
+        }
+    }
+    public GameObject GetAttachedAbilityObject(string keyName)
+    {
+        abilityAttachedDict.TryGetValue(keyName, out GameObject abilityObjectAttached);
+
+        if(abilityObjectAttached == null)
+        {
+            Debug.LogError($"YOU ARE CALLING AN ABILITY OBJECT THAT DOESNT ATTACHED TO {gameObject.name} OBJECT");
+            return null;
+        }
+        else
+        {
+            return abilityObjectAttached;
+        }
     }
 
     private void ResetAbilitiesOnStart() //Reset each abilities

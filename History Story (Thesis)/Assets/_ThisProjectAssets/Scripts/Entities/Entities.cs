@@ -92,6 +92,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     {
         entityCancellation?.Cancel();
         GetMoveDirection = Vector2.zero;
+        GetActorTransform.transform.rotation = Quaternion.identity;
     }
 
 

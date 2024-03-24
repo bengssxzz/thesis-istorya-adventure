@@ -41,7 +41,8 @@ public class BoostAttackAbility : AbilityScript
     protected override void ModifyCastingFeedback(Entities entity, MMF_Player castingFeedback)
     {
         MMF_Particles toPlay = castingFeedback.GetFeedbackOfType<MMF_Particles>();
-        toPlay.BoundParticleSystem = entity.transform.MMFindDeepChildDepthFirst("BoostAttackParticle").GetComponent<ParticleSystem>();
+        //toPlay.BoundParticleSystem = entity.transform.MMFindDeepChildDepthFirst("BoostAttackParticle").GetComponent<ParticleSystem>();
+        toPlay.BoundParticleSystem = entity.GetAbility_Controller.GetAttachedAbilityObject("BoostAttackParticle").GetComponent<ParticleSystem>();
     }
 
 }

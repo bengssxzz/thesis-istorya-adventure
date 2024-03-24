@@ -71,6 +71,7 @@ public class DodgeAbility : AbilityScript
         var defaultRemapCurveOne = -360;
         MMF_Rotation modifyingRotation = castingFeedback.GetFeedbackOfType<MMF_Rotation>();
         modifyingRotation.AnimateRotationTarget = entity.GetActorTransform;
+        modifyingRotation.RemapCurveZero = 0;
         modifyingRotation.RemapCurveOne = defaultRemapCurveOne * entity.GetActorTransform.localScale.x;
     }
 

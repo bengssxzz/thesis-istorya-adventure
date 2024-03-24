@@ -19,7 +19,8 @@ public class RotatingOrbAbility : AbilityScript
     {
         await base.PreCastingBehaviour(mono, entity);
 
-        entity.transform.MMFindDeepChildDepthFirst("Round Orb FB")?.gameObject.SetActive(false);
+        //entity.transform.MMFindDeepChildDepthFirst("Round Orb FB")?.gameObject.SetActive(false);
+        entity.GetAbility_Controller.GetAttachedAbilityObject("Round Orb FB").SetActive(false);
     }
 
     protected async override UniTask CastingBehaviour(MonoBehaviour mono, Entities entity)
@@ -27,7 +28,8 @@ public class RotatingOrbAbility : AbilityScript
         await base.CastingBehaviour(mono, entity);
 
 
-        entity.transform.MMFindDeepChildDepthFirst("Round Orb FB")?.gameObject.SetActive(true);
+        //entity.transform.MMFindDeepChildDepthFirst("Round Orb FB")?.gameObject.SetActive(true);
+        entity.GetAbility_Controller.GetAttachedAbilityObject("Round Orb FB").SetActive(true);
 
         await UniTask.Delay(TimeSpan.FromSeconds(duration));
     }
@@ -36,8 +38,8 @@ public class RotatingOrbAbility : AbilityScript
     {
         await base.FinishedCastingBehaviour(mono, entity);
 
-        entity.transform.MMFindDeepChildDepthFirst("Round Orb FB")?.gameObject.SetActive(false);
-
+        //entity.transform.MMFindDeepChildDepthFirst("Round Orb FB")?.gameObject.SetActive(false);
+        entity.GetAbility_Controller.GetAttachedAbilityObject("Round Orb FB").SetActive(false);
     }
 
 

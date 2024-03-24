@@ -39,7 +39,8 @@ public class ReduceDamageAbility : AbilityScript
     protected override void ModifyCastingFeedback(Entities entity, MMF_Player castingFeedback)
     {
         MMF_Particles toPlay = castingFeedback.GetFeedbackOfType<MMF_Particles>();
-        toPlay.BoundParticleSystem = entity.transform.MMFindDeepChildDepthFirst("DefenseUpParticle").GetComponent<ParticleSystem>();
+        //toPlay.BoundParticleSystem = entity.transform.MMFindDeepChildDepthFirst("DefenseUpParticle").GetComponent<ParticleSystem>();
+        toPlay.BoundParticleSystem = entity.GetAbility_Controller.GetAttachedAbilityObject("DefenseUpParticle").GetComponent<ParticleSystem>();
     }
 
 
