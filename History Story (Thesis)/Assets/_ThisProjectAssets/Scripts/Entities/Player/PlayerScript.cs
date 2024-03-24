@@ -43,8 +43,21 @@ public class PlayerScript : Entities
 
             if (playerData.usedCurrentAbilities != null)
             {
-                List<AbilityScript> usedAbility = new List<AbilityScript>(playerData.usedCurrentAbilities);
-                GetAbility_Controller.ListOfCurrentAbilities = usedAbility;
+                //List<AbilityScript> usedAbility = new List<AbilityScript>(playerData.usedCurrentAbilities);
+                List<AbilityScript> usedAbility = new List<AbilityScript>();
+
+                List<string> usedAbility_IDs = new List<string>(playerData.usedCurrentAbilities);
+
+                if(usedAbility_IDs.Count > 0)
+                {
+                    foreach (var ability_ID in usedAbility_IDs)
+                    {
+                        AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem.GetInstanceID().ToString() == ability_ID);
+                        usedAbility.Add(ability);
+                    }
+
+                    GetAbility_Controller.ListOfCurrentAbilities = usedAbility;
+                }
             }
         }
 

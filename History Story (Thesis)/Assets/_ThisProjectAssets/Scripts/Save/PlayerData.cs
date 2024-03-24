@@ -11,8 +11,10 @@ public class PlayerData
     public List<string> artifactsCollected_ID;
 
     //Save the unlocked abilities and current used ability
-    public List<AbilityScript> abilitiesCollected;
-    public List<AbilityScript> usedCurrentAbilities;
+    //public List<AbilityScript> abilitiesCollected;
+    //public List<AbilityScript> usedCurrentAbilities;
+    public List<string> abilitiesCollected;
+    public List<string> usedCurrentAbilities;
 
     //Save the unlocked chapters
     public Dictionary<Chapter_LevelSO, bool> unlockedChapters;

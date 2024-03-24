@@ -74,11 +74,11 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
             //artifactsCollected = GameManager.Instance.GetListOfCollectedArtifacts,
             artifactsCollected_ID = GameManager.Instance.GetListOfCollectedArtifactsStringID,
-            abilitiesCollected = GameManager.Instance.GetListOfCollectedAbility,
+            abilitiesCollected = GetListOfCollectedAbility_ID(),
             unlockedChapters = GameManager.Instance.GetDictUnlockedChapters,
 
             chapterScores = GameManager.Instance.GetDictEachChapterScores,
-            usedCurrentAbilities = player.GetAbility_Controller.ListOfCurrentAbilities
+            usedCurrentAbilities = GetListOfUsedAbility_ID()
         };
 
 
@@ -104,6 +104,39 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     #endregion
 
 
+    #region Get Player Data (Abilities Collected)
+    private List<string> GetListOfCollectedAbility_ID()
+    {
+        List<string> newList = new List<string>();
+        var collectedAbilities = GameManager.Instance.GetListOfCollectedAbility;
+
+        foreach (var ability in collectedAbilities)
+        {
+            if(ability == null) { continue; }
+            newList.Add(ability.GetInstanceID().ToString());
+        }
+
+        return newList;
+    }
+    #endregion
+
+    #region Get Player Data (Used Abilities)
+    private List<string> GetListOfUsedAbility_ID()
+    {
+        List<string> newList = new List<string>();
+        var usedAbilities = PlayerSingleton.Instance.GetPlayerScript?.GetAbility_Controller.ListOfCurrentAbilities;
+
+        if(usedAbilities == null) { return null; }
+
+        foreach (var ability in usedAbilities)
+        {
+            if (ability == null) { continue; }
+            newList.Add(ability.GetInstanceID().ToString());
+        }
+
+        return newList;
+    }
+    #endregion
 
     #endregion
 

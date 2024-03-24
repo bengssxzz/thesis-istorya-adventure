@@ -171,8 +171,23 @@ public class GameManager : Singleton<GameManager>
             //Load Abilities
             if (loadedData.abilitiesCollected != null)
             {
-                List<AbilityScript> collectedAbilities = new List<AbilityScript>(loadedData.abilitiesCollected);
-                listOfCollectedAbilities = collectedAbilities;
+                //List<AbilityScript> collectedAbilities = new List<AbilityScript>(loadedData.abilitiesCollected);
+                //listOfCollectedAbilities = collectedAbilities;
+                List<AbilityScript> collectedAbility = new List<AbilityScript>();
+
+                List<string> collectedAbilities_IDs = new List<string>(loadedData.abilitiesCollected);
+
+                if (collectedAbilities_IDs.Count > 0)
+                {
+                    foreach (var ability_ID in collectedAbilities_IDs)
+                    {
+                        AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem.GetInstanceID().ToString() == ability_ID);
+                        collectedAbility.Add(ability);
+                    }
+                }
+
+
+                listOfCollectedAbilities = collectedAbility;
             }
 
             //Load chapters
