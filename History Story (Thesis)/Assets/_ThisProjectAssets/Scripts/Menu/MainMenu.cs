@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] MMTouchButton lvlSelectBtn;
     [SerializeField] MMTouchButton accountBtn;
     [SerializeField] MMTouchButton settingsBtn;
+    [SerializeField] MMTouchButton quitBtn;
 
     //Leaderboard
 
@@ -19,6 +20,7 @@ public class MainMenu : MonoBehaviour
         lvlSelectBtn.ButtonReleased.AddListener(LevelSelectPressed);
         accountBtn.ButtonReleased.AddListener(AccountPressed);
         settingsBtn.ButtonReleased.AddListener(SettingsPressed);
+        quitBtn.ButtonReleased.AddListener(QuitGamePressed);
 
         PlayfabManager.Instance.OnLoginSuccess += LoginSuccess;
     }
@@ -29,6 +31,7 @@ public class MainMenu : MonoBehaviour
         lvlSelectBtn.ButtonReleased.RemoveListener(LevelSelectPressed);
         accountBtn.ButtonReleased.RemoveListener(AccountPressed);
         settingsBtn.ButtonReleased.RemoveListener(SettingsPressed);
+        quitBtn.ButtonReleased.RemoveListener(QuitGamePressed);
 
         PlayfabManager.Instance.OnLoginSuccess -= LoginSuccess;
     }
@@ -46,6 +49,10 @@ public class MainMenu : MonoBehaviour
     {
         UI_Manager.Instance.OpenMenu("SettingPage");
     }
+    private void QuitGamePressed()
+    {
+        UI_Manager.Instance.OpenMenu("QuitGamePage");
+    }
 
     private void AccountPressed()
     {
@@ -60,7 +67,6 @@ public class MainMenu : MonoBehaviour
             UI_Manager.Instance.OpenMenu("AccountSetup Menu");
         }
     }
-
     private void LoginSuccess(LoginResult result)
     {
         //If the menu is already open
