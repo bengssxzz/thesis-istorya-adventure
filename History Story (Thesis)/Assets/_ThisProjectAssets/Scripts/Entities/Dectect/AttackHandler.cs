@@ -11,8 +11,8 @@ using MoreMountains.Tools;
 [RequireComponent(typeof(ScanningEntities))]
 public class AttackHandler : MonoBehaviour
 {
-    private const float MIN_ATTACKSPEED = 0.3f;
-    private const float MAX_ATTACKSPEED = 5f;
+    private const float MIN_ATTACKSPEED = 0.2f;
+    private const float MAX_ATTACKSPEED = 3f;
 
 
     private Entities entity;

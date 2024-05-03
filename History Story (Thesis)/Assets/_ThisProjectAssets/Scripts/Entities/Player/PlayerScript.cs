@@ -91,14 +91,14 @@ public class PlayerScript : Entities
         base.Update();
         FlipEntity(rb.velocity);
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            CollectFeedbackModified("FUCK YOU UNITY");
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            SetFloatingText("HAHAHAHAH", Color.green);
-        }
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    CollectFeedbackModified("FUCK YOU UNITY");
+        //}
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    SetFloatingText("HAHAHAHAH", Color.green);
+        //}
     }
 
 

@@ -112,7 +112,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         foreach (var ability in collectedAbilities)
         {
-            if(ability == null) { continue; }
+            if (ability == null) { continue; }
             newList.Add(ability.GetInstanceID().ToString());
         }
 
@@ -126,12 +126,19 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         List<string> newList = new List<string>();
         var usedAbilities = PlayerSingleton.Instance.GetPlayerScript?.GetAbility_Controller.ListOfCurrentAbilities;
 
-        if(usedAbilities == null) { return null; }
+        if (usedAbilities == null) { return null; }
 
         foreach (var ability in usedAbilities)
         {
-            if (ability == null) { continue; }
-            newList.Add(ability.GetInstanceID().ToString());
+            //if (ability == null) { continue; }
+            if (ability == null) 
+            {
+                newList.Add("");
+            }
+            else
+            {
+                newList.Add(ability.GetInstanceID().ToString());
+            }
         }
 
         return newList;
@@ -212,7 +219,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         foreach (var room in FindAllRoomAreaInScene())
         {
-            if(room.GetBattleTrigger == null) { continue; }
+            if (room.GetBattleTrigger == null) { continue; }
 
             RoomBattleSaveData data = new RoomBattleSaveData()
             {
@@ -274,7 +281,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         ES3.Save("timeline_trigger", saveCutscenes, filePath: GetIdentifier());
         await UniTask.Yield();
     }
-    public async UniTask< List<TimelineCutscenesSaveData> >LoadTriggerTimelineInScene()
+    public async UniTask<List<TimelineCutscenesSaveData>> LoadTriggerTimelineInScene()
     {
         if (IsKeyExist("timeline_trigger"))
         {
@@ -315,7 +322,7 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     {
         List<ChestSaveData> savedData = new List<ChestSaveData>();
 
-        if(FindAllChestInScene() == null || FindAllChestInScene().Count == 0) { return; }
+        if (FindAllChestInScene() == null || FindAllChestInScene().Count == 0) { return; }
 
         foreach (ChestScript chest in FindAllChestInScene())
         {

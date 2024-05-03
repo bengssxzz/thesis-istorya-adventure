@@ -293,6 +293,10 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
         }
 
         //Do this behaviour if the entity is not yet died
+        if(hurtFeedback != null)
+        {
+
+        }
         hurtFeedback?.PlayFeedbacks();
         TakingDamageBehaviour();
     }

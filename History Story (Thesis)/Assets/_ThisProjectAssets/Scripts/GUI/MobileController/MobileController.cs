@@ -99,7 +99,6 @@ public class MobileController : MonoBehaviour
             //Update button for new current abilities
             if (GetPlayerCurrentEquippedAbility(i) != null) //If the ability slot is null then just reset the button
             {
-
                 //GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse += abilityButtons[i].AbilityCooldown; //Subscribe the button to new current ability
                 GetPlayerCurrentEquippedAbility(i).OnAbilityTimeLapse.AddListener(abilityButtons[i].AbilityCooldown); //Subscribe the button to new current ability
                 abilityButtons[i].ButtonSetDataAbility(GetPlayerCurrentEquippedAbility(i)); //Set the data of the button
@@ -125,6 +124,7 @@ public class MobileController : MonoBehaviour
 
     private AbilityScript GetPlayerCurrentEquippedAbility(int index) //Get the current ability of the player
     {
+        Debug.Log("Count: "+ PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities.Count + " Index: " + index);
         return PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities[index];
     }
 
