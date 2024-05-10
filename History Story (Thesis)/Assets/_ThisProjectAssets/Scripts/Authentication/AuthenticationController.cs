@@ -47,7 +47,14 @@ public class AuthenticationController : MonoBehaviour
         signup_backSignInBtn.ButtonPressed.AddListener(() => { OpenSignInPage(); });
     }
 
-  
+    private void OnEnable()
+    {
+        PlayfabManager.Instance.OnErrorLogin += ErrorLogin;
+    }
+    private void OnDisable()
+    {
+        PlayfabManager.Instance.OnErrorLogin -= ErrorLogin;
+    }
 
     private void Start()
     {
@@ -67,8 +74,6 @@ public class AuthenticationController : MonoBehaviour
     }
     public void SignInAccount(string userIdentifier, string password)
     {
-        //Login account
-
         userIdentifier = userIdentifier.Trim();
         if (userIdentifier.Contains("@") && userIdentifier.Contains("."))
         {
@@ -85,6 +90,24 @@ public class AuthenticationController : MonoBehaviour
         }
     }
 
+    private void ErrorLogin(bool failedSignIn, string errorMsg)
+    {
+        signin_errorMessage.gameObject.SetActive(false);
+        signin_errorMessage.text = "";
+        signup_errorMessage.gameObject.SetActive(false);
+        signup_errorMessage.text = "";
+
+        if (signin_page.gameObject.activeInHierarchy)
+        {
+            signin_errorMessage.gameObject.SetActive(failedSignIn);
+            signin_errorMessage.text = errorMsg;
+        }
+        if (signup_page.gameObject.activeInHierarchy)
+        {
+            signup_errorMessage.gameObject.SetActive(failedSignIn);
+            signup_errorMessage.text = errorMsg;
+        }
+    }
 
 
     private void SignUpBtnPressed()
@@ -134,8 +157,6 @@ public class AuthenticationController : MonoBehaviour
 
         //PlayfabManager.Instance.SignUpNewAccount(email, username, password, (x) => { }, (x) => { });
         PlayfabManager.Instance.CreateNewAccount(username, email, password);
-
-
     }
 
 

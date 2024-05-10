@@ -36,6 +36,8 @@ public class PlayfabManager : Singleton<PlayfabManager>
     const string PLAYER_DATA_FILE = "PlayerData.thesis";
     const string PLAYER_DATA_KEY = "player_key";
 
+    public event Action<bool, string> OnErrorLogin;
+
     public event Action<LoginResult> OnLoginSuccess;
     public event Action OnLogoutSuccess;
 
@@ -185,10 +187,12 @@ public class PlayfabManager : Singleton<PlayfabManager>
                 Debug.Log("CREATE NEW ACCOUNT SUCCESS");
 
                 //If success then login automatically
+                OnErrorLogin?.Invoke(false, "");
                 LoginUsingUsername(username, password);
             },
             (error) =>
             {
+                OnErrorLogin?.Invoke(true, error.ErrorMessage);
                 Debug.LogError("ERROR: " + error.ErrorMessage);
             });
 
@@ -224,16 +228,19 @@ public class PlayfabManager : Singleton<PlayfabManager>
                     await SaveUserDataAccount(savePlayerData);
                     Debug.Log("USER DATA IS SAVED SUCCESSFULLY.");
 
+                    OnErrorLogin?.Invoke(false, "");
                     OnLoginSuccess?.Invoke(result);
                 }
                 catch (Exception ex)
                 {
+                    OnErrorLogin?.Invoke(true, ex.Message);
                     Debug.LogError("FAILED TO SAVE USER DATA: " + ex.Message);
                 }
 
             },
             (error) =>
             {
+                OnErrorLogin?.Invoke(true, error.ErrorMessage);
                 Debug.LogError("ERROR: " + error.ErrorMessage);
             });
     }
@@ -265,15 +272,18 @@ public class PlayfabManager : Singleton<PlayfabManager>
                     await SaveUserDataAccount(savePlayerData);
                     Debug.Log("USER DATA IS SAVED SUCCESSFULLY.");
 
+                    OnErrorLogin?.Invoke(false, "");
                     OnLoginSuccess?.Invoke(result);
                 }
                 catch (Exception ex)
                 {
+                    OnErrorLogin?.Invoke(true, ex.Message);
                     Debug.LogError("FAILED TO SAVE USER DATA: " + ex.Message);
                 }
             },
             (error) =>
             {
+                OnErrorLogin?.Invoke(true, error.ErrorMessage);
                 Debug.LogError("ERROR: " + error.ErrorMessage);
             });
     }

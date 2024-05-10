@@ -173,10 +173,12 @@ public class AbilityHolderPanel : MonoBehaviour
     {
         foreach (var _info in listOfStatsInfoPrefab)
         {
-            Enum.TryParse(_info.GetHeaderInfoSlot, out EntityStats parseStats);
-            var statsValue = player.GetEntityStats.GetCurrentStatsValue(parseStats);
+            if(Enum.TryParse(_info.GetHeaderInfoSlot, out EntityStats parseStats))
+            {
+                var statsValue = player.GetEntityStats.GetCurrentStatsValue(parseStats);
 
-            _info.SetInfo(_info.GetHeaderInfoSlot, $": {statsValue}");
+                _info.SetInfo(_info.GetHeaderInfoSlot, $": {statsValue}");
+            }
         }
     }
 

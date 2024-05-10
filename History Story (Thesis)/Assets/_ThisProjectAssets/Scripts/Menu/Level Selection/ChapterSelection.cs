@@ -65,16 +65,6 @@ public class ChapterSelection : MonoBehaviour
     }
     private void Start()
     {
-        ////TESTING
-        Debug.Log("TESTING");
-        GameManager.Instance.UnlockSceneChapter("Introduction");
-        GameManager.Instance.UnlockSceneChapter("Chapter 1");
-        GameManager.Instance.UnlockSceneChapter("Chapter 2");
-        GameManager.Instance.UnlockSceneChapter("Chapter 3");
-        GameManager.Instance.UnlockSceneChapter("Chapter 4");
-        GameManager.Instance.UnlockSceneChapter("Chapter 5");
-
-
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             string fullPath = SceneUtility.GetScenePathByBuildIndex(i);
