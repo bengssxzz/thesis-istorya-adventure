@@ -8,13 +8,29 @@ using UnityEngine.UI;
 
 public class AbilityHolderPanel : MonoBehaviour
 {
-    [SerializeField] private MMTouchButton setChangesButton;
     [SerializeField] private RectTransform abilityIndicatorHolder;
+    [SerializeField] private StatsInfoSlot statsInfoPrefab;
+    [SerializeField] private RectTransform statsInfoContent;
+
+    [Header("Buttons")]
+    [SerializeField] private MMTouchButton setChangesButton;
+    [SerializeField] private MMTouchButton statsInfoButton;
+    [SerializeField] private MMTouchButton usedAbilityButton;
+
+
+    [Header("Panels")]
+    [SerializeField] private RectTransform usedAbilityView;
+    [SerializeField] private RectTransform statsInfoView;
+
+
+
 
     private PlayerScript player;
     private List<SlotAbilityHolder> slotAbilityHolders;
     private List<AbilityScript> listOfOldCurrentAbilities;
     private AbilityScript[] abilityPositions;
+
+    private List<StatsInfoSlot> listOfStatsInfoPrefab;
 
     public event Action<List<AbilityScript>> OnEnableEquipAbility;
     public event Action<List<AbilityScript>> OnEquipAbilityChange;
@@ -39,15 +55,26 @@ public class AbilityHolderPanel : MonoBehaviour
     private void Awake()
     {
         slotAbilityHolders = new List<SlotAbilityHolder>(GetComponentsInChildren<SlotAbilityHolder>(true));
+        listOfStatsInfoPrefab = new List<StatsInfoSlot>();
 
         InitializedHolderSlot();
     }
 
+    private void Start()
+    {
+        InitializeStatsInfo();
+    }
+
     private void OnEnable()
     {
+        OpenUsedAbilityPanel();
+
         UpdateHolderSlotOnOpen();
+        UpdateStatsInfo();
 
         setChangesButton.ButtonReleased.AddListener(SetChangesAbilities);
+        usedAbilityButton.ButtonReleased.AddListener(OpenUsedAbilityPanel);
+        statsInfoButton.ButtonReleased.AddListener(OpenStatsInfoPanel);
 
     }
     private void OnDisable()
@@ -55,6 +82,11 @@ public class AbilityHolderPanel : MonoBehaviour
         setChangesButton.ButtonReleased.RemoveListener(SetChangesAbilities);
     }
 
+    private void Update()
+    {
+        statsInfoButton.gameObject.SetActive(usedAbilityView.gameObject.activeInHierarchy);
+        usedAbilityButton.gameObject.SetActive(statsInfoView.gameObject.activeInHierarchy);
+    }
 
     private void InitializedHolderSlot()
     {
@@ -110,6 +142,45 @@ public class AbilityHolderPanel : MonoBehaviour
         }
     }
 
+    private void InitializeStatsInfo()
+    {
+        foreach (EntityStats stat in Enum.GetValues(typeof(EntityStats)))
+        {
+            StatsInfoSlot infoSlot = Instantiate(statsInfoPrefab);
+            infoSlot.gameObject.SetActive(true);
+            infoSlot.transform.SetParent(statsInfoContent);
+
+            try
+            {
+                var statsValue = player.GetEntityStats.GetCurrentStatsValue(stat);
+                infoSlot.SetInfo(stat.ToString(), $": {statsValue}");
+            }
+            catch
+            {
+                infoSlot.SetInfo(stat.ToString(), $": 0");
+            }
+            finally
+            {
+                listOfStatsInfoPrefab.Add(infoSlot);
+            }
+
+            //var statsValue = player.GetEntityStats.GetCurrentStatsValue(stat);
+            //infoSlot.SetInfo(stat.ToString(), $": {statsValue}");
+            //listOfStatsInfoPrefab.Add(infoSlot);
+        }
+    }
+    private void UpdateStatsInfo()
+    {
+        foreach (var _info in listOfStatsInfoPrefab)
+        {
+            Enum.TryParse(_info.GetHeaderInfoSlot, out EntityStats parseStats);
+            var statsValue = player.GetEntityStats.GetCurrentStatsValue(parseStats);
+
+            _info.SetInfo(_info.GetHeaderInfoSlot, $": {statsValue}");
+        }
+    }
+
+
     private Transform SetImageToIndicatorHolder(bool toggle, Sprite sprite)
     {
         abilityIndicatorHolder.gameObject.SetActive(toggle);
@@ -123,6 +194,7 @@ public class AbilityHolderPanel : MonoBehaviour
         return abilityIndicatorHolder.transform;
     }
 
+
     private async void SetChangesAbilities()
     {
         UI_Manager.Instance.CloseMenu("Ability Inventory UI");
@@ -132,6 +204,22 @@ public class AbilityHolderPanel : MonoBehaviour
         player.GetAbility_Controller.ListOfCurrentAbilities = new List<AbilityScript>(abilityPositions); //Update the current abilities
         var mobileController = await UI_Manager.Instance.FindComponentInUIMenu<MobileController>("TouchController UI");
         mobileController.UpdateAbilityButtons(listOfOldCurrentAbilities.ToArray());
+    }
+    private void OpenUsedAbilityPanel()
+    {
+        statsInfoView.gameObject.SetActive(false);
+        usedAbilityView.gameObject.SetActive(true);
+
+        //statsInfoButton.gameObject.SetActive(true);
+        //usedAbilityButton.gameObject.SetActive(false);
+    }
+    private void OpenStatsInfoPanel()
+    {
+        statsInfoView.gameObject.SetActive(true);
+        usedAbilityView.gameObject.SetActive(false);
+
+        //statsInfoButton.gameObject.SetActive(false);
+        //usedAbilityButton.gameObject.SetActive(true);
     }
 
 

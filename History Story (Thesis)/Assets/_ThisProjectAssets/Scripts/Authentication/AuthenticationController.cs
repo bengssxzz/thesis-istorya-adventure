@@ -87,7 +87,7 @@ public class AuthenticationController : MonoBehaviour
 
 
 
-    private async void SignUpBtnPressed()
+    private void SignUpBtnPressed()
     {
         var email = signup_emailIF.text;
         var username = signup_usernameIF.text;

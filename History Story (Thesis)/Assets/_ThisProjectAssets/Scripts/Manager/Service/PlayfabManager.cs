@@ -197,6 +197,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
     public void LoginUsingUsername(string username, string password)
     {
+
         LoginWithPlayFabRequest userName_Login = new LoginWithPlayFabRequest()
         {
             Username = username,

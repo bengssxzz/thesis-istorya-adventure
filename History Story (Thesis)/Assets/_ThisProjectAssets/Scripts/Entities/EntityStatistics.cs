@@ -406,6 +406,34 @@ public class EntityStatistics
         }
         OnCurrentStatsChange?.Invoke();
     }
+
+    public float GetCurrentStatsValue(EntityStats stats) //Get the current stats value
+    {
+        switch (stats)
+        {
+            case EntityStats.Health:
+                return _currentHealth;
+            case EntityStats.Damage:
+                return _currentDamage;
+            case EntityStats.Defense:
+                return _currentDefense;
+            case EntityStats.MoveSpeed:
+                return _currentMoveSpeed;
+            case EntityStats.AttackSpeed:
+                return _currentAttackSpeed;
+            case EntityStats.CriticalChance:
+                return _currentCriticalChance;
+            case EntityStats.CriticalDamage:
+                return _currentCriticalDamage;
+            case EntityStats.Dodging:
+                return _currentDodgeChance;
+            case EntityStats.LifeSteal:
+                return _lifeSteal;
+            default:
+                Debug.LogError($"There are no {stats} in the Entity Statistic");
+                return 0;
+        }
+    }
     public float GetRemainingStatsValue(EntityStats stats) //Get the remaining stats value
     {
         float remainValue = 0;
@@ -471,7 +499,6 @@ public class EntityStatistics
                 return 0;
         }
     }
-
 
 
 
