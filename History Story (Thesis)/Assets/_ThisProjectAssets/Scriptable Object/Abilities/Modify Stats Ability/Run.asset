@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ae9dfd9c1791b0488a40ac90185f56d, type: 3}
-  m_Name: Movement Speed 1
+  m_Name: Run
   m_EditorClassIdentifier: 
   state: 0
   OnAbilityTimeLapse:
     m_PersistentCalls:
       m_Calls: []
-  abilityName: Movement Speed 1
-  abilityIcon: {fileID: 21300000, guid: 7184308b76676401bb1cc27a3008ca55, type: 3}
-  abilityDescription: 
+  abilityName: Run
+  abilityIcon: {fileID: 21300000, guid: 0514f33d072fa438295f5d1bc8b5c323, type: 3}
+  abilityDescription: Slightly increase your movement for 3 seconds.
   cooldownTime: 10
   canAttack: 0
   canMove: 0
   precastingAtStartFeedback: {fileID: 0}
-  castingAtStartFeedback: {fileID: 0}
+  castingAtStartFeedback: {fileID: 7361863170147768511, guid: ecf1c111a879798479a15528eb2fabb0, type: 3}
   finishedAtStartFeedback: {fileID: 0}
   preCastingAtStart_SoundFX:
     sound_FX: {fileID: 0}
@@ -45,5 +45,5 @@ MonoBehaviour:
     maxPitch: 1
   listOfStatsModified:
   - modifyStats: 3
-    modifyValue: 70
-  activeTime: 5
+    modifyValue: 5
+  activeTime: 3

@@ -91,10 +91,10 @@ public class PlayerScript : Entities
         base.Update();
         FlipEntity(rb.velocity);
 
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    CollectFeedbackModified("FUCK YOU UNITY");
-        //}
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GetAbility_Controller.PlayParticleEffects("HealParticle", 5);
+        }
         //if (Input.GetKeyDown(KeyCode.O))
         //{
         //    SetFloatingText("HAHAHAHAH", Color.green);

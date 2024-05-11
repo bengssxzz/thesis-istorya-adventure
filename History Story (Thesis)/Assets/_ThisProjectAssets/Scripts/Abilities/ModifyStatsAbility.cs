@@ -36,9 +36,11 @@ public class ModifyStatsAbility : AbilityScript
                     break;
                 case EntityStats.Defense:
                     _ = entity.GetEntityStats.TempModifiedDefense(statsModifying.modifyValue, activeTime);
+                    entity.GetAbility_Controller.PlayParticleEffects("DefenseParticle", activeTime);
                     break;
                 case EntityStats.MoveSpeed:
                     _ = entity.GetEntityStats.TempModifiedMoveSpeed(statsModifying.modifyValue, activeTime);
+                    entity.GetAbility_Controller.PlayParticleEffects("MoveSpeedParticle", activeTime);
                     break;
                 case EntityStats.AttackSpeed:
                     _ = entity.GetEntityStats.TempModifiedAttackSpeed(statsModifying.modifyValue, activeTime);
@@ -48,14 +50,16 @@ public class ModifyStatsAbility : AbilityScript
                     break;
                 case EntityStats.CriticalDamage:
                     _ = entity.GetEntityStats.TempModifiedCriticalDamage(statsModifying.modifyValue, activeTime);
+                    entity.GetAbility_Controller.PlayParticleEffects("CriticalDamageParticle", activeTime);
                     break;
                 case EntityStats.Dodging:
                     _ = entity.GetEntityStats.TempModifiedDodgeChance(statsModifying.modifyValue, activeTime);
                     break;
-                case EntityStats.LifeSteal:
-                    _ = entity.GetEntityStats.TempModifiedDamage(statsModifying.modifyValue, activeTime);
-                    break;
                 case EntityStats.Damage:
+                    _ = entity.GetEntityStats.TempModifiedDamage(statsModifying.modifyValue, activeTime);
+                    entity.GetAbility_Controller.PlayParticleEffects("BoostAttackParticle", activeTime);
+                    break;
+                case EntityStats.LifeSteal:
                     break;
                 default:
                     break;
