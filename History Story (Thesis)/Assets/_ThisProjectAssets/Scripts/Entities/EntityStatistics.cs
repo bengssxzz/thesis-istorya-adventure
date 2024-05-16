@@ -188,7 +188,7 @@ public class EntityStatistics
     }
     public async UniTask TempModifiedDamage(float tempValue, float duration) //Damage
     {
-        currentDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); // Apply temporary value
+        currentDamage += Mathf.Clamp(tempValue, 0, float.MaxValue); // Apply temporary value
 
         try
         {
@@ -208,7 +208,7 @@ public class EntityStatistics
     }
     public async UniTask TempModifiedDefense(float tempValue, float duration) //Defense
     {
-        currentDefense = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
+        currentDefense += Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
         try
         {
@@ -228,7 +228,7 @@ public class EntityStatistics
     }
     public async UniTask TempModifiedMoveSpeed(float tempValue, float duration) //Movement Speed
     {
-        currentMoveSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
+        currentMoveSpeed += Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
 
         try
         {
@@ -248,7 +248,7 @@ public class EntityStatistics
     }
     public async UniTask TempModifiedAttackSpeed(float tempValue, float duration) //Attack Speed
     {
-        maxAttackSpeed = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
+        maxAttackSpeed += Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
 
         try
         {
@@ -268,7 +268,7 @@ public class EntityStatistics
     }
     public async UniTask TempModifiedCriticalDamage(float tempValue, float duration) //Critical Damage
     {
-        currentCriticalDamage = Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
+        currentCriticalDamage += Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
 
         try
         {
@@ -288,7 +288,7 @@ public class EntityStatistics
     }
     public async UniTask TempModifiedCriticalChance(float tempValue, float duration) //Critical Chance
     {
-        currentCriticalChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
+        currentCriticalChance += Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
         try
         {
@@ -308,7 +308,7 @@ public class EntityStatistics
     }
     public async UniTask TempModifiedDodgeChance(float tempValue, float duration) //Dodge Chance
     {
-        currentDodgeChance = Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
+        currentDodgeChance += Mathf.Clamp(tempValue, 0f, 100f); ; // Apply temporary value
 
         try
         {

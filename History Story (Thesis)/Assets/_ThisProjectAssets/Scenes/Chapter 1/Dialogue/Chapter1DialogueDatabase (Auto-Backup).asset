@@ -399,7 +399,7 @@ MonoBehaviour:
       type: 0
       typeString: CustomFieldType_Text
     - title: Initial Value
-      value: 10
+      value: 0
       type: 1
       typeString: CustomFieldType_Number
     - title: Description
@@ -1744,13 +1744,16 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: CollectArtifacts("Agimat")
+      userScript: 'CollectArtifacts("Agimat");
+
+        CollectAbilities("Reduce
+        Damage")'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 704
+        x: 700.875
         y: 386
         width: 160
         height: 30
@@ -1898,7 +1901,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 288
-        y: 218
+        y: 221.125
         width: 160
         height: 30
     - id: 24
@@ -2040,8 +2043,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 890
+        x: 76.875015
+        y: 893.125
         width: 160
         height: 30
     - id: 26
@@ -2392,8 +2395,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 58.725025, y: 481.5686}
-    canvasZoom: 0.6800003
+    canvasScrollPosition: {x: 82.3479, y: 0}
+    canvasZoom: 0.62000036
   - id: 2
     fields:
     - title: Title
@@ -2941,8 +2944,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 80
-        y: 809.5714
+        x: 76.42857
+        y: 813.1428
         width: 160
         height: 30
     - id: 8
@@ -3226,8 +3229,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 15.912171}
-    canvasZoom: 0.2800004
+    canvasScrollPosition: {x: 18.388952, y: 416.0145}
+    canvasZoom: 0.4300004
   - id: 3
     fields:
     - title: Title
@@ -3674,7 +3677,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 165
-        y: 83
+        y: 82
         width: 160
         height: 30
     entryGroups: []
@@ -4012,8 +4015,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 0, y: 25.695911}
+    canvasZoom: 0.7600002
   - id: 6
     fields:
     - title: Title
@@ -4202,8 +4205,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 12.354403, y: 6.313801}
+    canvasZoom: 1.06
   - id: 7
     fields:
     - title: Title
@@ -5560,8 +5563,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 51.670105}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 70.73856, y: 324.4521}
+    canvasZoom: 0.40000045
   - id: 10
     fields:
     - title: Title
@@ -5854,8 +5857,8 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "They gave me this book and this cross. They say this is the word
-          of God and the sign of his love. I don\u2019t get them, but they pay well."
+        value: They gave me this book and this cross. They say this is the word of
+          God and the sign of his love. I don't get them, but they pay well.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -5894,8 +5897,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 23.208065, y: 21.64272}
+    canvasZoom: 0.8200002
   - id: 11
     fields:
     - title: Title
@@ -6371,7 +6374,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 180
+        y: 181.3158
         width: 160
         height: 30
     - id: 6
@@ -6447,8 +6450,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 47.900803, y: 72.88655}
+    canvasZoom: 0.6100004
   - id: 12
     fields:
     - title: Title
@@ -6597,7 +6600,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "I\u2019ve returned with the gold you requested."
+        value: I've returned with the gold you requested.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -6668,7 +6671,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "You\u2019re back! Let\u2019s see what you\u2019ve gathered."
+        value: You're back! Let's see what you've gathered.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -6810,7 +6813,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: "Excellent! You\u2019ve done a commendable job."
+        value: Excellent! You've done a commendable job.
         type: 0
         typeString: CustomFieldType_Text
       - title: Parenthetical
@@ -6992,8 +6995,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 0, y: 2.9373207}
+    canvasZoom: 0.7600002
   - id: 13
     fields:
     - title: Title
@@ -7394,8 +7397,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 1
+    canvasScrollPosition: {x: 0, y: 5.842272}
+    canvasZoom: 0.7600002
   syncInfo:
     syncActors: 0
     syncItems: 0

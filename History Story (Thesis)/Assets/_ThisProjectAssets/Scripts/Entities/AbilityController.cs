@@ -40,6 +40,15 @@ public class AbilityController : MonoBehaviour
         InitializedAttachedAbility();
         InitializedParticleEffects();
     }
+    private void OnEnable()
+    {
+        ResetAbilitiesOnStart();
+        foreach (var item in currentAbilities)
+        {
+            if (item == null) { continue; }
+            item.InitializeAbility_Used();
+        }
+    }
 
     public void InitializedDefaultAbilities(List<AbilityScript> defaultAbility)
     {
@@ -56,7 +65,7 @@ public class AbilityController : MonoBehaviour
                 {
                     continue;
                 }
-                ability.Reset();
+                ability.RestartAbility();
             }
         }
 

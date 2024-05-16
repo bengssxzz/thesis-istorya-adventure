@@ -47,6 +47,7 @@ public class DodgeAbility : AbilityScript
 
 
         entity.GetRigidbody2D.AddForce(previousDir * dodgePower * Time.fixedDeltaTime, ForceMode2D.Impulse);
+        entity.IsImmuneDamage = true;
         await UniTask.Delay(TimeSpan.FromSeconds(dodgeDistance));
         entity.GetRigidbody2D.velocity = Vector2.zero;
 
@@ -62,7 +63,7 @@ public class DodgeAbility : AbilityScript
             entity.GetActorTransform.rotation = Quaternion.identity;
         }
 
-
+        entity.IsImmuneDamage = false;
         entity.IsCanMove = true;
     }
 

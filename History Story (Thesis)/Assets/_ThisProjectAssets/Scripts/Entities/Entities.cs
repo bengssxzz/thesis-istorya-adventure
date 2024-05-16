@@ -54,6 +54,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     //public bool IsCanAttack { get { return _canAttack; } set { _canAttack = value; } }
     public Vector2 GetMoveDirection { get; protected set; }
     public bool IsCanMove { get; set; } = true;
+    public bool IsImmuneDamage { set { isImmuneDamage = value; } }
 
     //Private variables
     private bool facingLeft = false;
