@@ -148,7 +148,7 @@ public class AbilityController : MonoBehaviour
         {
             var mainModule = particleEffect.main;
 
-            if (duration != 0)
+            if (duration > 0)
             {
                 mainModule.duration = duration;
             }

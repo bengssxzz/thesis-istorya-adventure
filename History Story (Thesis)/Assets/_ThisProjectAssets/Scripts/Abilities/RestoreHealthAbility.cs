@@ -32,6 +32,7 @@ public class RestoreHealthAbility : AbilityScript
         var amount = entity.GetEntityStats.maxHealth * healthAmountPercent;
         entity.GetEntityStats.SetCurrentHealth(amount);
 
+        entity.GetAbility_Controller.PlayParticleEffects("HealParticle");
         await UniTask.Delay(TimeSpan.FromSeconds(time));
     }
 
@@ -47,6 +48,7 @@ public class RestoreHealthAbility : AbilityScript
     {
         MMF_Particles toPlay = castingFeedback.GetFeedbackOfType<MMF_Particles>();
         //toPlay.BoundParticleSystem = entity.transform.MMFindDeepChildDepthFirst("HealParticle").GetComponent<ParticleSystem>();
+
         toPlay.BoundParticleSystem = entity.GetAbility_Controller.GetAttachedAbilityObject("HealParticle").GetComponent<ParticleSystem>();
     }
 }

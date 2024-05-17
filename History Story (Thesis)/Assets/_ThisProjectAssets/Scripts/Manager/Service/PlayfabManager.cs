@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Networking;
 using System.Linq;
+using System.Threading;
 
 [Serializable]
 public class PlayerUserData
@@ -45,7 +46,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
     public event Action OnGetDataResultSuccess;
 
 
-    [SerializeField] private RectTransform loadingScreen;
+    //[SerializeField] private RectTransform loadingScreen;
     [SerializeField] private SimpleSQLManager sqlManagerLeaderboard;
 
 
@@ -72,15 +73,23 @@ public class PlayfabManager : Singleton<PlayfabManager>
     {
         var playerData = GetUserDataAccount();
 
-        if (playerData == null)
+        if (!IsUserLogin())
         {
-            //Go to login page
-            Debug.Log("THERE ARE NO USERDATA SAVED IN LOCAL DATA");
+            if(playerData != null)
+            {
+                LoginUsingUsername(playerData.userIdentifier, playerData.password);
+            }
         }
-        else
-        {
-            LoginUsingUsername(playerData.userIdentifier, playerData.password);
-        }
+
+        //if (playerData == null)
+        //{
+        //    //Go to login page
+        //    Debug.LogWarning("THERE ARE NO USERDATA SAVED IN LOCAL DATA");
+        //}
+        //else
+        //{
+        //    LoginUsingUsername(playerData.userIdentifier, playerData.password);
+        //}
     }
 
 
@@ -148,8 +157,21 @@ public class PlayfabManager : Singleton<PlayfabManager>
     {
         if (ES3.FileExists("Secretkey.keys"))
         {
-            ES3.DeleteFile("Secretkey.keys");
-            Debug.Log("DELETING A SAVE DATA FILE: SUCCESS");
+            try
+            {
+                SavePlayerDataCloud(); //Save player data in cloud
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                //Delete files
+                ES3.DeleteFile("Secretkey.keys");
+                ES3.DeleteFile(PLAYER_DATA_FILE);
+                Debug.Log("DELETING A SAVE DATA FILE: SUCCESS");
+            }
         }
         else
         {
@@ -228,8 +250,16 @@ public class PlayfabManager : Singleton<PlayfabManager>
                     await SaveUserDataAccount(savePlayerData);
                     Debug.Log("USER DATA IS SAVED SUCCESSFULLY.");
 
-                    OnErrorLogin?.Invoke(false, "");
-                    OnLoginSuccess?.Invoke(result);
+                    //Download Data
+                    try
+                    {
+                        await RequestRetrievePlayerData();
+                    }
+                    finally
+                    {
+                        OnErrorLogin?.Invoke(false, "");
+                        OnLoginSuccess?.Invoke(result);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -272,8 +302,16 @@ public class PlayfabManager : Singleton<PlayfabManager>
                     await SaveUserDataAccount(savePlayerData);
                     Debug.Log("USER DATA IS SAVED SUCCESSFULLY.");
 
-                    OnErrorLogin?.Invoke(false, "");
-                    OnLoginSuccess?.Invoke(result);
+                    //Download Data
+                    try
+                    {
+                        await RequestRetrievePlayerData();
+                    }
+                    finally
+                    {
+                        OnErrorLogin?.Invoke(false, "");
+                        OnLoginSuccess?.Invoke(result);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -387,8 +425,8 @@ public class PlayfabManager : Singleton<PlayfabManager>
         {
             var getData = await GetDataInUserCloud(PLAYER_DATA_KEY);
 
-            Debug.Log($"SUCCESS RETRIEVE: KEY: {PLAYER_DATA_KEY}");
             ES3.SaveRaw(getData, PLAYER_DATA_FILE);
+            Debug.Log($"SUCCESS RETRIEVE: KEY: {PLAYER_DATA_KEY}");
         }
         catch (Exception ex)
         {
@@ -396,7 +434,10 @@ public class PlayfabManager : Singleton<PlayfabManager>
             throw; // Rethrow the exception to be caught by the caller
         }
     }
-
+    public void DeletePlayerData()
+    {
+        ES3.DeleteFile(PLAYER_DATA_FILE);
+    }
 
     #endregion
 
@@ -597,23 +638,64 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
 
 
+    //private async UniTask<bool> CheckInternetConnectionAsync()
+    //{
+    //    UI_Manager.Instance.OpenMenu("LoadingScreen");
+    //    //loadingScreen?.gameObject.SetActive(true);
+
+    //    const string echoServer = "http://google.com";
+
+    //    bool result = false;
+
+    //    using (var request = UnityWebRequest.Head(echoServer))
+    //    {
+    //        request.timeout = 5;
+
+    //        try
+    //        {
+    //            await request.SendWebRequest();
+    //        }
+    //        finally
+    //        {
+    //            result = request.result == UnityWebRequest.Result.Success && request.responseCode == 200;
+    //        }
+
+    //    }
+
+    //    UI_Manager.Instance.CloseMenu("LoadingScreen");
+    //    //loadingScreen.gameObject.SetActive(false);
+    //    return result;
+    //}
     private async UniTask<bool> CheckInternetConnectionAsync()
     {
-        loadingScreen.gameObject.SetActive(true);
+        UI_Manager.Instance.OpenMenu("LoadingScreen");
 
         const string echoServer = "http://google.com";
-
         bool result = false;
 
         using (var request = UnityWebRequest.Head(echoServer))
         {
-            request.timeout = 5;
-            await request.SendWebRequest();
+            request.timeout = 5; // Set the timeout for the request
 
-            result = request.result == UnityWebRequest.Result.Success && request.responseCode == 200;
+            CancellationTokenSource cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(request.timeout)); // Cancel the request after the timeout
+
+            try
+            {
+                await request.SendWebRequest().WithCancellation(cts.Token); // Wait for the request with cancellation
+                result = request.result == UnityWebRequest.Result.Success && request.responseCode == 200;
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.LogWarning("Internet connection check timed out.");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error checking internet connection: " + e.Message);
+            }
         }
 
-        loadingScreen.gameObject.SetActive(false);
+        UI_Manager.Instance.CloseMenu("LoadingScreen");
         return result;
     }
 

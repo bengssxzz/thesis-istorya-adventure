@@ -26,6 +26,11 @@ public class LeaderboardView : MonoBehaviour
     private List<LeaderboardSlotUI> listOfLBSlotUI = new List<LeaderboardSlotUI>();
 
 
+    private void Awake()
+    {
+        DisenableLeaderboardView();
+    }
+
     private void OnEnable()
     {
         refreshBtn.ButtonReleased.AddListener(RefreshLeaderboard);

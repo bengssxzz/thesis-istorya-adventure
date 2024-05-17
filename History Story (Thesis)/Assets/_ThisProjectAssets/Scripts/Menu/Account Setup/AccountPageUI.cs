@@ -21,6 +21,7 @@ public class AccountPageUI : MonoBehaviour
     [SerializeField] private MMTouchButton logoutBtn;
     [SerializeField] private MMTouchButton backupDataBtn;
     [SerializeField] private MMTouchButton retriveDataBtn;
+
     [SerializeField] private MMTouchButton closeAccountPage;
 
 
@@ -151,8 +152,8 @@ public class AccountPageUI : MonoBehaviour
     {
         try
         {
-            SceneTransitionManager.Instance.SceneTransitionInstant(SceneManager.GetActiveScene().name);
             await PlayfabManager.Instance.RequestRetrievePlayerData();
+            SceneTransitionManager.Instance.SceneTransitionInstant(SceneManager.GetActiveScene().name);
         }
         catch (Exception ex)
         {

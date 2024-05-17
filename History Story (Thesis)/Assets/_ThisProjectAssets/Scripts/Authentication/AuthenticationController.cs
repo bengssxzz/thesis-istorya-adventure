@@ -49,12 +49,18 @@ public class AuthenticationController : MonoBehaviour
 
     private void OnEnable()
     {
+        //Try login
+
         PlayfabManager.Instance.OnErrorLogin += ErrorLogin;
+        PlayfabManager.Instance.OnLoginSuccess += LoginSuccess;
     }
     private void OnDisable()
     {
         PlayfabManager.Instance.OnErrorLogin -= ErrorLogin;
+        PlayfabManager.Instance.OnLoginSuccess += LoginSuccess;
     }
+
+
 
     private void Start()
     {
@@ -90,6 +96,13 @@ public class AuthenticationController : MonoBehaviour
         }
     }
 
+    private void LoginSuccess(LoginResult obj)
+    {
+        signin_emailIF.text = "";
+        signin_passwordIF.text = "";
+        signin_errorMessage.gameObject.SetActive(false);
+        signin_errorMessage.text = "";
+    }
     private void ErrorLogin(bool failedSignIn, string errorMsg)
     {
         signin_errorMessage.gameObject.SetActive(false);

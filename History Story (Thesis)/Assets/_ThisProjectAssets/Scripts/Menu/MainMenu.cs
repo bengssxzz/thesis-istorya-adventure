@@ -14,7 +14,6 @@ public class MainMenu : MonoBehaviour
 
     //Leaderboard
 
-
     private void OnEnable()
     {
         lvlSelectBtn.ButtonReleased.AddListener(LevelSelectPressed);
@@ -39,6 +38,8 @@ public class MainMenu : MonoBehaviour
     private async void Start()
     {
         await UI_Manager.Instance.InitializeGetAllMenus();
+
+        PlayfabManager.Instance.LoginOnStart();
     }
 
     private void LevelSelectPressed()
