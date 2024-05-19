@@ -8,7 +8,7 @@ using System;
 
 public abstract class RangeAttackTypeSO : ScriptableObject
 {
-    [SerializeField] private ObjectPoolerInfo poolerInfo;
+    [SerializeField] public ObjectPoolerInfo poolerInfo;
 
     [SerializeField] private float amount = 0;
     [SerializeField] private bool useTimer = false;

@@ -18,12 +18,12 @@ MonoBehaviour:
       m_Calls: []
   abilityName: Run
   abilityIcon: {fileID: 21300000, guid: 0514f33d072fa438295f5d1bc8b5c323, type: 3}
-  abilityDescription: Slightly increase your movement for 3 seconds.
+  abilityDescription: Increase your movement by 10% for 5 seconds.
   cooldownTime: 10
   canAttack: 0
   canMove: 0
   precastingAtStartFeedback: {fileID: 0}
-  castingAtStartFeedback: {fileID: 7361863170147768511, guid: ecf1c111a879798479a15528eb2fabb0, type: 3}
+  castingAtStartFeedback: {fileID: 0}
   finishedAtStartFeedback: {fileID: 0}
   preCastingAtStart_SoundFX:
     sound_FX: {fileID: 0}
@@ -32,7 +32,7 @@ MonoBehaviour:
     minPitch: 1
     maxPitch: 1
   castingAtStart_SoundFX:
-    sound_FX: {fileID: 0}
+    sound_FX: {fileID: 8300000, guid: d0d4a6297aa82cf4899b6f7986c3569e, type: 3}
     minVolume: 1
     maxVolume: 1
     minPitch: 1
@@ -46,4 +46,5 @@ MonoBehaviour:
   listOfStatsModified:
   - modifyStats: 3
     modifyValue: 10
-  activeTime: 3
+    valueType: 0
+  activeTime: 5

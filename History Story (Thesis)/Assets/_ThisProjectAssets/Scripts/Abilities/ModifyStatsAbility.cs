@@ -10,8 +10,11 @@ public class ModifyStatsAbility : AbilityScript
 {
     [System.Serializable] public class ModifyStats
     {
+        public enum ValueType { Percent, Amount}
+
         public EntityStats modifyStats;
         public float modifyValue;
+        public ValueType valueType = ValueType.Percent;
     }
 
     public List<ModifyStats> listOfStatsModified = new List<ModifyStats>();
@@ -30,33 +33,110 @@ public class ModifyStatsAbility : AbilityScript
         //Modifying entity stats 
         foreach (ModifyStats statsModifying in listOfStatsModified)
         {
+            float value = 0f;
             switch (statsModifying.modifyStats)
             {
                 case EntityStats.Health:
                     break;
                 case EntityStats.Defense:
-                    _ = entity.GetEntityStats.TempModifiedDefense(statsModifying.modifyValue, activeTime);
+                    switch (statsModifying.valueType)
+                    {
+                        case ModifyStats.ValueType.Percent:
+                            value = entity.GetEntityStats.GetMaxBoundStats(EntityStats.Defense) * (statsModifying.modifyValue/100);
+                            break;
+                        case ModifyStats.ValueType.Amount:
+                            value = statsModifying.modifyValue;
+                            break;
+                    }
+
+                    //_ = entity.GetEntityStats.TempModifiedDefense(statsModifying.modifyValue, activeTime);
+                    _ = entity.GetEntityStats.TempModifiedDefense(value, activeTime);
                     entity.GetAbility_Controller.PlayParticleEffects("BoostDefenseParticle", activeTime);
                     break;
                 case EntityStats.MoveSpeed:
-                    _ = entity.GetEntityStats.TempModifiedMoveSpeed(statsModifying.modifyValue, activeTime);
+                    switch (statsModifying.valueType)
+                    {
+                        case ModifyStats.ValueType.Percent:
+                            value = entity.GetEntityStats.GetMaxBoundStats(EntityStats.MoveSpeed) * (statsModifying.modifyValue / 100);
+                            break;
+                        case ModifyStats.ValueType.Amount:
+                            value = statsModifying.modifyValue;
+                            break;
+                    }
+
+                    //value = ThesisLibrary.ThesisUtility.ComputeAddedValueWithPercentage(entity.GetEntityStats.maxMoveSpeed, statsModifying.modifyValue);
+                    _ = entity.GetEntityStats.TempModifiedMoveSpeed(value, activeTime);
                     entity.GetAbility_Controller.PlayParticleEffects("BoostMovementParticle", activeTime);
                     break;
                 case EntityStats.AttackSpeed:
-                    _ = entity.GetEntityStats.TempModifiedAttackSpeed(statsModifying.modifyValue, activeTime);
+                    switch (statsModifying.valueType)
+                    {
+                        case ModifyStats.ValueType.Percent:
+                            value = entity.GetEntityStats.GetMaxBoundStats(EntityStats.AttackSpeed) * (statsModifying.modifyValue / 100);
+                            break;
+                        case ModifyStats.ValueType.Amount:
+                            value = statsModifying.modifyValue;
+                            break;
+                    }
+
+                    //value = ThesisLibrary.ThesisUtility.ComputeAddedValueWithPercentage(entity.GetEntityStats.maxAttackSpeed, statsModifying.modifyValue);
+                    _ = entity.GetEntityStats.TempModifiedAttackSpeed(value, activeTime);
                     break;
                 case EntityStats.CriticalChance:
-                    _ = entity.GetEntityStats.TempModifiedCriticalChance(statsModifying.modifyValue, activeTime);
+                    switch (statsModifying.valueType)
+                    {
+                        case ModifyStats.ValueType.Percent:
+                            value = entity.GetEntityStats.GetMaxBoundStats(EntityStats.CriticalChance) * (statsModifying.modifyValue / 100);
+                            break;
+                        case ModifyStats.ValueType.Amount:
+                            value = statsModifying.modifyValue;
+                            break;
+                    }
+
+                    //value = ThesisLibrary.ThesisUtility.ComputeAddedValueWithPercentage(entity.GetEntityStats.maxCriticalChance, statsModifying.modifyValue);
+                    _ = entity.GetEntityStats.TempModifiedCriticalChance(value, activeTime);
                     entity.GetAbility_Controller.PlayParticleEffects("BoostCriticalParticle", activeTime);
                     break;
                 case EntityStats.CriticalDamage:
-                    _ = entity.GetEntityStats.TempModifiedCriticalDamage(statsModifying.modifyValue, activeTime);
+                    switch (statsModifying.valueType)
+                    {
+                        case ModifyStats.ValueType.Percent:
+                            value = entity.GetEntityStats.maxCriticalDamage * (statsModifying.modifyValue / 100);
+                            break;
+                        case ModifyStats.ValueType.Amount:
+                            value = statsModifying.modifyValue;
+                            break;
+                    }
+
+                    //value = ThesisLibrary.ThesisUtility.ComputeAddedValueWithPercentage(entity.GetEntityStats.maxCriticalDamage, statsModifying.modifyValue);
+                    _ = entity.GetEntityStats.TempModifiedCriticalDamage(value, activeTime);
                     break;
                 case EntityStats.Dodging:
-                    _ = entity.GetEntityStats.TempModifiedDodgeChance(statsModifying.modifyValue, activeTime);
+                    switch (statsModifying.valueType)
+                    {
+                        case ModifyStats.ValueType.Percent:
+                            value = entity.GetEntityStats.GetMaxBoundStats(EntityStats.Dodging) * (statsModifying.modifyValue / 100);
+                            break;
+                        case ModifyStats.ValueType.Amount:
+                            value = statsModifying.modifyValue;
+                            break;
+                    }
+
+                    //value = ThesisLibrary.ThesisUtility.ComputeAddedValueWithPercentage(entity.GetEntityStats.maxDodgeChance, statsModifying.modifyValue);
+                    _ = entity.GetEntityStats.TempModifiedDodgeChance(value, activeTime);
                     break;
                 case EntityStats.Damage:
-                    _ = entity.GetEntityStats.TempModifiedDamage(statsModifying.modifyValue, activeTime);
+                    switch (statsModifying.valueType)
+                    {
+                        case ModifyStats.ValueType.Percent:
+                            value = entity.GetEntityStats.maxDamage * (statsModifying.modifyValue / 100);
+                            break;
+                        case ModifyStats.ValueType.Amount:
+                            value = statsModifying.modifyValue;
+                            break;
+                    }
+
+                    _ = entity.GetEntityStats.TempModifiedDamage(value, activeTime);
                     entity.GetAbility_Controller.PlayParticleEffects("BoostAttackParticle", activeTime);
                     break;
                 case EntityStats.LifeSteal:

@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c806a36a026b82242808ed67782cf523, type: 3}
+  m_Name: Full Health Recover
+  m_EditorClassIdentifier: 
+  state: 0
+  OnAbilityTimeLapse:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityName: Full Health Recover
+  abilityIcon: {fileID: 21300000, guid: 78edce7e7ca54984b9963822764b1a3c, type: 3}
+  abilityDescription: Full Health Recovery.
+  cooldownTime: 150
+  canAttack: 0
+  canMove: 0
+  precastingAtStartFeedback: {fileID: 0}
+  castingAtStartFeedback: {fileID: 0}
+  finishedAtStartFeedback: {fileID: 0}
+  preCastingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  castingAtStart_SoundFX:
+    sound_FX: {fileID: 8300000, guid: b1d88b3a5958805478d658120626f0d2, type: 3}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1.1
+  finishedAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  healthAmountPercent: 500
+  time: 0

@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae9dfd9c1791b0488a40ac90185f56d, type: 3}
+  m_Name: Wild Damage
+  m_EditorClassIdentifier: 
+  state: 0
+  OnAbilityTimeLapse:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityName: Wild Damage
+  abilityIcon: {fileID: 21300000, guid: 51f1f78217dab2a45a902d6cf3e089a7, type: 3}
+  abilityDescription: 50 additional damage, and 30 additional critical damage for
+    6 seconds
+  cooldownTime: 20
+  canAttack: 0
+  canMove: 0
+  precastingAtStartFeedback: {fileID: 0}
+  castingAtStartFeedback: {fileID: 7361863170147768511, guid: ecf1c111a879798479a15528eb2fabb0, type: 3}
+  finishedAtStartFeedback: {fileID: 0}
+  preCastingAtStart_SoundFX:
+    sound_FX: {fileID: 8300000, guid: c2ec368eb7c96ba44a84153caf639a72, type: 3}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  castingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  finishedAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  listOfStatsModified:
+  - modifyStats: 1
+    modifyValue: 50
+    valueType: 1
+  - modifyStats: 6
+    modifyValue: 30
+    valueType: 1
+  activeTime: 6

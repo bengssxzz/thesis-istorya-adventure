@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e7c90cdb43f15469af887c69699fa6, type: 3}
+  m_Name: Japanese Soldier Deploy
+  m_EditorClassIdentifier: 
+  state: 0
+  OnAbilityTimeLapse:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityName: Japanese Soldier Deploy
+  abilityIcon: {fileID: 21300000, guid: c93da692cf1291f4196309f64dcf63f0, type: 3}
+  abilityDescription: Summons 5 melee soldiers to help you fight.
+  cooldownTime: 30
+  canAttack: 0
+  canMove: 0
+  precastingAtStartFeedback: {fileID: 0}
+  castingAtStartFeedback: {fileID: 0}
+  finishedAtStartFeedback: {fileID: 0}
+  preCastingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  castingAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  finishedAtStart_SoundFX:
+    sound_FX: {fileID: 0}
+    minVolume: 1
+    maxVolume: 1
+    minPitch: 1
+    maxPitch: 1
+  canMoveWhileSummon: 0
+  canAttackWhileSummon: 1
+  lightPrefab: {fileID: 67063377517511961, guid: c34c196fc40992942bdac35e19862ad7, type: 3}
+  summonPoolerInfo: {fileID: 690065669538881573, guid: fc427ad9870bfbf48ad8941193bc943f, type: 3}
+  randomRangePosition: 0.8
+  spawnCount: 5
+  delay: 0.5
+  createLight: 1
+  followHost: 0
+  lifeTimer: 10
+  overrideScanRadius: 10
+  overrideHealth: 0
+  overrideDamage: 0
+  overrideMoveSpeed: 0
+  overrideAttackSpeed: 50

@@ -27,20 +27,6 @@ public class ArtifactsPage : MonoBehaviour
 
     private void SetArtifactsUI()
     {
-        if (slotUIPrefabs.Count > 0)
-        {
-            foreach (var slotUI in slotUIPrefabs)
-            {
-                slotUI.SetArtifactLocked();
-                slotUI.gameObject.SetActive(false);
-            }
-
-            for (int i = 0; i < listOfArtifacts_Chapter.Count; i++)
-            {
-                slotUIPrefabs[i].gameObject.SetActive(true);
-            }
-        }
-
         for (int i = 0; i < listOfArtifacts_Chapter.Count; i++)
         {
             ArtifactsSO artifactInfo = listOfArtifacts_Chapter[i];
@@ -71,6 +57,22 @@ public class ArtifactsPage : MonoBehaviour
                 slot.SetArtifactLocked();
             }
         }
+
+
+        if (slotUIPrefabs.Count > 0)
+        {
+            foreach (var slotUI in slotUIPrefabs)
+            {
+                slotUI.SetArtifactLocked();
+                slotUI.gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < listOfArtifacts_Chapter.Count; i++)
+            {
+                slotUIPrefabs[i].gameObject.SetActive(true);
+            }
+        }
+
     }
 
     private async void ArtifactSlotPressed(ArtifactsSlotUI slotUI)

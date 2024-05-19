@@ -24,6 +24,7 @@ public class ObjectPoolerInfo : MonoBehaviour
     {
 #if UNITY_EDITOR
         pool_ID = this.name;
+        thisGameObject = gameObject;
         UnityEditor.EditorUtility.SetDirty(this);
 #endif
     }

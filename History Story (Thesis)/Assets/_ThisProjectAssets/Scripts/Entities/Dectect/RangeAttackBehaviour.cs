@@ -57,7 +57,7 @@ public class RangeAttackBehaviour : MonoBehaviour
 
 
     public float GetAttackRadius { get { return attackRadius; } }
-    
+
 
 
 
@@ -81,6 +81,16 @@ public class RangeAttackBehaviour : MonoBehaviour
 
         rangeCancellationToken?.Cancel();
         rangeCancellationToken = new CancellationTokenSource();
+
+
+        foreach (var attackTypes in attackTypes)
+        {
+            foreach (var attackTypes1 in attackTypes.attackTypes)
+            {
+                ObjectPoolingManager.Instance.CreateNewPool(attackTypes1.poolerInfo, 10, true);
+            }
+        }
+
 
         await UniTask.Delay(100);
         await RangeAttack(rangeCancellationToken.Token);
@@ -138,7 +148,7 @@ public class RangeAttackBehaviour : MonoBehaviour
 
     private void Update()
     {
-        if(attackHandler.GetScannerEntities.GetNearestTarget != null)
+        if (attackHandler.GetScannerEntities.GetNearestTarget != null)
         {
             var validDistance = Vector2.Distance(attackHandler.GetBaseAttackPosition.position, attackHandler.GetScannerEntities.GetNearestTarget.position);
             if (validDistance <= attackRadius)
@@ -155,21 +165,21 @@ public class RangeAttackBehaviour : MonoBehaviour
         {
             targetInRange = null;
         }
-        
+
 
         Aiming();
     }
 
     private void EntityStatsChanges()
     {
-        if(overrideAttackSpeed <= 0)
+        if (overrideAttackSpeed <= 0)
             attackSpeed = attackHandler.GetEntity.GetEntityStats.currentAttackSpeed;
     }
     private void Aiming() //Controll the aiming of the entity toward to nearest enemy
     {
         if (attackHandler.GetBaseAttackPosition == null) { return; }
 
-       
+
         var nearestTarget = attackHandler?.GetScannerEntities.GetNearestTarget;
         var basePosition = attackHandler.GetBaseAttackPosition;
 
@@ -210,7 +220,7 @@ public class RangeAttackBehaviour : MonoBehaviour
 
     private async UniTask RangeAttack(CancellationToken rangeCancelToken)
     {
-        if(attackTypes.Count == 0) { return; }
+        if (attackTypes.Count == 0) { return; }
         try
         {
             await UniTask.Delay(1000, cancellationToken: rangeCancelToken);
@@ -246,8 +256,8 @@ public class RangeAttackBehaviour : MonoBehaviour
         {
             attackHandler.IsRangeAttackPlaying = false;
         }
-        
-        
+
+
     }
 
     private async UniTask CastAllTypes(AttackState attackType)
@@ -326,7 +336,7 @@ public class RangeAttackBehaviour : MonoBehaviour
         if (!showGizmos) { return; }
 
 #if UNITY_EDITOR
-        if(attackHandler == null)
+        if (attackHandler == null)
         {
             Handles.color = Color.red;
             Handles.DrawWireDisc(transform.position, transform.forward, attackRadius, 3);
@@ -336,7 +346,7 @@ public class RangeAttackBehaviour : MonoBehaviour
             Handles.color = Color.red;
             Handles.DrawWireDisc(attackHandler.GetBaseAttackPosition.position, transform.forward, attackRadius, 3);
         }
-       
+
 #endif
 
     }
