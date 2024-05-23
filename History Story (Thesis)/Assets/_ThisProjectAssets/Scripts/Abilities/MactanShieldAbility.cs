@@ -41,7 +41,7 @@ public class MactanShieldAbility : AbilityScript
     {
         await base.CastingBehaviour(mono, entity);
 
-        _ = entity.GetEntityStats.TempModifiedMoveSpeed(ThesisUtility.ComputeAddedValueWithPercentage(entity.GetEntityStats.currentMoveSpeed, -40), timeDelay); //Slow
+        _ = entity.GetEntityStats.TempModifiedMoveSpeed(-(entity.GetEntityStats.currentMoveSpeed * 0.75f), timeDelay); //Slow
         _ = entity.GetEntityStats.TempModifiedDodgeChance(100, timeDelay); //Increase dodge
 
         entity.GetAttackHandler.IsCanAttack = false;

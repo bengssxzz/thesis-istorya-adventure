@@ -29,11 +29,15 @@ public class ObjectPoolingManager : Singleton<ObjectPoolingManager>
     {
         base.Awake();
 
-        InitializePoolObject();
+        
+    }
+    private void OnEnable()
+    {
+        
     }
     private void Start()
     {
-
+        InitializePoolObject();
         //ObjectPoolerInfo test = new GameObject().AddComponent<ObjectPoolerInfo>();
         //test.SetPoolID = "_testing";
         //test.GetObjectPool = test.gameObject;
@@ -57,7 +61,7 @@ public class ObjectPoolingManager : Singleton<ObjectPoolingManager>
     }
     private void InitializePoolObject()
     {
-        foreach (var pool in objectPoolInfoList)
+        foreach (var pool in objectPoolInfoList.ToList())
         {
             if(pool.poolerInfo == null || objectPoolDict.ContainsKey(pool.poolerInfo.GetPoolID)) { continue; }
 

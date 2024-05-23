@@ -104,6 +104,22 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
     #endregion
 
 
+    #region Get Player Data (Artifacts Collected)
+    private List<string> GetListOfCollectedArtifacts_ID()
+    {
+        List<string> newList = new List<string>();
+        var collectedArtifacts = GameManager.Instance.GetListOfCollectedArtifacts;
+
+        foreach (var artifacts in collectedArtifacts)
+        {
+            if (artifacts == null) { continue; }
+            newList.Add(artifacts.GetInstanceID().ToString());
+        }
+
+        return newList;
+    }
+    #endregion
+
     #region Get Player Data (Abilities Collected)
     private List<string> GetListOfCollectedAbility_ID()
     {

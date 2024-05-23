@@ -204,7 +204,13 @@ public class PlayerScript : Entities
     }
 
 
+    protected override void TakingDamageBehaviour()
+    {
+        base.TakingDamageBehaviour();
 
+        //Reset rotations and scale after taking damage
+
+    }
 
     protected override void DeathBehaviour()
     {

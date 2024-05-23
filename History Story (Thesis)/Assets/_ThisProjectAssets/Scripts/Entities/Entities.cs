@@ -46,6 +46,7 @@ public class Entities : MonoBehaviour, IDamageable, IRegenHealth
     public CancellationToken GetEntityCancellationToken { get { return entityCancellation.Token; } }
     public Rigidbody2D GetRigidbody2D { get { return rb; } } //Get Rigidbody2D
     public Transform GetActorTransform { get { return actorTransform; } }
+    public Animator GetEntityAnimator { get { return animator_controller; } }
     public AttackHandler GetAttackHandler { get { return attackHandler; } }
     public DropLoot GetDropLoot { get { return dropLoot; } set { dropLoot = value; } }
     //public AttackController GetAttack_Controller { get; private set; } //Get attack controller

@@ -44,7 +44,7 @@ public class ArtifactsSlotUI : MonoBehaviour
     public void SetArtifactLocked()
     {
         artifactBtn.Interactable = false;
-
+        
         artifactImage.color = Color.black;
     }
 

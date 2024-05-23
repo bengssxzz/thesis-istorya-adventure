@@ -45,7 +45,6 @@ public class DodgeAbility : AbilityScript
             entity.gameObject.layer = LayerMask.NameToLayer("P Ignore Collision");
         }
 
-
         entity.GetRigidbody2D.AddForce(previousDir * dodgePower * Time.fixedDeltaTime, ForceMode2D.Impulse);
         entity.IsImmuneDamage = true;
         await UniTask.Delay(TimeSpan.FromSeconds(dodgeDistance));
@@ -63,6 +62,7 @@ public class DodgeAbility : AbilityScript
             entity.GetActorTransform.rotation = Quaternion.identity;
         }
 
+
         entity.IsImmuneDamage = false;
         entity.IsCanMove = true;
     }
@@ -71,7 +71,8 @@ public class DodgeAbility : AbilityScript
     {
         var defaultRemapCurveOne = -360;
         MMF_Rotation modifyingRotation = castingFeedback.GetFeedbackOfType<MMF_Rotation>();
-        modifyingRotation.AnimateRotationTarget = entity.GetActorTransform;
+        //modifyingRotation.AnimateRotationTarget = entity.GetActorTransform;
+        modifyingRotation.AnimateRotationTarget = entity.GetActorTransform.GetChild(0);
         modifyingRotation.RemapCurveZero = 0;
         modifyingRotation.RemapCurveOne = defaultRemapCurveOne * entity.GetActorTransform.localScale.x;
     }

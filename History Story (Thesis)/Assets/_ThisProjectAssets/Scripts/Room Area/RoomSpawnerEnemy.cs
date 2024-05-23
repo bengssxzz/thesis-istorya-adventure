@@ -86,17 +86,15 @@ public class RoomSpawnerEnemy : MonoBehaviour
         roomAreaCollider = roomArea.GetComponent<PolygonCollider2D>();
 
         positionList = transform.GetChild(0)?.GetComponentsInChildren<Transform>().Skip(1).ToArray();
-
-        
-
-        BarriersToggler(false);
-        AstarPath.active.Scan();
     }
 
 
 
     private void OnEnable()
     {
+        BarriersToggler(false);
+        AstarPath.active.Scan();
+
         RetriveData();
 
         roomArea.OnPlayerEnterRoom.AddListener(PlayerEnterRoom);

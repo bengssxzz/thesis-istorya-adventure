@@ -29,7 +29,7 @@ public class RestoreHealthAbility : AbilityScript
         await base.CastingBehaviour(mono, entity);
 
         //restore health
-        var amount = entity.GetEntityStats.maxHealth * healthAmountPercent;
+        var amount = entity.GetEntityStats.maxHealth * (healthAmountPercent/100);
         entity.GetEntityStats.SetCurrentHealth(amount);
 
         entity.GetAbility_Controller.PlayParticleEffects("HealParticle");

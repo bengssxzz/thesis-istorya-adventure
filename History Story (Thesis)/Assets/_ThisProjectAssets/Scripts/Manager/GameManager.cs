@@ -21,7 +21,7 @@ public class GameManager : Singleton<GameManager>
 
     private CancellationTokenSource gameMainMenuCancellationToken;
 
-    [SerializeField] private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>(); //FOR TESTING PURPOSES
+    private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>(); //FOR TESTING PURPOSES
     private List<AbilityScript> listOfCollectedAbilities = new List<AbilityScript>(); //FOR TESTING PURPOSES
 
     private Dictionary<Chapter_LevelSO, bool> dictChapterUnlocked; //List of all chapters
@@ -103,6 +103,7 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
 
         InitializeSceneChapter();
+        RetrievePlayerData();
 
         gameMainMenuCancellationToken = new CancellationTokenSource();
     }
@@ -116,7 +117,7 @@ public class GameManager : Singleton<GameManager>
 
     private void OnEnable()
     {
-        RetrievePlayerData();
+        //RetrievePlayerData();
 
         SceneManager.sceneLoaded += SceneLoaded;
         SceneManager.sceneUnloaded += SceneUnloaded;
@@ -172,10 +173,11 @@ public class GameManager : Singleton<GameManager>
             {
                 List<string> artifactsInstanceIDs = new List<string>(loadedData.artifactsCollected_ID);
 
-
                 List<ArtifactsSO> collectedArtifacts = listOfAllArtifacts.Where(artifact => artifactsInstanceIDs.Contains(artifact.GetInstanceID().ToString())).ToList();
 
                 listOfCollectedArtifacts = collectedArtifacts;
+
+                //Debug.LogError("ARTIFACTS IS WORKING: " + collectedArtifacts[0].artifactName);
             }
 
             //Load Abilities
