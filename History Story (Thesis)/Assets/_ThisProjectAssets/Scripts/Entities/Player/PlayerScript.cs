@@ -52,7 +52,8 @@ public class PlayerScript : Entities
                 {
                     foreach (var ability_ID in usedAbility_IDs)
                     {
-                        AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem.GetInstanceID().ToString() == ability_ID);
+                        //AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem.GetInstanceID().ToString() == ability_ID);
+                        AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem.abilityName == ability_ID);
                         usedAbility.Add(ability);
                     }
 

@@ -113,7 +113,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         foreach (var artifacts in collectedArtifacts)
         {
             if (artifacts == null) { continue; }
-            newList.Add(artifacts.GetInstanceID().ToString());
+            //newList.Add(artifacts.GetInstanceID().ToString());
+            newList.Add(artifacts.artifactName);
         }
 
         return newList;
@@ -129,7 +130,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
         foreach (var ability in collectedAbilities)
         {
             if (ability == null) { continue; }
-            newList.Add(ability.GetInstanceID().ToString());
+            //newList.Add(ability.GetInstanceID().ToString());
+            newList.Add(ability.abilityName);
         }
 
         return newList;
@@ -153,7 +155,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             }
             else
             {
-                newList.Add(ability.GetInstanceID().ToString());
+                //newList.Add(ability.GetInstanceID().ToString());
+                newList.Add(ability.abilityName);
             }
         }
 

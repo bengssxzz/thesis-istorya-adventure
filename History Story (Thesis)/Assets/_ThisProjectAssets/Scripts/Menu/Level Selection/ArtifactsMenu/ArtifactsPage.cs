@@ -28,35 +28,21 @@ public class ArtifactsPage : MonoBehaviour
     private void SetArtifactsUI()
     {
         //Set to default
-        if (slotUIPrefabs.Count > 0)
+        foreach (var slotUI in slotUIPrefabs)
         {
-            foreach (var slotUI in slotUIPrefabs)
-            {
-                slotUI.SetArtifactLocked();
-                slotUI.gameObject.SetActive(false);
-            }
-
-            for (int i = 0; i < listOfArtifacts_Chapter.Count; i++)
-            {
-                slotUIPrefabs[i].gameObject.SetActive(true);
-            }
+            slotUI.SetArtifactLocked();
+            slotUI.gameObject.SetActive(false);
         }
 
-        //Unlocked artifacts
+        //Set slots
         for (int i = 0; i < listOfArtifacts_Chapter.Count; i++)
         {
             ArtifactsSO artifactInfo = listOfArtifacts_Chapter[i];
             ArtifactsSlotUI slot;
 
             // Check if slotUIPrefabs has an item at index i
-            if (i < slotUIPrefabs.Count && slotUIPrefabs[i] != null)
-            {
-                slot = slotUIPrefabs[i];
-            }
-            else
-            {
-                slot = CreateNewSlotUI();
-            }
+            slot = i < slotUIPrefabs.Count && slotUIPrefabs[i] != null ? slotUIPrefabs[i] : CreateNewSlotUI();
+
 
             // Unsubscribe previous event handlers before adding new ones
             slot.OnArtifactPressed -= ArtifactSlotPressed;
@@ -64,21 +50,72 @@ public class ArtifactsPage : MonoBehaviour
 
             slot.SetArtifactSlotImage.sprite = artifactInfo.artifactsSprite;
 
+            //Check if the artifact is already collected
             if (CheckCollectedArtifact(artifactInfo))
             {
-                Debug.LogError("Artifact Unlocked: " + artifactInfo.artifactName);
+                Debug.Log("Artifact Unlocked: " + artifactInfo.artifactName);
                 slot.SetArtifactUnlocked();
             }
             else
             {
-                Debug.LogError("Artifact locked: " + artifactInfo.artifactName);
+                Debug.Log("Artifact locked: " + artifactInfo.artifactName);
                 slot.SetArtifactLocked();
             }
+
+            slot.gameObject.SetActive(true);
         }
 
 
-       
 
+
+        ////Set to default
+        //if (slotUIPrefabs.Count > 0)
+        //{
+        //    foreach (var slotUI in slotUIPrefabs)
+        //    {
+        //        slotUI.SetArtifactLocked();
+        //        slotUI.gameObject.SetActive(false);
+        //    }
+
+        //    for (int i = 0; i < listOfArtifacts_Chapter.Count; i++)
+        //    {
+        //        slotUIPrefabs[i].gameObject.SetActive(true);
+        //    }
+        //}
+
+        ////Unlocked artifacts
+        //for (int i = 0; i < listOfArtifacts_Chapter.Count; i++)
+        //{
+        //    ArtifactsSO artifactInfo = listOfArtifacts_Chapter[i];
+        //    ArtifactsSlotUI slot;
+
+        //    // Check if slotUIPrefabs has an item at index i
+        //    if (i < slotUIPrefabs.Count && slotUIPrefabs[i] != null)
+        //    {
+        //        slot = slotUIPrefabs[i];
+        //    }
+        //    else
+        //    {
+        //        slot = CreateNewSlotUI();
+        //    }
+
+        //    // Unsubscribe previous event handlers before adding new ones
+        //    slot.OnArtifactPressed -= ArtifactSlotPressed;
+        //    slot.OnArtifactPressed += ArtifactSlotPressed;
+
+        //    slot.SetArtifactSlotImage.sprite = artifactInfo.artifactsSprite;
+
+        //    if (CheckCollectedArtifact(artifactInfo))
+        //    {
+        //        Debug.LogError("Artifact Unlocked: " + artifactInfo.artifactName);
+        //        slot.SetArtifactUnlocked();
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError("Artifact locked: " + artifactInfo.artifactName);
+        //        slot.SetArtifactLocked();
+        //    }
+        //}
     }
 
     private async void ArtifactSlotPressed(ArtifactsSlotUI slotUI)

@@ -21,7 +21,7 @@ public class GameManager : Singleton<GameManager>
 
     private CancellationTokenSource gameMainMenuCancellationToken;
 
-    private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>(); //FOR TESTING PURPOSES
+    [SerializeField] private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>(); //FOR TESTING PURPOSES
     private List<AbilityScript> listOfCollectedAbilities = new List<AbilityScript>(); //FOR TESTING PURPOSES
 
     private Dictionary<Chapter_LevelSO, bool> dictChapterUnlocked; //List of all chapters
@@ -86,7 +86,8 @@ public class GameManager : Singleton<GameManager>
         {
             // Get unique elements using HashSet
             HashSet<ArtifactsSO> newList = new HashSet<ArtifactsSO>(listOfCollectedArtifacts);
-            List<string> stringID = newList.Select(artifact => artifact.GetInstanceID().ToString()).ToList();
+            //List<string> stringID = newList.Select(artifact => artifact.GetInstanceID().ToString()).ToList();
+            List<string> stringID = newList.Select(artifact => artifact.artifactName).ToList();
 
             return new List<string>(stringID);
         }
@@ -173,7 +174,8 @@ public class GameManager : Singleton<GameManager>
             {
                 List<string> artifactsInstanceIDs = new List<string>(loadedData.artifactsCollected_ID);
 
-                List<ArtifactsSO> collectedArtifacts = listOfAllArtifacts.Where(artifact => artifactsInstanceIDs.Contains(artifact.GetInstanceID().ToString())).ToList();
+                //List<ArtifactsSO> collectedArtifacts = listOfAllArtifacts.Where(artifact => artifactsInstanceIDs.Contains(artifact.GetInstanceID().ToString())).ToList();
+                List<ArtifactsSO> collectedArtifacts = listOfAllArtifacts.Where(artifact => artifactsInstanceIDs.Contains(artifact.artifactName)).ToList();
 
                 listOfCollectedArtifacts = collectedArtifacts;
 
@@ -193,7 +195,8 @@ public class GameManager : Singleton<GameManager>
                 {
                     foreach (var ability_ID in collectedAbilities_IDs)
                     {
-                        AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem.GetInstanceID().ToString() == ability_ID);
+                        //AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem.GetInstanceID().ToString() == ability_ID);
+                        AbilityScript ability = GameManager.Instance.GetListOfAllAbility.FirstOrDefault(abilityItem => abilityItem.abilityName == ability_ID);
                         collectedAbility.Add(ability);
                     }
                 }

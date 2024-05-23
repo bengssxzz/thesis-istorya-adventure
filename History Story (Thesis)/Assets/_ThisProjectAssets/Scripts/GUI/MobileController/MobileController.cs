@@ -124,7 +124,7 @@ public class MobileController : MonoBehaviour
 
     private AbilityScript GetPlayerCurrentEquippedAbility(int index) //Get the current ability of the player
     {
-        Debug.Log("Count: "+ PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities.Count + " Index: " + index);
+        //Debug.Log("Count: "+ PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities.Count + " Index " + index + " : " + PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities[index].abilityName);
         return PlayerSingleton.Instance.GetPlayerScript.GetAbility_Controller.ListOfCurrentAbilities[index];
     }
 
