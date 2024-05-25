@@ -83,13 +83,13 @@ public class RangeAttackBehaviour : MonoBehaviour
         rangeCancellationToken = new CancellationTokenSource();
 
 
-        foreach (var attackTypes in attackTypes)
-        {
-            foreach (var attackTypes1 in attackTypes.attackTypes)
-            {
-                ObjectPoolingManager.Instance.CreateNewPool(attackTypes1.poolerInfo, 10, true);
-            }
-        }
+        //foreach (var attackTypes in attackTypes)
+        //{
+        //    foreach (var attackTypes1 in attackTypes.attackTypes)
+        //    {
+        //        ObjectPoolingManager.Instance.CreateNewPool(attackTypes1.poolerInfo, 10, true);
+        //    }
+        //}
 
 
         await UniTask.Delay(100);

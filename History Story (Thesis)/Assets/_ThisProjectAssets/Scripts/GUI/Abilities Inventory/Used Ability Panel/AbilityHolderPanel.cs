@@ -136,7 +136,7 @@ public class AbilityHolderPanel : MonoBehaviour
 
             if(ability != null)
             {
-                holder.SetData(ability.abilityIcon);
+                holder.SetData(ability);
             }
 
         }
@@ -285,7 +285,7 @@ public class AbilityHolderPanel : MonoBehaviour
 
             int index = slotAbilityHolders.IndexOf(slot);
 
-            slotAbilityHolders[index].SetData(interactedSlot.AssignedAbility.abilityIcon);
+            slotAbilityHolders[index].SetData(interactedSlot.AssignedAbility);
             abilityPositions[index] = interactedSlot.AssignedAbility;
 
 

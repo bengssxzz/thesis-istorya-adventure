@@ -5,12 +5,14 @@ using UnityEngine.EventSystems;
 using System;
 using UnityEngine.UI;
 using MoreMountains.Tools;
+using TMPro;
 
 public class SlotAbilityHolder : BaseSlot
 {
     public event Action<SlotAbilityHolder, BaseSlot> OnSlotClicked, OnSlotDrop, OnSlotBeginDrag, OnSlotDragging, OnSlotEndDrag;
     public event Action<SlotAbilityHolder> OnRemoveEquippedAbilities;
 
+    [SerializeField] private TextMeshProUGUI slotAbilityName;
     [SerializeField] private RectTransform holderFrame;
     [SerializeField] private Image holderImage;
     [SerializeField] private MMTouchButton removeAbilityBtn;
@@ -33,16 +35,29 @@ public class SlotAbilityHolder : BaseSlot
         isEmpty = true;
         holderFrame.gameObject.SetActive(false);
 
+        slotAbilityName.gameObject.SetActive(false);
         removeAbilityBtn.gameObject.SetActive(false);
     }
-    public void SetData(Sprite sprite)
+    public void SetData(AbilityScript abilityScript)
     {
         holderFrame.gameObject.SetActive(true);
-        holderImage.sprite = sprite;
+        holderImage.sprite = abilityScript.abilityIcon;
+        slotAbilityName.text = abilityScript.abilityName;
         isEmpty = false;
 
+        slotAbilityName.gameObject.SetActive(true);
         removeAbilityBtn.gameObject.SetActive(true);
     }
+    //public void SetData(Sprite sprite)
+    //{
+    //    holderFrame.gameObject.SetActive(true);
+    //    holderImage.sprite = sprite;
+    //    isEmpty = false;
+
+    //    slotAbilityName.gameObject.SetActive(true);
+    //    slotAbilityName.text = "";
+    //    removeAbilityBtn.gameObject.SetActive(true);
+    //}
     private void RemoveAbilityButton()
     {
         OnRemoveEquippedAbilities?.Invoke(this);

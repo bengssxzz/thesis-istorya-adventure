@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1708258405
   m_SortingLayer: 7
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: bb0903d3b14f84312a5f48b4fd81c8ca, type: 3}
   m_Color: {r: 1, g: 0.21383637, b: 0.21383637, a: 1}
   m_FlipX: 0
@@ -156,7 +156,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1708258405
   m_SortingLayer: 7
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 45a29847241b84c04bbae67bbd2c3e3c, type: 3}
   m_Color: {r: 1, g: 0.21383637, b: 0.21383637, a: 1}
   m_FlipX: 0
@@ -211,6 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3006846641162822967}
   - component: {fileID: 3006846641162822966}
+  - component: {fileID: 1052491922178347516}
   m_Layer: 0
   m_Name: Quest Indicator
   m_TagString: Untagged
@@ -323,7 +324,7 @@ MonoBehaviour:
         m_Calls: []
   DebugActive: 0
   FeedbacksList:
-  - rid: 2223042466570043394
+  - rid: 2223042646515384320
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 1
@@ -331,11 +332,11 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 2223042466570043394
+    - rid: 2223042646515384320
       type: {class: MMF_Position, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
       data:
         Active: 1
-        UniqueID: -507153905
+        UniqueID: -2038021469
         Label: Position
         ChannelMode: 0
         Channel: 0
@@ -403,7 +404,7 @@ MonoBehaviour:
         Mode: 0
         Space: 1
         RandomizeRemap: 0
-        AnimatePositionDuration: 5
+        AnimatePositionDuration: 3
         AnimatePositionTween:
           MMTweenDefinitionType: 1
           MMTweenCurve: 4
@@ -590,7 +591,7 @@ MonoBehaviour:
         RelativePosition: 1
         DeterminePositionsOnPlay: 0
         InitialPosition: {x: 0, y: 0, z: 0}
-        DestinationPosition: {x: 0, y: 0.8, z: 0}
+        DestinationPosition: {x: 0, y: 0.2, z: 0}
         InitialPositionTransform: {fileID: 0}
         DestinationPositionTransform: {fileID: 0}
         AnimatePositionCurveX:
@@ -617,3 +618,18 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+--- !u!114 &1052491922178347516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3006846641162822961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a071bb1401e615f4ab5f395d0286e3c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questStarted: 0
+  questionObj: {fileID: 3006846641018447689}
+  exclamationObj: {fileID: 3006846640424779837}
