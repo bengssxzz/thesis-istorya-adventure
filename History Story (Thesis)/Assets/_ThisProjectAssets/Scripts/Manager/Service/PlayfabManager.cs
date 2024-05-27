@@ -326,6 +326,30 @@ public class PlayfabManager : Singleton<PlayfabManager>
             });
     }
 
+    public void RecoverAccount(string email)
+    {
+        var request = new SendAccountRecoveryEmailRequest
+        {
+            Email = email,
+            EmailTemplateId = "2E8B7D58CDA80C7B"
+        };
+
+
+
+        PlayFabClientAPI.SendAccountRecoveryEmail(request,
+            (result) =>
+            {
+                Debug.Log("LOGIN USING EMAIL SUCCESS");
+
+                OnErrorLogin?.Invoke(true, "Please check your email");
+            },
+            (error) =>
+            {
+                OnErrorLogin?.Invoke(true, error.ErrorMessage);
+                Debug.LogError("ERROR: " + error.ErrorMessage);
+            });
+    }
+
     public void LogoutAccount()
     {
         PlayFabClientAPI.ForgetAllCredentials();

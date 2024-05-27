@@ -152,14 +152,14 @@ public class GameManager : Singleton<GameManager>
         InitializeAbilities();
 
 
-        ////TESTING
-        Debug.LogError("LEVEL TESTING");
-        UnlockSceneChapter("Introduction");
-        UnlockSceneChapter("Chapter 1");
-        UnlockSceneChapter("Chapter 2");
-        UnlockSceneChapter("Chapter 3");
-        UnlockSceneChapter("Chapter 4");
-        UnlockSceneChapter("Chapter 5");
+        //////TESTING
+        //Debug.LogError("LEVEL TESTING");
+        //UnlockSceneChapter("Introduction");
+        //UnlockSceneChapter("Chapter 1");
+        //UnlockSceneChapter("Chapter 2");
+        //UnlockSceneChapter("Chapter 3");
+        //UnlockSceneChapter("Chapter 4");
+        //UnlockSceneChapter("Chapter 5");
     }
 
 

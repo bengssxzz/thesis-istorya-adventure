@@ -32,9 +32,11 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private Toggle mute_Music_Toggle;
     [SerializeField] private Toggle mute_SFX_Toggle;
 
+
     [Space(10)]
     [SerializeField] private string menu_ID_Close;
     [SerializeField] private MMTouchButton updateSettingsBtn;
+    [SerializeField] private MMTouchButton creditBtn;
 
 
     private float masterVolume;
@@ -58,10 +60,15 @@ public class SettingsMenu : MonoBehaviour
         if (sound_Master_Slider != null)
             sound_SFX_Slider.onValueChanged.AddListener(SFXValueChange);
 
+
         updateSettingsBtn.ButtonReleased.AddListener(UpdateSoundManagerSettings);
+        creditBtn.ButtonReleased.AddListener(OpenCreditPage);
+
 
         GetVolume();
     }
+
+  
     private void OnDisable()
     {
         if (sound_Master_Slider != null)
@@ -74,6 +81,7 @@ public class SettingsMenu : MonoBehaviour
             sound_SFX_Slider.onValueChanged.RemoveListener(SFXValueChange);
 
         updateSettingsBtn.ButtonReleased.RemoveListener(UpdateSoundManagerSettings);
+        creditBtn.ButtonReleased.RemoveListener(OpenCreditPage);
     }
 
     private void MasterValueChange(float value)
@@ -227,6 +235,10 @@ public class SettingsMenu : MonoBehaviour
         MMSoundManager.Instance.SaveSettings();
     }
 
+    private void OpenCreditPage()
+    {
+        UI_Manager.Instance.OpenMenu("CreditPage");
+    }
 
 
 

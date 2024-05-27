@@ -11,6 +11,7 @@ using ThesisLibrary;
 
 public class QuestionaireUI : MonoBehaviour
 {
+    [SerializeField] private RectTransform counterUI;
     [SerializeField] private TextMeshProUGUI questionText;
 
     [SerializeField] private Animator qandAAnimator;
@@ -37,6 +38,7 @@ public class QuestionaireUI : MonoBehaviour
 
     private void OnEnable()
     {
+        counterUI.gameObject.SetActive(false);
         openingFeedback?.PlayFeedbacks();
 
         SubscribeBtn();

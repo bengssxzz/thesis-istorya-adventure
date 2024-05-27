@@ -228,7 +228,7 @@ public class EntityStatistics
     }
     public async UniTask TempModifiedMoveSpeed(float tempValue, float duration) //Movement Speed
     {
-        currentMoveSpeed += Mathf.Clamp(tempValue, 0, float.MaxValue); ; // Apply temporary value
+        currentMoveSpeed += Mathf.Clamp(tempValue, -float.MaxValue, float.MaxValue); ; // Apply temporary value
 
         try
         {

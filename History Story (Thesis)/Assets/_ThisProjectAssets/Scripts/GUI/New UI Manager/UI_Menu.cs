@@ -110,4 +110,9 @@ public class UI_Menu : UIAbstract
             disenablePageFB?.PlayFeedbacks();
         }
     }
+
+    public void ClosePage()
+    {
+        UI_Manager.Instance.CloseMenu(uiID);
+    }
 }
