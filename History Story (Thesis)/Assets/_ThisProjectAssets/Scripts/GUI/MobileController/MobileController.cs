@@ -16,6 +16,8 @@ public class MobileController : MonoBehaviour
 
     private void OnEnable()
     {
+        moveJoyStick.ResetJoystick();
+
         moveJoyStick.OnPointerUpEvent.AddListener(JoyStickOnPressUp);
         moveJoyStick.JoystickNormalizedValue.AddListener(OnPlayerMovement);
 
@@ -29,6 +31,8 @@ public class MobileController : MonoBehaviour
     }
     private void OnDisable()
     {
+        moveJoyStick.ResetJoystick();
+
         moveJoyStick.JoystickNormalizedValue.RemoveListener(OnPlayerMovement);
         moveJoyStick.OnPointerUpEvent.RemoveListener(JoyStickOnPressUp);
 
