@@ -15,8 +15,8 @@ public class AbilityInventoryPanel : MonoBehaviour
     [SerializeField] private AbilitySlot slotPrefab;
     [SerializeField] private RectTransform abilityIndicatorHolder;
 
-    private List<AbilityScript> listOfAllAbilities;//List of all available abilities
-    private List<AbilityScript> listOfUnlockedAbilities; //List of all unlocked abilties
+    //private List<AbilityScript> listOfAllAbilities;//List of all available abilities
+    //private List<AbilityScript> listOfUnlockedAbilities; //List of all unlocked abilties
 
     private List<AbilitySlot> listOfAbilitySlot; //Just a list of ability slot
 
@@ -44,7 +44,7 @@ public class AbilityInventoryPanel : MonoBehaviour
         holderPanel.OnEquipAbilityChange += OnEquippedAbilityChange;
         holderPanel.OnEnableEquipAbility += OnEnableGetCurrentAbilities;
 
-        listOfAllAbilities = new List<AbilityScript>(GameManager.Instance.GetListOfAllAbility);
+        //listOfAllAbilities = new List<AbilityScript>(GameManager.Instance.GetListOfAllAbility);
 
         listOfAbilitySlot = new List<AbilitySlot>();
 
@@ -54,7 +54,7 @@ public class AbilityInventoryPanel : MonoBehaviour
     
     private void OnEnable()
     {
-        listOfUnlockedAbilities = new List<AbilityScript>(GameManager.Instance.GetListOfCollectedAbility);
+        //listOfUnlockedAbilities = new List<AbilityScript>(GameManager.Instance.GetListOfCollectedAbility);
 
         UpdateAbilitySlot();
     }
@@ -63,7 +63,7 @@ public class AbilityInventoryPanel : MonoBehaviour
 
     private void InitializeInventory() //Adding slot to inventory
     {
-        foreach (var ability in listOfAllAbilities)
+        foreach (var ability in GameManager.Instance.GetListOfAllAbility)
         {
             var newSlot = Instantiate(slotPrefab);
             newSlot.transform.SetParent(contentSlot);
@@ -99,11 +99,11 @@ public class AbilityInventoryPanel : MonoBehaviour
         //    abiSlot.ResetData();
         //}
 
-        for (int i = 0; i < listOfUnlockedAbilities.Count; i++)
+        for (int i = 0; i < GameManager.Instance.GetListOfCollectedAbility.Count; i++)
         {
             var slot = listOfAbilitySlot[i];
 
-            slot.AssignedAbility = listOfUnlockedAbilities[i];
+            slot.AssignedAbility = GameManager.Instance.GetListOfCollectedAbility[i];
             slot.InitializeSlot();
         }
 

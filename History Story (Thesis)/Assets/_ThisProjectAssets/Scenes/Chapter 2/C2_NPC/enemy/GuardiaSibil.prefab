@@ -3174,8 +3174,13 @@ MonoBehaviour:
   - lootPrefab: {fileID: 3384535730190410523, guid: 82c6c77f221f12642952f8f0ac511074, type: 3}
     randomAmountDrop: 1
     minAmount: 0
-    maxAmount: 1
+    maxAmount: 5
     dropChance: 50
+  - lootPrefab: {fileID: 3503459824970762297, guid: 2afcb7f4cbea06d4a877ef78e93cfc5a, type: 3}
+    randomAmountDrop: 0
+    minAmount: 0
+    maxAmount: 1
+    dropChance: 25
 --- !u!114 &8780504999550975509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3258,7 +3263,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   scanRadius: 10
-  ignoreAvoidLayer: 0
+  ignoreAvoidLayer: 1
 --- !u!114 &5859967434095430936
 MonoBehaviour:
   m_ObjectHideFlags: 0

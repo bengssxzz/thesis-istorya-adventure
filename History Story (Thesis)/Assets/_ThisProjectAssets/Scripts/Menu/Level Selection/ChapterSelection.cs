@@ -122,6 +122,8 @@ public class ChapterSelection : MonoBehaviour
             if (GameManager.Instance.IsChapterSceneExist(slot.GetChapterLevelSO, out var unlockedChapter))
             {
                 slot.IsLockChapter = !unlockedChapter;
+
+                Debug.LogWarning($"Chapter: {slot.GetChapterLevelSO.chapterName} || Status: {unlockedChapter}");
             }
         }
     }

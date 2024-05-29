@@ -56,6 +56,7 @@ public class GameManager : Singleton<GameManager>
             // Get unique elements using HashSet
             HashSet<AbilityScript> newList = new HashSet<AbilityScript>(listOfCollectedAbilities);
 
+            //return newList.Where(item => item != null).ToList();
             return new List<AbilityScript>(newList);
         }
     }
@@ -104,7 +105,7 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
 
         InitializeSceneChapter();
-        RetrievePlayerData();
+        LoadPlayerData();
 
         gameMainMenuCancellationToken = new CancellationTokenSource();
     }
@@ -163,7 +164,7 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    private void RetrievePlayerData()
+    public void LoadPlayerData()
     {
         var loadedData = SaveGameDataManager.Instance.LoadPlayerData();
 

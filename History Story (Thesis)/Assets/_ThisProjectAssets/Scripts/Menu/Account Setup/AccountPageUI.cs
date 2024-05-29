@@ -153,6 +153,7 @@ public class AccountPageUI : MonoBehaviour
         try
         {
             await PlayfabManager.Instance.RequestRetrievePlayerData();
+            GameManager.Instance.LoadPlayerData();
             SceneTransitionManager.Instance.SceneTransitionInstant(SceneManager.GetActiveScene().name);
         }
         catch (Exception ex)
