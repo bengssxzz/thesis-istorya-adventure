@@ -75,7 +75,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
         if (!IsUserLogin())
         {
-            if(playerData != null)
+            if (playerData != null)
             {
                 LoginUsingUsername(playerData.userIdentifier, playerData.password);
             }
@@ -92,6 +92,24 @@ public class PlayfabManager : Singleton<PlayfabManager>
         //}
     }
 
+    public void AccountForgotPassword(string email)
+    {
+        SendAccountRecoveryEmailRequest request = new SendAccountRecoveryEmailRequest()
+        {
+            Email = email,
+            TitleId = "2E8B7D58CDA80C7B"
+        };
+
+        PlayFabClientAPI.SendAccountRecoveryEmail(request,
+            (result) =>
+            {
+                Debug.Log("Success send recovery email");
+            },
+            (error) =>
+            {
+                Debug.LogError("Failed to send the recovery email: " + error.ErrorMessage);
+            });
+    }
 
 
     #region SAVE/LOAD/DELETE SAVE USER DATA ACCOUNT (LOCAL)

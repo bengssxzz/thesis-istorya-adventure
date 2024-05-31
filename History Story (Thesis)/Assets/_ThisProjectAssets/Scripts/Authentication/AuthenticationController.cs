@@ -12,6 +12,8 @@ public class AuthenticationController : MonoBehaviour
 {
     const string PLAYER_AUTHTOKENKEY = "PlayerTokenKey";
 
+    [SerializeField] private MMTouchButton forgot_passwordBtn;
+
     [Header("For Sign in Page")]
     [SerializeField] private RectTransform signin_page;
     [SerializeField] private TextMeshProUGUI signin_errorMessage;
@@ -45,6 +47,8 @@ public class AuthenticationController : MonoBehaviour
 
         signin_goto_signUpBtn.ButtonPressed.AddListener(() => { OpenSignUpPage(); });
         signup_backSignInBtn.ButtonPressed.AddListener(() => { OpenSignInPage(); });
+
+        forgot_passwordBtn.ButtonPressed.AddListener(() => { UI_Manager.Instance.OpenMenu("ForgotPass Page"); });
     }
 
     private void OnEnable()
@@ -68,6 +72,19 @@ public class AuthenticationController : MonoBehaviour
         signup_errorMessage.gameObject.SetActive(false);
     }
 
+    private void Update()
+    {
+        if(signin_emailIF.text == "" || signin_passwordIF.text == "")
+        {
+            signin_goto_signUpBtn.Interactable = true;
+            signin_goto_signUpBtn.EnableButton();
+        }
+        else
+        {
+            signin_goto_signUpBtn.Interactable = false;
+            signin_goto_signUpBtn.DisableButton();
+        }
+    }
 
     private void SignInBtnPressed()
     {
@@ -184,141 +201,141 @@ public class AuthenticationController : MonoBehaviour
     //}
 
 
-//    #region SIGN IN SETUP
-//    private void SignInWithAccessToken(string authToken)
-//    {
-//        var request = new LoginWithCustomIDRequest
-//        {
-//            CustomId = authToken,
-//            CreateAccount = false // Do not create a new account if one does not exist
-//        };
+    //    #region SIGN IN SETUP
+    //    private void SignInWithAccessToken(string authToken)
+    //    {
+    //        var request = new LoginWithCustomIDRequest
+    //        {
+    //            CustomId = authToken,
+    //            CreateAccount = false // Do not create a new account if one does not exist
+    //        };
 
-//        PlayFabClientAPI.LoginWithCustomID
-//            (
-//            request, //Request
-//            CheckCharacterName, //If success sign in
-//            (PlayFabError error) => //When Error
-//            {
-//                Debug.LogError("PLAYFAB ERROR: " + error);
-//                UI_Manager.Instance.OpenMenu("AccountSetup Menu");
-//            });
-//    }
-//    public void SignInAccount(string userIdentifier, string password)
-//    {
-//        //Login account
+    //        PlayFabClientAPI.LoginWithCustomID
+    //            (
+    //            request, //Request
+    //            CheckCharacterName, //If success sign in
+    //            (PlayFabError error) => //When Error
+    //            {
+    //                Debug.LogError("PLAYFAB ERROR: " + error);
+    //                UI_Manager.Instance.OpenMenu("AccountSetup Menu");
+    //            });
+    //    }
+    //    public void SignInAccount(string userIdentifier, string password)
+    //    {
+    //        //Login account
 
-//        userIdentifier = userIdentifier.Trim();
-//        if (userIdentifier.Contains("@") && userIdentifier.Contains("."))
-//        {
-//            //User input their email
-//            SignInWithEmail(userIdentifier, password);
-//        }
-//        else
-//        {
-//            //User input their username
-//            SignInWithUsername(userIdentifier, password);
-//        }
-//    }
-   
+    //        userIdentifier = userIdentifier.Trim();
+    //        if (userIdentifier.Contains("@") && userIdentifier.Contains("."))
+    //        {
+    //            //User input their email
+    //            SignInWithEmail(userIdentifier, password);
+    //        }
+    //        else
+    //        {
+    //            //User input their username
+    //            SignInWithUsername(userIdentifier, password);
+    //        }
+    //    }
 
-//    bool CheckForSupportedMobilePlatform() //Check if the current platform is mobile or not
-//    {
-//        return Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
-//    }
-//    bool GetDeviceId(out string android_id, out string ios_id, out string custom_id) //Getting the device id
-//    {
-//        android_id = string.Empty;
-//        ios_id = string.Empty;
-//        custom_id = string.Empty;
 
-//        if (CheckForSupportedMobilePlatform())
-//        {
-//#if UNITY_ANDROID
-//            AndroidJavaClass clsUnity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-//            AndroidJavaObject objActivity = clsUnity.GetStatic<AndroidJavaObject>("currentActivity");
-//            AndroidJavaObject objResolver = objActivity.Call<AndroidJavaObject>("getContentResolver");
-//            AndroidJavaClass clsSecure = new AndroidJavaClass("android.provider.Settings$Secure");
-//            android_id = clsSecure.CallStatic<string>("getString", objResolver, "android_id");
-//#endif
+    //    bool CheckForSupportedMobilePlatform() //Check if the current platform is mobile or not
+    //    {
+    //        return Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
+    //    }
+    //    bool GetDeviceId(out string android_id, out string ios_id, out string custom_id) //Getting the device id
+    //    {
+    //        android_id = string.Empty;
+    //        ios_id = string.Empty;
+    //        custom_id = string.Empty;
 
-//#if UNITY_IPHONE
-//            ios_id = UnityEngine.iOS.Device.vendorIdentifier;
-//#endif
-//            return true;
-//        }
-//        else
-//        {
-//            custom_id = SystemInfo.deviceUniqueIdentifier;
-//            return false;
-//        }
-//    }
-        
-//    private void SignInWithEmail(string email, string password) //Sign in using email address
-//    {
-//        var request = new LoginWithEmailAddressRequest
-//        {
-//            Email = email,
-//            Password = password
-//        };
+    //        if (CheckForSupportedMobilePlatform())
+    //        {
+    //#if UNITY_ANDROID
+    //            AndroidJavaClass clsUnity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+    //            AndroidJavaObject objActivity = clsUnity.GetStatic<AndroidJavaObject>("currentActivity");
+    //            AndroidJavaObject objResolver = objActivity.Call<AndroidJavaObject>("getContentResolver");
+    //            AndroidJavaClass clsSecure = new AndroidJavaClass("android.provider.Settings$Secure");
+    //            android_id = clsSecure.CallStatic<string>("getString", objResolver, "android_id");
+    //#endif
 
-//        PlayFabClientAPI.LoginWithEmailAddress(request, CheckCharacterName, ErrorThrow);
-//    }
-//    private void SignInWithUsername(string username, string password) //Sign in using username
-//    {
-//        //User input their username
-//        LoginWithPlayFabRequest request = new LoginWithPlayFabRequest
-//        {
-//            Username = username,
-//            Password = password
-//        };
+    //#if UNITY_IPHONE
+    //            ios_id = UnityEngine.iOS.Device.vendorIdentifier;
+    //#endif
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            custom_id = SystemInfo.deviceUniqueIdentifier;
+    //            return false;
+    //        }
+    //    }
 
-//        PlayFabClientAPI.LoginWithPlayFab(request, CheckCharacterName, ErrorThrow);
-//    }
-//    public void SignInWithDevice() //Sign in using device id
-//    {
-//        if (GetDeviceId(out string android_id, out string ios_id, out string custom_id))
-//        {
-//            //Android ID sign in
-//            if (!string.IsNullOrEmpty(android_id))
-//            {
-//                Debug.Log("Using Android Device ID: " + android_id);
-//                var androidRequest = new LoginWithAndroidDeviceIDRequest()
-//                {
-//                    AndroidDeviceId = android_id,
-//                    CreateAccount = true
-//                };
+    //    private void SignInWithEmail(string email, string password) //Sign in using email address
+    //    {
+    //        var request = new LoginWithEmailAddressRequest
+    //        {
+    //            Email = email,
+    //            Password = password
+    //        };
 
-//                PlayFabClientAPI.LoginWithAndroidDeviceID(androidRequest, CheckCharacterName, ErrorThrow);
-//            }
+    //        PlayFabClientAPI.LoginWithEmailAddress(request, CheckCharacterName, ErrorThrow);
+    //    }
+    //    private void SignInWithUsername(string username, string password) //Sign in using username
+    //    {
+    //        //User input their username
+    //        LoginWithPlayFabRequest request = new LoginWithPlayFabRequest
+    //        {
+    //            Username = username,
+    //            Password = password
+    //        };
 
-//            //Iphone ID sign in
-//            else if (!string.IsNullOrEmpty(ios_id))
-//            {
-//                Debug.Log("Using IOS Device ID: " + ios_id);
-//                var iosRequest = new LoginWithIOSDeviceIDRequest()
-//                {
-//                    DeviceId = ios_id,
-//                    CreateAccount = true
-//                };
+    //        PlayFabClientAPI.LoginWithPlayFab(request, CheckCharacterName, ErrorThrow);
+    //    }
+    //    public void SignInWithDevice() //Sign in using device id
+    //    {
+    //        if (GetDeviceId(out string android_id, out string ios_id, out string custom_id))
+    //        {
+    //            //Android ID sign in
+    //            if (!string.IsNullOrEmpty(android_id))
+    //            {
+    //                Debug.Log("Using Android Device ID: " + android_id);
+    //                var androidRequest = new LoginWithAndroidDeviceIDRequest()
+    //                {
+    //                    AndroidDeviceId = android_id,
+    //                    CreateAccount = true
+    //                };
 
-//                PlayFabClientAPI.LoginWithIOSDeviceID(iosRequest, CheckCharacterName, ErrorThrow);
-//            }
-//        }
-//        else
-//        {
-//            Debug.Log("Using custom device ID: " + custom_id);
+    //                PlayFabClientAPI.LoginWithAndroidDeviceID(androidRequest, CheckCharacterName, ErrorThrow);
+    //            }
 
-//            var customIdRequest = new LoginWithCustomIDRequest()
-//            {
-//                CustomId = custom_id,
-//                CreateAccount = true
-//            };
+    //            //Iphone ID sign in
+    //            else if (!string.IsNullOrEmpty(ios_id))
+    //            {
+    //                Debug.Log("Using IOS Device ID: " + ios_id);
+    //                var iosRequest = new LoginWithIOSDeviceIDRequest()
+    //                {
+    //                    DeviceId = ios_id,
+    //                    CreateAccount = true
+    //                };
 
-//            PlayFabClientAPI.LoginWithCustomID(customIdRequest, CheckCharacterName, ErrorThrow);
-//        }
-//    }
+    //                PlayFabClientAPI.LoginWithIOSDeviceID(iosRequest, CheckCharacterName, ErrorThrow);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("Using custom device ID: " + custom_id);
 
-//    #endregion
+    //            var customIdRequest = new LoginWithCustomIDRequest()
+    //            {
+    //                CustomId = custom_id,
+    //                CreateAccount = true
+    //            };
+
+    //            PlayFabClientAPI.LoginWithCustomID(customIdRequest, CheckCharacterName, ErrorThrow);
+    //        }
+    //    }
+
+    //    #endregion
 
 
 
