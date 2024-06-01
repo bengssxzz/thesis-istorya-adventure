@@ -220,6 +220,12 @@ public class GameManager : Singleton<GameManager>
             }
 
         }
+        else
+        {
+            listOfCollectedArtifacts = new List<ArtifactsSO>();
+            listOfCollectedAbilities = new List<AbilityScript>();
+            InitializeSceneChapter();
+        }
     }
 
 

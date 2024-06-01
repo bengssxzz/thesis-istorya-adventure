@@ -20,6 +20,7 @@ public class LevelChapterSlot : MonoBehaviour
     [SerializeField] private RectTransform lockPanel;
 
     [SerializeField] private Image chapterImageUI;
+    [SerializeField] private Image chapterCompletionBadge;
     [SerializeField] private TextMeshProUGUI chapterNameTxt;
     [SerializeField] private TextMeshProUGUI chapterTitleTxt;
     [SerializeField] private TextMeshProUGUI chapterProgression;
@@ -114,6 +115,8 @@ public class LevelChapterSlot : MonoBehaviour
     private void SetProgression(float progress) //Set the progression
     {
         chapterProgression.text = string.Format("Complete: {0:F1}%", progress);
+
+        chapterCompletionBadge?.gameObject.SetActive(progress > 99.9);
     }
     private void SetLockChapter(bool toggleLock)
     {

@@ -601,7 +601,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
     public async UniTask<List<LeaderboardFields>> RequestLeaderboardSQLDatabase(int requestRowsCount)
     {
         // Construct the SQL query
-        string sql = string.Format("SELECT * FROM Leaderboard LIMIT {0}", requestRowsCount);
+        string sql = string.Format("SELECT * FROM Leaderboard WHERE p_score > 0 LIMIT {0}", requestRowsCount);
 
 
         // Execute the query on a background thread

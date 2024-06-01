@@ -41,7 +41,9 @@ public class ChapterSelection : MonoBehaviour
 
     private void OnEnable()
     {
-        if(chapterSlots.Count > 0)
+        GameManager.Instance.LoadPlayerData(); //Upadte data
+
+        if (chapterSlots.Count > 0)
         {
             foreach (var itemSlot in chapterSlots)
             {
