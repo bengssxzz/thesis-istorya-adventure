@@ -35,7 +35,7 @@ public class DropLoot : MonoBehaviour
 
         foreach (var itemLoot in listOfDropLoot)
         {
-            if (itemLoot == null)
+            if (itemLoot.lootPrefab == null)
                 continue;
 
             if (ThesisUtility.RandomGetChanceBool(itemLoot.dropChance / 100))
