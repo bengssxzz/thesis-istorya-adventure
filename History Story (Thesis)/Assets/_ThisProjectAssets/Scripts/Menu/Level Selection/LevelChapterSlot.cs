@@ -20,11 +20,18 @@ public class LevelChapterSlot : MonoBehaviour
     [SerializeField] private RectTransform lockPanel;
 
     [SerializeField] private Image chapterImageUI;
-    [SerializeField] private Image chapterCompletionBadge;
+    //[SerializeField] private Image chapterCompletionBadge;
     [SerializeField] private TextMeshProUGUI chapterNameTxt;
     [SerializeField] private TextMeshProUGUI chapterTitleTxt;
     [SerializeField] private TextMeshProUGUI chapterProgression;
-    
+
+    [Header("Badges")]
+    [SerializeField] private Image bronzeBadge;
+    [SerializeField] private Image silverBadge;
+    [SerializeField] private Image goldBadge;
+
+
+
 
     private bool isSelected = false;
     private bool isLock = false;
@@ -116,7 +123,11 @@ public class LevelChapterSlot : MonoBehaviour
     {
         chapterProgression.text = string.Format("Complete: {0:F1}%", progress);
 
-        chapterCompletionBadge?.gameObject.SetActive(progress > 99.9);
+        bronzeBadge.enabled = (progress > 10);
+        silverBadge.enabled = (progress > 50);
+        goldBadge.enabled = (progress > 99.9);
+
+        //chapterCompletionBadge?.gameObject.SetActive(progress > 99.9);
     }
     private void SetLockChapter(bool toggleLock)
     {

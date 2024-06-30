@@ -382,13 +382,6 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
 
 
-
-
-
-
-
-
-
     private bool IsKeyExist(string findKey, string overrideFile = "") //To check if this scene is already saved
     {
         if (!ES3.FileExists(GetIdentifier()))
