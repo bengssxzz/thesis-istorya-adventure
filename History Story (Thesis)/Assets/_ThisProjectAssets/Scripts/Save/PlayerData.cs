@@ -16,6 +16,8 @@ public class PlayerData
     public List<string> abilitiesCollected;
     public List<string> usedCurrentAbilities;
 
+    public List<string> titlesCollected; 
+
     //Save the unlocked chapters
     public Dictionary<Chapter_LevelSO, bool> unlockedChapters;
 

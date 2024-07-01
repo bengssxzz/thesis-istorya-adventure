@@ -77,6 +77,8 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
             abilitiesCollected = GetListOfCollectedAbility_ID(),
             unlockedChapters = GameManager.Instance.GetDictUnlockedChapters,
 
+            titlesCollected = GameManager.Instance.GetListOfCollectedTitles,
+
             chapterScores = GameManager.Instance.GetDictEachChapterScores,
             usedCurrentAbilities = GetListOfUsedAbility_ID()
         };
@@ -162,6 +164,11 @@ public class SaveGameDataManager : Singleton<SaveGameDataManager>
 
         return newList;
     }
+    #endregion
+
+    #region Get Player Data (Title)
+
+
     #endregion
 
     #endregion

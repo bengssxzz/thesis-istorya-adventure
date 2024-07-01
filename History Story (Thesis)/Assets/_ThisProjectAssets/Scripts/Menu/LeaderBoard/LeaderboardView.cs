@@ -17,9 +17,10 @@ public class LeaderboardView : MonoBehaviour
 
 
     [Header("User Position")]
-    [SerializeField] private RectTransform LB_RectTransform;
+    [SerializeField] private RectTransform LB_playerViewSection;
     [SerializeField] private TextMeshProUGUI LB_playerPosition;
     [SerializeField] private TextMeshProUGUI LB_playerName;
+    [SerializeField] private TextMeshProUGUI LB_playerTitle;
     [SerializeField] private TextMeshProUGUI LB_playerScore;
 
 
@@ -80,12 +81,12 @@ public class LeaderboardView : MonoBehaviour
                 if (listOfLBSlotUI.Count > i && listOfLBSlotUI[i] != null)
                 {
                     listOfLBSlotUI[i].gameObject.SetActive(true);
-                    listOfLBSlotUI[i].SetLeaderboardSlot(userInfo.id.ToString(), userInfo.p_name, userInfo.p_score.ToString());
+                    listOfLBSlotUI[i].SetLeaderboardSlot(userInfo.id.ToString(), userInfo.p_name, userInfo.p_score.ToString(), userInfo.title?.ToString());
                 }
                 else
                 {
                     var newslotUI = Instantiate(LB_SlotUIPrefab);
-                    newslotUI.SetLeaderboardSlot(userInfo.id.ToString(), userInfo.p_name, userInfo.p_score.ToString());
+                    newslotUI.SetLeaderboardSlot(userInfo.id.ToString(), userInfo.p_name, userInfo.p_score.ToString(), userInfo.title?.ToString());
                     newslotUI.transform.SetParent(content);
 
                     listOfLBSlotUI.Add(newslotUI);
@@ -106,6 +107,7 @@ public class LeaderboardView : MonoBehaviour
         {
             LB_playerPosition.text = playerInfo.id.ToString();
             LB_playerName.text = playerInfo.p_name;
+            LB_playerTitle.text = playerInfo.title;
             LB_playerScore.text = playerInfo.p_score.ToString();
 
             Debug.Log("PLAYER INFO PANEL IS UPDATED");
@@ -114,9 +116,18 @@ public class LeaderboardView : MonoBehaviour
         {
             LB_playerPosition.text = "";
             LB_playerName.text = "";
+            LB_playerTitle.text = "";
             LB_playerScore.text = "";
         }
-        
+
+        // Determine whether the title is invalid (i.e., null, empty, or whitespace) and not equal to "None"
+        bool isInvalidTitle = string.IsNullOrEmpty(playerInfo?.title) || string.IsNullOrWhiteSpace(playerInfo?.title);
+
+        // Determine whether the title should make the label inactive
+        bool shouldMakeInactive = isInvalidTitle || playerInfo?.title == "None";
+
+        // Set the active state of the label
+        LB_playerTitle.gameObject.SetActive(!shouldMakeInactive);
     }
 
 
@@ -130,12 +141,12 @@ public class LeaderboardView : MonoBehaviour
     private void EnableLeaderboardView()
     {
         lockPanelView?.gameObject.SetActive(false);
-        LB_RectTransform?.gameObject.SetActive(true);
+        LB_playerViewSection?.gameObject.SetActive(true);
     }
     private void DisenableLeaderboardView()
     {
         lockPanelView?.gameObject.SetActive(true);
-        LB_RectTransform?.gameObject.SetActive(false);
+        LB_playerViewSection?.gameObject.SetActive(false);
 
         foreach (var slot in listOfLBSlotUI)
         {

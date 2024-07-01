@@ -23,6 +23,7 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private List<ArtifactsSO> listOfCollectedArtifacts = new List<ArtifactsSO>(); //FOR TESTING PURPOSES
     private List<AbilityScript> listOfCollectedAbilities = new List<AbilityScript>(); //FOR TESTING PURPOSES
+    private List<string> listOfCollectedTitles = new List<string>();
 
     private Dictionary<Chapter_LevelSO, bool> dictChapterUnlocked; //List of all chapters
     private Dictionary<string, int> dictChapterScores = new Dictionary<string, int>(); //List of all chapters
@@ -39,6 +40,7 @@ public class GameManager : Singleton<GameManager>
 
     public List<Chapter_LevelSO> GetListOfChapters { get { return listOfAllChapters; } }
 
+    //Abilities
     public List<AbilityScript> GetListOfAllAbility
     {
         get
@@ -61,6 +63,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    //Artifacts
     public List<ArtifactsSO> GetListOfAllArtifacts
     {
         get
@@ -91,6 +94,17 @@ public class GameManager : Singleton<GameManager>
             List<string> stringID = newList.Select(artifact => artifact.artifactName).ToList();
 
             return new List<string>(stringID);
+        }
+    }
+
+    //Title
+    public List<string> GetListOfCollectedTitles
+    {
+        get
+        {
+            HashSet<string> newList = new HashSet<string>(listOfCollectedTitles);
+
+            return new List<string>(newList);
         }
     }
 
@@ -154,7 +168,22 @@ public class GameManager : Singleton<GameManager>
 
 
         //////TESTING
-        //Debug.LogError("LEVEL TESTING");
+        Debug.LogError("LEVEL TESTING");
+        CollectedTitle("JunJun Slayer");
+        CollectedTitle("Alfredo Destroyer");
+        CollectedTitle("Titan Gel");
+        CollectedTitle("JunJun Slayer1");
+        CollectedTitle("Alfredo Destroyer1");
+        CollectedTitle("Titan Gel1");
+        CollectedTitle("JunJun Slayer2");
+        CollectedTitle("Alfredo Destroyer2");
+        CollectedTitle("Titan Gel2");
+        CollectedTitle("JunJun Slayer3");
+        CollectedTitle("Alfredo Destroyer3");
+        CollectedTitle("Titan Gel3");
+        CollectedTitle("JunJun Slayer4");
+        CollectedTitle("Alfredo Destroyer4");
+        CollectedTitle("Titan Gel4");
         //UnlockSceneChapter("Introduction");
         //UnlockSceneChapter("Chapter 1");
         //UnlockSceneChapter("Chapter 2");
@@ -219,6 +248,16 @@ public class GameManager : Singleton<GameManager>
                 dictChapterScores = chapterScores;
             }
 
+            //Load TItles
+            if(loadedData.titlesCollected != null)
+            {
+                listOfCollectedTitles = new List<string>(loadedData.titlesCollected);
+            }
+            //else
+            //{
+            //    listOfCollectedTitles = new List<string>();
+            //    listOfCollectedTitles.Add("None");
+            //}
         }
         else
         {
@@ -334,7 +373,6 @@ public class GameManager : Singleton<GameManager>
 
     #endregion
 
-
     #region FOR ARTIFACTS
     public bool IsArtifactsCollected(ArtifactsSO artifacts)
     {
@@ -424,7 +462,18 @@ public class GameManager : Singleton<GameManager>
 
     #endregion
 
+    #region FOR TITLES
+    public void CollectedTitle(string title)
+    {
+        if (listOfCollectedTitles.Contains(title))
+        {
+            Debug.LogWarning($"'Title: {title}' IS ALREADY COLLECTED");
+            return;
+        }
 
+        listOfCollectedTitles.Add(title);
+    }
+    #endregion
 
 
 

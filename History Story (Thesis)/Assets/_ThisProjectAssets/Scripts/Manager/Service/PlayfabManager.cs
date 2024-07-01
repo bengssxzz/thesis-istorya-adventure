@@ -30,6 +30,7 @@ public class LeaderboardFields
     public string p_name { get; set; }
     public int p_score { get; set; }
     public string p_playfab_id { get; set; }
+    public string title { get; set; }
 }
 
 public class PlayfabManager : Singleton<PlayfabManager>
@@ -379,6 +380,46 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
     #region PLAYER GET/SET DATA IN CLOUD
     //Get data
+    public async UniTask<string> GetDataInUserCloud(string playfabId, string key)
+    {
+        var checkInternet = await CheckInternetConnectionAsync(false);
+
+        if (!checkInternet)
+        {
+            Debug.LogWarning("THERE ARE NO INTERNET CONNECTION");
+            return null;
+        }
+
+        var tcs = new UniTaskCompletionSource<string>();
+
+        GetUserDataRequest userdata_request = new GetUserDataRequest()
+        {
+            PlayFabId = playfabId,
+            Keys = new List<string>() { key }
+        };
+
+        PlayFabClientAPI.GetUserData(userdata_request,
+            (result) =>
+            {
+                // Get data success
+                Debug.Log("RETRIEVE USER DATA SUCCESS");
+                if (result.Data.ContainsKey(key))
+                {
+                    tcs.TrySetResult(result.Data[key].Value);
+                }
+                else
+                {
+                    tcs.TrySetResult(null);
+                }
+            },
+            (error) =>
+            {
+                Debug.Log("COULD NOT RETRIEVE USER DATA: " + error.ErrorMessage);
+                tcs.TrySetException(new Exception(error.ErrorMessage));
+            });
+
+        return await tcs.Task;
+    }
     public async UniTask<string> GetDataInUserCloud(string key)
     {
         var checkInternet = await CheckInternetConnectionAsync();
@@ -419,7 +460,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
         return await tcs.Task;
     }
-    public async UniTaskVoid SetDataInUserCloud(string key, string value)
+    public async UniTaskVoid SetDataInUserCloud(string key, string value, bool isPublic)
     {
         var checkInternet = await CheckInternetConnectionAsync();
 
@@ -433,7 +474,9 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
         UpdateUserDataRequest updatedata_request = new UpdateUserDataRequest()
         {
-            Data = new Dictionary<string, string>() { { key, value } }
+            Data = new Dictionary<string, string>() { { key, value } },
+            Permission = isPublic ? UserDataPermission.Public : UserDataPermission.Private
+            
         };
 
         PlayFabClientAPI.UpdateUserData(updatedata_request,
@@ -459,7 +502,7 @@ public class PlayfabManager : Singleton<PlayfabManager>
     {
         var jsonPlayerData = ES3.LoadRawString(filePath: PLAYER_DATA_FILE);
 
-        SetDataInUserCloud(PLAYER_DATA_KEY, jsonPlayerData).Forget();
+        SetDataInUserCloud(PLAYER_DATA_KEY, jsonPlayerData, false).Forget();
     }
     public async UniTask RequestRetrievePlayerData() //Request for retrieving data in cloud
     {
@@ -544,14 +587,25 @@ public class PlayfabManager : Singleton<PlayfabManager>
 
             foreach (var item in result.Leaderboard)
             {
-                var updateTableSQL = "INSERT INTO Leaderboard (id, p_name, p_score, p_playfab_id) VALUES (?, ?, ?, ?)";
+                var updateTableSQL = "INSERT INTO Leaderboard (id, p_name, p_score, p_playfab_id, title) VALUES (?, ?, ?, ?, ?)";
 
                 int playerPosition = item.Position + 1; //id
                 string playerName = string.IsNullOrEmpty(item.DisplayName) ? item.PlayFabId : item.DisplayName; //p_name
                 int playerScore = item.StatValue; //p_score
                 string playerPlayfabId = item.PlayFabId; //p_playfab_id
+                string playerTitle = "";
 
-                sqlManagerLeaderboard.Execute(updateTableSQL, playerPosition, playerName, playerScore, playerPlayfabId);
+                try
+                {
+                    playerTitle = item.PlayFabId != null ? await GetDataInUserCloud(item.PlayFabId, "title") : "None"; //p_title
+                }
+                catch (Exception ex)
+                {
+                    //Debug.LogError($"Error: {ex.Message}");
+                    playerTitle = "None"; //p_title
+                }
+
+                sqlManagerLeaderboard.Execute(updateTableSQL, playerPosition, playerName, playerScore, playerPlayfabId, playerTitle);
 
             }
         }
@@ -708,9 +762,10 @@ public class PlayfabManager : Singleton<PlayfabManager>
     //    //loadingScreen.gameObject.SetActive(false);
     //    return result;
     //}
-    private async UniTask<bool> CheckInternetConnectionAsync()
+    private async UniTask<bool> CheckInternetConnectionAsync(bool visibleLoading = true)
     {
-        UI_Manager.Instance.OpenMenu("LoadingScreen");
+        if(visibleLoading)
+            UI_Manager.Instance.OpenMenu("LoadingScreen");
 
         const string echoServer = "http://google.com";
         bool result = false;
