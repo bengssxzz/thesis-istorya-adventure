@@ -133,7 +133,7 @@ public class LeaderboardView : MonoBehaviour
 
 
 
-    private void RefreshLeaderboard()
+    public void RefreshLeaderboard()
     {
         PlayfabManager.Instance.UpdateLeaderboard().Forget();
     }

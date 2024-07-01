@@ -168,22 +168,22 @@ public class GameManager : Singleton<GameManager>
 
 
         //////TESTING
-        Debug.LogError("LEVEL TESTING");
-        CollectedTitle("JunJun Slayer");
-        CollectedTitle("Alfredo Destroyer");
-        CollectedTitle("Titan Gel");
-        CollectedTitle("JunJun Slayer1");
-        CollectedTitle("Alfredo Destroyer1");
-        CollectedTitle("Titan Gel1");
-        CollectedTitle("JunJun Slayer2");
-        CollectedTitle("Alfredo Destroyer2");
-        CollectedTitle("Titan Gel2");
-        CollectedTitle("JunJun Slayer3");
-        CollectedTitle("Alfredo Destroyer3");
-        CollectedTitle("Titan Gel3");
-        CollectedTitle("JunJun Slayer4");
-        CollectedTitle("Alfredo Destroyer4");
-        CollectedTitle("Titan Gel4");
+        //Debug.LogError("LEVEL TESTING");
+        //CollectedTitle("JunJun Slayer");
+        //CollectedTitle("Alfredo Destroyer");
+        //CollectedTitle("Titan Gel");
+        //CollectedTitle("JunJun Slayer1");
+        //CollectedTitle("Alfredo Destroyer1");
+        //CollectedTitle("Titan Gel1");
+        //CollectedTitle("JunJun Slayer2");
+        //CollectedTitle("Alfredo Destroyer2");
+        //CollectedTitle("Titan Gel2");
+        //CollectedTitle("JunJun Slayer3");
+        //CollectedTitle("Alfredo Destroyer3");
+        //CollectedTitle("Titan Gel3");
+        //CollectedTitle("JunJun Slayer4");
+        //CollectedTitle("Alfredo Destroyer4");
+        //CollectedTitle("Titan Gel4");
         //UnlockSceneChapter("Introduction");
         //UnlockSceneChapter("Chapter 1");
         //UnlockSceneChapter("Chapter 2");

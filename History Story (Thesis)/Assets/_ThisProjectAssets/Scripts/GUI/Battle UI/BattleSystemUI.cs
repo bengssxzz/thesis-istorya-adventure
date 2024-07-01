@@ -2,20 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
+using MoreMountains.Feedbacks;
 using TMPro;
 using UnityEngine.Events;
 using System;
 
 public class BattleSystemUI : Singleton<BattleSystemUI>
 {
+    [Header("Boss Info")]
     [SerializeField] private RectTransform bossInfoPage;
     [SerializeField] private TextMeshProUGUI bossNameTxt;
     [SerializeField] private MMProgressBar bossHealthbar;
 
+    [Header("Battle Info")]
     [SerializeField] private RectTransform battleInfoPage;
     [SerializeField] private TextMeshProUGUI enemyRemainTxt;
     [SerializeField] private TextMeshProUGUI waveInfoTxt;
 
+    [Header("Boss Info")]
+    [SerializeField] private MMF_Player titleHolderFeedback;
+    [SerializeField] private TextMeshProUGUI titleTxt;
 
 
     protected override void Awake()
@@ -41,6 +47,13 @@ public class BattleSystemUI : Singleton<BattleSystemUI>
     {
         battleInfoPage.gameObject.SetActive(toggle);
     }
+    public void PlayTitleShow(string title)
+    {
+        titleTxt.text = title;
+
+        titleHolderFeedback?.PlayFeedbacks();
+    }
+
 
     //For boss
     public void UpdateBossName(string bossName)
@@ -66,7 +79,6 @@ public class BattleSystemUI : Singleton<BattleSystemUI>
     {
         waveInfoTxt.text = string.Format("Waves: {0}/{1}", currentWave, maxWave);
     }
-
 
 
 

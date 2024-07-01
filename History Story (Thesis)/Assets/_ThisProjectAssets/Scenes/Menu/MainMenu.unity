@@ -17282,7 +17282,7 @@ MonoBehaviour:
   LB_playerViewSection: {fileID: 1633885011}
   LB_playerPosition: {fileID: 34673079}
   LB_playerName: {fileID: 215261622}
-  LB_playerTitle: {fileID: 0}
+  LB_playerTitle: {fileID: 1090876939}
   LB_playerScore: {fileID: 1408783660}
 --- !u!1 &989637013
 GameObject:
@@ -18220,6 +18220,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081787458}
   m_CullTransparentMesh: 1
+--- !u!114 &1090876939 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4140640789918636060, guid: 831b846c0222e4e449c4074742a47575, type: 3}
+  m_PrefabInstance: {fileID: 887602940}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1097504005
 GameObject:
   m_ObjectHideFlags: 0
@@ -21077,7 +21088,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: None
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4ce034de9c1fb5949bd9a9da883e7bf4, type: 2}
   m_sharedMaterial: {fileID: -3359197029103750868, guid: 4ce034de9c1fb5949bd9a9da883e7bf4, type: 2}
@@ -21104,7 +21115,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.4
+  m_fontSize: 30
   m_fontSizeBase: 22.4
   m_fontWeight: 400
   m_enableAutoSizing: 1

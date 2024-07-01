@@ -47,12 +47,16 @@ public class AccountPageUI : MonoBehaviour
             selectedTitle = "";
         }
     }
-    private void OnDisable()
+    private async void OnDisable()
     {
         //Save title
         selectedTitle = titleDropDown.options[titleDropDown.value].text;
 
         PlayfabManager.Instance.SetDataInUserCloud("title", selectedTitle, true).Forget();
+
+        //Refresh leaderboard
+        //var mainMenu =  await UI_Manager.Instance.FindComponentInUIMenu<RectTransform>("MainPage Menu");
+        //mainMenu.Find("Leaderboard Panel").GetComponent<LeaderboardView>().RefreshLeaderboard(); //Refresh leaderboard
     }
 
     private void Start()

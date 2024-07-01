@@ -4,6 +4,9 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Events;
+using ThesisLibrary;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -29,6 +32,8 @@ public class EnemyBoss : MonoBehaviour
     private EntityStatistics entityStats;
 
     [SerializeField] private string bossName;
+
+    [SerializeField] private List<string> killedTitle = new List<string>();
 
     [Space(10)]
     [SerializeField] private List<HealthStateEvents> HealthEvents = new List<HealthStateEvents>();
@@ -64,6 +69,8 @@ public class EnemyBoss : MonoBehaviour
 
         entity.GetEntityStats.OnCurrentHealthChange -= OnCurrentHealthChange;
         battleUI?.ToggleBossInfo(false);
+
+
     }
 
     private void OnCurrentHealthChange(float currentHealth, float maxHealth)
@@ -73,6 +80,15 @@ public class EnemyBoss : MonoBehaviour
 
         var currentHealthPercentage = (currentHealth / maxHealth) * 100;
         CheckTriggerEvents(currentHealthPercentage);
+
+        //Died
+        if(currentHealthPercentage <= 0)
+        {
+            string selectedTitle = ThesisUtility.RandomGetObject(killedTitle.ToArray());
+
+            GameManager.Instance.CollectedTitle(selectedTitle);
+            battleUI?.PlayTitleShow(selectedTitle);
+        }
     }
 
 
@@ -88,47 +104,4 @@ public class EnemyBoss : MonoBehaviour
             }
         }
     }
-
-
-
-//    private IEnumerator FindPlayer()
-//    {
-//        // Perform overlap circle check
-//        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, bossRange, LayerMask.GetMask("Player"));
-
-//        // Loop through all colliders found
-//        if(colliders.Length > 0)
-//        {
-//            //Player is in range
-//            battleUI.ToggleBossInfo(true);
-//        }
-
-//        yield return null; // Yield to end the coroutine
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    private void OnDrawGizmosSelected()
-//    {
-//#if UNITY_EDITOR
-//        Handles.color = Color.red;
-//        Handles.DrawWireDisc(transform.position, transform.forward, bossRange);
-//#endif
-//    }
-
-
-
 }
